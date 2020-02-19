@@ -7,8 +7,8 @@
         </el-form-item>
         <el-form-item class="small-item">
           <el-select v-model="dataForm.status" placeholder="状态" clearable>
-            <el-option label="失败" :value="0"/>
-            <el-option label="成功" :value="1"/>
+            <el-option :label="$t('error')" :value="0"/>
+            <el-option :label="$t('success')" :value="1"/>
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
@@ -50,7 +50,7 @@
         </el-table-column>
         <el-table-column prop="status" label="状态" sortable="custom" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="danger">{{ $t('fail') }}</el-tag>
+            <el-tag v-if="scope.row.status === 0" size="small" type="danger">{{ $t('error') }}</el-tag>
             <el-tag v-else size="small" type="success">{{ $t('success') }}</el-tag>
           </template>
         </el-table-column>
