@@ -112,10 +112,14 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateDto(D dto) {
         T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
-        boolean ret = saveOrUpdate(entity);
-        // copy主键值到dto
-        BeanUtils.copyProperties(entity, dto);
-        return ret;
+        if (hasIdVal(entity)) {
+            boolean ret = save(entity);
+            // copy主键值到dto
+            BeanUtils.copyProperties(entity, dto);
+            return ret;
+        } else {
+            return updateById(entity);
+        }
     }
 
     @Override

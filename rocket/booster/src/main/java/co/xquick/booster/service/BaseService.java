@@ -19,6 +19,7 @@ public interface BaseService<T> extends IService<T> {
 
     /**
      * 通过条件删除内容
+     *
      * @param wrapper 查询条件
      * @return 删除结果
      */
@@ -26,6 +27,7 @@ public interface BaseService<T> extends IService<T> {
 
     /**
      * 通过id数组删除
+     *
      * @param idList 数组
      * @return 删除结果
      */
@@ -33,6 +35,7 @@ public interface BaseService<T> extends IService<T> {
 
     /**
      * 通过id数删除
+     *
      * @param id id
      * @return 删除结果
      */
@@ -42,7 +45,7 @@ public interface BaseService<T> extends IService<T> {
      * 下级记录数量
      *
      * @param column 关联字段
-     * @param val 字段值
+     * @param val    字段值
      * @return 数量
      */
     int subCount(String column, Object val);
@@ -51,7 +54,7 @@ public interface BaseService<T> extends IService<T> {
      * 是否存在下级记录
      *
      * @param column 关联字段
-     * @param val 字段值
+     * @param val    字段值
      * @return 是否存在
      */
     boolean hasSub(String column, Object val);
@@ -59,18 +62,27 @@ public interface BaseService<T> extends IService<T> {
     /**
      * 是否存在对应字段同内容的记录
      *
-     * @param id 可null
+     * @param id     可null
      * @param column 字段
-     * @param val 字段值
+     * @param val    字段值
      * @return 是否存在
      */
     boolean hasDuplicated(Serializable id, String column, Object val);
 
     /**
      * 是否存在查询条件的的记录
+     *
      * @param wrapper 查询条件
      * @return 删除结果
      */
     boolean hasRecord(Wrapper<T> wrapper);
+
+    /**
+     * 是否存在id主键
+     *
+     * @param entity 查询条件
+     * @return 是否有id主键值
+     */
+    boolean hasIdVal(T entity);
 
 }

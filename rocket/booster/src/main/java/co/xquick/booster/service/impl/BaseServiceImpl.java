@@ -89,6 +89,21 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> implements BaseService<T> 
         return count(wrapper) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean hasIdVal(T entity) {
+        if (null != entity) {
+            Class<?> cls = entity.getClass();
+            TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
+            Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
+            String keyProperty = tableInfo.getKeyProperty();
+            Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
+            Object idVal = ReflectionKit.getMethodValue(cls, entity, tableInfo.getKeyProperty());
+            return !(StringUtils.checkValNull(idVal) || Objects.isNull(getById((Serializable) idVal)));
+        }
+        return false;
+    }
+
     /**
      * 获取当前Entity实例
      *
