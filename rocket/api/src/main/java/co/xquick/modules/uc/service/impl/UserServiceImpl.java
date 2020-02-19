@@ -6,7 +6,6 @@ import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.*;
 import co.xquick.booster.util.bcrypt.BCryptPasswordEncoder;
-import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.log.LogConst;
 import co.xquick.modules.log.LogConst.LoginStatusEnum;
 import co.xquick.modules.log.entity.LoginEntity;
@@ -95,21 +94,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Map<String, Object> login(HttpServletRequest request, co.xquick.modules.uc.dto.LoginDTO login) {
-        // 获得登录配置
-        LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + login.getType(), LoginConfigDTO.class, null);
-        AssertUtils.isNull(loginConfig, ErrorCode.UNKNOWN_LOGIN_TYPE);
-
-        // 验证码是否正确
-        if (loginConfig.getCaptcha()) {
-            // 启用验证码
-            if (StringUtils.isEmpty(login.getCaptcha()) || StringUtils.isEmpty(login.getUuid())) {
-                throw new XquickException(ErrorCode.CAPTCHA_ERROR);
-            } else if (!login.getCaptcha().equalsIgnoreCase(loginConfig.getMagicCaptcha()) && !captchaService.validate(login.getUuid(), login.getCaptcha())) {
-                // 不等于魔法验证码
-                throw new XquickException(ErrorCode.CAPTCHA_ERROR);
-            }
-        }
-
+        // 登录异常
+        XquickException exception = null;
         // 登录日志
         LoginEntity loginLog = new LoginEntity();
         loginLog.setType(login.getType());
@@ -117,107 +103,134 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         loginLog.setCreateTime(new Date());
         loginLog.setIp(HttpContextUtils.getIpAddr(request));
         loginLog.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
-
-        // 获取帐号
-        UserDTO user;
-        if (LoginTypeEnum.ADMIN_USER_PWD.value() == login.getType() || LoginTypeEnum.APP_USER_PWD.value() == login.getType()) {
-            // 帐号密码登录
-            if (StringUtils.isEmpty(login.getUsername()) || StringUtils.isEmpty(login.getPassword())) {
-                throw new XquickException(ErrorCode.ERROR_REQUEST);
-            }
-            user = getByUsername(login.getUsername());
-            if (user == null) {
-                throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-            }
-            if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
-                throw new XquickException(ErrorCode.PASSWORD_ERROR);
-            }
-        } else if (LoginTypeEnum.ADMIN_MOBILE_PWD.value() == login.getType() || LoginTypeEnum.APP_MOBILE_PWD.value() == login.getType()) {
-            // 手机号密码登录
-            if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getPassword())) {
-                throw new XquickException(ErrorCode.ERROR_REQUEST);
-            }
-            user = getByMobile(login.getMobile());
-            if (user == null) {
-                throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-            }
-            if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
-                throw new XquickException(ErrorCode.PASSWORD_ERROR);
-            }
-        } else if (LoginTypeEnum.ADMIN_MOBILE_SMS.value() == login.getType() || LoginTypeEnum.APP_MOBILE_SMS.value() == login.getType()) {
-            // 手机号验证码登录
-            if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getCode())) {
-                throw new XquickException(ErrorCode.ERROR_REQUEST);
-            }
-            user = getByMobile(login.getMobile());
-            //  校验验证码
-            SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode("LOGIN", login.getMobile());
-            if (null == lastSmsLog) {
-                loginLog.setStatus(LoginStatusEnum.FAIL.value());
-                logLoginService.save(loginLog);
-                throw new XquickException("验证码无效");
-            }
-            Map<String, Object> smsParams = JacksonUtils.jsonToMap(lastSmsLog.getParams());
-            if (!login.getCode().equalsIgnoreCase(smsParams.get("code").toString())) {
-                loginLog.setStatus(LoginStatusEnum.FAIL.value());
-                logLoginService.save(loginLog);
-                throw new XquickException("验证码错误");
-            }
-            if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > 10 * 60 * 1000) {
-                loginLog.setStatus(LoginStatusEnum.FAIL.value());
-                logLoginService.save(loginLog);
-                throw new XquickException("验证码已过期");
-            }
-            // 将短信消费掉
-            lastSmsLog.setConsumed(1);
-            smsLogService.updateDto(lastSmsLog);
+        // 获得登录配置
+        LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + login.getType(), LoginConfigDTO.class, null);
+        if (null == loginConfig) {
+            exception = new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
         } else {
-            throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
-        }
-
-        if (user == null) {
-            if (!loginConfig.getAutoCreate()) {
-                throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
+            // 验证码是否正确
+            if (loginConfig.getCaptcha()) {
+                // 启用验证码
+                if (StringUtils.isEmpty(login.getCaptcha()) || StringUtils.isEmpty(login.getUuid())) {
+                    exception = new XquickException(ErrorCode.CAPTCHA_ERROR);
+                } else if (!login.getCaptcha().equalsIgnoreCase(loginConfig.getMagicCaptcha()) && !captchaService.validate(login.getUuid(), login.getCaptcha())) {
+                    // 不等于魔法验证码
+                    exception = new XquickException(ErrorCode.CAPTCHA_ERROR);
+                }
             }
-            // 用户不存在,创建一个
-            user = new UserDTO();
-            user.setStatus(UserStatusEnum.ENABLED.value());
-            user.setMobile(login.getMobile());
-            user.setUsername(login.getMobile());
-            user.setType(UserTypeEnum.USER.value());
-            user.setGender(GenderEnum.UNKNOWN);
-            // 生成随机密码
-            String password = RandomStringUtils.randomAlphanumeric(8);
-            // 密码加密
-            user.setPassword(PasswordUtils.encode(password));
-            // user.setRoleIdList(loginConfig.getAutoCreateUserRoleIds().split(","));
 
-            saveDto(user);
-            //保存角色用户关系
-            roleUserService.saveOrUpdate(user.getId(), user.getRoleIdList());
-        }
+            // 获取帐号
+            UserDTO user;
+            if (LoginTypeEnum.ADMIN_USER_PWD.value() == login.getType() || LoginTypeEnum.APP_USER_PWD.value() == login.getType()) {
+                // 帐号密码登录
+                if (StringUtils.isEmpty(login.getUsername()) || StringUtils.isEmpty(login.getPassword())) {
+                    throw new XquickException(ErrorCode.ERROR_REQUEST);
+                }
+                user = getByUsername(login.getUsername());
+                if (user == null) {
+                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
+                }
+                if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
+                    throw new XquickException(ErrorCode.PASSWORD_ERROR);
+                }
+            } else if (LoginTypeEnum.ADMIN_MOBILE_PWD.value() == login.getType() || LoginTypeEnum.APP_MOBILE_PWD.value() == login.getType()) {
+                // 手机号密码登录
+                if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getPassword())) {
+                    throw new XquickException(ErrorCode.ERROR_REQUEST);
+                }
+                user = getByMobile(login.getMobile());
+                if (user == null) {
+                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
+                }
+                if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
+                    throw new XquickException(ErrorCode.PASSWORD_ERROR);
+                }
+            } else if (LoginTypeEnum.ADMIN_MOBILE_SMS.value() == login.getType() || LoginTypeEnum.APP_MOBILE_SMS.value() == login.getType()) {
+                // 手机号验证码登录
+                if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getCode())) {
+                    throw new XquickException(ErrorCode.ERROR_REQUEST);
+                }
+                user = getByMobile(login.getMobile());
+                //  校验验证码
+                SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode("LOGIN", login.getMobile());
+                if (null == lastSmsLog) {
+                    loginLog.setStatus(LoginStatusEnum.FAIL.value());
+                    logLoginService.save(loginLog);
+                    throw new XquickException("验证码无效");
+                }
+                Map<String, Object> smsParams = JacksonUtils.jsonToMap(lastSmsLog.getParams());
+                if (!login.getCode().equalsIgnoreCase(smsParams.get("code").toString())) {
+                    loginLog.setStatus(LoginStatusEnum.FAIL.value());
+                    logLoginService.save(loginLog);
+                    throw new XquickException("验证码错误");
+                }
+                if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > 10 * 60 * 1000) {
+                    loginLog.setStatus(LoginStatusEnum.FAIL.value());
+                    logLoginService.save(loginLog);
+                    throw new XquickException("验证码已过期");
+                }
+                // 将短信消费掉
+                lastSmsLog.setConsumed(1);
+                smsLogService.updateDto(lastSmsLog);
+            } else {
+                throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
+            }
 
-        // 账号停用
-        if (user.getStatus() == UserStatusEnum.DISABLE.value()) {
-            loginLog.setStatus(LoginStatusEnum.LOCK.value());
+            if (user == null) {
+                if (!loginConfig.getAutoCreate()) {
+                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
+                }
+                // 用户不存在,创建一个
+                user = new UserDTO();
+                user.setStatus(UserStatusEnum.ENABLED.value());
+                user.setMobile(login.getMobile());
+                user.setUsername(login.getMobile());
+                user.setType(UserTypeEnum.USER.value());
+                user.setGender(GenderEnum.UNKNOWN);
+                // 生成随机密码
+                String password = RandomStringUtils.randomAlphanumeric(8);
+                // 密码加密
+                user.setPassword(PasswordUtils.encode(password));
+                // user.setRoleIdList(loginConfig.getAutoCreateUserRoleIds().split(","));
+
+                saveDto(user);
+                //保存角色用户关系
+                roleUserService.saveOrUpdate(user.getId(), user.getRoleIdList());
+            }
+
+            // 账号停用
+            if (user.getStatus() == UserStatusEnum.DISABLE.value()) {
+                loginLog.setStatus(LoginStatusEnum.LOCK.value());
+                loginLog.setCreateId(user.getId());
+                loginLog.setCreateName(user.getUsername());
+                logLoginService.save(loginLog);
+
+                throw new XquickException(ErrorCode.ACCOUNT_DISABLE);
+            }
+
+            // 登录成功
+            loginLog.setStatus(LoginStatusEnum.SUCCESS.value());
             loginLog.setCreateId(user.getId());
             loginLog.setCreateName(user.getUsername());
             logLoginService.save(loginLog);
 
-            throw new XquickException(ErrorCode.ACCOUNT_DISABLE);
+            Map<String, Object> map = new HashMap<>(2);
+            map.put(Constant.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
+            map.put("expire", loginConfig.getExpire());
+            map.put("user", user);
+            return map;
         }
 
-        // 登录成功
-        loginLog.setStatus(LoginStatusEnum.SUCCESS.value());
-        loginLog.setCreateId(user.getId());
-        loginLog.setCreateName(user.getUsername());
-        logLoginService.save(loginLog);
-
-        Map<String, Object> map = new HashMap<>(2);
-        map.put(Constant.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
-        map.put("expire", loginConfig.getExpire());
-        map.put("user", user);
-        return map;
+        if (exception != null) {
+            loginLog.setStatus(LoginStatusEnum.FAIL.value());
+            logLoginService.save(loginLog);
+            throw exception;
+        } else {
+            loginLog.setStatus(LoginStatusEnum.SUCCESS.value());
+            logLoginService.save(loginLog);
+            Map<String, Object> map = new HashMap<>(2);
+            return map;
+        }
     }
 
     @Override

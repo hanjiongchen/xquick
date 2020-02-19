@@ -42,11 +42,7 @@ public interface LogConst {
         /**
          * 成功
          */
-        SUCCESS(1),
-        /**
-         * 账号已锁定
-         */
-        LOCK(2);
+        SUCCESS(1);
 
         private int value;
 
