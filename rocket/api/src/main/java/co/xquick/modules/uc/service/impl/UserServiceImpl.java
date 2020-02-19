@@ -94,19 +94,21 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Map<String, Object> login(HttpServletRequest request, co.xquick.modules.uc.dto.LoginDTO login) {
-        // 登录异常
-        XquickException exception = null;
         // 登录日志
         LoginEntity loginLog = new LoginEntity();
         loginLog.setType(login.getType());
         loginLog.setOperation(LogConst.LoginOperationEnum.LOGIN.value());
         loginLog.setCreateTime(new Date());
+        loginLog.setCreateName(login.getUsername());
         loginLog.setIp(HttpContextUtils.getIpAddr(request));
         loginLog.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
         // 获得登录配置
         LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + login.getType(), LoginConfigDTO.class, null);
         if (null == loginConfig) {
-            exception = new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
+            // 未找到登录配置
+            loginLog.setStatus(LoginStatusEnum.FAIL.value());
+            logLoginService.save(loginLog);
+            throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
         } else {
             // 验证码是否正确
             if (loginConfig.getCaptcha()) {
