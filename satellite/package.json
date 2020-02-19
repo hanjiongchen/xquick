@@ -1,0 +1,95 @@
+{
+  "name": "xquick-satellite",
+  "version": "1.0.0",
+  "description": "xquick satellite desktop",
+  "author": "Charles <zhangchaoxu@gmail.com>",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:test": "vue-cli-service build --mode test",
+    "build:prod": "vue-cli-service build --mode production",
+    "build:uat": "vue-cli-service build --mode production.uat",
+    "lint": "vue-cli-service lint",
+    "et": "node_modules/.bin/et",
+    "et:init": "node_modules/.bin/et -i",
+    "et:list": "gulp themes"
+  },
+  "dependencies": {
+    "axios": "^0.19.1",
+    "babel-plugin-component": "^1.1.1",
+    "element-theme": "^2.0.1",
+    "element-theme-chalk": "^2.13.0",
+    "element-ui": "^2.13.0",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-load-plugins": "^1.6.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "js-cookie": "2.2.0",
+    "lodash": "^4.17.11",
+    "dayjs": "^1.8.19",
+    "node-sass": "^4.12.0",
+    "qs": "^6.7.0",
+    "quill": "^1.3.7",
+    "sass-loader": "^7.1.0",
+    "screenfull": "^3.3.3",
+    "svg-sprite-loader": "^4.1.6",
+    "v-charts": "^1.19.0",
+    "echarts": "^4.6.0",
+    "vue": "^2.6.10",
+    "vue-amap": "^0.5.10",
+    "vue-awesome-swiper": "^3.1.3",
+    "vue-count-to": "^1.0.13",
+    "vue-i18n": "^8.11.2",
+    "vue-json-viewer": "^2.1.4",
+    "vue-router": "^3.0.6",
+    "vuex": "^3.1.1",
+    "ali-oss": "^6.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.4",
+    "@vue/eslint-config-standard": "^3.0.5",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "engines": {
+    "node": ">= 8.11.1",
+    "npm": ">= 5.6.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "element-theme": {
+    "config": "./src/element-ui/theme-variables.scss",
+    "out": "./src/element-ui/theme",
+    "minimize": true,
+    "browsers": [
+      "> 1%",
+      "last 2 versions",
+      "not ie <= 10"
+    ]
+  }
+}

@@ -1,0 +1,134 @@
+<template>
+  <el-dialog :visible.sync="visible" title="云存储配置" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-form v-loading="formLoading" :model="paramDataForm" :rules="dataRule" ref="dataForm"  label-width="150px">
+      <el-form-item :label="$t('base.type')" size="mini">
+        <el-radio-group v-model="paramDataForm.type">
+          <el-radio label="aliyun">阿里云</el-radio>
+          <el-radio label="local">本地上传</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item prop="code" :label="$t('base.code')">
+        <el-input v-model="dataForm.code" :placeholder="$t('base.code')"/>
+      </el-form-item>
+      <el-form-item prop="remark" :label="$t('base.remark')">
+        <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')"/>
+      </el-form-item>
+      <el-form-item prop="domain" label="域名">
+        <el-input v-model="paramDataForm.domain" placeholder="绑定的域名"/>
+      </el-form-item>
+      <el-form-item prop="prefix" label="路径前缀">
+        <el-input v-model="paramDataForm.prefix" placeholder="上传路径前缀"/>
+      </el-form-item>
+      <template v-if="paramDataForm.type === 'aliyun'">
+        <el-form-item prop="endPoint" label="EndPoint">
+          <el-input v-model="paramDataForm.endPoint" placeholder="EndPoint"/>
+        </el-form-item>
+        <el-form-item prop="accessKeyId" label="AccessKeyId">
+          <el-input v-model="paramDataForm.accessKeyId" placeholder="AccessKeyId"/>
+        </el-form-item>
+        <el-form-item prop="accessKeySecret" label="AccessKeySecret">
+          <el-input v-model="paramDataForm.accessKeySecret" placeholder="AccessKeySecret"/>
+        </el-form-item>
+        <el-form-item prop="bucketName" label="BucketName">
+          <el-input v-model="paramDataForm.bucketName" placeholder="BucketName"/>
+        </el-form-item>
+      </template>
+      <template v-else-if="paramDataForm.type === 'local'">
+        <el-form-item prop="localPath" label="存储目录">
+          <el-input v-model="paramDataForm.localPath" placeholder="上传的存储目录"/>
+        </el-form-item>
+      </template>
+    </el-form>
+    <template slot="footer">
+      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
+      <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
+    </template>
+  </el-dialog>
+</template>
+
+<script>
+import mixinFormModule from '@/mixins/form-module'
+export default {
+  mixins: [mixinFormModule],
+  data () {
+    return {
+      // 表单模块参数
+      mixinFormModuleOptions: {
+        dataFormUpdateURL: `/sys/param/update`,
+        dataFormInfoURL: `/sys/param/info?id=`
+      },
+      dataForm: {
+        id: '',
+        code: '',
+        remark: '',
+        content: ''
+      },
+      paramDataForm: {
+        type: '',
+        domain: '',
+        prefix: '',
+        endPoint: '',
+        accessKeyId: '',
+        accessKeySecret: '',
+        bucketName: '',
+        localPath: ''
+      }
+    }
+  },
+  computed: {
+    dataRule () {
+      return {
+        domain: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        endPoint: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        accessKeyId: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        accessKeySecret: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        bucketName: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        localPath: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  watch: {
+    'dataForm.type' (val) {
+      this.$refs['dataForm'].clearValidate()
+    }
+  },
+  methods: {
+    init () {
+      this.formLoading = true
+      this.visible = true
+      this.$nextTick(() => {
+        this.resetForm()
+        this.initFormData()
+      })
+    },
+    // form信息获取成功
+    onGetInfoSuccess (res) {
+      this.dataForm = {
+        ...this.dataForm,
+        ...res.data
+      }
+      // json序列化content
+      this.paramDataForm = JSON.parse(this.dataForm.content)
+    },
+    // 表单提交之前的操作
+    beforeDateFormSubmit () {
+      // 将form转为content的json
+      this.dataForm.content = JSON.stringify(this.paramDataForm)
+      this.dataFormSubmitParam = this.dataForm
+      return true
+    }
+  }
+}
+</script>
