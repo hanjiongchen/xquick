@@ -6,6 +6,7 @@ import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.*;
 import co.xquick.booster.util.bcrypt.BCryptPasswordEncoder;
+import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.log.LogConst;
 import co.xquick.modules.log.LogConst.LoginStatusEnum;
 import co.xquick.modules.log.entity.LoginEntity;
@@ -96,9 +97,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     public Map<String, Object> login(HttpServletRequest request, co.xquick.modules.uc.dto.LoginDTO login) {
         // 获得登录配置
         LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + login.getType(), LoginConfigDTO.class, null);
-        if (null == loginConfig) {
-            throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
-        }
+        AssertUtils.isNull(loginConfig, ErrorCode.UNKNOWN_LOGIN_TYPE);
 
         // 验证码是否正确
         if (loginConfig.getCaptcha()) {

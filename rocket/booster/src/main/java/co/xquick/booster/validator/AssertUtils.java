@@ -5,6 +5,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -93,6 +94,20 @@ public class AssertUtils {
         }
 
         if (MapUtil.isEmpty(map)) {
+            throw new XquickException(code, params);
+        }
+    }
+
+    public static void isEmpty(Object object, String... params) {
+        isEmpty(object, ErrorCode.NOT_NULL, params);
+    }
+
+    public static void isEmpty(Object object, Integer code, String... params) {
+        if (code == null) {
+            throw new XquickException(ErrorCode.NOT_NULL, "code");
+        }
+
+        if (ObjectUtils.isEmpty(object)) {
             throw new XquickException(code, params);
         }
     }

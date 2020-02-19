@@ -71,32 +71,30 @@ public class AuthController {
     @GetMapping("loginConfig")
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
-    public Result loginConfig(@RequestParam String type) {
+    public Result<?> loginConfig(@RequestParam String type) {
         LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + type.toUpperCase(), LoginConfigDTO.class, null);
-        if (null == loginConfig) {
-            return new Result().error(ErrorCode.UNKNOWN_LOGIN_TYPE);
-        }
+        AssertUtils.isNull(loginConfig, ErrorCode.UNKNOWN_LOGIN_TYPE);
 
         return new Result<>().ok(loginConfig);
     }
 
-    @PostMapping("/sendLoginSms")
+    @PostMapping("sendLoginSms")
     @ApiOperation("发送登录验证码短信")
     @LogOperation("发送登录验证码短信")
-    public Result sendLoginSms(@RequestBody SmsSendRequestDTO dto) {
-        //效验数据
+    public Result<?> sendLoginSms(@RequestBody SmsSendRequestDTO dto) {
+        // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
         // 先校验手机号是否1分钟内发送过
         SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(dto.getTplCode(), dto.getMobile());
         if (null != lastSmsLog && DateUtils.timeDiff(lastSmsLog.getCreateTime()) < 60 * 1000) {
             // 1分钟内已经发送过了
-            return new Result().error("短信发送请求过于频繁");
+            return new Result<>().error("短信发送请求过于频繁");
         }
 
         dto.setParam("{\"code\":\"" + RandomStringUtils.randomNumeric(4) + "\"}");
         smsLogService.send(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
     /**
@@ -105,10 +103,9 @@ public class AuthController {
      */
     @PostMapping("login")
     @ApiOperation(value = "帐号登录")
-    public Result login(HttpServletRequest request, @RequestBody LoginDTO login) {
+    public Result<?> login(HttpServletRequest request, @RequestBody LoginDTO login) {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
-
         return new Result<>().ok(userService.login(request, login));
     }
 
