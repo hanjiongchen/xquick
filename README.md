@@ -12,8 +12,8 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 ## 项目组成
 项目前后端分离
 
-* 管理后台由接口程序[火箭rocket🚀](https://github.com/zhangchaoxu/xquick-rocket)和前端程序[卫星satellite☄](https://github.com/zhangchaoxu/xquick-satellite)两个项目组成。
-* 另外提供了一套可以独立运行的[代码生成器](https://github.com/zhangchaoxu/xquick-rocket/generator)用于基础代码的生成,减少工作量。
+* 管理后台由接口程序[火箭rocket🚀](https://github.com/zhangchaoxu/xquick/rocket)和前端程序[卫星satellite☄](https://github.com/zhangchaoxu/xquick/satellite)两个项目组成。
+* 另外提供了一套可以独立运行的[代码生成器](https://github.com/zhangchaoxu/xquick/rocket/generator)用于基础代码的生成,减少工作量。
 
 ## 已实现功能模块
 ### 用户权限管理模块

@@ -28,15 +28,15 @@
 
     <!-- 开发环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'dev') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8080/rocket-api';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8081/rocket-api';</script>
     <% } %>
     <!-- 测试环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'prod:uat') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8080/rocket-api';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8081/rocket-api';</script>
     <% } %>
     <!-- 生产环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'prod') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8080/rocket-api';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8081/rocket-api';</script>
     <% } %>
 </head>
 <body>
