@@ -11,4 +11,9 @@ import co.xquick.modules.cms.entity.ArticleCategoryEntity;
  */
 public interface ArticleCategoryService extends CrudService<ArticleCategoryEntity, ArticleCategoryDTO> {
 
+    /**
+     * 更新sitecode
+     */
+    boolean updateSiteCode(Long siteId, String newSiteCode);
+
 }

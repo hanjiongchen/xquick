@@ -72,7 +72,7 @@ public class UserController {
     @RequiresPermissions("uc:user:info")
     public Result<?> info(@RequestParam Long id) {
         UserDTO data = userService.getDtoById(id);
-        AssertUtils.isNull(data, ErrorCode.RECORD_NOT_EXISTED_ERROR);
+        AssertUtils.isNull(data, ErrorCode.DB_RECORD_NOT_EXISTED);
         // 用户角色列表
         data.setRoleIdList(roleUserService.getRoleIdList(id));
         // 部门树
@@ -96,7 +96,7 @@ public class UserController {
 
         UserDetail user = SecurityUser.getUser();
         UserDTO userDTO = userService.getDtoById(user.getId());
-        AssertUtils.isNull(userDTO, ErrorCode.RECORD_NOT_EXISTED_ERROR);
+        AssertUtils.isNull(userDTO, ErrorCode.DB_RECORD_NOT_EXISTED);
 
         // 原密码不正确
         if (!new BCryptPasswordEncoder().matches(dto.getPassword(), user.getPassword())) {

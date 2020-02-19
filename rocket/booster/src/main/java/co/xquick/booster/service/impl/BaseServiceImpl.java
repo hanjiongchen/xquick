@@ -76,7 +76,7 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> implements BaseService<T> 
 
     @Override
     public boolean hasSub(String column, Object val) {
-        return count(new QueryWrapper<T>().eq(column, val)) > 0;
+        return SqlHelper.retBool(count(new QueryWrapper<T>().eq(column, val)));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> implements BaseService<T> 
 
     @Override
     public boolean hasRecord(Wrapper<T> wrapper) {
-        return count(wrapper) > 0;
+        return SqlHelper.retBool(count(wrapper));
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -27,4 +27,13 @@ public interface ArticleService extends CrudService<ArticleEntity, ArticleDTO> {
      */
     List<ArticleDTO> getListByCategoryIds(List<Long> categoryIds);
 
+    /**
+     * 更新sitecode
+     */
+    boolean updateSiteCode(Long siteId, String newSiteCode);
+
+    /**
+     * 更新articleCategoryCode
+     */
+    boolean updateArticleCategoryCode(Long articleCategoryId, String articleCategoryCode);
 }

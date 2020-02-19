@@ -19,6 +19,12 @@
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="code" label="编码" header-align="center" align="center" width="120"></el-table-column>
         <el-table-column prop="name" label="名称" header-align="center" align="center" width="200"></el-table-column>
+        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status === 0" size="small" type="info">下线</el-tag>
+            <el-tag v-else-if="scope.row.status === 1" size="small" type="success">上线</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="title" label="标题" header-align="center" align="center"></el-table-column>
         <el-table-column prop="description" label="描述" header-align="center" align="center"></el-table-column>
         <el-table-column prop="domain" label="网址" header-align="center" align="center"></el-table-column>
@@ -26,7 +32,6 @@
         <el-table-column prop="copyright" label="版权信息" header-align="center" align="center"></el-table-column>
         <el-table-column prop="keywords" label="关键词" header-align="center" align="center"></el-table-column>
         <el-table-column prop="imgs" label="图片" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('cms:site:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

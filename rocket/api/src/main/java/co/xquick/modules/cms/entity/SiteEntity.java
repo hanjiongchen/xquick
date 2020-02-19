@@ -1,11 +1,9 @@
 package co.xquick.modules.cms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 站点
@@ -58,8 +56,5 @@ public class SiteEntity extends BaseEntity {
      * 状态
      */
 	private Integer status;
-    /**
-     * 租户id
-     */
-	private Long tenantId;
+
 }

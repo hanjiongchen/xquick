@@ -42,8 +42,7 @@ public class MailTplServiceImpl extends CrudServiceImpl<MailTplDao, MailTplEntit
     @Override
     public boolean saveOrUpdateDto(MailTplDTO dto) {
         // 检查code是否存在
-        boolean hasDuplicated = hasDuplicated(dto.getId(), "code", dto.getCode());
-        if (hasDuplicated) {
+        if (hasDuplicated(dto.getId(), "code", dto.getCode())) {
             throw new XquickException(ErrorCode.HAS_DUPLICATED_RECORD, "编码");
         }
         return super.saveOrUpdateDto(dto);

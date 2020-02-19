@@ -17,6 +17,16 @@ import java.util.Map;
  */
 public class AssertUtils {
 
+    public static void isTrue(boolean bl, Integer code, String... params) {
+        if (code == null) {
+            throw new XquickException(ErrorCode.NOT_NULL, "code");
+        }
+
+        if (bl) {
+            throw new XquickException(code, params);
+        }
+    }
+
     public static void isBlank(String str, String... params) {
         isBlank(str, ErrorCode.NOT_NULL, params);
     }
