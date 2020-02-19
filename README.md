@@ -44,9 +44,9 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 * [logo](https://www.iconfinder.com/icons/2120156/astronaut_astronomy_rocket_science_space_icon)
 
 ## Thanks
- [人人开源](https://www.renren.io/)
- [Jeecg-Boot](http://www.jeecg.com/)
- [Bladex](https://bladex.vip/#/)
+* [人人开源](https://www.renren.io/)
+* [Jeecg-Boot](http://www.jeecg.com/)
+* [Bladex](https://bladex.vip/#/)
 
 ## 文档 
 更多详细内容见[gitbook文档](https://zhangchaoxu.gitbook.io/xquick/)

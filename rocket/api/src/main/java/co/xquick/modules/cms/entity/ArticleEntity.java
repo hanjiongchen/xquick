@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -111,10 +112,20 @@ public class ArticleEntity extends BaseEntity {
      * 是否置顶
      */
     private Integer top;
+
+    private BigInteger siteId;
+
+    private String siteCode;
     /**
      * 文章类别
      */
     @TableField(exist = false)
     private String articleCategoryName;
+
+    /**
+     * 站点名称
+     */
+    @TableField(exist = false)
+    private String siteName;
 
 }

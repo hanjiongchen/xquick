@@ -1,9 +1,12 @@
 package co.xquick.modules.cms.entity;
 
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.math.BigInteger;
 
 /**
  * 文章分类
@@ -44,4 +47,14 @@ public class ArticleCategoryEntity extends BaseEntity {
      * 图片
      */
     private String imgs;
+
+    private BigInteger siteId;
+
+    private String siteCode;
+
+    /**
+     * 站点名称
+     */
+    @TableField(exist = false)
+    private String siteName;
 }

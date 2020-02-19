@@ -91,4 +91,13 @@ public class ArticleDTO extends BaseDTO {
 	@ApiModelProperty(value = "文章类目")
 	private String articleCategoryName;
 
+	@ApiModelProperty(value = "站点名称")
+	private Long siteId;
+
+	@ApiModelProperty(value = "站点编码")
+	private String siteCode;
+
+	@ApiModelProperty(value = "站点名称")
+	private String siteName;
+
 }

@@ -113,12 +113,12 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
     public boolean saveOrUpdateDto(D dto) {
         T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
         if (hasIdVal(entity)) {
+            return updateById(entity);
+        } else {
             boolean ret = save(entity);
             // copy主键值到dto
             BeanUtils.copyProperties(entity, dto);
             return ret;
-        } else {
-            return updateById(entity);
         }
     }
 

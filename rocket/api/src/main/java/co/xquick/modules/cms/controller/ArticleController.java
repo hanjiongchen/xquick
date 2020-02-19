@@ -8,9 +8,7 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
-import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.cms.dto.ArticleDTO;
-import co.xquick.modules.cms.excel.ArticleExcel;
 import co.xquick.modules.cms.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +35,7 @@ public class ArticleController {
     @GetMapping("list")
     @ApiOperation("列表")
     @RequiresPermissions("cms:article:list")
-    public Result list(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<ArticleDTO> list = articleService.listDto(params);
 
         return new Result<>().ok(list);
@@ -47,7 +44,7 @@ public class ArticleController {
     @GetMapping("page")
     @ApiOperation("分页")
     @RequiresPermissions("cms:article:page")
-    public Result<PageData<ArticleDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ArticleDTO> page = articleService.pageDto(params);
 
         return new Result<PageData<ArticleDTO>>().ok(page);
@@ -57,7 +54,7 @@ public class ArticleController {
     @GetMapping("info")
     @ApiOperation("信息")
     @RequiresPermissions("cms:article:info")
-    public Result<ArticleDTO> info(@RequestParam Long id) {
+    public Result<?> info(@RequestParam Long id) {
         ArticleDTO data = articleService.getDtoById(id);
 
         return new Result<ArticleDTO>().ok(data);
@@ -67,7 +64,7 @@ public class ArticleController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("cms:article:save")
-    public Result save(@RequestBody ArticleDTO dto) {
+    public Result<?> save(@RequestBody ArticleDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
@@ -80,36 +77,26 @@ public class ArticleController {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("cms:article:update")
-    public Result update(@RequestBody ArticleDTO dto) {
+    public Result<?> update(@RequestBody ArticleDTO dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
         articleService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("cms:article:delete")
-    public Result delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestBody List<Long> ids) {
         // 效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         articleService.logicDeleteByIds(ids);
 
-        return new Result();
-    }
-
-    @GetMapping("export")
-    @ApiOperation("导出")
-    @LogOperation("导出")
-    @RequiresPermissions("cms:article:export")
-    public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
-        List<ArticleDTO> list = articleService.listDto(params);
-
-        ExcelUtils.exportExcelToTarget(response, null, list, ArticleExcel.class);
+        return new Result<>();
     }
 
 }

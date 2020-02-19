@@ -38,4 +38,13 @@ public class ArticleCategoryDTO extends BaseDTO {
 	@ApiModelProperty(value = "图片")
 	private String imgs;
 
+	@ApiModelProperty(value = "站点名称")
+	private Long siteId;
+
+	@ApiModelProperty(value = "站点编码")
+	private String siteCode;
+
+	@ApiModelProperty(value = "站点编码")
+	private String siteName;
+
 }
