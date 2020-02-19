@@ -3,7 +3,7 @@
  */
 import Cookies from 'js-cookie'
 import qs from 'qs'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export default {
   data () {
@@ -67,7 +67,7 @@ export default {
     dateFmt (cellValue) {
       let fmt = ''
       if (cellValue) {
-        fmt = moment(cellValue).format('YYYY-MM-DD')
+        fmt = dayjs(cellValue).format('YYYY-MM-DD')
       }
       return fmt
     }
@@ -229,7 +229,7 @@ export default {
     dateFmt (row, column, cellValue) {
       let fmt = ''
       if (cellValue) {
-        fmt = moment(cellValue).format('YYYY-MM-DD')
+        fmt = dayjs(cellValue).format('YYYY-MM-DD')
       }
       return fmt
     },
