@@ -23,8 +23,8 @@ public class LoginDTO extends BaseDTO {
     @ApiModelProperty(value = "用户操作  0：用户登录   1：用户退出")
     private Integer operation;
 
-    @ApiModelProperty(value = "状态  0：失败    1：成功    2：账号已锁定")
-    private Integer status;
+    @ApiModelProperty(value = "登录结果 0 成功，其它错误码")
+    private Integer result;
 
     @ApiModelProperty(value = "用户代理")
     private String userAgent;

@@ -25,9 +25,9 @@ public class LoginEntity extends BaseEntity {
      */
     private Integer operation;
     /**
-     * 状态  0：失败    1：成功    2：账号已锁定
+     * 登录结果
      */
-    private Integer status;
+    private Integer result;
     /**
      * 用户代理
      */

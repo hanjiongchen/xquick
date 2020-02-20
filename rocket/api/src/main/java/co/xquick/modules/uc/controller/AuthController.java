@@ -14,7 +14,7 @@ import co.xquick.modules.msg.dto.SmsSendRequestDTO;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.dto.LoginConfigDTO;
-import co.xquick.modules.uc.dto.LoginDTO;
+import co.xquick.modules.uc.dto.LoginRequestDTO;
 import co.xquick.modules.uc.service.CaptchaService;
 import co.xquick.modules.uc.service.UserService;
 import io.swagger.annotations.Api;
@@ -103,7 +103,7 @@ public class AuthController {
      */
     @PostMapping("login")
     @ApiOperation(value = "帐号登录")
-    public Result<?> login(HttpServletRequest request, @RequestBody LoginDTO login) {
+    public Result<?> login(HttpServletRequest request, @RequestBody LoginRequestDTO login) {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
         return new Result<>().ok(userService.login(request, login));

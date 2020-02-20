@@ -13,7 +13,6 @@ import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.log.LogConst.LoginOperationEnum;
-import co.xquick.modules.log.LogConst.LoginStatusEnum;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.uc.dto.PasswordDTO;
@@ -170,7 +169,7 @@ public class UserController {
         loginLog.setOperation(LoginOperationEnum.LOGOUT.value());
         loginLog.setIp(HttpContextUtils.getIpAddr(request));
         loginLog.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
-        loginLog.setStatus(LoginStatusEnum.SUCCESS.value());
+        loginLog.setResult(0);
         loginLog.setCreateId(user.getId());
         loginLog.setCreateName(user.getUsername());
         loginLog.setCreateTime(new Date());

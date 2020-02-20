@@ -1,7 +1,7 @@
 package co.xquick.modules.uc.service;
 
 import co.xquick.booster.service.CrudService;
-import co.xquick.modules.uc.dto.LoginDTO;
+import co.xquick.modules.uc.dto.LoginRequestDTO;
 import co.xquick.modules.uc.dto.UserDTO;
 import co.xquick.modules.uc.entity.UserEntity;
 
@@ -18,7 +18,7 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
     /**
      * 登录
      */
-    Map<String, Object> login(HttpServletRequest request, LoginDTO loginDTO);
+    Map<String, Object> login(HttpServletRequest request, LoginRequestDTO loginDTO);
 
     /**
      * 获取用户名
