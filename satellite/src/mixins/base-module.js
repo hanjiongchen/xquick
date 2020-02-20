@@ -9,7 +9,27 @@ export default {
       imageViewerZIndex: 2000, // 图片查看器zIndex
       imageViewerPreviewSrcList: [], // 图片查看文件列表
       prevOverflow: '', // 原先的overflow样式
-      imageViewerVisible: false // 图片查看器,弹窗visible状态
+      imageViewerVisible: false, // 图片查看器,弹窗visible状态
+      // 日期范围选择器
+      dateRangePickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
     }
   },
   methods: {

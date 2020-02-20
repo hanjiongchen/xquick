@@ -6,9 +6,8 @@
                     <el-input v-model="dataForm.createName" placeholder="用户" clearable/>
                 </el-form-item>
                 <el-form-item class="small-item">
-                    <el-select v-model="dataForm.status" placeholder="状态" clearable>
-                        <el-option label="失败" :value="0"/>
-                        <el-option label="成功" :value="1"/>
+                    <el-select v-model="dataForm.result" placeholder="结果" clearable>
+                        <el-option label="成功" :value="0"/>
                     </el-select>
                 </el-form-item>
                 <el-form-item>

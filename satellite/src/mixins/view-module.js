@@ -34,26 +34,6 @@ export default {
       formLoading: true, // 表单是否加载中
       changeStatusVisible: false, // 修改状态,弹窗visible状态
       cancelVisible: false, // 取消操作,弹窗visible状态
-      // 日期范围选择器
-      dateRangePickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      },
       mapLocationViewVisible: false// 地图查看器,弹窗visible状态
     }
   },
