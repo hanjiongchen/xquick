@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -21,7 +21,7 @@ public class LoginRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "登录类型", required = true)
-    @NotBlank(message = "登录类型不能为空", groups = DefaultGroup.class)
+    @NotNull(message = "登录类型不能为空", groups = DefaultGroup.class)
     private Integer type;
 
     @ApiModelProperty(value = "用户名")

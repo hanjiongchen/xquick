@@ -14,8 +14,8 @@ import java.util.Date;
 public class LoginExcel {
     @Excel(name = "用户操作")
     private String operation;
-    @Excel(name = "状态", replace = {"失败_0", "成功_1", "账号已锁定_1"})
-    private Integer status;
+    @Excel(name = "结果", replace = {"成功_0"})
+    private Integer result;
     @Excel(name = "User-Agent")
     private String userAgent;
     @Excel(name = "操作IP")

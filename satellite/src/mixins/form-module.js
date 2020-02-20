@@ -151,7 +151,7 @@ export default {
     },
     // 图片上传前检查
     beforeImageUpload (file) {
-      beforeImageUpload(file)
+      return beforeImageUpload(file)
     },
     // 文件超出数量限制
     uploadExceedHandle (files, fileList) {

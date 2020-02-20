@@ -6,6 +6,7 @@ import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.*;
 import co.xquick.booster.util.bcrypt.BCryptPasswordEncoder;
+import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.log.LogConst;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
@@ -20,12 +21,12 @@ import co.xquick.modules.uc.dto.LoginConfigDTO;
 import co.xquick.modules.uc.dto.LoginRequestDTO;
 import co.xquick.modules.uc.dto.UserDTO;
 import co.xquick.modules.uc.entity.UserEntity;
+import co.xquick.modules.uc.enums.GenderEnum;
 import co.xquick.modules.uc.service.*;
 import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,6 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         return qw;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public Map<String, Object> login(HttpServletRequest request, LoginRequestDTO login) {
         // 登录日志
@@ -100,163 +100,124 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         loginLog.setCreateName(login.getUsername());
         loginLog.setIp(HttpContextUtils.getIpAddr(request));
         loginLog.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
+        // 登录结果
+        int loginResult = 0;
+        // 登录用户
+        UserDTO user = null;
         // 获得登录配置
         LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + login.getType(), LoginConfigDTO.class, null);
         if (null == loginConfig) {
             // 未找到登录配置
-            loginLog.setResult(ErrorCode.UNKNOWN_LOGIN_TYPE);
-            logLoginService.save(loginLog);
-            throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
+            loginResult = ErrorCode.UNKNOWN_LOGIN_TYPE;
+        } else if (loginConfig.getCaptcha() && (StringUtils.isEmpty(login.getCaptcha()) || StringUtils.isEmpty(login.getUuid()) || (!login.getCaptcha().equalsIgnoreCase(loginConfig.getMagicCaptcha()) && !captchaService.validate(login.getUuid(), login.getCaptcha())))) {
+            // 验证码错误
+            loginResult = ErrorCode.CAPTCHA_ERROR;
         } else {
-            // 检查验证码
-            if (loginConfig.getCaptcha() && (StringUtils.isEmpty(login.getCaptcha()) || StringUtils.isEmpty(login.getUuid()) || (!login.getCaptcha().equalsIgnoreCase(loginConfig.getMagicCaptcha()) && !captchaService.validate(login.getUuid(), login.getCaptcha())))) {
-                loginLog.setResult(ErrorCode.CAPTCHA_ERROR);
-                logLoginService.save(loginLog);
-                throw new XquickException(ErrorCode.CAPTCHA_ERROR);
-            }
-
-            // 获取帐号
-            UserDTO user;
+            // 不需要验证码或验证码正确
             if (LoginTypeEnum.ADMIN_USER_PWD.value() == login.getType() || LoginTypeEnum.APP_USER_PWD.value() == login.getType()) {
                 // 帐号密码登录
                 if (StringUtils.isEmpty(login.getUsername()) || StringUtils.isEmpty(login.getPassword())) {
                     // 参数为空
-                    loginLog.setResult(ErrorCode.ERROR_REQUEST);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ERROR_REQUEST);
-                } user = getByUsername(login.getUsername());
-                if (user == null) {
-                    // 帐号不存在
-                    loginLog.setResult(ErrorCode.ACCOUNT_NOT_EXIST);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-                }
-                // 帐号存在
-                loginLog.setCreateName(user.getUsername());
-                loginLog.setCreateId(user.getId());
-                if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
-                    loginLog.setResult(ErrorCode.ACCOUNT_DISABLE);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ACCOUNT_DISABLE);
-                }
-                if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
-                    // 密码不匹配
-                    loginLog.setResult(ErrorCode.PASSWORD_ERROR);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.PASSWORD_ERROR);
+                    loginResult = ErrorCode.ERROR_REQUEST;
+                } else {
+                    user = getByUsername(login.getUsername());
+                    if (user == null) {
+                        // 帐号不存在
+                        loginResult = ErrorCode.ACCOUNT_NOT_EXIST;
+                    } else if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
+                        // 帐号锁定
+                        loginResult = ErrorCode.ACCOUNT_DISABLE;
+                    } else if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
+                        // 密码不匹配
+                        loginResult = ErrorCode.ACCOUNT_PASSWORD_ERROR;
+                    }
                 }
             } else if (LoginTypeEnum.ADMIN_MOBILE_PWD.value() == login.getType() || LoginTypeEnum.APP_MOBILE_PWD.value() == login.getType()) {
                 // 手机号密码登录
                 if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getPassword())) {
                     // 参数为空
-                    loginLog.setResult(ErrorCode.ERROR_REQUEST);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ERROR_REQUEST);
-                }
-                user = getByMobile(login.getMobile());
-                if (user == null) {
-                    // 帐号不存在
-                    loginLog.setResult(ErrorCode.ACCOUNT_NOT_EXIST);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-                }
-                // 帐号存在
-                loginLog.setCreateName(user.getUsername());
-                loginLog.setCreateId(user.getId());
-                if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
-                    loginLog.setResult(ErrorCode.ACCOUNT_DISABLE);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ACCOUNT_DISABLE);
-                }
-                if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
-                    // 密码不匹配
-                    loginLog.setResult(ErrorCode.PASSWORD_ERROR);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.PASSWORD_ERROR);
+                    loginResult = ErrorCode.ERROR_REQUEST;
+                } else {
+                    user = getByMobile(login.getMobile());
+                    if (user == null) {
+                        // 帐号不存在
+                        loginResult = ErrorCode.ACCOUNT_NOT_EXIST;
+                    } else if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
+                        // 帐号锁定
+                        loginResult = ErrorCode.ACCOUNT_DISABLE;
+                    } else if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
+                        // 密码不匹配
+                        loginResult = ErrorCode.ACCOUNT_PASSWORD_ERROR;
+                    }
                 }
             } else if (LoginTypeEnum.ADMIN_MOBILE_SMS.value() == login.getType() || LoginTypeEnum.APP_MOBILE_SMS.value() == login.getType()) {
                 // 手机号验证码登录
                 if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getCode())) {
                     // 参数为空
-                    loginLog.setResult(ErrorCode.ERROR_REQUEST);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ERROR_REQUEST);
+                    loginResult = ErrorCode.ERROR_REQUEST;
+                } else {
+                    user = getByMobile(login.getMobile());
+                    if (user == null) {
+                        // 帐号不存在
+                        loginResult = ErrorCode.ACCOUNT_NOT_EXIST;
+                    } else if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
+                        // 帐号锁定
+                        loginResult = ErrorCode.ACCOUNT_DISABLE;
+                    } else {
+                        //  校验验证码
+                        SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode("LOGIN", login.getMobile());
+                        if (null == lastSmsLog || !login.getCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
+                            // 验证码错误,找不到验证码
+                            loginResult = ErrorCode.VERIFICATION_CODE_ERROR;
+                        } else {
+                            // 验证码正确
+                            if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > loginConfig.getVerificationCodeValidTime()) {
+                                loginResult = ErrorCode.VERIFICATION_CODE_EXPIRED;
+                            }
+                            // 将短信消费掉
+                            lastSmsLog.setConsumed(1);
+                            smsLogService.updateDto(lastSmsLog);
+                        }
+                    }
                 }
-                user = getByMobile(login.getMobile());
-                if (user == null) {
-                    // 帐号不存在
-                    loginLog.setResult(ErrorCode.ACCOUNT_NOT_EXIST);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-                }
-                // 帐号存在
-                loginLog.setCreateName(user.getUsername());
-                loginLog.setCreateId(user.getId());
-                if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
-                    loginLog.setResult(ErrorCode.ACCOUNT_DISABLE);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.ACCOUNT_DISABLE);
-                }
-                //  校验验证码
-                SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode("LOGIN", login.getMobile());
-                if (null == lastSmsLog) {
-                    // 验证码错误,找不到验证码
-                    loginLog.setResult(ErrorCode.VERIFICATION_CODE_ERROR);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.VERIFICATION_CODE_ERROR);
-                }
-                Map<String, Object> smsParams = JacksonUtils.jsonToMap(lastSmsLog.getParams());
-                if (!login.getCode().equalsIgnoreCase(smsParams.get("code").toString())) {
-                    // 验证码错误,验证码不匹配
-                    loginLog.setResult(ErrorCode.VERIFICATION_CODE_ERROR);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.VERIFICATION_CODE_ERROR);
-                }
-                if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > loginConfig.getVerificationCodeValidTime()) {
-                    loginLog.setResult(ErrorCode.VERIFICATION_CODE_EXPIRED);
-                    logLoginService.save(loginLog);
-                    throw new XquickException(ErrorCode.VERIFICATION_CODE_EXPIRED);
-                }
-                // 将短信消费掉
-                lastSmsLog.setConsumed(1);
-                smsLogService.updateDto(lastSmsLog);
             } else {
-                loginLog.setResult(ErrorCode.UNKNOWN_LOGIN_TYPE);
-                logLoginService.save(loginLog);
-                throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
+                loginResult = ErrorCode.UNKNOWN_LOGIN_TYPE;
             }
 
-            /*if (user == null) {
-                if (!loginConfig.getAutoCreate()) {
-                    throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-                }
-                // 用户不存在,创建一个
+            if (user == null && loginConfig.getAutoCreate()) {
+                // 没有该用户，并且需要自动创建用户
                 user = new UserDTO();
                 user.setStatus(UserStatusEnum.ENABLED.value());
                 user.setMobile(login.getMobile());
                 user.setUsername(login.getMobile());
                 user.setType(UserTypeEnum.USER.value());
                 user.setGender(GenderEnum.UNKNOWN);
-                // 生成随机密码
-                String password = RandomStringUtils.randomAlphanumeric(8);
                 // 密码加密
-                user.setPassword(PasswordUtils.encode(password));
-                // user.setRoleIdList(loginConfig.getAutoCreateUserRoleIds().split(","));
-
+                user.setPassword(PasswordUtils.encode(login.getMobile()));
                 saveDto(user);
                 //保存角色用户关系
                 roleUserService.saveOrUpdate(user.getId(), user.getRoleIdList());
-            }*/
+                // 保存成功
+                loginResult = 0;
+            }
+        }
+        if (null != user) {
+            loginLog.setCreateName(user.getUsername());
+            loginLog.setCreateId(user.getId());
+        }
+        loginLog.setResult(loginResult);
+        logLoginService.save(loginLog);
 
+        if (loginResult == 0) {
             // 登录成功
-            loginLog.setResult(0);
-            logLoginService.save(loginLog);
-
-            Map<String, Object> map = new HashMap<>(2);
+            Map<String, Object> map = new HashMap<>(3);
             map.put(Constant.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
             map.put("expire", loginConfig.getExpire());
             map.put("user", user);
             return map;
+        } else {
+            // 登录失败
+            throw new XquickException(loginResult);
         }
     }
 
@@ -314,38 +275,25 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         if (user.getDeptId() != null) {
             if (dto.getDeptId() == null) {
                 throw new XquickException("需指定所在单位");
-            } else {
-                // todo 检查是否子部门
             }
         }
         // 检查用户名和手机号是否已存在
-        boolean hasDuplicatedUsername = hasDuplicated(dto.getId(), "username", dto.getUsername());
-        if (hasDuplicatedUsername) {
-            throw new XquickException(ErrorCode.HAS_DUPLICATED_RECORD, "用户名");
-        }
-        boolean hasDuplicatedMobile = hasDuplicated(dto.getId(), "mobile", dto.getMobile());
-        if (hasDuplicatedMobile) {
-            throw new XquickException(ErrorCode.HAS_DUPLICATED_RECORD, "手机号");
-        }
+        AssertUtils.isTrue(hasDuplicated(dto.getId(), "username", dto.getUsername()), ErrorCode.HAS_DUPLICATED_RECORD, "用户名");
+        AssertUtils.isTrue(hasDuplicated(dto.getId(), "mobile", dto.getMobile()), ErrorCode.HAS_DUPLICATED_RECORD, "手机号");
 
-        if (dto.getId() == null) {
+        boolean ret;
+        if (dto.hasId()) {
+            // 更新
+            UserEntity existEntity = getById(dto.getId());
+            AssertUtils.isNull(existEntity, ErrorCode.DB_RECORD_NOT_EXISTED);
+            // 检查是否需要修改密码,对于null的不会更新字段
+            dto.setPassword(StringUtils.isEmpty(dto.getPassword()) ? null : PasswordUtils.encode(dto.getPassword()));
+            ret = updateDto(dto);
+        } else {
             // 新增
             dto.setPassword(PasswordUtils.encode(dto.getPassword()));
-        } else {
-            // 更新
-            UserEntity existIdUser = getById(dto.getId());
-            if (null == existIdUser) {
-                throw new XquickException(ErrorCode.ACCOUNT_NOT_EXIST);
-            }
-            // 密码加密
-            if (StringUtils.isEmpty(dto.getPassword())) {
-                // 对于null的不会更新字段
-                dto.setPassword(null);
-            } else {
-                dto.setPassword(PasswordUtils.encode(dto.getPassword()));
-            }
+            ret = saveDto(dto);
         }
-        boolean ret = super.saveOrUpdateDto(dto);
         // 保存角色用户关系
         roleUserService.saveOrUpdate(dto.getId(), dto.getRoleIdList());
         return ret;

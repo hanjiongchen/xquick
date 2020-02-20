@@ -106,6 +106,7 @@ public class AuthController {
     public Result<?> login(HttpServletRequest request, @RequestBody LoginRequestDTO login) {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
+
         return new Result<>().ok(userService.login(request, login));
     }
 
