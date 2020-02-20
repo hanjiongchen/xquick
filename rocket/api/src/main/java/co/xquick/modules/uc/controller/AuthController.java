@@ -60,7 +60,6 @@ public class AuthController {
 
         // 生成图片验证码
         BufferedImage image = captchaService.create(uuid);
-
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
         ServletOutputStream out = response.getOutputStream();

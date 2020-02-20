@@ -36,6 +36,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -297,6 +298,18 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         // 保存角色用户关系
         roleUserService.saveOrUpdate(dto.getId(), dto.getRoleIdList());
         return ret;
+    }
+
+    /**
+     * 合并帐号
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean merge(String mergeTo, List<String> mergeFrom) {
+        // 删除被合并帐号
+        logicDeleteByIds(mergeFrom);
+        // 将被删除业务数据中的create_id/update_id更新为mergeTo
+        return true;
     }
 
 }

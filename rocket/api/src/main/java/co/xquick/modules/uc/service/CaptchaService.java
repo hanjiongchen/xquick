@@ -9,11 +9,10 @@ import java.awt.image.BufferedImage;
  */
 public interface CaptchaService {
 
-
     /**
      * 生成图片验证码
      * @param uuid
-     * @return
+     * @return 生成的图片
      */
     BufferedImage create(String uuid);
 

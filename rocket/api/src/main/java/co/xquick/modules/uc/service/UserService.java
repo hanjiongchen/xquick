@@ -6,6 +6,7 @@ import co.xquick.modules.uc.dto.UserDTO;
 import co.xquick.modules.uc.entity.UserEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,12 +22,18 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
     Map<String, Object> login(HttpServletRequest request, LoginRequestDTO loginDTO);
 
     /**
-     * 获取用户名
+     * 通过用户名获取用户
      */
     UserDTO getByUsername(String username);
 
+    /**
+     * 通过手机号获取用户
+     */
     UserDTO getByMobile(String mobile);
 
+    /**
+     * 修改状态
+     */
     boolean changeStatus(UserDTO dto);
 
     /**
@@ -43,19 +50,18 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
     int getCountByDeptId(Long deptId);
 
     /**
-     * 用户名是否存在
-     * @param username 用户名
-     * @param id 对比id
-     * @return
+     * 判断用户名是否存在
      */
     boolean isUsernameExisted(String username, Long id);
 
     /**
-     * 手机号是否存在
-     * @param mobile 手机号
-     * @param id 对比id
-     * @return
+     * 判断手机号是否存在
      */
     boolean isMobileExisted(String mobile, Long id);
+
+    /**
+     * 合并帐号,将mergeFrom数据合并到mergeTo
+     */
+    boolean merge(String mergeTo, List<String> mergeFrom);
 
 }
