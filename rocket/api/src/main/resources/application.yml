@@ -36,6 +36,10 @@ spring:
   # spring cache
   cache:
     type: simple
+  # quartz定时任务
+  quartz:
+    ## 数据库方式
+    job-store-type: jdbc
 
 # mybatis plus
 # see {https://mybatis.plus/config/}
