@@ -1,13 +1,6 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+package co.xquick.modules.sched.dto;
 
-package co.xquick.modules.qrtz.dto;
-
+import co.xquick.booster.pojo.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,16 +11,12 @@ import java.util.Date;
 /**
  * 定时任务日志
  *
- * @author Mark sunlightcs@gmail.com
- * @since 1.0.0
+ * @author Charles zhangchaoxu@gmail.com
  */
 @Data
 @ApiModel(value = "定时任务日志")
-public class ScheduleJobLogDTO implements Serializable {
+public class JobLogDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty(value = "id")
-    private Long id;
 
     @ApiModelProperty(value = "任务id")
     private Long jobId;
@@ -46,8 +35,5 @@ public class ScheduleJobLogDTO implements Serializable {
 
     @ApiModelProperty(value = "耗时(单位：毫秒)")
     private Integer times;
-
-    @ApiModelProperty(value = "创建时间")
-    private Date createDate;
 
 }

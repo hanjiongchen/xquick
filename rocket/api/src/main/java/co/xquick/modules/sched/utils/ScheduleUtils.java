@@ -1,25 +1,18 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
-package co.xquick.modules.qrtz.utils;
+package co.xquick.modules.sched.utils;
 
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
-import co.xquick.modules.qrtz.entity.ScheduleJobEntity;
+import co.xquick.modules.sched.entity.JobEntity;
 import org.quartz.*;
 
 /**
  * 定时任务工具类
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Charles zhangchaoxu@gmail.com
  */
 public class ScheduleUtils {
+
     private final static String JOB_NAME = "TASK_";
     /**
      * 任务调度参数key
@@ -54,13 +47,13 @@ public class ScheduleUtils {
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+    public static void createScheduleJob(Scheduler scheduler, JobEntity scheduleJob) {
         try {
         	//构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getId())).build();
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
             		.withMisfireHandlingInstructionDoNothing();
 
             //按新的cronExpression表达式构建一个新的trigger
@@ -83,12 +76,12 @@ public class ScheduleUtils {
     /**
      * 更新定时任务
      */
-    public static void updateScheduleJob(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+    public static void updateScheduleJob(Scheduler scheduler, JobEntity scheduleJob) {
         try {
             TriggerKey triggerKey = getTriggerKey(scheduleJob.getId());
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
             		.withMisfireHandlingInstructionDoNothing();
 
             CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getId());
@@ -114,7 +107,7 @@ public class ScheduleUtils {
     /**
      * 立即执行任务
      */
-    public static void run(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+    public static void run(Scheduler scheduler, JobEntity scheduleJob) {
         try {
         	//参数
         	JobDataMap dataMap = new JobDataMap();

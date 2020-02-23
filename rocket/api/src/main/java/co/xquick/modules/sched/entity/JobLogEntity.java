@@ -1,35 +1,20 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+package co.xquick.modules.sched.entity;
 
-package co.xquick.modules.qrtz.entity;
-
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 定时任务日志
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Charles zhangchaoxu@gmail.com
  */
 @Data
-@TableName("schedule_job_log")
-public class ScheduleJobLogEntity implements Serializable {
+@TableName("sched_job_log")
+public class JobLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * id
-	 */
-	@TableId
-	private Long id;
 	/**
 	 * 任务id
 	 */
@@ -54,9 +39,5 @@ public class ScheduleJobLogEntity implements Serializable {
 	 * 耗时(单位：毫秒)
 	 */
 	private Integer times;
-	/**
-	 * 创建时间
-	 */
-	private Date createDate;
 
 }

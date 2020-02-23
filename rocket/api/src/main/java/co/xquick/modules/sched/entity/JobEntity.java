@@ -1,12 +1,4 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
-package co.xquick.modules.qrtz.entity;
+package co.xquick.modules.sched.entity;
 
 import co.xquick.booster.pojo.BaseEntity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -20,18 +12,18 @@ import java.util.Date;
 /**
  * 定时任务
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Charles zhangchaoxu@gmail.com
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-@TableName("schedule_job")
-public class ScheduleJobEntity extends BaseEntity {
+@TableName("sched_job")
+public class JobEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * spring bean名称
 	 */
-	private String beanName;
+	private String name;
 	/**
 	 * 参数
 	 */
@@ -39,7 +31,7 @@ public class ScheduleJobEntity extends BaseEntity {
 	/**
 	 * cron表达式
 	 */
-	private String cronExpression;
+	private String cron;
 	/**
 	 * 任务状态  0：暂停  1：正常
 	 */
@@ -48,14 +40,4 @@ public class ScheduleJobEntity extends BaseEntity {
 	 * 备注
 	 */
 	private String remark;
-	/**
-	 * 更新者
-	 */
-	@TableField(fill = FieldFill.INSERT_UPDATE)
-	private Long updater;
-	/**
-	 * 更新时间
-	 */
-	@TableField(fill = FieldFill.INSERT_UPDATE)
-	private Date updateDate;
 }

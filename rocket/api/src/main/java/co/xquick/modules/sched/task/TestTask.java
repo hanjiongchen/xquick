@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package co.xquick.modules.qrtz.task;
+package co.xquick.modules.sched.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  *
  * testTask为spring bean的名称
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Charles zhangchaoxu@gmail.com
  */
 @Component("testTask")
 public class TestTask implements ITask {

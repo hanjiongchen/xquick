@@ -1,19 +1,11 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
-package co.xquick.modules.qrtz.utils;
+package co.xquick.modules.sched.utils;
 
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.util.ExceptionUtils;
 import co.xquick.booster.util.SpringContextUtils;
-import co.xquick.modules.qrtz.entity.ScheduleJobEntity;
-import co.xquick.modules.qrtz.entity.ScheduleJobLogEntity;
-import co.xquick.modules.qrtz.service.ScheduleJobLogService;
+import co.xquick.modules.sched.entity.JobEntity;
+import co.xquick.modules.sched.entity.JobLogEntity;
+import co.xquick.modules.sched.service.JobLogService;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,22 +18,21 @@ import java.util.Date;
 /**
  * 定时任务
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Charles zhangchaoxu@gmail.com
  */
 public class ScheduleJob extends QuartzJobBean {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        ScheduleJobEntity scheduleJob = (ScheduleJobEntity) context.getMergedJobDataMap().
+        JobEntity scheduleJob = (JobEntity) context.getMergedJobDataMap().
 				get(ScheduleUtils.JOB_PARAM_KEY);
 
         //数据库保存执行记录
-        ScheduleJobLogEntity log = new ScheduleJobLogEntity();
+        JobLogEntity log = new JobLogEntity();
         log.setJobId(scheduleJob.getId());
-        log.setBeanName(scheduleJob.getBeanName());
+        log.setBeanName(scheduleJob.getName());
         log.setParams(scheduleJob.getParams());
-		log.setCreateDate(new Date());
 
         //任务开始时间
         long startTime = System.currentTimeMillis();
@@ -49,7 +40,7 @@ public class ScheduleJob extends QuartzJobBean {
         try {
 			//执行任务
 			logger.info("任务准备执行，任务ID：{}", scheduleJob.getId());
-			Object target = SpringContextUtils.getBean(scheduleJob.getBeanName());
+			Object target = SpringContextUtils.getBean(scheduleJob.getName());
 			Method method = target.getClass().getDeclaredMethod("run", String.class);
 			method.invoke(target, scheduleJob.getParams());
 
@@ -72,7 +63,7 @@ public class ScheduleJob extends QuartzJobBean {
 			log.setError(ExceptionUtils.getErrorStackTrace(e));
 		}finally {
 			//获取spring bean
-			ScheduleJobLogService scheduleJobLogService = SpringContextUtils.getBean(ScheduleJobLogService.class);
+			JobLogService scheduleJobLogService = SpringContextUtils.getBean(JobLogService.class);
 			scheduleJobLogService.save(log);
 		}
     }

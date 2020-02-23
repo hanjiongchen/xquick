@@ -1,12 +1,4 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
-package co.xquick.modules.qrtz.controller;
+package co.xquick.modules.sched.controller;
 
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.pojo.PageData;
@@ -16,8 +8,8 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
-import co.xquick.modules.qrtz.dto.ScheduleJobDTO;
-import co.xquick.modules.qrtz.service.ScheduleJobService;
+import co.xquick.modules.sched.dto.JobDTO;
+import co.xquick.modules.sched.service.JobService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,14 +24,14 @@ import java.util.Map;
 /**
  * 定时任务
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Charles zhangchaoxu@gmail.com
  */
 @RestController
-@RequestMapping("/sys/schedule")
+@RequestMapping("/sched/job")
 @Api(tags="定时任务")
-public class ScheduleJobController {
+public class JobController {
 	@Autowired
-	private ScheduleJobService scheduleJobService;
+	private JobService scheduleJobService;
 
 	@GetMapping("page")
 	@ApiOperation("分页")
@@ -51,26 +43,26 @@ public class ScheduleJobController {
 		@ApiImplicitParam(name = "beanName", value = "beanName", paramType = "query", dataType="String")
 	})
 	@RequiresPermissions("sys:schedule:page")
-	public Result<PageData<ScheduleJobDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
-		PageData<ScheduleJobDTO> page = scheduleJobService.page(params);
+	public Result<PageData<JobDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+		PageData<JobDTO> page = scheduleJobService.page(params);
 
-		return new Result<PageData<ScheduleJobDTO>>().ok(page);
+		return new Result<PageData<JobDTO>>().ok(page);
 	}
 
 	@GetMapping("{id}")
 	@ApiOperation("信息")
 	@RequiresPermissions("sys:schedule:info")
-	public Result<ScheduleJobDTO> info(@PathVariable("id") Long id){
-		ScheduleJobDTO schedule = scheduleJobService.get(id);
+	public Result<JobDTO> info(@PathVariable("id") Long id){
+		JobDTO schedule = scheduleJobService.get(id);
 		
-		return new Result<ScheduleJobDTO>().ok(schedule);
+		return new Result<JobDTO>().ok(schedule);
 	}
 
 	@PostMapping
 	@ApiOperation("保存")
 	@LogOperation("保存")
 	@RequiresPermissions("sys:schedule:save")
-	public Result save(@RequestBody ScheduleJobDTO dto){
+	public Result save(@RequestBody JobDTO dto){
 		ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 		
 		scheduleJobService.save(dto);
@@ -82,7 +74,7 @@ public class ScheduleJobController {
 	@ApiOperation("修改")
 	@LogOperation("修改")
 	@RequiresPermissions("sys:schedule:update")
-	public Result update(@RequestBody ScheduleJobDTO dto){
+	public Result update(@RequestBody JobDTO dto){
 		ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 				
 		scheduleJobService.update(dto);

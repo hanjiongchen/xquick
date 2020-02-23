@@ -1,13 +1,6 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+package co.xquick.modules.sched.dto;
 
-package co.xquick.modules.qrtz.dto;
-
+import co.xquick.booster.pojo.BaseDTO;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
@@ -26,29 +19,23 @@ import java.util.Date;
 /**
  * 定时任务
  *
- * @author Mark sunlightcs@gmail.com
- * @since 1.0.0
+ * @author Charles zhangchaoxu@gmail.com
  */
 @Data
 @ApiModel(value = "定时任务")
-public class ScheduleJobDTO implements Serializable {
+public class JobDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty(value = "id")
-    @Null(message="{id.null}", groups = AddGroup.class)
-    @NotNull(message="{id.require}", groups = UpdateGroup.class)
-    private Long id;
 
     @ApiModelProperty(value = "spring bean名称")
     @NotBlank(message = "{schedule.bean.require}", groups = DefaultGroup.class)
-    private String beanName;
+    private String name;
 
     @ApiModelProperty(value = "参数")
     private String params;
 
     @ApiModelProperty(value = "cron表达式")
     @NotBlank(message = "{schedule.cron.require}", groups = DefaultGroup.class)
-    private String cronExpression;
+    private String cron;
 
     @ApiModelProperty(value = "任务状态  0：暂停  1：正常")
     @Range(min=0, max=1, message = "{schedule.status.range}", groups = DefaultGroup.class)
@@ -56,9 +43,5 @@ public class ScheduleJobDTO implements Serializable {
 
     @ApiModelProperty(value = "备注")
     private String remark;
-
-    @ApiModelProperty(value = "创建时间")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date createDate;
 
 }

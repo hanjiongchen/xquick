@@ -1,22 +1,14 @@
-/**
- * Copyright (c) 2018 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
-package co.xquick.modules.qrtz.service.impl;
+package co.xquick.modules.sched.service.impl;
 
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.service.impl.BaseServiceImpl;
 import co.xquick.booster.util.ConvertUtils;
-import co.xquick.modules.qrtz.dao.ScheduleJobDao;
-import co.xquick.modules.qrtz.dto.ScheduleJobDTO;
-import co.xquick.modules.qrtz.entity.ScheduleJobEntity;
-import co.xquick.modules.qrtz.service.ScheduleJobService;
-import co.xquick.modules.qrtz.utils.ScheduleUtils;
+import co.xquick.modules.sched.dao.JobDao;
+import co.xquick.modules.sched.dto.JobDTO;
+import co.xquick.modules.sched.entity.JobEntity;
+import co.xquick.modules.sched.service.JobService;
+import co.xquick.modules.sched.utils.ScheduleUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
@@ -30,30 +22,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJobEntity> implements ScheduleJobService {
+public class JobServiceImpl extends BaseServiceImpl<JobDao, JobEntity> implements JobService {
 	@Autowired
 	private Scheduler scheduler;
 
 	@Override
-	public PageData<ScheduleJobDTO> page(Map<String, Object> params) {
-		IPage<ScheduleJobEntity> page = baseMapper.selectPage(
+	public PageData<JobDTO> page(Map<String, Object> params) {
+		IPage<JobEntity> page = baseMapper.selectPage(
 			getPage(params, Constant.CREATE_DATE, false),
 			getWrapper(params)
 		);
-		return getPageData(page, ScheduleJobDTO.class);
+		return getPageData(page, JobDTO.class);
 	}
 
 	@Override
-	public ScheduleJobDTO get(Long id) {
-		ScheduleJobEntity entity = baseMapper.selectById(id);
+	public JobDTO get(Long id) {
+		JobEntity entity = baseMapper.selectById(id);
 
-		return ConvertUtils.sourceToTarget(entity, ScheduleJobDTO.class);
+		return ConvertUtils.sourceToTarget(entity, JobDTO.class);
 	}
 
-	private QueryWrapper<ScheduleJobEntity> getWrapper(Map<String, Object> params){
+	private QueryWrapper<JobEntity> getWrapper(Map<String, Object> params){
 		String beanName = (String)params.get("beanName");
 
-		QueryWrapper<ScheduleJobEntity> wrapper = new QueryWrapper<>();
+		QueryWrapper<JobEntity> wrapper = new QueryWrapper<>();
 		wrapper.like(StringUtils.isNotBlank(beanName), "bean_name", beanName);
 
 		return wrapper;
@@ -61,8 +53,8 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void save(ScheduleJobDTO dto) {
-		ScheduleJobEntity entity = ConvertUtils.sourceToTarget(dto, ScheduleJobEntity.class);
+	public void save(JobDTO dto) {
+		JobEntity entity = ConvertUtils.sourceToTarget(dto, JobEntity.class);
 
 		entity.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
         this.save(entity);
@@ -72,8 +64,8 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void update(ScheduleJobDTO dto) {
-		ScheduleJobEntity entity = ConvertUtils.sourceToTarget(dto, ScheduleJobEntity.class);
+	public void update(JobDTO dto) {
+		JobEntity entity = ConvertUtils.sourceToTarget(dto, JobEntity.class);
 
         ScheduleUtils.updateScheduleJob(scheduler, entity);
                 
