@@ -2,8 +2,8 @@ package co.xquick.modules.sched.service;
 
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.service.BaseService;
-import co.xquick.modules.sched.dto.JobDTO;
-import co.xquick.modules.sched.entity.JobEntity;
+import co.xquick.modules.sched.dto.TaskDTO;
+import co.xquick.modules.sched.entity.TaskEntity;
 
 import java.util.Map;
 
@@ -12,21 +12,21 @@ import java.util.Map;
  *
  * @author Charles zhangchaoxu@gmail.com
  */
-public interface JobService extends BaseService<JobEntity> {
+public interface TaskService extends BaseService<TaskEntity> {
 
-	PageData<JobDTO> page(Map<String, Object> params);
+	PageData<TaskDTO> page(Map<String, Object> params);
 
-	JobDTO get(Long id);
+	TaskDTO get(Long id);
 
 	/**
 	 * 保存定时任务
 	 */
-	void save(JobDTO dto);
+	void save(TaskDTO dto);
 	
 	/**
 	 * 更新定时任务
 	 */
-	void update(JobDTO dto);
+	void update(TaskDTO dto);
 	
 	/**
 	 * 批量删除定时任务

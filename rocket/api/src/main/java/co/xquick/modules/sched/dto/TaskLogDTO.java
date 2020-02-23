@@ -15,14 +15,14 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "定时任务日志")
-public class JobLogDTO extends BaseDTO {
+public class TaskLogDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "任务id")
-    private Long jobId;
+    private Long taskId;
 
-    @ApiModelProperty(value = "spring bean名称")
-    private String beanName;
+    @ApiModelProperty(value = "任务名称")
+    private String taskName;
 
     @ApiModelProperty(value = "参数")
     private String params;

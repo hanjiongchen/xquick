@@ -11,18 +11,18 @@ import java.io.Serializable;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
-@TableName("sched_job_log")
-public class JobLogEntity implements Serializable {
+@TableName("sched_task_log")
+public class TaskLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 任务id
 	 */
-	private Long jobId;
+	private Long taskId;
 	/**
-	 * spring bean名称
+	 * 任务名称
 	 */
-	private String beanName;
+	private String taskName;
 	/**
 	 * 参数
 	 */

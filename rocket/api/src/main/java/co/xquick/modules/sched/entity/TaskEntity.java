@@ -16,8 +16,8 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-@TableName("sched_job")
-public class JobEntity extends BaseEntity {
+@TableName("sched_task")
+public class TaskEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	/**

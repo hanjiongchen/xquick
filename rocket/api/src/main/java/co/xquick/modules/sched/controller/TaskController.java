@@ -8,8 +8,8 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
-import co.xquick.modules.sched.dto.JobDTO;
-import co.xquick.modules.sched.service.JobService;
+import co.xquick.modules.sched.dto.TaskDTO;
+import co.xquick.modules.sched.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -27,42 +27,35 @@ import java.util.Map;
  * @author Charles zhangchaoxu@gmail.com
  */
 @RestController
-@RequestMapping("/sched/job")
+@RequestMapping("/sched/task")
 @Api(tags="定时任务")
-public class JobController {
+public class TaskController {
 	@Autowired
-	private JobService scheduleJobService;
+	private TaskService scheduleJobService;
 
 	@GetMapping("page")
 	@ApiOperation("分页")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType="int") ,
-		@ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query",required = true, dataType="int") ,
-		@ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType="String") ,
-		@ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType="String") ,
-		@ApiImplicitParam(name = "beanName", value = "beanName", paramType = "query", dataType="String")
-	})
-	@RequiresPermissions("sys:schedule:page")
-	public Result<PageData<JobDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
-		PageData<JobDTO> page = scheduleJobService.page(params);
+	@RequiresPermissions("sched:task:page")
+	public Result<PageData<TaskDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+		PageData<TaskDTO> page = scheduleJobService.page(params);
 
-		return new Result<PageData<JobDTO>>().ok(page);
+		return new Result<PageData<TaskDTO>>().ok(page);
 	}
 
 	@GetMapping("{id}")
 	@ApiOperation("信息")
-	@RequiresPermissions("sys:schedule:info")
-	public Result<JobDTO> info(@PathVariable("id") Long id){
-		JobDTO schedule = scheduleJobService.get(id);
+	@RequiresPermissions("sched:task:info")
+	public Result<TaskDTO> info(@PathVariable("id") Long id){
+		TaskDTO schedule = scheduleJobService.get(id);
 		
-		return new Result<JobDTO>().ok(schedule);
+		return new Result<TaskDTO>().ok(schedule);
 	}
 
 	@PostMapping
 	@ApiOperation("保存")
 	@LogOperation("保存")
-	@RequiresPermissions("sys:schedule:save")
-	public Result save(@RequestBody JobDTO dto){
+	@RequiresPermissions("sched:tsak:save")
+	public Result save(@RequestBody TaskDTO dto){
 		ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 		
 		scheduleJobService.save(dto);
@@ -73,8 +66,8 @@ public class JobController {
 	@PutMapping
 	@ApiOperation("修改")
 	@LogOperation("修改")
-	@RequiresPermissions("sys:schedule:update")
-	public Result update(@RequestBody JobDTO dto){
+	@RequiresPermissions("sched:task:update")
+	public Result update(@RequestBody TaskDTO dto){
 		ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 				
 		scheduleJobService.update(dto);
@@ -85,7 +78,7 @@ public class JobController {
 	@DeleteMapping
 	@ApiOperation("删除")
 	@LogOperation("删除")
-	@RequiresPermissions("sys:schedule:delete")
+	@RequiresPermissions("sched:task:delete")
 	public Result delete(@RequestBody Long[] ids){
 		scheduleJobService.deleteBatch(ids);
 		
@@ -95,7 +88,7 @@ public class JobController {
 	@PutMapping("/run")
 	@ApiOperation("立即执行")
 	@LogOperation("立即执行")
-	@RequiresPermissions("sys:schedule:run")
+	@RequiresPermissions("sched:task:run")
 	public Result run(@RequestBody Long[] ids){
 		scheduleJobService.run(ids);
 		
@@ -105,7 +98,7 @@ public class JobController {
 	@PutMapping("/pause")
 	@ApiOperation("暂停")
 	@LogOperation("暂停")
-	@RequiresPermissions("sys:schedule:pause")
+	@RequiresPermissions("sched:task:pause")
 	public Result pause(@RequestBody Long[] ids){
 		scheduleJobService.pause(ids);
 		
@@ -115,7 +108,7 @@ public class JobController {
 	@PutMapping("/resume")
 	@ApiOperation("恢复")
 	@LogOperation("恢复")
-	@RequiresPermissions("sys:schedule:resume")
+	@RequiresPermissions("sched:task:resume")
 	public Result resume(@RequestBody Long[] ids){
 		scheduleJobService.resume(ids);
 		

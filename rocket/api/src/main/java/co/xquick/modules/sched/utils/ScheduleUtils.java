@@ -3,7 +3,7 @@ package co.xquick.modules.sched.utils;
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
-import co.xquick.modules.sched.entity.JobEntity;
+import co.xquick.modules.sched.entity.TaskEntity;
 import org.quartz.*;
 
 /**
@@ -47,7 +47,7 @@ public class ScheduleUtils {
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, JobEntity scheduleJob) {
+    public static void createScheduleJob(Scheduler scheduler, TaskEntity scheduleJob) {
         try {
         	//构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getId())).build();
@@ -76,7 +76,7 @@ public class ScheduleUtils {
     /**
      * 更新定时任务
      */
-    public static void updateScheduleJob(Scheduler scheduler, JobEntity scheduleJob) {
+    public static void updateScheduleJob(Scheduler scheduler, TaskEntity scheduleJob) {
         try {
             TriggerKey triggerKey = getTriggerKey(scheduleJob.getId());
 
@@ -107,7 +107,7 @@ public class ScheduleUtils {
     /**
      * 立即执行任务
      */
-    public static void run(Scheduler scheduler, JobEntity scheduleJob) {
+    public static void run(Scheduler scheduler, TaskEntity scheduleJob) {
         try {
         	//参数
         	JobDataMap dataMap = new JobDataMap();

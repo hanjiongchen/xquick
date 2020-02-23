@@ -1,7 +1,7 @@
 package co.xquick.modules.sched.dao;
 
 import co.xquick.booster.dao.BaseDao;
-import co.xquick.modules.sched.entity.JobEntity;
+import co.xquick.modules.sched.entity.TaskEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Mapper
-public interface JobDao extends BaseDao<JobEntity> {
+public interface TaskDao extends BaseDao<TaskEntity> {
 	
 	/**
 	 * 批量更新状态

@@ -1,7 +1,7 @@
 package co.xquick.modules.sched.dao;
 
 import co.xquick.booster.dao.BaseDao;
-import co.xquick.modules.sched.entity.JobLogEntity;
+import co.xquick.modules.sched.entity.TaskLogEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Mapper
-public interface JobLogDao extends BaseDao<JobLogEntity> {
+public interface TaskLogDao extends BaseDao<TaskLogEntity> {
 	
 }

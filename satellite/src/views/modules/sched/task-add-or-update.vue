@@ -1,14 +1,14 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
-      <el-form-item prop="beanName" :label="$t('schedule.beanName')">
-        <el-input v-model="dataForm.beanName" :placeholder="$t('schedule.beanNameTips')"></el-input>
+      <el-form-item prop="name" :label="$t('schedule.beanName')">
+        <el-input v-model="dataForm.name" :placeholder="$t('schedule.beanNameTips')"></el-input>
       </el-form-item>
       <el-form-item prop="params" :label="$t('schedule.params')">
         <el-input v-model="dataForm.params" :placeholder="$t('schedule.params')"></el-input>
       </el-form-item>
-      <el-form-item prop="cronExpression" :label="$t('schedule.cronExpression')">
-        <el-input v-model="dataForm.cronExpression" :placeholder="$t('schedule.cronExpressionTips')"></el-input>
+      <el-form-item prop="cron" :label="$t('schedule.cronExpression')">
+        <el-input v-model="dataForm.cron" :placeholder="$t('schedule.cronExpressionTips')"></el-input>
       </el-form-item>
       <el-form-item prop="remark"  :label="$t('schedule.remark')">
         <el-input v-model="dataForm.remark" :placeholder="$t('schedule.remark')"></el-input>
@@ -29,9 +29,9 @@ export default {
       visible: false,
       dataForm: {
         id: '',
-        beanName: '',
+        name: '',
         params: '',
-        cronExpression: '',
+        cron: '',
         remark: '',
         status: 0
       }
@@ -40,10 +40,10 @@ export default {
   computed: {
     dataRule () {
       return {
-        beanName: [
+        name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        cronExpression: [
+        cron: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

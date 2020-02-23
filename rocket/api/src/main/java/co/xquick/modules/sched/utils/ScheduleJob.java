@@ -3,16 +3,15 @@ package co.xquick.modules.sched.utils;
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.util.ExceptionUtils;
 import co.xquick.booster.util.SpringContextUtils;
-import co.xquick.modules.sched.entity.JobEntity;
-import co.xquick.modules.sched.entity.JobLogEntity;
-import co.xquick.modules.sched.service.JobLogService;
+import co.xquick.modules.sched.entity.TaskEntity;
+import co.xquick.modules.sched.entity.TaskLogEntity;
+import co.xquick.modules.sched.service.TaskLogService;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 
 
 /**
@@ -25,11 +24,11 @@ public class ScheduleJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        JobEntity scheduleJob = (JobEntity) context.getMergedJobDataMap().
+        TaskEntity scheduleJob = (TaskEntity) context.getMergedJobDataMap().
 				get(ScheduleUtils.JOB_PARAM_KEY);
 
         //数据库保存执行记录
-        JobLogEntity log = new JobLogEntity();
+        TaskLogEntity log = new TaskLogEntity();
         log.setJobId(scheduleJob.getId());
         log.setBeanName(scheduleJob.getName());
         log.setParams(scheduleJob.getParams());
@@ -63,7 +62,7 @@ public class ScheduleJob extends QuartzJobBean {
 			log.setError(ExceptionUtils.getErrorStackTrace(e));
 		}finally {
 			//获取spring bean
-			JobLogService scheduleJobLogService = SpringContextUtils.getBean(JobLogService.class);
+			TaskLogService scheduleJobLogService = SpringContextUtils.getBean(TaskLogService.class);
 			scheduleJobLogService.save(log);
 		}
     }

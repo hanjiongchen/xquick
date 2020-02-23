@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="visible" :title="$t('schedule.log')" :close-on-click-modal="false" :close-on-press-escape="false" width="75%">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.jobId" :placeholder="$t('schedule.jobId')" clearable></el-input>
+        <el-input v-model="dataForm.taskId" :placeholder="$t('schedule.jobId')" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -15,8 +15,8 @@
       @sort-change="dataListSortChangeHandle"
       height="460"
       style="width: 100%;">
-      <el-table-column prop="jobId" :label="$t('schedule.jobId')" header-align="center" align="center" width="80"></el-table-column>
-      <el-table-column prop="beanName" :label="$t('schedule.beanName')" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="taskId" :label="$t('schedule.jobId')" header-align="center" align="center" width="80"></el-table-column>
+      <el-table-column prop="taskName" :label="$t('schedule.beanName')" header-align="center" align="center"></el-table-column>
       <el-table-column prop="params" :label="$t('schedule.params')" header-align="center" align="center"></el-table-column>
       <el-table-column prop="status" :label="$t('schedule.status')" header-align="center" align="center">
         <template slot-scope="scope">
@@ -25,7 +25,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="times" :label="$t('schedule.times')" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="createDate" :label="$t('schedule.createDate')" header-align="center" align="center" width="180"></el-table-column>
+      <el-table-column prop="createTime" :label="$t('schedule.createDate')" header-align="center" align="center" width="180"></el-table-column>
     </el-table>
     <el-pagination
       :current-page="page"
@@ -47,7 +47,7 @@ export default {
     return {
       visible: false,
       mixinViewModuleOptions: {
-        getDataListURL: '/sys/scheduleLog/page',
+        getDataListURL: '/sched/taskLog/page',
         getDataListIsPage: true
       },
       dataForm: {
@@ -62,7 +62,7 @@ export default {
     },
     // 失败信息
     showErrorInfo (id) {
-      this.$http.get(`/sys/scheduleLog/${id}`).then(({ data: res }) => {
+      this.$http.get(`/sched/taskLog/${id}`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.msg)
         }

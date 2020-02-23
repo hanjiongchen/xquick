@@ -23,7 +23,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "定时任务")
-public class JobDTO extends BaseDTO {
+public class TaskDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "spring bean名称")
