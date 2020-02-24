@@ -1,6 +1,5 @@
 package co.xquick.modules.sched.controller;
 
-import co.xquick.booster.constant.Constant;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.validator.ValidatorUtils;
@@ -11,8 +10,6 @@ import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.sched.dto.TaskDTO;
 import co.xquick.modules.sched.service.TaskService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,88 +28,88 @@ import java.util.Map;
 @Api(tags="定时任务")
 public class TaskController {
 	@Autowired
-	private TaskService scheduleJobService;
+	private TaskService taskService;
 
 	@GetMapping("page")
 	@ApiOperation("分页")
 	@RequiresPermissions("sched:task:page")
-	public Result<PageData<TaskDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
-		PageData<TaskDTO> page = scheduleJobService.page(params);
+	public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
+		PageData<TaskDTO> page = taskService.page(params);
 
-		return new Result<PageData<TaskDTO>>().ok(page);
+		return new Result<>().ok(page);
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("info")
 	@ApiOperation("信息")
 	@RequiresPermissions("sched:task:info")
-	public Result<TaskDTO> info(@PathVariable("id") Long id){
-		TaskDTO schedule = scheduleJobService.get(id);
+	public Result<?> info(@RequestParam Long id){
+		TaskDTO schedule = taskService.get(id);
 		
-		return new Result<TaskDTO>().ok(schedule);
+		return new Result<>().ok(schedule);
 	}
 
-	@PostMapping
+	@PostMapping("save")
 	@ApiOperation("保存")
 	@LogOperation("保存")
-	@RequiresPermissions("sched:tsak:save")
-	public Result save(@RequestBody TaskDTO dto){
+	@RequiresPermissions("sched:task:save")
+	public Result<?> save(@RequestBody TaskDTO dto){
 		ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
+
+		taskService.save(dto);
 		
-		scheduleJobService.save(dto);
-		
-		return new Result();
+		return new Result<>();
 	}
 
-	@PutMapping
+	@PutMapping("update")
 	@ApiOperation("修改")
 	@LogOperation("修改")
 	@RequiresPermissions("sched:task:update")
-	public Result update(@RequestBody TaskDTO dto){
+	public Result<?> update(@RequestBody TaskDTO dto){
 		ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
-				
-		scheduleJobService.update(dto);
+
+		taskService.update(dto);
 		
-		return new Result();
+		return new Result<>();
 	}
 
-	@DeleteMapping
+	@DeleteMapping("delete")
 	@ApiOperation("删除")
 	@LogOperation("删除")
 	@RequiresPermissions("sched:task:delete")
-	public Result delete(@RequestBody Long[] ids){
-		scheduleJobService.deleteBatch(ids);
+	public Result<?> delete(@RequestBody Long[] ids){
+		taskService.deleteBatch(ids);
 		
-		return new Result();
+		return new Result<>();
 	}
 
 	@PutMapping("/run")
 	@ApiOperation("立即执行")
 	@LogOperation("立即执行")
 	@RequiresPermissions("sched:task:run")
-	public Result run(@RequestBody Long[] ids){
-		scheduleJobService.run(ids);
+	public Result<?> run(@RequestBody Long[] ids){
+		taskService.run(ids);
 		
-		return new Result();
+		return new Result<>();
 	}
 
 	@PutMapping("/pause")
 	@ApiOperation("暂停")
 	@LogOperation("暂停")
 	@RequiresPermissions("sched:task:pause")
-	public Result pause(@RequestBody Long[] ids){
-		scheduleJobService.pause(ids);
+	public Result<?> pause(@RequestBody Long[] ids){
+		taskService.pause(ids);
 		
-		return new Result();
+		return new Result<>();
 	}
 
 	@PutMapping("/resume")
 	@ApiOperation("恢复")
 	@LogOperation("恢复")
 	@RequiresPermissions("sched:task:resume")
-	public Result resume(@RequestBody Long[] ids){
-		scheduleJobService.resume(ids);
+	public Result<?> resume(@RequestBody Long[] ids){
+		taskService.resume(ids);
 		
-		return new Result();
+		return new Result<>();
 	}
 
 }

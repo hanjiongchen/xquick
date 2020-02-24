@@ -4,9 +4,7 @@ import co.xquick.booster.pojo.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
+import lombok.EqualsAndHashCode;
 
 /**
  * 定时任务日志
@@ -14,6 +12,7 @@ import java.util.Date;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "定时任务日志")
 public class TaskLogDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package  co.xquick.modules.sched.controller;
+package co.xquick.modules.sched.controller;
 
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
@@ -20,26 +20,27 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sched/taskLog")
-@Api(tags="定时任务日志")
+@Api(tags = "定时任务日志")
 public class TaskLogController {
-	@Autowired
-	private TaskLogService scheduleJobLogService;
 
-	@GetMapping("page")
-	@ApiOperation("分页")
-	@RequiresPermissions("sched:taskLog:page")
-	public Result<PageData<TaskLogDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
-		PageData<TaskLogDTO> page = scheduleJobLogService.page(params);
-		
-		return new Result<PageData<TaskLogDTO>>().ok(page);
-	}
+    @Autowired
+    private TaskLogService scheduleJobLogService;
 
-	@GetMapping("{id}")
-	@ApiOperation("信息")
-	@RequiresPermissions("sched:task:info")
-	public Result<TaskLogDTO> info(@PathVariable("id") Long id){
-		TaskLogDTO log = scheduleJobLogService.get(id);
-		
-		return new Result<TaskLogDTO>().ok(log);
-	}
+    @GetMapping("page")
+    @ApiOperation("分页")
+    @RequiresPermissions("sched:taskLog:page")
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
+        PageData<TaskLogDTO> page = scheduleJobLogService.page(params);
+
+        return new Result<>().ok(page);
+    }
+
+    @GetMapping("info")
+    @ApiOperation("信息")
+    @RequiresPermissions("sched:task:info")
+    public Result<?> info(@RequestParam Long id) {
+        TaskLogDTO log = scheduleJobLogService.get(id);
+
+        return new Result<>().ok(log);
+    }
 }

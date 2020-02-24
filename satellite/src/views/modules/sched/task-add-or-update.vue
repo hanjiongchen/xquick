@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
+    <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
       <el-form-item prop="name" :label="$t('schedule.beanName')">
         <el-input v-model="dataForm.name" :placeholder="$t('schedule.beanNameTips')"></el-input>
       </el-form-item>
@@ -22,11 +22,18 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
+import mixinFormModule from '@/mixins/form-module'
+
 export default {
+  mixins: [mixinFormModule],
   data () {
     return {
-      visible: false,
+      // 表单参数
+      mixinFormModuleOptions: {
+        dataFormSaveURL: `/sched/task/save`,
+        dataFormUpdateURL: `/sched/task/update`,
+        dataFormInfoURL: `/sched/task/info?id=`
+      },
       dataForm: {
         id: '',
         name: '',
@@ -52,44 +59,12 @@ export default {
   methods: {
     init () {
       this.visible = true
+      this.formLoading = true
       this.$nextTick(() => {
-        this.$refs['dataForm'].resetFields()
-        if (this.dataForm.id) {
-          this.getInfo()
-        }
+        this.resetForm()
+        this.initFormData()
       })
-    },
-    // 获取信息
-    getInfo () {
-      this.$http.get(`/sys/schedule/${this.dataForm.id}`).then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.msg)
-        }
-        this.dataForm = res.data
-      }).catch(() => {})
-    },
-    // 表单提交
-    dataFormSubmitHandle: debounce(function () {
-      this.$refs['dataForm'].validate((valid) => {
-        if (!valid) {
-          return false
-        }
-        this.$http[!this.dataForm.id ? 'post' : 'put']('/sys/schedule', this.dataForm).then(({ data: res }) => {
-          if (res.code !== 0) {
-            return this.$message.error(res.msg)
-          }
-          this.$message({
-            message: this.$t('prompt.success'),
-            type: 'success',
-            duration: 500,
-            onClose: () => {
-              this.visible = false
-              this.$emit('refreshDataList')
-            }
-          })
-        }).catch(() => {})
-      })
-    }, 1000, { 'leading': true, 'trailing': false })
+    }
   }
 }
 </script>

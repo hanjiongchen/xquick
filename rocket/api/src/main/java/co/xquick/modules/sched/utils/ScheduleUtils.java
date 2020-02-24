@@ -1,36 +1,33 @@
 package co.xquick.modules.sched.utils;
 
-import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
+import co.xquick.modules.sched.SchedConst;
 import co.xquick.modules.sched.entity.TaskEntity;
 import org.quartz.*;
 
 /**
  * 定时任务工具类
+ * 修改qrtz_job_details和qrtz_triggers表内容
  *
  * @author Charles zhangchaoxu@gmail.com
  */
 public class ScheduleUtils {
 
-    private final static String JOB_NAME = "TASK_";
-    /**
-     * 任务调度参数key
-     */
-    public static final String JOB_PARAM_KEY = "JOB_PARAM_KEY";
+
     
     /**
      * 获取触发器key
      */
     public static TriggerKey getTriggerKey(Long jobId) {
-        return TriggerKey.triggerKey(JOB_NAME + jobId);
+        return TriggerKey.triggerKey(SchedConst.JOB_NAME + jobId);
     }
     
     /**
      * 获取jobKey
      */
     public static JobKey getJobKey(Long jobId) {
-        return JobKey.jobKey(JOB_NAME + jobId);
+        return JobKey.jobKey(SchedConst.JOB_NAME + jobId);
     }
 
     /**
@@ -49,40 +46,44 @@ public class ScheduleUtils {
      */
     public static void createScheduleJob(Scheduler scheduler, TaskEntity scheduleJob) {
         try {
+            // 启动调度器
+            scheduler.start();
+
         	//构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getId())).build();
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
-            		.withMisfireHandlingInstructionDoNothing();
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron()).withMisfireHandlingInstructionDoNothing();
 
             //按新的cronExpression表达式构建一个新的trigger
             CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(scheduleJob.getId())).withSchedule(scheduleBuilder).build();
 
             //放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(JOB_PARAM_KEY, scheduleJob);
+            jobDetail.getJobDataMap().put(SchedConst.JOB_PARAM_KEY, scheduleJob);
 
             scheduler.scheduleJob(jobDetail, trigger);
             
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            if (scheduleJob.getStatus() == SchedConst.TaskStatus.PAUSE.getValue()){
             	pauseJob(scheduler, scheduleJob.getId());
             }
         } catch (SchedulerException e) {
             throw new XquickException(ErrorCode.JOB_ERROR, e);
         }
     }
-    
+
     /**
      * 更新定时任务
      */
     public static void updateScheduleJob(Scheduler scheduler, TaskEntity scheduleJob) {
         try {
+            // 启动调度器
+            scheduler.start();
+
             TriggerKey triggerKey = getTriggerKey(scheduleJob.getId());
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
-            		.withMisfireHandlingInstructionDoNothing();
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron()).withMisfireHandlingInstructionDoNothing();
 
             CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getId());
             
@@ -90,12 +91,12 @@ public class ScheduleUtils {
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
             
             //参数
-            trigger.getJobDataMap().put(JOB_PARAM_KEY, scheduleJob);
+            trigger.getJobDataMap().put(SchedConst.JOB_PARAM_KEY, scheduleJob);
             
             scheduler.rescheduleJob(triggerKey, trigger);
             
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            if(scheduleJob.getStatus() == SchedConst.TaskStatus.PAUSE.getValue()){
             	pauseJob(scheduler, scheduleJob.getId());
             }
             
@@ -111,11 +112,14 @@ public class ScheduleUtils {
         try {
         	//参数
         	JobDataMap dataMap = new JobDataMap();
-        	dataMap.put(JOB_PARAM_KEY, scheduleJob);
+        	dataMap.put(SchedConst.JOB_PARAM_KEY, scheduleJob);
         	
             scheduler.triggerJob(getJobKey(scheduleJob.getId()), dataMap);
         } catch (SchedulerException e) {
             throw new XquickException(ErrorCode.JOB_ERROR, e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 

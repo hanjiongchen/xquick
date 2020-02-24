@@ -1,20 +1,14 @@
 package co.xquick.modules.sched.dto;
 
 import co.xquick.booster.pojo.BaseDTO;
-import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
-import co.xquick.booster.validator.group.UpdateGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 定时任务
@@ -22,6 +16,7 @@ import java.util.Date;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "定时任务")
 public class TaskDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
