@@ -26,6 +26,9 @@ t.success = '成功'
 t.error = '失败'
 t.enable = '启用'
 t.disable = '停用'
+t.pause = '暂停'
+t.resume = '恢复'
+t.run = '运行'
 
 t.base = {}
 t.base.sort = '排序'

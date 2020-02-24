@@ -41,17 +41,22 @@
         <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center"></el-table-column>
         <el-table-column prop="status" :label="$t('base.status')" sortable="custom" header-align="center" align="center">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 1" size="small">启用</el-tag>
-            <el-tag v-else size="small" type="danger">停用</el-tag>
+            <el-tag v-if="scope.row.status === 1" size="small">{{$t('enable')}}</el-tag>
+            <el-tag v-else size="small" type="danger">{{$t('disable')}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('sched:task:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('sched:task:pause')" type="text" size="small" @click="pauseHandle(scope.row.id)">{{ $t('schedule.pause') }}</el-button>
-            <el-button v-if="$hasPermission('sched:task:resume')" type="text" size="small" @click="resumeHandle(scope.row.id)">{{ $t('schedule.resume') }}</el-button>
-            <el-button v-if="$hasPermission('sched:task:run')" type="text" size="small" @click="runHandle(scope.row.id)">{{ $t('schedule.run') }}</el-button>
-            <el-button v-if="$hasPermission('sched:task:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-dropdown trigger="click" @command="editActionHandler" class="action-dropdown">
+              <span class="el-dropdown-link">{{ $t('handle') }}<i class="el-icon-arrow-down el-icon--right"/></span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-if="$hasPermission('sched:task:update')" :command="composeEditCommandValue('addOrUpdate', scope.row)" icon="el-icon-edit">{{ $t('update') }}</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('sched:task:delete')" :command="composeEditCommandValue('delete', scope.row)" icon="el-icon-delete">{{ $t('delete') }}</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('sched:task:run')" :command="composeEditCommandValue('run', scope.row)" icon="el-icon-video-play">{{ $t('run') }}</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('sched:task:pause') && scope.row.status === 1" :command="composeEditCommandValue('pause', scope.row)" icon="el-icon-video-pause">{{ $t('pause') }}</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('sched:task:resume') && scope.row.status === 0" :command="composeEditCommandValue('resume', scope.row)" icon="el-icon-refresh-right">{{ $t('resume') }}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -98,6 +103,19 @@ export default {
     Log
   },
   methods: {
+    /** 其它更多按钮操作 */
+    moreEditActionHandler (command) {
+      if (command.command === 'pause') {
+        // 暂停
+        this.pauseHandle(command.row[this.mixinViewModuleOptions.idKey])
+      } else if (command.command === 'run') {
+        // 运行
+        this.runHandle(command.row[this.mixinViewModuleOptions.idKey])
+      } else if (command.command === 'resume') {
+        // 恢复
+        this.resumeHandle(command.row[this.mixinViewModuleOptions.idKey])
+      }
+    },
     // 暂停
     pauseHandle (id) {
       if (!id && this.dataListSelections.length <= 0) {
