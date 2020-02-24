@@ -9,6 +9,7 @@ import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
+import co.xquick.common.annotation.ApiEncrypt;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.AESUtils;
 import co.xquick.modules.msg.dto.SmsLogDTO;
