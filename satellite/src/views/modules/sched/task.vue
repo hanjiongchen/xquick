@@ -3,7 +3,7 @@
     <div class="mod-sched__task">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model="dataForm.name" :placeholder="$t('schedule.beanName')" clearable></el-input>
+          <el-input v-model="dataForm.name" :placeholder="$t('base.name')" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -35,14 +35,14 @@
         @sort-change="dataListSortChangeHandle"
         style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="name" :label="$t('schedule.beanName')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="params" :label="$t('schedule.params')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="cron" :label="$t('schedule.cronExpression')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="remark" :label="$t('schedule.remark')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" :label="$t('schedule.status')" sortable="custom" header-align="center" align="center">
+        <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="param" :label="$t('base.param')" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="cron" label="cron" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="status" :label="$t('base.status')" sortable="custom" header-align="center" align="center">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 1" size="small">{{ $t('schedule.status1') }}</el-tag>
-            <el-tag v-else size="small" type="danger">{{ $t('schedule.status0') }}</el-tag>
+            <el-tag v-if="scope.row.status === 1" size="small">启用</el-tag>
+            <el-tag v-else size="small" type="danger">停用</el-tag>
           </template>
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">

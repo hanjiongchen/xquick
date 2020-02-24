@@ -1,13 +1,9 @@
 package co.xquick.modules.sched.entity;
 
 import co.xquick.booster.pojo.BaseEntity;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 定时任务
@@ -27,7 +23,7 @@ public class TaskEntity extends BaseEntity {
 	/**
 	 * 参数
 	 */
-	private String params;
+	private String param;
 	/**
 	 * cron表达式
 	 */

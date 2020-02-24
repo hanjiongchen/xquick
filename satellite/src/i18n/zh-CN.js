@@ -24,6 +24,8 @@ t.cancel = '取消'
 t.logout = '退出'
 t.success = '成功'
 t.error = '失败'
+t.enable = '启用'
+t.disable = '停用'
 
 t.base = {}
 t.base.sort = '排序'

@@ -3,6 +3,7 @@ package co.xquick.modules.sched.utils;
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.util.ExceptionUtils;
 import co.xquick.booster.util.SpringContextUtils;
+import co.xquick.modules.sched.SchedConst;
 import co.xquick.modules.sched.entity.TaskEntity;
 import co.xquick.modules.sched.entity.TaskLogEntity;
 import co.xquick.modules.sched.service.TaskLogService;
@@ -19,27 +20,27 @@ import java.lang.reflect.Method;
  * @author Charles zhangchaoxu@gmail.com
  */
 public class ScheduleJob extends QuartzJobBean {
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        TaskEntity scheduleTask = (TaskEntity) context.getMergedJobDataMap().get(ScheduleUtils.JOB_PARAM_KEY);
+        TaskEntity task = (TaskEntity) context.getMergedJobDataMap().get(SchedConst.JOB_PARAM_KEY);
 
-        //数据库保存执行记录
+        // 数据库保存执行记录
         TaskLogEntity log = new TaskLogEntity();
-        log.setTaskId(scheduleTask.getId());
-        log.setTaskName(scheduleTask.getName());
-        log.setParams(scheduleTask.getParams());
+        log.setTaskId(task.getId());
+        log.setTaskName(task.getName());
+        log.setParams(task.getParam());
 
         //任务开始时间
         long startTime = System.currentTimeMillis();
-
         try {
             //执行任务
-            logger.info("任务准备执行，任务ID：{}", scheduleTask.getId());
-            Object target = SpringContextUtils.getBean(scheduleTask.getName());
+            logger.info("任务准备执行，任务ID：{}", task.getId());
+            Object target = SpringContextUtils.getBean(task.getName());
             Method method = target.getClass().getDeclaredMethod("run", String.class);
-            method.invoke(target, scheduleTask.getParams());
+            method.invoke(target, task.getParam());
 
             //任务执行总时长
             long times = System.currentTimeMillis() - startTime;
@@ -47,9 +48,9 @@ public class ScheduleJob extends QuartzJobBean {
             //任务状态
             log.setStatus(Constant.SUCCESS);
 
-            logger.info("任务执行完毕，任务ID：{}  总共耗时：{} 毫秒", scheduleTask.getId(), times);
+            logger.info("任务执行完毕，任务ID：{}  总共耗时：{} 毫秒", task.getId(), times);
         } catch (Exception e) {
-            logger.error("任务执行失败，任务ID：{}", scheduleTask.getId(), e);
+            logger.error("任务执行失败，任务ID：{}", task.getId(), e);
 
             //任务执行总时长
             long times = System.currentTimeMillis() - startTime;
@@ -60,8 +61,8 @@ public class ScheduleJob extends QuartzJobBean {
             log.setError(ExceptionUtils.getErrorStackTrace(e));
         } finally {
             // 获取spring bean
-            TaskLogService scheduleJobLogService = SpringContextUtils.getBean(TaskLogService.class);
-            scheduleJobLogService.save(log);
+            TaskLogService taskLogService = SpringContextUtils.getBean(TaskLogService.class);
+            taskLogService.save(log);
         }
     }
 }

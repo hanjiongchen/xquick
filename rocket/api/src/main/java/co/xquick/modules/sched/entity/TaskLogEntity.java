@@ -1,9 +1,9 @@
 package co.xquick.modules.sched.entity;
 
+import co.xquick.booster.pojo.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * 定时任务日志
@@ -11,8 +11,10 @@ import java.io.Serializable;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @TableName("sched_task_log")
-public class TaskLogEntity implements Serializable {
+public class TaskLogEntity extends BaseEntity {
+
 	private static final long serialVersionUID = 1L;
 
 	/**

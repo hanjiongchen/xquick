@@ -1,17 +1,25 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-      <el-form-item prop="name" :label="$t('schedule.beanName')">
-        <el-input v-model="dataForm.name" :placeholder="$t('schedule.beanNameTips')"></el-input>
+      <el-form-item prop="name" :label="$t('base.name')">
+        <el-input v-model="dataForm.name" :placeholder="$t('base.name')"></el-input>
       </el-form-item>
-      <el-form-item prop="params" :label="$t('schedule.params')">
-        <el-input v-model="dataForm.params" :placeholder="$t('schedule.params')"></el-input>
+      <el-form-item prop="cron" label="cron">
+        <el-input v-model="dataForm.cron" placeholder="cron">
+          <el-link type="primary" href="https://www.bejson.com/othertools/cron/" target="_blank" :underline="false" slot="append">在线cron生成</el-link>
+        </el-input>
       </el-form-item>
-      <el-form-item prop="cron" :label="$t('schedule.cronExpression')">
-        <el-input v-model="dataForm.cron" :placeholder="$t('schedule.cronExpressionTips')"></el-input>
+      <el-form-item prop="param" :label="$t('base.param')">
+        <el-input v-model="dataForm.param" :placeholder="$t('base.param')"></el-input>
       </el-form-item>
-      <el-form-item prop="remark"  :label="$t('schedule.remark')">
-        <el-input v-model="dataForm.remark" :placeholder="$t('schedule.remark')"></el-input>
+      <el-form-item prop="remark" :label="$t('base.remark')">
+        <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')"></el-input>
+      </el-form-item>
+      <el-form-item prop="status" :label="$t('base.status')">
+        <el-radio-group v-model="dataForm.status">
+          <el-radio-button :label="0">暂停</el-radio-button>
+          <el-radio-button :label="1">启用</el-radio-button>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <template slot="footer">
@@ -37,7 +45,7 @@ export default {
       dataForm: {
         id: '',
         name: '',
-        params: '',
+        param: '',
         cron: '',
         remark: '',
         status: 0
