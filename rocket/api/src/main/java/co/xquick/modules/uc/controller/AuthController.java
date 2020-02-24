@@ -9,7 +9,6 @@ import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
-import co.xquick.common.annotation.ApiEncrypt;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.AESUtils;
 import co.xquick.modules.msg.dto.SmsLogDTO;
@@ -38,7 +37,7 @@ import java.net.URLDecoder;
 
 /**
  * 授权接口
- * *以下所有接口不需授权可直接访问*
+ * 注意: 本controller所有接口无需授权可直接访问
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */
