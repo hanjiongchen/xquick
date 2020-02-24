@@ -1,14 +1,16 @@
 package co.xquick.modules.uc.controller;
 
-import co.xquick.common.annotation.LogOperation;
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.DateUtils;
+import co.xquick.booster.util.JacksonUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
+import co.xquick.common.annotation.LogOperation;
+import co.xquick.common.util.AESUtils;
 import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.dto.SmsSendRequestDTO;
 import co.xquick.modules.msg.service.SmsLogService;
@@ -30,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * 授权接口
@@ -94,6 +98,23 @@ public class AuthController {
         smsLogService.send(dto);
 
         return new Result<>();
+    }
+
+    /**
+     * AES解密登录
+     * 支持帐号登录、短信登录
+     */
+    @PostMapping("loginEncrypted")
+    @ApiOperation(value = "帐号登录AES加密")
+    public Result<?> loginEncrypted(HttpServletRequest request, @RequestBody String loginEncrypted) throws UnsupportedEncodingException {
+        // 密文转json明文
+        String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
+        // json明文转实体
+        LoginRequestDTO login = JacksonUtils.jsonToPojo(loginRaw, LoginRequestDTO.class);
+        // 效验数据
+        ValidatorUtils.validateEntity(login, DefaultGroup.class);
+
+        return new Result<>().ok(userService.login(request, login));
     }
 
     /**
