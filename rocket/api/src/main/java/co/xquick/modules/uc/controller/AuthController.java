@@ -104,9 +104,9 @@ public class AuthController {
      * AES解密登录
      * 支持帐号登录、短信登录
      */
-    @PostMapping("loginEncrypted")
+    @PostMapping("loginEncrypt")
     @ApiOperation(value = "帐号登录AES加密")
-    public Result<?> loginEncrypted(HttpServletRequest request, @RequestBody String loginEncrypted) throws UnsupportedEncodingException {
+    public Result<?> loginEncrypt(HttpServletRequest request, @RequestBody String loginEncrypted) throws UnsupportedEncodingException {
         // 密文转json明文
         String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
         // json明文转实体

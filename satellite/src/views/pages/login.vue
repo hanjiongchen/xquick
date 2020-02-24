@@ -66,7 +66,7 @@ export default {
       mixinFormModuleOptions: {
         // 登录接口
         dataFormParamEncrypt: true,
-        dataFormSaveURL: '/auth/loginEncrypted'
+        dataFormSaveURL: '/auth/loginEncrypt'
       },
       dataFormMode: 'save',
       // 是否启用验证码,从接口获取配置
