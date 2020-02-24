@@ -3,6 +3,7 @@
  */
 import Cookies from 'js-cookie'
 import debounce from 'lodash/debounce'
+import { aesEncrypt } from '@/utils'
 import { beforeImageUpload } from '@/utils/upload'
 
 export default {
@@ -15,6 +16,7 @@ export default {
         dataFormSaveURL: '',        // 表单保存接口，API地址
         dataFormUpdateURL: '',      // 表单修改接口，API地址
         dataFormSubmitConfig: null, // 表单提交配置
+        dataFormParamEncrypt: false, // 是否加密参数
         idKey: 'id'                 // 默认表主键
       },
       // 接口提交参数
@@ -83,7 +85,12 @@ export default {
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
-      this.dataFormSubmitParam = this.dataForm
+      if (this.mixinFormModuleOptions.dataFormParamEncrypt) {
+        // 对参数做加密处理,注意要urlencode
+        this.dataFormSubmitParam = encodeURIComponent(aesEncrypt(JSON.stringify(this.dataForm)))
+      } else {
+        this.dataFormSubmitParam = this.dataForm
+      }
       return true
     },
     // 表单提交
@@ -166,10 +173,7 @@ export default {
       }
     },
     // 图片上传失败
-    uploadErrorHandle  (err, file, fileList) {
-      console.log(err)
-      console.log(file)
-      console.log(fileList)
+    uploadErrorHandle (err, file, fileList) {
       this.uploadFileList = fileList
     },
     // 文件发生变化

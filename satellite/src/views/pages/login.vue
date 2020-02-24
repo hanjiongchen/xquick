@@ -55,7 +55,7 @@
 
 <script>
 import Cookies from 'js-cookie'
-import { getUUID, aesEncrypt } from '@/utils'
+import { getUUID } from '@/utils'
 import mixinFormModule from '@/mixins/form-module'
 
 export default {
@@ -65,6 +65,7 @@ export default {
       // 表单模块参数
       mixinFormModuleOptions: {
         // 登录接口
+        dataFormParamEncrypt: true,
         dataFormSaveURL: '/auth/loginEncrypted'
       },
       dataFormMode: 'save',
@@ -123,13 +124,6 @@ export default {
     getCaptcha () {
       this.dataForm.uuid = getUUID()
       this.captchaPath = `${window.SITE_CONFIG['apiURL']}/auth/captcha?uuid=${this.dataForm.uuid}`
-    },
-    // 表单提交之前的操作
-    beforeDateFormSubmit () {
-      console.log(JSON.stringify(this.dataForm))
-      this.dataFormSubmitParam = encodeURIComponent(aesEncrypt(JSON.stringify(this.dataForm)))
-      console.log(this.dataFormSubmitParam)
-      return true
     },
     // 表单提交失败
     onFormSubmitError (res) {
