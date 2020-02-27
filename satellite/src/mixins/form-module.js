@@ -87,6 +87,8 @@ export default {
     beforeDateFormSubmit () {
       if (this.mixinFormModuleOptions.dataFormParamEncrypt) {
         // 对参数做加密处理,注意要urlencode
+        console.log(JSON.stringify(this.dataForm))
+        console.log(aesEncrypt(JSON.stringify(this.dataForm)))
         this.dataFormSubmitParam = encodeURIComponent(aesEncrypt(JSON.stringify(this.dataForm)))
       } else {
         this.dataFormSubmitParam = this.dataForm
@@ -173,7 +175,10 @@ export default {
       }
     },
     // 图片上传失败
-    uploadErrorHandle (err, file, fileList) {
+    uploadErrorHandle  (err, file, fileList) {
+      console.log(err)
+      console.log(file)
+      console.log(fileList)
       this.uploadFileList = fileList
     },
     // 文件发生变化

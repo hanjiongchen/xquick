@@ -1,14 +1,24 @@
 ## 接口加密
 
 ### 目的
-为了防止数据在传输过程中被窃取,可以采用接口加密的方式防止明文传输。当然首先有必要上https
+为了防止数据在传输过程中被嗅探监听,应该避免数据,特别是敏感数据(比如登录密码)的明文传输。常见的方法有
+1. SSL,采用https方式,在传输层做数据加密
+2. 对接口传参,甚至是接口返回内容做加解密(比如AES)
 
-### 前端加密
-例子login.vue
-在请求中将请求json数据使用Utils.aesEncrypt做加密,注意加密后数据会有特殊字段,应该再做UrlEncode
+## 以登录过程为例子：
+1. 前端加密
+将明文(请求数据)
+```json
+{"username":"admin","password":"123456","uuid":"","captcha":"","type":10}
+```
+使用Utils.aesEncrypt做加密,得到密文
+```
+QkNOJMWRfP+DQ0whS6zmXmYW0HkLLbeSzAEypciCpOVr+aoleWoKR2AGwJIF9htskXlPZvlvNiwvqYtJqopnYWnfPGFkWHhjafhYnUJ1lDI=
+```
+提交给接口(注意加密后数据会有特殊字段,应该再做UrlEncode)
 
-### 后端解密
-后端可以将接收到密文用密钥做解密,得到请求明文,再做业务处理。
+2. 后端解密
+对提交的密文做解密,得到原始请求数据的明文,再做业务处理。
 同样注意需要对接收到的密文做UrlDecode
 
 #### todo 优化

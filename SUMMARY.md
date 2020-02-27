@@ -7,7 +7,7 @@
   * [DevOps](wiki/DevOps.md)
   * [json解析器](wiki/JSON.md)
   * [数据字典](wiki/Dict.md)
-  * [接口加密](wiki/ApiEncrypt.md)
+  * [数据加密](wiki/ApiEncrypt.md)
   * [QA](wiki/QA.md)
 * [satellite](wiki/satellite.md)
   * [ElementUI使用](wiki/ElementUI.md)
