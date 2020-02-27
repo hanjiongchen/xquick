@@ -2,7 +2,7 @@
 
 * [xquick](README.md)
 * [rocket](wiki/rocket.md)
-  * [数据库设计和实现](wiki/DB.md)
+  * [数据库设计规范和实现](wiki/DB.md)
   * [接口规范](wiki/Restful.md)
   * [DevOps](wiki/DevOps.md)
   * [json解析器](wiki/JSON.md)

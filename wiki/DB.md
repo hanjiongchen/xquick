@@ -1,13 +1,13 @@
-# 数据库设计和实现
+# 数据库设计规范和实现
+程序开发基于MySQL5.7实现,理论上支持Oracle、SQLServer、DB2等其它数据库  
+_注意_ 修改表中各个数据库中有区别的地方 
+_注意_ 修改Mapper文件中是否有MySQL特有的查询语句
 
-数据库的持久化在对比JPA、Hibernate、MyBatis之后选择由MyBatis-PLus实现,兼具易用性和灵活性。
+## 数据持久化实现
 
-## 数据库支持
+数据库的持久化在对比JPA、Hibernate、MyBatis之后选择由MyBatis-Plus实现,兼具易用性和灵活性。
 
-开发基于MySQL5.7实现,理论上支持Oracle、SQLServer、DB2等其它数据库  
-_注意_ 修改表中各个数据库中有区别的地方 _注意_ 修改Mapper文件中是否有MySQL特有的查询语句
-
-## 表设计规范
+## 表命名规范
 
 1. 数据库名称、表名称、字段名称一律小写,用\_分割
 2. 遵守模块名称\_业务名称的形式,比如uc\_user
@@ -34,6 +34,5 @@ _注意_ 对于update方法只有update\(entity, updateWrapper\)才会自动填�
 ## 分页
 
 使用MybatisPlus的数据分页实现 [更多文档](https://mybatis.plus/guide/page.html)
-
 更多问题见[MyBatisPlus文档](https://mybatis.plus/)
 

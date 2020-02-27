@@ -2,7 +2,8 @@
 基本遵守Restful风格定义接口
 
 ## 接口命名
-基本的数据接口命名如下
+基本的数据接口命名遵循/model/entity/action的分层接口。比如
+
 1. /model/entity/list 列表接口
 返回列表数据,注意传参limit限制条数
 
@@ -65,7 +66,8 @@ list | 列表数据 |  |
 
 2. 禁止使用PathVariable
 
-由于Spring的[PathVariable寻址性能问题](https://tech.imdada.cn/2015/12/23/springmvc-restful-optimize/),性能会随着接口数量变大而下降,而其他解决办法会带来额外的接口调用修改,因此禁止使用PathVariable.
+由于Spring的[PathVariable寻址性能问题](https://tech.imdada.cn/2015/12/23/springmvc-restful-optimize/),性能会随着接口数量变大而下降。
+虽然有解决办法,但都会带来额外的接口调用修改,因此禁止使用PathVariable。
 因此而带来的url地址不符合restful规范,只能是做妥协。
 
 3. 不允许使用http method来区分接口
