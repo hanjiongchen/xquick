@@ -87,8 +87,6 @@ export default {
     beforeDateFormSubmit () {
       if (this.mixinFormModuleOptions.dataFormParamEncrypt) {
         // 对参数做加密处理,注意要urlencode
-        console.log(JSON.stringify(this.dataForm))
-        console.log(aesEncrypt(JSON.stringify(this.dataForm)))
         this.dataFormSubmitParam = encodeURIComponent(aesEncrypt(JSON.stringify(this.dataForm)))
       } else {
         this.dataFormSubmitParam = this.dataForm
