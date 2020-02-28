@@ -167,11 +167,11 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                         SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode("LOGIN", login.getMobile());
                         if (null == lastSmsLog || !login.getCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
                             // 验证码错误,找不到验证码
-                            loginResult = ErrorCode.VERIFICATION_CODE_ERROR;
+                            loginResult = ErrorCode.SMS_CODE_ERROR;
                         } else {
                             // 验证码正确
-                            if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > loginConfig.getVerificationCodeValidTime()) {
-                                loginResult = ErrorCode.VERIFICATION_CODE_EXPIRED;
+                            if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > loginConfig.getSmsCodeValidTime()) {
+                                loginResult = ErrorCode.SMS_CODE_EXPIRED;
                             }
                             // 将短信消费掉
                             lastSmsLog.setConsumed(1);

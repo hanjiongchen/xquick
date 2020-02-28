@@ -46,10 +46,10 @@
               <el-form-item prop="sms">
                 <el-row :gutter="20">
                   <el-col :span="14">
-                    <el-input v-model="dataForm.sms" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
+                    <el-input v-model="dataForm.code" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
                   </el-col>
                   <el-col :span="10" class="login-captcha">
-                    <el-button type="primary" @click="smsSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒' : '发送验证码' }}</el-button>
+                    <el-button type="primary" @click="smsSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -96,8 +96,8 @@ export default {
       // 表单模块参数
       mixinFormModuleOptions: {
         // 登录接口
-        dataFormParamEncrypt: true,
-        dataFormSaveURL: '/auth/loginEncrypt'
+        dataFormParamEncrypt: false,
+        dataFormSaveURL: '/auth/login'
       },
       dataFormMode: 'save',
       // 登录配置,从接口获取配置
@@ -114,6 +114,8 @@ export default {
       dataForm: {
         username: '',
         password: '',
+        mobile: '',
+        code: '',
         uuid: '',
         captcha: '',
         // 登录类型
@@ -135,6 +137,9 @@ export default {
           { required: this.loginConfig.captcha, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         mobile: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        code: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

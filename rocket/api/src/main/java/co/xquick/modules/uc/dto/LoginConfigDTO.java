@@ -35,8 +35,8 @@ public class LoginConfigDTO implements Serializable {
     private Long expire;
 
     @JsonIgnore
-    @ApiModelProperty(value = "验证码有效时长")
-    private Long verificationCodeValidTime;
+    @ApiModelProperty(value = "短信验证码有效毫秒长")
+    private Long smsCodeValidTime;
 
     @JsonIgnore
     @ApiModelProperty(value = "自动延期")
