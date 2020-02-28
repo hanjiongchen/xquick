@@ -121,7 +121,7 @@ export default {
     }, 1000, { 'leading': true, 'trailing': false }),
     // 表单提交失败
     onFormSubmitError (res) {
-      this.$message.error(res.msg)
+      this.$message.error(res.code + ':' + res.msg)
     },
     // 表单提交成功
     onFormSubmitSuccess (res) {

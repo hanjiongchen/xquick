@@ -16,7 +16,7 @@
             <el-row>
                 <el-row>
                     <el-col :span="12">
-                        <el-form-item label="登录验证码">
+                        <el-form-item label="图形验证码">
                             <el-switch v-model="paramDataForm.captcha"/>
                         </el-form-item>
                     </el-col>
