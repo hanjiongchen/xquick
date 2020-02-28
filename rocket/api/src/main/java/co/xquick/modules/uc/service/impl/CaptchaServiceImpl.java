@@ -1,26 +1,21 @@
 package co.xquick.modules.uc.service.impl;
 
 import co.xquick.modules.uc.service.CaptchaService;
-import com.google.code.kaptcha.Producer;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wf.captcha.SpecCaptcha;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码
+ * [SpecCaptcha](https://github.com/whvcse/EasyCaptcha)
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */
 @Service
 public class CaptchaServiceImpl implements CaptchaService {
-
-    @Autowired
-    private Producer producer;
-
     /**
      * 本地缓存
      * 设置一个有效时间10分钟
@@ -28,13 +23,12 @@ public class CaptchaServiceImpl implements CaptchaService {
     Cache<String, String> localCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(10, TimeUnit.MINUTES).build();
 
     @Override
-    public BufferedImage create(String uuid) {
-        // 生成文字验证码
-        String code = producer.createText();
+    public String createBase64(String uuid) {
+        SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 5);
+        String code = specCaptcha.text().toLowerCase();
         // 保存到缓存
         setCache(uuid, code);
-
-        return producer.createImage(code);
+        return specCaptcha.toBase64();
     }
 
     /**

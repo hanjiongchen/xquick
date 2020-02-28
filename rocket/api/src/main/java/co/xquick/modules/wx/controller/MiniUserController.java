@@ -41,11 +41,9 @@ public class MiniUserController {
 
     @GetMapping("/login")
     @ApiOperation("登录")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "paramCode", value = "微信配置参数表code", paramType = "query", dataType = "String"),
-            @ApiImplicitParam(name = "code", value = "小程序换取code", paramType = "query", dataType = "String")
-    })
-    public Result login(@RequestParam String paramCode, @RequestParam String code) {
+    @ApiImplicitParams({@ApiImplicitParam(name = "paramCode", value = "微信配置参数表code", paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "code", value = "小程序换取code", paramType = "query", dataType = "String")})
+    public Result<?> login(@RequestParam String paramCode, @RequestParam String code) {
         // 初始化service
         WxMaService wxService = getWxService(paramCode);
         // todo router如何处理
@@ -57,7 +55,7 @@ public class MiniUserController {
             return new Result<>().ok(session);
         } catch (WxErrorException e) {
             this.logger.error(e.getMessage(), e);
-            return new Result().error(ErrorCode.WX_API_ERROR, e.toString());
+            return new Result<>().error(ErrorCode.WX_API_ERROR, e.toString());
         }
     }
 
@@ -66,7 +64,7 @@ public class MiniUserController {
             @ApiImplicitParam(name = "paramCode", value = "微信配置参数表code", paramType = "query", dataType = "String")
     })
     @GetMapping("/info")
-    public Result info(@RequestParam String paramCode, String sessionKey, String signature, String rawData, String encryptedData, String iv) {
+    public Result<?> info(@RequestParam String paramCode, String sessionKey, String signature, String rawData, String encryptedData, String iv) {
         // 初始化service
         WxMaService wxService = getWxService(paramCode);
         // 用户信息校验
@@ -83,7 +81,7 @@ public class MiniUserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "paramCode", value = "微信配置参数表code", paramType = "query", dataType = "String")
     })
-    public Result phone(@RequestParam String paramCode, String sessionKey, String signature, String rawData, String encryptedData, String iv) {
+    public Result<?> phone(@RequestParam String paramCode, String sessionKey, String signature, String rawData, String encryptedData, String iv) {
         // 初始化service
         WxMaService wxService = getWxService(paramCode);
         // 用户信息校验

@@ -32,7 +32,7 @@
                   </el-input>
                 </el-col>
                 <el-col :span="10" class="login-captcha">
-                  <el-image :src="captchaPath" @click="getCaptcha()">
+                  <el-image :src="captcha.image" @click="getCaptcha()" >
                     <div slot="placeholder" class="image-slot">
                       <i class="el-icon-loading"/>
                     </div>
@@ -55,7 +55,6 @@
 
 <script>
 import Cookies from 'js-cookie'
-import { getUUID } from '@/utils'
 import mixinFormModule from '@/mixins/form-module'
 
 export default {
@@ -73,7 +72,11 @@ export default {
       captchaEnable: false,
       // 登录类型
       type: 10,
-      captchaPath: '',
+      // 验证码
+      captcha: {
+        uuid: '',
+        image: ''
+      },
       dataForm: {
         username: '',
         password: '',
@@ -122,8 +125,14 @@ export default {
     },
     // 获取验证码
     getCaptcha () {
-      this.dataForm.uuid = getUUID()
-      this.captchaPath = `${window.SITE_CONFIG['apiURL']}/auth/captcha?uuid=${this.dataForm.uuid}`
+      this.$http.get(`/auth/captcha`).then(({ data: res }) => {
+        if (res.code !== 0) {
+          return this.$message.error(res.code + ':' + res.msg)
+        } else {
+          this.captcha = res.data
+          this.dataForm.uuid = res.data.uuid
+        }
+      })
     },
     // 表单提交失败
     onFormSubmitError (res) {

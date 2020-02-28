@@ -26,14 +26,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 授权接口
@@ -56,19 +54,15 @@ public class AuthController {
     private SmsLogService smsLogService;
 
     @GetMapping("captcha")
-    @ApiOperation(value = "生成验证码图片", produces = "application/octet-stream")
-    @ApiImplicitParam(paramType = "query", dataType = "string", name = "uuid", required = true)
-    public void captcha(HttpServletResponse response, String uuid) throws IOException {
-        // uuid不能为空
-        AssertUtils.isBlank(uuid, ErrorCode.IDENTIFIER_NOT_NULL);
-
-        // 生成图片验证码
-        BufferedImage image = captchaService.create(uuid);
-        response.setHeader("Cache-Control", "no-store, no-cache");
-        response.setContentType("image/jpeg");
-        ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(image, "jpg", out);
-        out.close();
+    @ApiOperation(value = "生成验证码图片")
+    public Result<?> captcha() {
+        String uuid = UUID.randomUUID().toString();
+        String image = captchaService.createBase64(uuid);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("uuid", uuid);
+        map.put("image", image);
+        // 将key和base64返回给前端
+        return new Result<>().ok(map);
     }
 
     @GetMapping("loginConfig")
