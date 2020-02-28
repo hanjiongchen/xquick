@@ -9,10 +9,10 @@ _注意_ 修改Mapper文件中是否有MySQL特有的查询语句
 
 ## 表命名规范
 
-1. 数据库名称、表名称、字段名称一律小写,用\_分割
-2. 遵守模块名称\_业务名称的形式,比如uc\_user
-3. 关联表使用两个表名连接方式，比如uc\_user\_role
-4. 建议所有表都带上id、deleted、create\_time、update\_time、create\_id、update\_id字段
+1. 数据库名称、表名称、字段名称一律小写,用_分割
+2. 遵守模块名称_业务名称的形式,比如uc_user
+3. 关联表使用两个表名连接方式，比如uc_user_role
+4. 建议所有表都带上id、deleted、create_time、update_time、create_id、update_id等标准字段
 
 ## 主键
 

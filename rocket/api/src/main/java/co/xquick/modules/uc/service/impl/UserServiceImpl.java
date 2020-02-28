@@ -7,7 +7,6 @@ import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.*;
 import co.xquick.booster.util.bcrypt.BCryptPasswordEncoder;
 import co.xquick.booster.validator.AssertUtils;
-import co.xquick.modules.log.LogConst;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.msg.dto.SmsLogDTO;
@@ -96,7 +95,6 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         // 登录日志
         LoginEntity loginLog = new LoginEntity();
         loginLog.setType(login.getType());
-        loginLog.setOperation(LogConst.LoginOperationEnum.LOGIN.value());
         loginLog.setCreateTime(new Date());
         loginLog.setCreateName(login.getUsername());
         loginLog.setIp(HttpContextUtils.getIpAddr(request));

@@ -101,11 +101,11 @@ public class AuthController {
     }
 
     /**
-     * AES解密登录
+     * 加密登录
      * 支持帐号登录、短信登录
      */
     @PostMapping("loginEncrypt")
-    @ApiOperation(value = "帐号登录AES加密")
+    @ApiOperation(value = "加密登录")
     public Result<?> loginEncrypt(HttpServletRequest request, @RequestBody String loginEncrypted) throws UnsupportedEncodingException {
         // 密文转json明文
         String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
@@ -122,7 +122,7 @@ public class AuthController {
      * 支持帐号登录、短信登录
      */
     @PostMapping("login")
-    @ApiOperation(value = "帐号登录")
+    @ApiOperation(value = "登录")
     public Result<?> login(HttpServletRequest request, @RequestBody LoginRequestDTO login) {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);

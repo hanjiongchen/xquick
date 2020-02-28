@@ -31,9 +31,19 @@
             </el-form>
             <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
                 <el-table-column prop="createName" label="用户" header-align="center" align="center" width="150"/>
-                <el-table-column prop="operation" label="操作" header-align="center" align="center" width="100">
+                <el-table-column prop="type" label="类型" header-align="center" align="center" width="140">
                     <template slot-scope="scope">
-                        {{ scope.row.operation === 0 ? '登录' : '退出' }}
+                        <span v-if="scope.row.type === -10">后台退出</span>
+                        <span v-else-if="scope.row.type === -50">APP退出</span>
+                        <span v-else-if="scope.row.type === 10">后台帐号密码登录</span>
+                        <span v-else-if="scope.row.type === 20">后台手机密码登录</span>
+                        <span v-else-if="scope.row.type === 30">后台手机短信登录</span>
+                        <span v-else-if="scope.row.type === 40">后台微信登录</span>
+                        <span v-else-if="scope.row.type === 50">APP帐号密码登录</span>
+                        <span v-else-if="scope.row.type === 60">APP手机密码登录</span>
+                        <span v-else-if="scope.row.type === 70">APP手机短信登录</span>
+                        <span v-else-if="scope.row.type === 80">APP微信登录</span>
+                        <span v-else>{{scope.row.type}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="result" label="结果" sortable="custom" header-align="center" align="center" width="150">

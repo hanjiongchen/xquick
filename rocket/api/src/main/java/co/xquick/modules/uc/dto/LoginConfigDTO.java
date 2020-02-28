@@ -54,6 +54,14 @@ public class LoginConfigDTO implements Serializable {
     private Boolean autoCreate;
 
     @JsonIgnore
+    @ApiModelProperty(value = "最多登录次数")
+    private Integer tryTimesMax;
+
+    @JsonIgnore
+    @ApiModelProperty(value = "超过最大登录次数后锁定时间")
+    private Long loginErrorLockTime;
+
+    @JsonIgnore
     @ApiModelProperty(value = "自动创建用户的角色ids")
     private String autoCreateUserRoleIds;
 

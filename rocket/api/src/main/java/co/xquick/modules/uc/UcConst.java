@@ -128,14 +128,16 @@ public interface UcConst {
         /**
          * 详见name
          */
-        ADMIN_USER_PWD(10, "后台-帐号密码登录"),
-        ADMIN_MOBILE_PWD(20, "后台-手机密码登录"),
-        ADMIN_MOBILE_SMS(30, "后台-手机短信登录"),
-        ADMIN_WECHAT(40, "后台-微信登录"),
-        APP_USER_PWD(50, "APP-帐号密码登录"),
-        APP_MOBILE_PWD(60, "APP-手机密码登录"),
-        APP_MOBILE_SMS(70, "APP-手机短信登录"),
-        APP_WECHAT(80, "APP-微信登录");
+        ADMIN_LOGOUT(-10, "后台退出"),
+        APP_LOGOUT(-50, "APP退出"),
+        ADMIN_USER_PWD(10, "后台帐号密码登录"),
+        ADMIN_MOBILE_PWD(20, "后台手机密码登录"),
+        ADMIN_MOBILE_SMS(30, "后台手机短信登录"),
+        ADMIN_WECHAT(40, "后台微信登录"),
+        APP_USER_PWD(50, "APP帐号密码登录"),
+        APP_MOBILE_PWD(60, "APP手机密码登录"),
+        APP_MOBILE_SMS(70, "APP手机短信登录"),
+        APP_WECHAT(80, "APP微信登录");
 
         private int value;
         private String name;

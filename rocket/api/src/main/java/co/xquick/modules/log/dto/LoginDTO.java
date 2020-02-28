@@ -20,9 +20,6 @@ public class LoginDTO extends BaseDTO {
     @ApiModelProperty(value = "登录类型")
     private Integer type;
 
-    @ApiModelProperty(value = "用户操作  0：用户登录   1：用户退出")
-    private Integer operation;
-
     @ApiModelProperty(value = "登录结果 0 成功，其它错误码")
     private Integer result;
 

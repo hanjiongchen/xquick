@@ -21,10 +21,6 @@ public class LoginEntity extends BaseEntity {
      */
     private Integer type;
     /**
-     * 用户操作   0：用户登录   1：用户退出
-     */
-    private Integer operation;
-    /**
      * 登录结果
      */
     private Integer result;
