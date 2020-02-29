@@ -30,11 +30,14 @@ public class LoginRequestDTO implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
+    @ApiModelProperty(value = "手机号区域")
+    private String mobileArea = "86";
+
     @ApiModelProperty(value = "手机号")
     private String mobile;
 
     @ApiModelProperty(value = "短信验证码")
-    private String code;
+    private String smsCode;
 
     @ApiModelProperty(value = "验证码")
     private String captcha;

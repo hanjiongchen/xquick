@@ -7,6 +7,13 @@ package co.xquick.modules.msg;
  */
 public interface MsgConst {
 
+    // 短信模板-验证
+    public static String SMS_TPL_VERIFY = "VERIFY";
+    // 短信模板-登录
+    public static String SMS_TPL_LOGIN = "LOGIN";
+    // 短信模板-修改密码
+    public static String SMS_TPL_CHANGE_PASSWORD = "CHANGE_PASSWORD";
+
     /**
      * 消息推送服务商
      */

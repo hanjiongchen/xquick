@@ -14,9 +14,11 @@ import co.xquick.modules.msg.service.SmsTplService;
 import co.xquick.modules.msg.sms.AbstractSmsService;
 import co.xquick.modules.msg.sms.SmsFactory;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -40,6 +42,14 @@ public class SmsLogServiceImpl extends CrudServiceImpl<SmsLogDao, SmsLogEntity, 
                 .like(ParamUtils.isNotEmpty(params.get("result")), "result", params.get("result"))
                 .eq(ParamUtils.isNotEmpty(params.get("status")), "status", params.get("status"))
                 .eq(ParamUtils.isNotEmpty(params.get("mobile")), "mobile", params.get("mobile"));
+    }
+
+    /**
+     * 消费短信
+     */
+    @Override
+    public void consumeById(Serializable id) {
+        update(currentModel(), new UpdateWrapper<SmsLogEntity>().set("consumed", 1).eq("id", id));
     }
 
     @Override
@@ -68,9 +78,9 @@ public class SmsLogServiceImpl extends CrudServiceImpl<SmsLogDao, SmsLogEntity, 
     }
 
     @Override
-    public SmsLogDTO findLastLogByTplCode(String templateCode, String mobile) {
+    public SmsLogDTO findLastLogByTplCode(String tplCode, String mobile) {
         return ConvertUtils.sourceToTarget(baseMapper.selectOne(new QueryWrapper<SmsLogEntity>()
-                .eq("tpl_code", templateCode)
+                .eq("tpl_code", tplCode)
                 .eq("mobile", mobile)
                 .eq("status", 1)
                 .eq("consumed", 0)

@@ -5,6 +5,8 @@ import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.dto.SmsSendRequestDTO;
 import co.xquick.modules.msg.entity.SmsLogEntity;
 
+import java.io.Serializable;
+
 /**
  * 短信发送记录
  *
@@ -16,6 +18,11 @@ public interface SmsLogService extends CrudService<SmsLogEntity, SmsLogDTO> {
      * 发送短信
      */
     void send(SmsSendRequestDTO smsSendRequest);
+
+    /**
+     * 消费短信
+     */
+    void consumeById(Serializable id);
 
     /**
      * 通过模板id和手机号找最后一次发送记录

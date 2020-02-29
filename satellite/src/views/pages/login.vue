@@ -41,15 +41,19 @@
             <!-- 手机号登录 -->
             <template v-else-if="dataForm.type === 30">
               <el-form-item prop="mobile">
-                <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11"/>
+                <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
+                  <el-select v-model="dataForm.mobileArea" slot="prepend">
+                    <el-option value="86" label="86"/>
+                  </el-select>
+                </el-input>
               </el-form-item>
               <el-form-item prop="sms">
                 <el-row :gutter="20">
                   <el-col :span="14">
-                    <el-input v-model="dataForm.code" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
+                    <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
                   </el-col>
                   <el-col :span="10" class="login-captcha">
-                    <el-button type="primary" @click="smsSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
+                    <el-button type="primary" @click="smsCodeSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -115,6 +119,7 @@ export default {
         username: '',
         password: '',
         mobile: '',
+        mobileArea: '86',
         code: '',
         uuid: '',
         captcha: '',
@@ -139,7 +144,7 @@ export default {
         mobile: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        code: [
+        smsCode: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -185,7 +190,7 @@ export default {
       })
     },
     // 发送短信验证码
-    smsSendHandle () {
+    smsCodeSendHandle () {
       if (this.smsSendTimeout < 60) {
         return
       }
@@ -195,17 +200,17 @@ export default {
           this.formLoading = false
           return false
         }
-        this.$http.post(`/auth/sendLoginSms`, { 'mobile': this.dataForm.mobile, 'tplCode': 'LOGIN' }).then(({ data: res }) => {
+        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'LOGIN' }).then(({ data: res }) => {
           if (res.code !== 0) {
             return this.$message.error(res.code + ':' + res.msg)
           } else {
             this.$message.success('短信发送成功')
             // 开始倒计时
-            const time = setInterval(() => {
-              this.smsSendTimeout--
-              if (this.smsSendTimeout <= 0) {
+            this.smsSendTimeout = 60
+            const timer = window.setInterval(() => {
+              if (this.smsSendTimeout-- <= 0) {
                 this.smsSendTimeout = 60
-                clearInterval(time)
+                window.clearInterval(timer)
               }
             }, 1000)
           }
@@ -218,7 +223,7 @@ export default {
     // 表单提交失败
     onFormSubmitError (res) {
       // 刷新验证码
-      if (this.captchaEnable) {
+      if (this.loginConfig.captcha) {
         this.getCaptcha()
       }
       this.$message.error(res.msg)
@@ -233,3 +238,12 @@ export default {
   }
 }
 </script>
+
+<style>
+  .el-select .el-input {
+    width: 100px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+</style>

@@ -47,6 +47,7 @@
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
+            <el-button v-if="$hasPermission('sched:taskLog:page')" type="text" size="small" @click="logHandle(scope.row.id)">{{ $t('schedule.log') }}</el-button>
             <el-dropdown trigger="click" @command="editActionHandler" class="action-dropdown">
               <span class="el-dropdown-link">{{ $t('handle') }}<i class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu slot="dropdown">

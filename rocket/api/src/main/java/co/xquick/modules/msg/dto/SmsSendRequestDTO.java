@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -19,6 +20,10 @@ import java.io.Serializable;
 @ApiModel(value = "短信发送请求")
 public class SmsSendRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
+
+	@ApiModelProperty(value = "手机号区域", required = true)
+	@NotBlank(message="手机号区域不能为空", groups = AddGroup.class)
+	private String mobileArea;
 
 	@ApiModelProperty(value = "手机号", required = true)
 	@NotBlank(message="手机号不能为空", groups = AddGroup.class)

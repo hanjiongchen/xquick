@@ -3,12 +3,14 @@ package co.xquick.modules.uc.service.impl;
 import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
+import co.xquick.booster.pojo.Result;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.*;
 import co.xquick.booster.util.bcrypt.BCryptPasswordEncoder;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
+import co.xquick.modules.msg.MsgConst;
 import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
@@ -91,7 +93,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
-    public Map<String, Object> login(HttpServletRequest request, LoginRequestDTO login) {
+    public Result<?> login(HttpServletRequest request, LoginRequestDTO login) {
         // 登录日志
         LoginEntity loginLog = new LoginEntity();
         loginLog.setType(login.getType());
@@ -137,7 +139,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                     // 参数为空
                     loginResult = ErrorCode.ERROR_REQUEST;
                 } else {
-                    user = getByMobile(login.getMobile());
+                    user = getByMobile(login.getMobileArea(), login.getMobile());
                     if (user == null) {
                         // 帐号不存在
                         loginResult = ErrorCode.ACCOUNT_NOT_EXIST;
@@ -151,7 +153,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                 }
             } else if (LoginTypeEnum.ADMIN_MOBILE_SMS.value() == login.getType() || LoginTypeEnum.APP_MOBILE_SMS.value() == login.getType()) {
                 // 手机号验证码登录
-                if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getCode())) {
+                if (StringUtils.isEmpty(login.getMobile()) || StringUtils.isEmpty(login.getSmsCode())) {
                     // 参数为空
                     loginResult = ErrorCode.ERROR_REQUEST;
                 } else {
@@ -164,8 +166,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                         loginResult = ErrorCode.ACCOUNT_DISABLE;
                     } else {
                         //  校验验证码
-                        SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode("LOGIN", login.getMobile());
-                        if (null == lastSmsLog || !login.getCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
+                        SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_LOGIN, login.getMobile());
+                        if (null == lastSmsLog || !login.getSmsCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
                             // 验证码错误,找不到验证码
                             loginResult = ErrorCode.SMS_CODE_ERROR;
                         } else {
@@ -174,8 +176,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                                 loginResult = ErrorCode.SMS_CODE_EXPIRED;
                             }
                             // 将短信消费掉
-                            lastSmsLog.setConsumed(1);
-                            smsLogService.updateDto(lastSmsLog);
+                            smsLogService.consumeById(lastSmsLog.getId());
                         }
                     }
                 }
@@ -213,10 +214,10 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             map.put(Constant.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
             map.put("expire", loginConfig.getExpire());
             map.put("user", user);
-            return map;
+            return new Result<>().ok(map);
         } else {
             // 登录失败
-            throw new XquickException(loginResult);
+            return new Result<>().error(loginResult);
         }
     }
 
@@ -227,9 +228,14 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
-    public UserDTO getByMobile(String mobile) {
-        UserEntity entity = baseMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobile", mobile).last("limit 1"));
+    public UserDTO getByMobile(String mobileArea, String mobile) {
+        UserEntity entity = baseMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobileArea", mobileArea).eq("mobile", mobile).last("limit 1"));
         return ConvertUtils.sourceToTarget(entity, currentDtoClass());
+    }
+
+    @Override
+    public UserDTO getByMobile(String mobile) {
+        return getByMobile("86", mobile);
     }
 
     @Override

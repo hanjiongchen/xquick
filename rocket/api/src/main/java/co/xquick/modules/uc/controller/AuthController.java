@@ -75,10 +75,10 @@ public class AuthController {
         return new Result<>().ok(loginConfig);
     }
 
-    @PostMapping("sendLoginSms")
-    @ApiOperation("发送登录验证码短信")
-    @LogOperation("发送登录验证码短信")
-    public Result<?> sendLoginSms(@RequestBody SmsSendRequestDTO dto) {
+    @PostMapping("sendSmsCode")
+    @ApiOperation("发送验证码短信")
+    @LogOperation("发送验证码短信")
+    public Result<?> sendSmsCode(@RequestBody SmsSendRequestDTO dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
         // 先校验手机号是否1分钟内发送过
@@ -108,7 +108,7 @@ public class AuthController {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
 
-        return new Result<>().ok(userService.login(request, login));
+        return userService.login(request, login);
     }
 
     /**
@@ -121,7 +121,7 @@ public class AuthController {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
 
-        return new Result<>().ok(userService.login(request, login));
+        return userService.login(request, login);
     }
 
 }

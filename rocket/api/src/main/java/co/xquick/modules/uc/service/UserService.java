@@ -1,5 +1,6 @@
 package co.xquick.modules.uc.service;
 
+import co.xquick.booster.pojo.Result;
 import co.xquick.booster.service.CrudService;
 import co.xquick.modules.uc.dto.LoginRequestDTO;
 import co.xquick.modules.uc.dto.UserDTO;
@@ -19,7 +20,7 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
     /**
      * 登录
      */
-    Map<String, Object> login(HttpServletRequest request, LoginRequestDTO loginDTO);
+    Result<?> login(HttpServletRequest request, LoginRequestDTO loginDTO);
 
     /**
      * 通过用户名获取用户
@@ -30,6 +31,11 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
      * 通过手机号获取用户
      */
     UserDTO getByMobile(String mobile);
+
+    /**
+     * 通过手机号区域和手机号获取用户
+     */
+    UserDTO getByMobile(String mobileArea, String mobile);
 
     /**
      * 修改状态

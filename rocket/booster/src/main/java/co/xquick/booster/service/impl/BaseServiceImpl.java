@@ -53,7 +53,7 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> implements BaseService<T> 
 
     @Override
     public boolean logicDeleteById(Serializable id) {
-        return SqlHelper.retBool(getBaseMapper().deleteByIdWithFill(currentModel(),id));
+        return SqlHelper.retBool(getBaseMapper().deleteByIdWithFill(currentModel(), id));
     }
 
     @Override
