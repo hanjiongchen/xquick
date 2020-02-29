@@ -2,13 +2,13 @@ package co.xquick.modules.uc.service;
 
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.service.CrudService;
-import co.xquick.modules.uc.dto.LoginRequestDTO;
+import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
+import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.UserDTO;
 import co.xquick.modules.uc.entity.UserEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户
@@ -20,7 +20,12 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
     /**
      * 登录
      */
-    Result<?> login(HttpServletRequest request, LoginRequestDTO loginDTO);
+    Result<?> login(HttpServletRequest httpServletRequest, LoginRequest request);
+
+    /**
+     * 通过短信验证码修改密码
+     */
+    Result<?> changePasswordBySmsCode(ChangePasswordBySmsCodeRequest request);
 
     /**
      * 通过用户名获取用户

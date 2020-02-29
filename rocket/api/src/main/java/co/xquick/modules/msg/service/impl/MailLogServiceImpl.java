@@ -3,7 +3,7 @@ package co.xquick.modules.msg.service.impl;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.modules.msg.dao.MailLogDao;
 import co.xquick.modules.msg.dto.MailLogDTO;
-import co.xquick.modules.msg.dto.MailSendRequestDTO;
+import co.xquick.modules.msg.dto.MailSendRequest;
 import co.xquick.modules.msg.email.EmailUtils;
 import co.xquick.modules.msg.entity.MailLogEntity;
 import co.xquick.modules.msg.service.MailLogService;
@@ -43,7 +43,7 @@ public class MailLogServiceImpl extends CrudServiceImpl<MailLogDao, MailLogEntit
      * 发送短信
      */
     @Override
-    public boolean send(MailSendRequestDTO dto) {
+    public boolean send(MailSendRequest dto) {
         return emailUtils.sendMail(dto);
     }
 

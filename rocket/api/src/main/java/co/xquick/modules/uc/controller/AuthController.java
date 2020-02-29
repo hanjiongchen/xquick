@@ -15,6 +15,7 @@ import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
+import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
 import co.xquick.modules.uc.dto.LoginConfigDTO;
 import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.service.CaptchaService;
@@ -117,11 +118,11 @@ public class AuthController {
      */
     @PostMapping("login")
     @ApiOperation(value = "登录")
-    public Result<?> login(HttpServletRequest request, @RequestBody LoginRequest login) {
+    public Result<?> login(HttpServletRequest httpServletRequest, @RequestBody LoginRequest request) {
         // 效验数据
-        ValidatorUtils.validateEntity(login, DefaultGroup.class);
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
 
-        return userService.login(request, login);
+        return userService.login(httpServletRequest, request);
     }
 
     /**
@@ -130,10 +131,10 @@ public class AuthController {
      */
     @PostMapping("changePasswordBySmsCode")
     @ApiOperation(value = "通过短信验证码修改密码")
-    public Result<?> changePasswordBySmsCode(HttpServletRequest request, @RequestBody LoginRequest login) {
+    public Result<?> changePasswordBySmsCode(@RequestBody ChangePasswordBySmsCodeRequest request) {
         // 效验数据
-        ValidatorUtils.validateEntity(login, DefaultGroup.class);
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
 
-        return userService.login(request, login);
+        return userService.changePasswordBySmsCode(request);
     }
 }

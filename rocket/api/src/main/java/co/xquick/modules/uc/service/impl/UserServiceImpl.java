@@ -18,6 +18,7 @@ import co.xquick.modules.uc.UcConst.LoginTypeEnum;
 import co.xquick.modules.uc.UcConst.UserStatusEnum;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.UserDao;
+import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
 import co.xquick.modules.uc.dto.LoginConfigDTO;
 import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.UserDTO;
@@ -90,6 +91,40 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             }
         });
         return qw;
+    }
+
+    @Override
+    public Result<?> changePasswordBySmsCode(ChangePasswordBySmsCodeRequest request) {
+        // 操作结果
+        int resultCode = 0;
+        // 登录用户
+        UserDTO user = getByMobile(request.getMobileArea(), request.getMobile());
+        if (user == null) {
+            // 帐号不存在
+            resultCode = ErrorCode.ACCOUNT_NOT_EXIST;
+        } else if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
+            // 帐号锁定
+            resultCode = ErrorCode.ACCOUNT_DISABLE;
+        } else {
+            //  校验验证码
+            SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_CHANGE_PASSWORD, request.getMobile());
+            if (null == lastSmsLog || !request.getSmsCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
+                // 验证码错误,找不到验证码
+                resultCode = ErrorCode.SMS_CODE_ERROR;
+            } else {
+                // 验证码正确,校验有效时间
+                if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > 15 * 60 * 1000) {
+                    resultCode = ErrorCode.SMS_CODE_EXPIRED;
+                } else {
+                    // 验证成功,修改密码
+                    updatePassword(user.getId(), request.getPassword());
+                }
+                // 将短信消费掉
+                smsLogService.consumeById(lastSmsLog.getId());
+            }
+        }
+        // 验证短信验证码
+        return new Result<>().setCode(resultCode);
     }
 
     @Override

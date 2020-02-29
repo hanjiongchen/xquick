@@ -41,13 +41,8 @@ public class SmsLogController {
 
     @GetMapping("list")
     @ApiOperation("列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.LIMIT, value = "最大显示记录数", paramType = "query", required = true, dataType = "int"),
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String"),
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String")
-    })
     @RequiresPermissions("msg:smsLog:list")
-    public Result list(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SmsLogDTO> list = smsLogService.listDto(params);
 
         return new Result<>().ok(list);
@@ -55,14 +50,8 @@ public class SmsLogController {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int"),
-            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int"),
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String"),
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String")
-    })
     @RequiresPermissions("msg:smsLog:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SmsLogDTO> page = smsLogService.pageDto(params);
 
         return new Result<>().ok(page);
@@ -71,7 +60,7 @@ public class SmsLogController {
     @GetMapping("info")
     @ApiOperation("信息")
     @RequiresPermissions("msg:smsLog:info")
-    public Result info(@RequestParam Long id) {
+    public Result<?> info(@RequestParam Long id) {
         SmsLogDTO data = smsLogService.getDtoById(id);
 
         return new Result<>().ok(data);
@@ -81,39 +70,39 @@ public class SmsLogController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("msg:smsLog:save")
-    public Result save(@RequestBody SmsLogDTO dto) {
+    public Result<?> save(@RequestBody SmsLogDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
         smsLogService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("msg:smsLog:update")
-    public Result update(@RequestBody SmsLogDTO dto) {
+    public Result<?> update(@RequestBody SmsLogDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
         smsLogService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("msg:smsLog:delete")
-    public Result delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestBody List<Long> ids) {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         smsLogService.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
 
     @GetMapping("export")
@@ -130,13 +119,13 @@ public class SmsLogController {
     @ApiOperation("发送短信")
     @LogOperation("发送短信")
     @RequiresPermissions("msg:smsLog:save")
-    public Result send(@RequestBody SmsSendRequest dto) {
+    public Result<?> send(@RequestBody SmsSendRequest dto) {
         // 效验数据
-        ValidatorUtils.validateEntity(dto, AddGroup.class);
+        ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
         smsLogService.send(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
 }

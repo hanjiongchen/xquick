@@ -10,7 +10,7 @@ import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.msg.dto.PushLogDTO;
-import co.xquick.modules.msg.dto.PushSendRequestDTO;
+import co.xquick.modules.msg.dto.PushSendRequest;
 import co.xquick.modules.msg.push.AbstractPushService;
 import co.xquick.modules.msg.push.PushConfig;
 import co.xquick.modules.msg.push.PushFactory;
@@ -45,7 +45,7 @@ public class PushLogController {
     @PostMapping("/send")
     @ApiOperation("发送消息推送")
     @LogOperation("发送消息推送")
-    public Result send(@RequestBody PushSendRequestDTO dto) {
+    public Result send(@RequestBody PushSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
 

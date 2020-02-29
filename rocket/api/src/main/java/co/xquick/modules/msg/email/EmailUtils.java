@@ -6,7 +6,7 @@ import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
 import co.xquick.common.util.TemplateUtils;
-import co.xquick.modules.msg.dto.MailSendRequestDTO;
+import co.xquick.modules.msg.dto.MailSendRequest;
 import co.xquick.modules.msg.dto.MailTplDTO;
 import co.xquick.modules.msg.entity.MailLogEntity;
 import co.xquick.modules.msg.service.MailLogService;
@@ -74,7 +74,7 @@ public class EmailUtils {
      * @param mailSendRequest 邮件发送请求
      * @return true：成功   false：失败
      */
-    public boolean sendMail(MailSendRequestDTO mailSendRequest) {
+    public boolean sendMail(MailSendRequest mailSendRequest) {
         MailTplDTO mailTpl = mailTplService.getByCode(mailSendRequest.getTplCode());
         if (null == mailTpl) {
             throw new XquickException(ErrorCode.MAIL_CONFIG_ERROR);

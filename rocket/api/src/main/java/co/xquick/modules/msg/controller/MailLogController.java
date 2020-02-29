@@ -7,7 +7,7 @@ import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.msg.dto.MailLogDTO;
-import co.xquick.modules.msg.dto.MailSendRequestDTO;
+import co.xquick.modules.msg.dto.MailSendRequest;
 import co.xquick.modules.msg.service.MailLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -66,7 +66,7 @@ public class MailLogController {
     @ApiOperation("发送邮件")
     @LogOperation("发送邮件")
     @RequiresPermissions("msg:mailLog:save")
-    public Result send(@RequestBody MailSendRequestDTO dto) {
+    public Result send(@RequestBody MailSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
 
