@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "邮件发送请求")
-public class MailSendRequestDTO implements Serializable {
+public class MailSendRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "模板编码", required = true)

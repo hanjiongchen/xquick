@@ -2,7 +2,7 @@ package co.xquick.modules.msg.service;
 
 import co.xquick.booster.service.CrudService;
 import co.xquick.modules.msg.dto.SmsLogDTO;
-import co.xquick.modules.msg.dto.SmsSendRequestDTO;
+import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.entity.SmsLogEntity;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ public interface SmsLogService extends CrudService<SmsLogEntity, SmsLogDTO> {
     /**
      * 发送短信
      */
-    void send(SmsSendRequestDTO smsSendRequest);
+    void send(SmsSendRequest smsSendRequest);
 
     /**
      * 消费短信

@@ -12,11 +12,11 @@ import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.AESUtils;
 import co.xquick.modules.msg.dto.SmsLogDTO;
-import co.xquick.modules.msg.dto.SmsSendRequestDTO;
+import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.dto.LoginConfigDTO;
-import co.xquick.modules.uc.dto.LoginRequestDTO;
+import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.service.CaptchaService;
 import co.xquick.modules.uc.service.UserService;
 import io.swagger.annotations.Api;
@@ -78,7 +78,7 @@ public class AuthController {
     @PostMapping("sendSmsCode")
     @ApiOperation("发送验证码短信")
     @LogOperation("发送验证码短信")
-    public Result<?> sendSmsCode(@RequestBody SmsSendRequestDTO dto) {
+    public Result<?> sendSmsCode(@RequestBody SmsSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
         // 先校验手机号是否1分钟内发送过
@@ -104,7 +104,7 @@ public class AuthController {
         // 密文转json明文
         String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
         // json明文转实体
-        LoginRequestDTO login = JacksonUtils.jsonToPojo(loginRaw, LoginRequestDTO.class);
+        LoginRequest login = JacksonUtils.jsonToPojo(loginRaw, LoginRequest.class);
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
 
@@ -117,11 +117,23 @@ public class AuthController {
      */
     @PostMapping("login")
     @ApiOperation(value = "登录")
-    public Result<?> login(HttpServletRequest request, @RequestBody LoginRequestDTO login) {
+    public Result<?> login(HttpServletRequest request, @RequestBody LoginRequest login) {
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
 
         return userService.login(request, login);
     }
 
+    /**
+     * 通过短信验证码修改密码
+     * 忘记密码功能,通过短信验证码找回
+     */
+    @PostMapping("changePasswordBySmsCode")
+    @ApiOperation(value = "通过短信验证码修改密码")
+    public Result<?> changePasswordBySmsCode(HttpServletRequest request, @RequestBody LoginRequest login) {
+        // 效验数据
+        ValidatorUtils.validateEntity(login, DefaultGroup.class);
+
+        return userService.login(request, login);
+    }
 }

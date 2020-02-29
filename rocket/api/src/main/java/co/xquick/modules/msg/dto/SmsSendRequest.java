@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "短信发送请求")
-public class SmsSendRequestDTO implements Serializable {
+public class SmsSendRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "手机号区域", required = true)

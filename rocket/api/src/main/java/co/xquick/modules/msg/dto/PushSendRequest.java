@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "消息推送发送请求")
-public class PushSendRequestDTO implements Serializable {
+public class PushSendRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

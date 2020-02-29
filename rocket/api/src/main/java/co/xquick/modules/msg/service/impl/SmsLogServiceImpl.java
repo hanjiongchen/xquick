@@ -6,7 +6,7 @@ import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.ParamUtils;
 import co.xquick.modules.msg.dao.SmsLogDao;
 import co.xquick.modules.msg.dto.SmsLogDTO;
-import co.xquick.modules.msg.dto.SmsSendRequestDTO;
+import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.dto.SmsTplDTO;
 import co.xquick.modules.msg.entity.SmsLogEntity;
 import co.xquick.modules.msg.service.SmsLogService;
@@ -53,7 +53,7 @@ public class SmsLogServiceImpl extends CrudServiceImpl<SmsLogDao, SmsLogEntity, 
     }
 
     @Override
-    public void send(SmsSendRequestDTO dto) {
+    public void send(SmsSendRequest dto) {
         // 获得template
         SmsTplDTO smsTemplate = smsTemplateService.getByCode(dto.getTplCode());
         if (null == smsTemplate) {

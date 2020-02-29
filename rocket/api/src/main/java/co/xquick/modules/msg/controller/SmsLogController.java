@@ -11,7 +11,7 @@ import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.msg.dto.SmsLogDTO;
-import co.xquick.modules.msg.dto.SmsSendRequestDTO;
+import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.excel.SmsLogExcel;
 import co.xquick.modules.msg.service.SmsLogService;
 import io.swagger.annotations.Api;
@@ -130,7 +130,7 @@ public class SmsLogController {
     @ApiOperation("发送短信")
     @LogOperation("发送短信")
     @RequiresPermissions("msg:smsLog:save")
-    public Result send(@RequestBody SmsSendRequestDTO dto) {
+    public Result send(@RequestBody SmsSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
 

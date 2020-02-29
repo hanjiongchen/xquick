@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "登录请求")
-public class LoginRequestDTO implements Serializable {
+public class LoginRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "登录类型", required = true)

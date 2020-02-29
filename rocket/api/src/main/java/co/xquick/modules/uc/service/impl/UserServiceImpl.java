@@ -19,7 +19,7 @@ import co.xquick.modules.uc.UcConst.UserStatusEnum;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.UserDao;
 import co.xquick.modules.uc.dto.LoginConfigDTO;
-import co.xquick.modules.uc.dto.LoginRequestDTO;
+import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.UserDTO;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.enums.GenderEnum;
@@ -93,7 +93,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
-    public Result<?> login(HttpServletRequest request, LoginRequestDTO login) {
+    public Result<?> login(HttpServletRequest request, LoginRequest login) {
         // 登录日志
         LoginEntity loginLog = new LoginEntity();
         loginLog.setType(login.getType());
