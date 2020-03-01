@@ -31,7 +31,9 @@ export const pageRoutes = [
       next()
     }
   },
-  { path: '/login', component: () => import('@/views/pages/login'), name: 'login', meta: { title: '登录' } }
+  { path: '/login', component: () => import('@/views/pages/login'), name: 'login', meta: { title: '登录' } },
+  { path: '/register', component: () => import('@/views/pages/register'), name: 'register', meta: { title: '注册' } },
+  { path: '/forgetPassword', component: () => import('@/views/pages/forgetPassword'), name: 'forgetPassword', meta: { title: '忘记密码' } }
   // 添加其他独立页面
 ]
 

@@ -6,40 +6,8 @@
           <h2 class="login-brand">{{ $t('brand.full') }}</h2>
         </div>
         <div class="login-body">
-          <!--<h3 class="login-title">{{ $t('login.title') }}</h3>-->
+          <h3 class="login-title">忘记密码</h3>
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon @keyup.enter.native="dataFormSubmitHandle()">
-            <el-form-item>
-              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
-                <el-radio-button :label="10">帐号密码登录</el-radio-button>
-                <el-radio-button :label="30">手机号登录</el-radio-button>
-                <el-radio-button :label="40">微信登录</el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <!-- 帐号密码登录 -->
-            <template v-if="dataForm.type === 10">
-              <el-form-item prop="username">
-                <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('login.username')"/>
-              </el-form-item>
-              <el-form-item prop="password">
-                <el-input v-model="dataForm.password" type="password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
-              </el-form-item>
-              <el-form-item prop="captcha" v-if="loginConfig.captcha">
-                <el-row :gutter="20">
-                  <el-col :span="14">
-                    <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
-                    </el-input>
-                  </el-col>
-                  <el-col :span="10" class="login-captcha">
-                    <el-image :src="captcha.image" @click="getCaptcha()" ><div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div></el-image>
-                  </el-col>
-                </el-row>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
-              </el-form-item>
-            </template>
-            <!-- 手机号登录 -->
-            <template v-else-if="dataForm.type === 30">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                   <el-select v-model="dataForm.mobileArea" slot="prepend">
@@ -57,6 +25,9 @@
                   </el-col>
                 </el-row>
               </el-form-item>
+              <el-form-item prop="password">
+                <el-input v-model="dataForm.password" type="password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
+              </el-form-item>
               <el-form-item prop="captcha" v-if="loginConfig.captcha">
                 <el-row :gutter="20">
                   <el-col :span="14">
@@ -71,18 +42,11 @@
               <el-form-item>
                 <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
               </el-form-item>
-            </template>
-            <!-- 微信登录 -->
-            <template v-else-if="dataForm.type === 40">
-            </template>
           </el-form>
           <div>
-            <el-link href="#/register" :underline="false" type="info" style="float: left;">注册</el-link>
-            <el-link href="#/forgetPassword" :underline="false" type="info" style="float: right;">忘记密码</el-link>
+            <el-link :underline="false" type="info" style="float: left;">注册</el-link>
+            <el-link :underline="false" type="info" style="float: right;">已有帐号登录</el-link>
           </div>
-        </div>
-        <div class="login-footer">
-          <p>{{ $t('login.copyright') }}<el-link href="#" :underline="false" target="_blank" type="info">{{ $t('brand.owner') }}</el-link></p>
         </div>
       </main>
     </div>
@@ -120,7 +84,7 @@ export default {
         password: '',
         mobile: '',
         mobileArea: '86',
-        smsCode: '',
+        code: '',
         uuid: '',
         captcha: '',
         // 登录类型
@@ -129,6 +93,7 @@ export default {
     }
   },
   computed: {
+    // 有验证码时候的验证
     dataRule () {
       return {
         username: [
