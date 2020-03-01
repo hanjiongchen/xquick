@@ -18,6 +18,7 @@ import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
 import co.xquick.modules.uc.dto.LoginConfigDTO;
 import co.xquick.modules.uc.dto.LoginRequest;
+import co.xquick.modules.uc.dto.RegisterRequest;
 import co.xquick.modules.uc.service.CaptchaService;
 import co.xquick.modules.uc.service.UserService;
 import io.swagger.annotations.Api;
@@ -136,5 +137,17 @@ public class AuthController {
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
 
         return userService.changePasswordBySmsCode(request);
+    }
+
+    /**
+     * 注册
+     */
+    @PostMapping("register")
+    @ApiOperation(value = "注册")
+    public Result<?> register(@RequestBody RegisterRequest request) {
+        // 效验数据
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
+
+        return userService.register(request);
     }
 }

@@ -61,6 +61,10 @@ public class UserEntity extends BaseEntity {
      */
     private String mobile;
     /**
+     * 手机号区域
+     */
+    private String mobileArea;
+    /**
      * 部门ID
      */
     private Long deptId;

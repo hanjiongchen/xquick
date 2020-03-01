@@ -18,10 +18,7 @@ import co.xquick.modules.uc.UcConst.LoginTypeEnum;
 import co.xquick.modules.uc.UcConst.UserStatusEnum;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.UserDao;
-import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
-import co.xquick.modules.uc.dto.LoginConfigDTO;
-import co.xquick.modules.uc.dto.LoginRequest;
-import co.xquick.modules.uc.dto.UserDTO;
+import co.xquick.modules.uc.dto.*;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.enums.GenderEnum;
 import co.xquick.modules.uc.service.*;
@@ -94,6 +91,41 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
+    public Result<?> register(RegisterRequest request) {
+        // 操作结果
+        int resultCode = 0;
+        // 登录用户
+        if (isMobileExisted(request.getMobile(), null)) {
+            return new Result<>().error(ErrorCode.HAS_DUPLICATED_RECORD, "手机号已注册");
+        } else if (isUsernameExisted(request.getUsername(), null)) {
+            return new Result<>().error(ErrorCode.HAS_DUPLICATED_RECORD, "用户名已注册");
+        } else {
+            //  校验验证码
+            SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_REGISTER, request.getMobile());
+            if (null == lastSmsLog || !request.getSmsCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
+                // 验证码错误,找不到验证码
+                resultCode = ErrorCode.SMS_CODE_ERROR;
+            } else {
+                // 验证码正确,校验有效时间
+                if (DateUtils.timeDiff(lastSmsLog.getCreateTime()) > 15 * 60 * 1000) {
+                    resultCode = ErrorCode.SMS_CODE_EXPIRED;
+                } else {
+                    // 验证成功,创建用户
+                    UserEntity entity = new UserEntity();
+                    entity.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+                    entity.setUsername(request.getUsername());
+                    entity.setMobile(request.getMobile());
+                    entity.setMobileArea(request.getMobileArea());
+                    save(entity);
+                }
+                // 将短信消费掉
+                smsLogService.consumeById(lastSmsLog.getId());
+            }
+            return new Result<>().setCode(resultCode);
+        }
+    }
+
+    @Override
     public Result<?> changePasswordBySmsCode(ChangePasswordBySmsCodeRequest request) {
         // 操作结果
         int resultCode = 0;
@@ -123,7 +155,6 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                 smsLogService.consumeById(lastSmsLog.getId());
             }
         }
-        // 验证短信验证码
         return new Result<>().setCode(resultCode);
     }
 

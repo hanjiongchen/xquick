@@ -4,6 +4,7 @@ import co.xquick.booster.pojo.Result;
 import co.xquick.booster.service.CrudService;
 import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
 import co.xquick.modules.uc.dto.LoginRequest;
+import co.xquick.modules.uc.dto.RegisterRequest;
 import co.xquick.modules.uc.dto.UserDTO;
 import co.xquick.modules.uc.entity.UserEntity;
 
@@ -26,6 +27,11 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
      * 通过短信验证码修改密码
      */
     Result<?> changePasswordBySmsCode(ChangePasswordBySmsCodeRequest request);
+
+    /**
+     * 注册
+     */
+    Result<?> register(RegisterRequest request);
 
     /**
      * 通过用户名获取用户
