@@ -112,7 +112,7 @@
             <el-form-item prop="remark" :label="$t('base.remark')">
                 <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')" maxlength="500" type="textarea" :disabled="mode === 'view'"/>
             </el-form-item>
-            <el-form-item prop="headUrl" :label="$t('user.head')">
+            <el-form-item prop="avatar" :label="$t('user.head')">
                 <el-upload
                         ref="upload"
                         :class="{hide:mode === 'view' || hideUpload}"
@@ -173,6 +173,7 @@ export default {
         deptId: '0',
         deptName: '',
         password: '',
+        birthday: '',
         confirmPassword: '',
         realName: '',
         gender: 0,
@@ -181,8 +182,8 @@ export default {
         roleIdList: [],
         status: 1,
         type: '',
-        headUrl: '',
-        nickName: '',
+        avatar: '',
+        nickname: '',
         idNo: '',
         address: '',
         remark: '',
@@ -192,7 +193,6 @@ export default {
       typeList: [
         { dictName: '系统管理员', dictValue: 10 },
         { dictName: '单位管理员', dictValue: 20 },
-        { dictName: '司机', dictValue: 30 },
         { dictName: 'App用户', dictValue: 100 }
       ]
     }

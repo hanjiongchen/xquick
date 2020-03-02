@@ -3,7 +3,6 @@ package co.xquick.modules.uc.dto;
 import co.xquick.booster.pojo.BaseDTO;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
-import co.xquick.modules.uc.enums.GenderEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,6 +12,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +36,7 @@ public class UserDTO extends BaseDTO {
     private String password;
 
     @ApiModelProperty(value = "姓名")
-    private String realname;
+    private String realName;
 
     @ApiModelProperty(value = "昵称")
     private String nickname;
@@ -48,11 +48,14 @@ public class UserDTO extends BaseDTO {
     private String address;
 
     @ApiModelProperty(value = "头像")
-    private String imgs;
+    private String avatar;
+
+    @ApiModelProperty(value = "生日")
+    private Date birthday;
 
     @ApiModelProperty(value = "性别", required = true)
-    // @Range(min = 0, max = 2, message = "性别取值0-2", groups = DefaultGroup.class)
-    private GenderEnum gender;
+    @Range(min = 0, max = 2, message = "性别取值0-2", groups = DefaultGroup.class)
+    private Integer gender;
 
     @ApiModelProperty(value = "邮箱")
     @Email(message = "{email.error}", groups = DefaultGroup.class)

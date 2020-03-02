@@ -54,7 +54,6 @@
                         <el-tag v-if="scope.row.type === 0">超级管理员</el-tag>
                         <el-tag v-else-if="scope.row.type === 10">系统管理员</el-tag>
                         <el-tag v-else-if="scope.row.type === 20">单位管理员</el-tag>
-                        <el-tag v-else-if="scope.row.type === 30">司机</el-tag>
                         <el-tag v-else-if="scope.row.type === 100">App用户</el-tag>
                     </template>
                 </el-table-column>
