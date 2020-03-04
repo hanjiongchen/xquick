@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -138,7 +139,38 @@ public class HttpContextUtils {
     /**
      * 获取请求中的参数
      */
+    public static String getRequestParameter(String name) {
+        HttpServletRequest request = getHttpServletRequest();
+        return getRequestParameter(request, name);
+    }
+
+    /**
+     * 获取请求中的参数
+     */
     public static String getRequestParameter(HttpServletRequest httpRequest, String name) {
+        if (httpRequest == null || StringUtils.isEmpty(name)) {
+            return null;
+        }
+
+        // 先从header中获取token
+        String token = httpRequest.getHeader(name);
+
+        // 如果header中不存在token，则从参数中获取token
+        if (StringUtils.isBlank(token)) {
+            token = httpRequest.getParameter(name);
+        }
+
+        return token;
+    }
+
+    /**
+     * 获取请求中的参数
+     */
+    public static String getRequestParameter(NativeWebRequest httpRequest, String name) {
+        if (httpRequest == null || StringUtils.isEmpty(name)) {
+            return null;
+        }
+
         // 先从header中获取token
         String token = httpRequest.getHeader(name);
 

@@ -12,6 +12,16 @@ import co.xquick.modules.uc.entity.TokenEntity;
 public interface TokenService extends BaseService<TokenEntity> {
 
 	/**
+	 * 通过token获取用户id
+	 */
+	Long getUserIdByToken(String token);
+
+	/**
+	 * 获取token
+	 */
+	TokenEntity getByToken(String token);
+
+	/**
 	 * 生成token
 	 * @param userId  用户ID
 	 * @param loginConfig  登录配置

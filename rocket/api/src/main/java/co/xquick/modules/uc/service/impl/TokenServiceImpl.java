@@ -48,6 +48,16 @@ public class TokenServiceImpl extends BaseServiceImpl<TokenDao, TokenEntity> imp
     }
 
     @Override
+    public Long getUserIdByToken(String token) {
+        return baseMapper.getUserIdByToken(token);
+    }
+
+    @Override
+    public TokenEntity getByToken(String token) {
+        return baseMapper.getByToken(token);
+    }
+
+    @Override
     public boolean renewalToken(String token) {
         // todo token时间获取
         return baseMapper.renewalToken(token, 100000L) > 0;

@@ -1,6 +1,6 @@
 package co.xquick.common.config;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.modules.uc.UcConst;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +50,6 @@ public class SwaggerConfig {
     }
 
     private List<ApiKey> security() {
-        return newArrayList(new ApiKey(Constant.TOKEN_HEADER, Constant.TOKEN_HEADER, "header"));
+        return newArrayList(new ApiKey(UcConst.TOKEN_HEADER, UcConst.TOKEN_HEADER, "header"));
     }
 }

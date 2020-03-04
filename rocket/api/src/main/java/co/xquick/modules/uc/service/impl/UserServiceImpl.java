@@ -14,13 +14,13 @@ import co.xquick.modules.msg.MsgConst;
 import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
+import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.UcConst.LoginTypeEnum;
 import co.xquick.modules.uc.UcConst.UserStatusEnum;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.UserDao;
 import co.xquick.modules.uc.dto.*;
 import co.xquick.modules.uc.entity.UserEntity;
-import co.xquick.modules.uc.enums.GenderEnum;
 import co.xquick.modules.uc.service.*;
 import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
@@ -257,7 +257,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                 user.setMobile(login.getMobile());
                 user.setUsername(login.getMobile());
                 user.setType(UserTypeEnum.USER.value());
-                user.setGender(GenderEnum.UNKNOWN);
+                user.setGender(3);
                 // 密码加密
                 user.setPassword(PasswordUtils.encode(login.getMobile()));
                 saveDto(user);
@@ -277,7 +277,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         if (loginResult == 0) {
             // 登录成功
             Map<String, Object> map = new HashMap<>(3);
-            map.put(Constant.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
+            map.put(UcConst.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
             map.put("expire", loginConfig.getExpire());
             map.put("user", user);
             return new Result<>().ok(map);

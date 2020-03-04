@@ -15,6 +15,9 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface TokenDao extends BaseDao<TokenEntity> {
 
+    @Select("select user_id from uc_token where deleted = 0 and expire_date > now() and token = #{token}")
+    Long getUserIdByToken(@Param("token") String token);
+
     @Select("select * from uc_token where deleted = 0 and token = #{token}")
     TokenEntity getByToken(@Param("token") String token);
 

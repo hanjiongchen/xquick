@@ -53,7 +53,6 @@ public class ShiroConfig {
         filters.put("oauth2", new Oauth2Filter());
         shiroFilter.setFilters(filters);
 
-        // todo 如何区分接口method
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
@@ -68,16 +67,13 @@ public class ShiroConfig {
         filterMap.put("/captcha", "anon");
         filterMap.put("/favicon.ico", "anon");
 
-        // 授权下所有接口都anno
+        // tofix 无法区分接口method
+        // 登录相关接口
         filterMap.put("/auth/**", "anon");
         // 开放微信接口
         filterMap.put("/wx/**", "anon");
-
-        // api 开放接口
-        // 发送验证码
-        filterMap.put("/msg/smsLog/sendSms", "anon");
-        // 短信登录
-        filterMap.put("/smsLogin", "anon");
+        // 开放微信接口
+        filterMap.put("/app/**", "anon");
 
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
