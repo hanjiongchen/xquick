@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * 用户
  *
@@ -25,9 +27,9 @@ public class UserEntity extends BaseEntity {
      */
     private String password;
     /**
-     * 姓名
+     * 真实姓名
      */
-    private String realname;
+    private String realName;
     /**
      * 昵称
      */
@@ -47,7 +49,11 @@ public class UserEntity extends BaseEntity {
     /**
      * 头像
      */
-    private String imgs;
+    private String avatar;
+    /**
+     * 生日
+     */
+    private Date birthday;
     /**
      * 性别
      */

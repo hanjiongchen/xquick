@@ -8,6 +8,11 @@ package co.xquick.modules.uc;
 public interface UcConst {
 
     /**
+     * token header
+     */
+    String TOKEN_HEADER = "token";
+
+    /**
      * 部门最大等级限制
      */
     int DEPT_HIERARCHY_MAX = 10;

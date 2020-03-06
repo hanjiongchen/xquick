@@ -1,6 +1,10 @@
 package co.xquick.modules.uc.controller;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import co.xquick.booster.exception.ErrorCode;
+import co.xquick.booster.exception.XquickException;
+import co.xquick.booster.pojo.ImportResult;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.ConvertUtils;
@@ -12,10 +16,13 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
+import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.uc.dto.PasswordDTO;
 import co.xquick.modules.uc.dto.UserDTO;
+import co.xquick.modules.uc.entity.RoleUserEntity;
+import co.xquick.modules.uc.excel.UserExcel;
 import co.xquick.modules.uc.service.DeptService;
 import co.xquick.modules.uc.service.RoleUserService;
 import co.xquick.modules.uc.service.TokenService;
@@ -24,13 +31,17 @@ import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +185,75 @@ public class UserController {
         logLoginService.save(loginLog);
 
         return new Result<>();
+    }
+
+    @GetMapping("export")
+    @ApiOperation("导出")
+    @LogOperation("导出")
+    @RequiresPermissions("uc:user:export")
+    public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
+        List<UserDTO> list = userService.listDto(params);
+
+        ExcelUtils.exportExcelToTarget(response, "用户", list, UserExcel.class);
+    }
+
+    @PostMapping("import")
+    @ApiOperation("导入")
+    @LogOperation("导入")
+    @RequiresPermissions("uc:user:import")
+    public Result<?> importExcel(@RequestParam("file") MultipartFile file, @RequestParam(value = "deptId") Long deptId) throws Exception {
+        if (file.isEmpty()) {
+            return new Result<Map<String, Object>>().error(ErrorCode.UPLOAD_FILE_EMPTY);
+        }
+        ImportParams params = new ImportParams();
+        params.setStartSheetIndex(0);
+        List<UserExcel> list = ExcelImportUtil.importExcel(file.getInputStream(), UserExcel.class, params);
+        if (list.size() > 1000) {
+            throw new XquickException("单次导入不要超过1000条");
+        }
+        List<ImportResult> result = new ArrayList<>();
+        for (UserExcel item : list) {
+            String userName = StringUtils.deleteWhitespace(item.getUsername());
+            String realName = StringUtils.deleteWhitespace(item.getRealName());
+            String mobile = StringUtils.deleteWhitespace(item.getMobile());
+            String remark = StringUtils.deleteWhitespace(item.getRemark());
+            UserDTO user = new UserDTO();
+            user.setDeptId(deptId);
+
+            if (StringUtils.isBlank(userName)) {
+                //logger.info("用户名不能为空:" + item.toString());
+                result.add(new ImportResult(false, "用户名不能为空"));
+            } else if (StringUtils.isBlank(mobile)) {
+                //logger.info("手机号不能为空:" + item.toString());
+                result.add(new ImportResult(false, userName + "手机号不能为空"));
+            } else if (userService.isMobileExisted(mobile, null)) {
+                //logger.info("手机号已存在:" + item.toString());
+                result.add(new ImportResult(false, mobile + "手机号已存在"));
+            } else if (userService.isUsernameExisted(userName, null)) {
+                //logger.info("用户名已存在:" + item.toString());
+                result.add(new ImportResult(false, userName + "用户名已存在"));
+            } else {
+                user.setRemark(remark);
+                user.setRealName(realName);
+                user.setUsername(userName);
+                user.setMobile(mobile);
+                user.setStatus(1);
+                // 生成随机密码
+                //String pwd = StringUtils.isEmpty(password) ? RandomStringUtils.randomAlphanumeric(8) : password;
+                // 生成随机salt
+                //user.setSalt(RandomStringUtils.randomAlphanumeric(6));
+                // 密码加密
+                //user.setPassword(PasswordUtils.encode(password + user.getSalt()));
+                //user.setType(UserTypeEnum.USER.value());
+                userService.saveDto(user);
+                // 插入用户与角色关系表
+                RoleUserEntity roleUser = new RoleUserEntity();
+                roleUser.setUserId(user.getId());
+                roleUserService.save(roleUser);
+                result.add(new ImportResult(true, userName + "导入成功"));
+            }
+        }
+        return new Result<>().ok(result);
     }
 
 }
