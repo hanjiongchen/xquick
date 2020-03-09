@@ -19,10 +19,10 @@
         <aliyun.oss.version>3.8.1</aliyun.oss.version>
         <aliyun.dysmsapi.version>2.1.0</aliyun.dysmsapi.version>
         <jpush.version>3.4.3</jpush.version>
-        <okhttp.version>4.3.1</okhttp.version>
-        <weixin-java-pay.version>3.6.0</weixin-java-pay.version>
-        <weixin-java-miniapp.version>3.6.0</weixin-java-miniapp.version>
-        <weixin-java-mp.version>3.6.0</weixin-java-mp.version>
+        <okhttp.version>4.4.0</okhttp.version>
+        <weixin-java-pay.version>3.7.0</weixin-java-pay.version>
+        <weixin-java-miniapp.version>3.7.0</weixin-java-miniapp.version>
+        <weixin-java-mp.version>3.7.0</weixin-java-mp.version>
     </properties>
 
     <dependencies>
