@@ -28,15 +28,15 @@
 
     <!-- 开发环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'dev') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8181/admin-api';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8181/rocket-admin';</script>
     <% } %>
     <!-- 测试环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'prod:uat') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8181/admin-api';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8181/rocket-admin';</script>
     <% } %>
     <!-- 生产环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'prod') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://xquick.nbxuda.com:8181/admin-api';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://xquick.nbxuda.com:8181/rocket-admin';</script>
     <% } %>
 </head>
 <body>
