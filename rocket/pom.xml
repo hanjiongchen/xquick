@@ -16,7 +16,7 @@
 
     <modules>
         <module>booster</module>
-        <module>api</module>
+        <module>admin</module>
     </modules>
 
     <properties>

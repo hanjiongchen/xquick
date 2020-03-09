@@ -11,18 +11,18 @@
     <artifactId>booster</artifactId>
     <packaging>jar</packaging>
 
-    <build>
+    <!--<build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- 依赖包打包成非可执行的jar -->
+                &lt;!&ndash; 依赖包打包成非可执行的jar &ndash;&gt;
                 <configuration>
                     <classifier>exec</classifier>
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>
