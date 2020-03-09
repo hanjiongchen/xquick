@@ -9,11 +9,10 @@ import com.github.binarywang.wxpay.bean.notify.WxScanPayNotifyResult;
 import com.github.binarywang.wxpay.bean.request.*;
 import com.github.binarywang.wxpay.bean.result.*;
 import com.github.binarywang.wxpay.exception.WxPayException;
+import com.github.binarywang.wxpay.service.RedpackService;
 import com.github.binarywang.wxpay.service.WxPayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +31,12 @@ import java.util.Date;
 @Api("微信支付")
 public class PayController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     ParamService paramService;
 
     WxPayService wxService;
+
+    RedpackService redpackService;
 
     /**
      * <pre>
@@ -205,7 +204,7 @@ public class PayController {
     @ApiOperation(value = "发送红包")
     @PostMapping("/sendRedpack")
     public WxPaySendRedpackResult sendRedpack(@RequestBody WxPaySendRedpackRequest request) throws WxPayException {
-        return this.wxService.sendRedpack(request);
+        return this.redpackService.sendRedpack(request);
     }
 
     /**
@@ -222,7 +221,7 @@ public class PayController {
     @ApiOperation(value = "查询红包")
     @GetMapping("/queryRedpack/{mchBillNo}")
     public WxPayRedpackQueryResult queryRedpack(@PathVariable String mchBillNo) throws WxPayException {
-        return this.wxService.queryRedpack(mchBillNo);
+        return this.redpackService.queryRedpack(mchBillNo);
     }
 
     /**
