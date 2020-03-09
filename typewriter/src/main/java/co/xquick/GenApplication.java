@@ -4,14 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Generator
+ * Code Generator
  *
  * @author Charles (zhangchoxu@gmail.com)
  */
 @SpringBootApplication
-public class GeneratorApplication {
+public class GenApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GeneratorApplication.class, args);
+		SpringApplication.run(GenApplication.class, args);
 	}
 }
