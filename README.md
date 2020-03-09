@@ -8,6 +8,10 @@ description: xquick极速开发,如火箭发射卫星般加速您的软件开发
 xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比如权限管理、消息管理、日志管理等。     
 结合代码生成器工具,减轻开发人员的繁琐开发工作。
 
+## 演示地址
+* [极速开发demo后台](http://xquick.nbxuda.com)
+
+
 ## 项目组成
 项目前后端分离
 
@@ -46,6 +50,7 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 * [人人开源](https://www.renren.io/)
 * [Jeecg-Boot](http://www.jeecg.com/)
 * [Bladex](https://bladex.vip/#/)
+* [litemall](https://github.com/linlinjava/litemall)
 
 ## 文档 
 更多详细内容见[gitbook文档](https://zhangchaoxu.gitbook.io/xquick/)
