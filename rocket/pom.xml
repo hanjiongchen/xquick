@@ -15,7 +15,6 @@
     </parent>
 
     <modules>
-        <module>generator</module>
         <module>booster</module>
         <module>api</module>
     </modules>
