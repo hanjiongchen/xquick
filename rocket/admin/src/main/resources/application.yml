@@ -7,7 +7,7 @@ server:
   port: 8181
   connection-timeout: 5000ms
   servlet:
-    context-path: /admin-api
+    context-path: /rocket-admin
     session:
       cookie:
         http-only: true

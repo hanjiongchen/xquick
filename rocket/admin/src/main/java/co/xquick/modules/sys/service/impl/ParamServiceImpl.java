@@ -14,7 +14,7 @@ import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -40,18 +40,20 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
     @Override
     public ParamDTO getByCode(String code) {
         UserDetail user = SecurityUser.getUser();
-        ParamEntity entity = baseMapper.selectOne(new QueryWrapper<ParamEntity>()
-                .eq(user.getType() == null || user.getType() != UserTypeEnum.ADMIN.value(), "type", 1)
-                .eq("code", code));
-
+        ParamEntity entity = query()
+                .eq(user.getType() != UserTypeEnum.ADMIN.value(), "type", 1)
+                .eq("code", code)
+                .last("limit 1")
+                .one();
         return ConvertUtils.sourceToTarget(entity, ParamDTO.class);
     }
 
 
     @Override
     public String getContent(String code) {
-        String content = baseMapper.getContentByCode(code);
-        return content;
+        // 先从缓存中读取
+        ParamEntity param = query().select("content").eq("code", code).last("limit 1").one();
+        return ObjectUtils.isEmpty(param) ? null : param.getContent();
     }
 
     @Override
@@ -62,7 +64,7 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
         }
 
         try {
-            return clazz.newInstance();
+            return clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new XquickException(ErrorCode.PARAMS_GET_ERROR);
         }
@@ -80,9 +82,7 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
 
     @Override
     public void updateContentByCode(String code, String content) {
-        update(new UpdateWrapper<ParamEntity>()
-                .set("content", content)
-                .eq("code", code));
+        update().set("content", content).eq("code", code);
     }
 
 }

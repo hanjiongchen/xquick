@@ -1,7 +1,7 @@
 package co.xquick.modules.uc.controller;
 
-import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
+import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.DateUtils;
 import co.xquick.booster.util.JacksonUtils;
@@ -15,8 +15,8 @@ import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
+import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
-import co.xquick.modules.uc.dto.LoginConfigDTO;
 import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.RegisterRequest;
 import co.xquick.modules.uc.service.CaptchaService;
@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -60,21 +58,18 @@ public class AuthController {
     public Result<?> captcha() {
         String uuid = UUID.randomUUID().toString();
         String image = captchaService.createBase64(uuid);
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("uuid", uuid);
-        map.put("image", image);
-        // 将key和base64返回给前端
-        return new Result<>().ok(map);
+        // 将uuid和图片的base64返回给前端
+        return new Result<>().ok(Kv.init().set("uuid", uuid).set("image", image));
     }
 
-    @GetMapping("loginConfig")
+    @GetMapping("loginCfg")
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
-    public Result<?> loginConfig(@RequestParam String type) {
-        LoginConfigDTO loginConfig = paramService.getContentObject(Constant.LOGIN_CONFIG_KEY + "_" + type.toUpperCase(), LoginConfigDTO.class, null);
-        AssertUtils.isNull(loginConfig, ErrorCode.UNKNOWN_LOGIN_TYPE);
+    public Result<?> loginCfg(@RequestParam String type) {
+        String content = paramService.getContent(UcConst.LOGIN_CFG + "_" + type.toUpperCase());
+        AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
 
-        return new Result<>().ok(loginConfig);
+        return new Result<>().ok(content);
     }
 
     @PostMapping("sendSmsCode")

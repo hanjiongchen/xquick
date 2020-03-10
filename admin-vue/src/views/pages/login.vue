@@ -7,7 +7,7 @@
         </div>
         <div class="login-body">
           <!--<h3 class="login-title">{{ $t('login.title') }}</h3>-->
-          <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon @keyup.enter.native="dataFormSubmitHandle()">
+          <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
                 <el-radio-button :label="10">帐号密码登录</el-radio-button>
@@ -154,7 +154,7 @@ export default {
     this.getLoginConfig()
   },
   methods: {
-    // 登录类型变化
+    // 切换登录类型
     typeChangeHandle () {
       // 重新获取登录配置信息
       this.getLoginConfig()
@@ -163,12 +163,12 @@ export default {
     },
     // 获取登录配置
     getLoginConfig () {
-      this.$http.get(`/auth/loginConfig?type=${this.dataForm.type}`).then(({ data: res }) => {
+      this.$http.get(`/auth/loginCfg?type=${this.dataForm.type}`).then(({ data: res }) => {
         this.formLoading = false
         if (res.code !== 0) {
           return this.$message.error(res.code + ':' + res.msg)
         } else {
-          this.loginConfig = res.data
+          this.loginConfig = JSON.parse(res.data)
           if (this.loginConfig.captcha) {
             this.getCaptcha()
           }

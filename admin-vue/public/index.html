@@ -28,11 +28,11 @@
 
     <!-- 开发环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'dev') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8181/rocket-admin';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://127.0.0.1:8181/rocket-admin';</script>
     <% } %>
     <!-- 测试环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'prod:uat') { %>
-    <script>window.SITE_CONFIG['apiURL'] = 'http://localhost:8181/rocket-admin';</script>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://127.0.0.1:8181/rocket-admin';</script>
     <% } %>
     <!-- 生产环境 -->
     <% if (process.env.VUE_APP_NODE_ENV === 'prod') { %>

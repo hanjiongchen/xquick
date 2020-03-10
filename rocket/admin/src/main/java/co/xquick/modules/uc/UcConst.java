@@ -8,6 +8,11 @@ package co.xquick.modules.uc;
 public interface UcConst {
 
     /**
+     * 登录配置
+     */
+    String LOGIN_CFG = "LOGIN_CFG";
+
+    /**
      * token header
      */
     String TOKEN_HEADER = "token";
