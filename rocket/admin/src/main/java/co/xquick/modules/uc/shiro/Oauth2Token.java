@@ -3,7 +3,7 @@ package co.xquick.modules.uc.shiro;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
- * token
+ * Oauth2Token
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */

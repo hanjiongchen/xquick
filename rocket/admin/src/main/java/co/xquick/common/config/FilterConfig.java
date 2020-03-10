@@ -18,7 +18,7 @@ import javax.servlet.Filter;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean crosFilterRegistration() {
+    public FilterRegistrationBean<?> crosFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
         registration.setFilter(new CrosFilter());
@@ -29,7 +29,7 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean shiroFilterRegistration() {
+    public FilterRegistrationBean<?> shiroFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new DelegatingFilterProxy("shiroFilter"));
         // 该值缺省为false，表示生命周期由SpringApplicationContext管理，设置为true则表示由ServletContainer管理
@@ -41,7 +41,7 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean xssFilterRegistration() {
+    public FilterRegistrationBean<?> xssFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
         registration.setFilter(new XssFilter());

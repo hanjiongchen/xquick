@@ -30,17 +30,28 @@ public interface UcConst {
         /**
          * 详见name
          */
-        DISABLE(0),
-        ENABLED(1);
+        PENDING(-1, "待审核"),
+        DISABLE(0, "冻结"),
+        ENABLED(1, "正常");
 
         private int value;
+        private String name;
 
         UserStatusEnum(int value) {
             this.value = value;
         }
 
+        UserStatusEnum(int value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
         public int value() {
             return this.value;
+        }
+
+        public String getName() {
+            return this.name;
         }
     }
 

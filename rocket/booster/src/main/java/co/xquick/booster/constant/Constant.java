@@ -92,10 +92,6 @@ public interface Constant {
      * 消息推送配置KEY
      */
     String PUSH_CONFIG_KEY = "PUSH_CONFIG_KEY";
-    /**
-     * 登录配置KEY
-     */
-    String LOGIN_CONFIG_KEY = "LOGIN_CONFIG_KEY";
 
 
 }

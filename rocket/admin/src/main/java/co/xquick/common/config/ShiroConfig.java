@@ -37,6 +37,8 @@ public class ShiroConfig {
     @Bean("securityManager")
     public SecurityManager securityManager(Oauth2Realm oAuth2Realm, SessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        // List<Realm> realms = new ArrayList<>();
+        // securityManager.setRealms(realms);
         securityManager.setRealm(oAuth2Realm);
         securityManager.setSessionManager(sessionManager);
         securityManager.setRememberMeManager(null);
@@ -72,8 +74,8 @@ public class ShiroConfig {
         filterMap.put("/auth/**", "anon");
         // 开放微信接口
         filterMap.put("/wx/**", "anon");
-        // 开放微信接口
-        filterMap.put("/app/**", "anon");
+        // 开放app接口
+        // filterMap.put("/app/**", "anon");
 
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

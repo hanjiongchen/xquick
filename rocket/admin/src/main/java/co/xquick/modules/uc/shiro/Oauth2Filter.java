@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * oauth2过滤器
+ * Oauth2 过滤器
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */
@@ -33,7 +33,8 @@ public class Oauth2Filter extends AuthenticatingFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        return ((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name());
+        // 放行所有OPTIONS请求
+        return RequestMethod.OPTIONS.name().equals(((HttpServletRequest) request).getMethod());
     }
 
     @Override
@@ -52,6 +53,7 @@ public class Oauth2Filter extends AuthenticatingFilter {
             return false;
         }
 
+        // 会调用createToken
         return executeLogin(request, response);
     }
 
@@ -69,7 +71,6 @@ public class Oauth2Filter extends AuthenticatingFilter {
         } catch (IOException e1) {
 
         }
-
         return false;
     }
 
