@@ -56,7 +56,7 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
         UserEntity userEntity = userService.getById(userId);
         AssertUtils.isEmpty(userId, ErrorCode.UNAUTHORIZED);
 
-        request.setAttribute("user", userEntity, 1);
+        // request.setAttribute("user", userEntity, 1);
         if (annotation.renewalToken()) {
             // 是否token做延时
             tokenService.renewalToken(token);

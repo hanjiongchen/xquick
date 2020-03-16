@@ -17,6 +17,7 @@ import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
+import co.xquick.modules.uc.dto.LoginAppleRequest;
 import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.RegisterRequest;
 import co.xquick.modules.uc.service.CaptchaService;
@@ -93,7 +94,7 @@ public class AuthController {
 
     /**
      * 加密登录
-     * 支持帐号登录、短信登录
+     * 逻辑同login接口
      */
     @PostMapping("loginEncrypt")
     @ApiOperation(value = "加密登录")
@@ -102,6 +103,7 @@ public class AuthController {
         String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
         // json明文转实体
         LoginRequest login = JacksonUtils.jsonToPojo(loginRaw, LoginRequest.class);
+
         // 效验数据
         ValidatorUtils.validateEntity(login, DefaultGroup.class);
 
@@ -145,4 +147,17 @@ public class AuthController {
 
         return userService.register(request);
     }
+
+    /**
+     * 苹果登录
+     */
+    @PostMapping("appleLogin")
+    @ApiOperation(value = "苹果登录")
+    public Result<?> appleLogin(HttpServletRequest httpServletRequest, @RequestBody LoginAppleRequest request) {
+        // 效验数据
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
+
+        return userService.login(httpServletRequest, request);
+    }
+
 }
