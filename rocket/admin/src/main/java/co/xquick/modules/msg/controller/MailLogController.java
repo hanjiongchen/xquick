@@ -45,7 +45,7 @@ public class MailLogController {
     @RequiresPermissions("msg:mailLog:page")
     public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<MailLogDTO> page = mailLogService.pageDto(params);
-        //测试提交
+        //测试
         return new Result<>().ok(page);
     }
 
