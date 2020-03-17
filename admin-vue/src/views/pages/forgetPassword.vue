@@ -105,7 +105,7 @@ export default {
           this.formLoading = false
           return false
         }
-        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CHANGE_PASSWORD' }).then(({ data: res }) => {
+        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_CHANGE_PASSWORD' }).then(({ data: res }) => {
           if (res.code !== 0) {
             this.$message.error(res.toast)
           } else {

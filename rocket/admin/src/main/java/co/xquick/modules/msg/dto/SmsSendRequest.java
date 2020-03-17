@@ -22,7 +22,7 @@ public class SmsSendRequest implements Serializable {
 
 	@ApiModelProperty(value = "手机号区域", required = true)
 	@NotBlank(message="手机号区域不能为空", groups = DefaultGroup.class)
-	private String mobileArea;
+	private String mobileArea = "86";
 
 	@ApiModelProperty(value = "手机号", required = true)
 	@NotBlank(message="手机号不能为空", groups = DefaultGroup.class)

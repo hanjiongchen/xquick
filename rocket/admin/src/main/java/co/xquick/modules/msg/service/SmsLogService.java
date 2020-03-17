@@ -30,14 +30,11 @@ public interface SmsLogService extends CrudService<SmsLogEntity, SmsLogDTO> {
      * @param mobile
      * @return
      */
-    SmsLogDTO findLastLog(Long tplId, String mobile);
+    SmsLogEntity findLastLog(Long tplId, String mobile);
 
     /**
      * 通过模板编码和手机号找最后一次发送记录
-     * @param tplCode
-     * @param mobile
-     * @return
      */
-    SmsLogDTO findLastLogByTplCode(String tplCode, String mobile);
+    SmsLogEntity findLastLogByTplCode(String tplCode, String mobile);
 
 }

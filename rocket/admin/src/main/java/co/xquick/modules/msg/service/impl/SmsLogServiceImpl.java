@@ -2,7 +2,6 @@ package co.xquick.modules.msg.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.service.impl.CrudServiceImpl;
-import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.ParamUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.msg.dao.SmsLogDao;
@@ -68,24 +67,23 @@ public class SmsLogServiceImpl extends CrudServiceImpl<SmsLogDao, SmsLogEntity, 
     }
 
     @Override
-    public SmsLogDTO findLastLog(Long templateId, String mobile) {
-        return ConvertUtils.sourceToTarget(baseMapper.selectOne(new QueryWrapper<SmsLogEntity>()
-                .eq("tpl_id", templateId)
-                .eq("mobile", mobile)
-                .eq("status", 1)
-                .orderByDesc("create_time")
-                .last("limit 1")), SmsLogDTO.class);
-    }
-
-    @Override
-    public SmsLogDTO findLastLogByTplCode(String tplCode, String mobile) {
-        return ConvertUtils.sourceToTarget(baseMapper.selectOne(new QueryWrapper<SmsLogEntity>()
-                .eq("tpl_code", tplCode)
+    public SmsLogEntity findLastLog(Long tplId, String mobile) {
+        return query().eq("tpl_id", tplId)
                 .eq("mobile", mobile)
                 .eq("status", 1)
                 .eq("consumed", 0)
                 .orderByDesc("create_time")
-                .last("limit 1")), SmsLogDTO.class);
+                .last("limit 1").one();
+    }
+
+    @Override
+    public SmsLogEntity findLastLogByTplCode(String tplCode, String mobile) {
+        return query().eq("tpl_code", tplCode)
+                .eq("mobile", mobile)
+                .eq("status", 1)
+                .eq("consumed", 0)
+                .orderByDesc("create_time")
+                .last("limit 1").one();
     }
 
 }

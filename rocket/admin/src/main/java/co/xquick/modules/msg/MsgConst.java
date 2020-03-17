@@ -7,14 +7,27 @@ package co.xquick.modules.msg;
  */
 public interface MsgConst {
 
-    // 短信模板-验证
-    String SMS_TPL_VERIFY = "VERIFY";
-    // 短信模板-登录
-    String SMS_TPL_LOGIN = "LOGIN";
-    // 短信模板-修改密码
-    String SMS_TPL_CHANGE_PASSWORD = "CHANGE_PASSWORD";
-    // 短信模板-注册
-    String SMS_TPL_REGISTER = "REGISTER";
+    /**
+     * 验证码短信模板前缀
+     */
+    String SMS_CODE_TPL_PREFIX = "CODE_";
+
+    /**
+     * 短信验证码模板-通用
+     */
+    String SMS_TPL_CODE_COMMON = SMS_CODE_TPL_PREFIX + "COMMON";
+    /**
+     * 短信验证码模板-登录
+     */
+    String SMS_TPL_LOGIN = SMS_CODE_TPL_PREFIX + "LOGIN";
+    /**
+     * 短信验证码模板-修改密码
+     */
+    String SMS_TPL_CHANGE_PASSWORD = SMS_CODE_TPL_PREFIX + "CHANGE_PASSWORD";
+    /**
+     * 短信验证码模板-注册
+     */
+    String SMS_TPL_REGISTER = SMS_CODE_TPL_PREFIX+  "REGISTER";
 
     /**
      * 消息推送服务商

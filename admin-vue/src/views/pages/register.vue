@@ -111,7 +111,7 @@ export default {
           this.formLoading = false
           return false
         }
-        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'REGISTER' }).then(({ data: res }) => {
+        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_REGISTER' }).then(({ data: res }) => {
           if (res.code !== 0) {
             return this.$message.error(res.toast)
           } else {

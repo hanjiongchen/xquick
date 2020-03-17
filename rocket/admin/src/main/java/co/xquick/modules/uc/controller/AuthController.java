@@ -1,6 +1,7 @@
 package co.xquick.modules.uc.controller;
 
 import co.xquick.booster.exception.ErrorCode;
+import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.DateUtils;
@@ -11,8 +12,9 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.AESUtils;
-import co.xquick.modules.msg.dto.SmsLogDTO;
+import co.xquick.modules.msg.MsgConst;
 import co.xquick.modules.msg.dto.SmsSendRequest;
+import co.xquick.modules.msg.entity.SmsLogEntity;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
@@ -78,8 +80,12 @@ public class AuthController {
     public Result<?> sendSmsCode(@RequestBody SmsSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
+        // 只允许发送CODE_开头的模板
+        if (!dto.getTplCode().startsWith(MsgConst.SMS_CODE_TPL_PREFIX)) {
+            throw new XquickException("不支持的模板");
+        }
         // 先校验手机号是否1分钟内发送过
-        SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(dto.getTplCode(), dto.getMobile());
+        SmsLogEntity lastSmsLog = smsLogService.findLastLogByTplCode(dto.getTplCode(), dto.getMobile());
         if (null != lastSmsLog && DateUtils.timeDiff(lastSmsLog.getCreateTime()) < 60 * 1000) {
             // 1分钟内已经发送过了
             return new Result<>().error("短信发送请求过于频繁");

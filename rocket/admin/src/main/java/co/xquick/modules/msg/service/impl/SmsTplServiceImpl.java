@@ -1,7 +1,6 @@
 package co.xquick.modules.msg.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
-import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.WrapperUtils;
 import co.xquick.booster.validator.AssertUtils;
