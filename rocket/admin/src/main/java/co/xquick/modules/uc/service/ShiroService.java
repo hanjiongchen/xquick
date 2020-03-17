@@ -1,6 +1,5 @@
 package co.xquick.modules.uc.service;
 
-import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.user.UserDetail;
 
@@ -24,13 +23,16 @@ public interface ShiroService {
      */
     Set<String> getUserRoles(UserDetail user);
 
-    TokenEntity getByToken(String token);
+    /**
+     * 通过token获取用户id
+     */
+    Long getUserIdByToken(String token);
 
     /**
      * 续token的过期时间
      * @param token
      */
-    void renewalToken(TokenEntity token);
+    void renewalToken(String token);
 
     /**
      * 根据用户ID，查询用户

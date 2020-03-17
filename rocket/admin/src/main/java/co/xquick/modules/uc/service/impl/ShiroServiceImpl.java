@@ -1,9 +1,8 @@
 package co.xquick.modules.uc.service.impl;
 
+import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.*;
-import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
-import co.xquick.modules.uc.UcConst.*;
 import co.xquick.modules.uc.service.ShiroService;
 import co.xquick.modules.uc.user.UserDetail;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +22,7 @@ import java.util.Set;
  */
 @Service
 public class ShiroServiceImpl implements ShiroService {
+
     @Autowired
     private MenuDao menuMapper;
     @Autowired
@@ -33,8 +33,6 @@ public class ShiroServiceImpl implements ShiroService {
     private TokenDao tokenMapper;
     @Autowired
     private RoleDataScopeDao roleDataScopeMapper;
-   /* @Autowired
-    private ParamsDao sysParamsDao;*/
 
     @Value("${redis.open: false}")
     private boolean open;
@@ -83,8 +81,8 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public TokenEntity getByToken(String token) {
-        return tokenMapper.getByToken(token);
+    public Long getUserIdByToken(String token) {
+        return tokenMapper.getUserIdByToken(token);
     }
 
     @Override
@@ -98,7 +96,8 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public void renewalToken(TokenEntity token) {
+    public void renewalToken(String token) {
+        // tokenMapper.renewalToken(token, )
         // 实现ParamsService.getValueObject
         // 如果Autowired和Redis相关内容，会出现RedisAspect不处理的问题
         /*String code = Constant.LOGIN_CONFIG_KEY + "_" + token.getLoginType().toUpperCase();

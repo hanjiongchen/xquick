@@ -15,10 +15,10 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface TokenDao extends BaseDao<TokenEntity> {
 
-    @Select("select user_id from uc_token where deleted = 0 and expire_date > now() and token = #{token}")
+    @Select("select user_id from uc_token where  token = #{token} and expire_date > now() and deleted = 0")
     Long getUserIdByToken(@Param("token") String token);
 
-    @Select("select * from uc_token where deleted = 0 and token = #{token}")
+    @Select("select * from uc_token where token = #{token} and expire_date > NOW() and deleted = 0 limit 1")
     TokenEntity getByToken(@Param("token") String token);
 
     @Select("select * from uc_token where deleted = 0 and user_id = #{userId}")

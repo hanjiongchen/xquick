@@ -61,14 +61,14 @@ public interface MenuDao extends BaseDao<MenuEntity> {
     @Select("select t3.permissions from uc_role_user t1" +
             " left join uc_role_menu t2 on t1.role_id = t2.role_id" +
             " left join uc_menu t3 on t2.menu_id = t3.id" +
-            " where t1.deleted = 0 and t2.deleted = 0 and t3.deleted = 0 and t1.user_id = #{userId} " +
+            " where t1.deleted = 0 and t2.deleted = 0 and t3.deleted = 0 and t3.permissions != '' and t1.user_id = #{userId} " +
             " order by t3.sort asc")
     List<String> getUserPermissionsList(@Param("userId") Long userId);
 
     /**
      * 查询所有权限列表
      */
-    @Select("select permissions from uc_menu where deleted = 0")
+    @Select("select permissions from uc_menu where permissions != '' and deleted = 0")
     List<String> getPermissionsList();
 
     /**
