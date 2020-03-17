@@ -5,8 +5,8 @@ import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
 import co.xquick.booster.util.SpringContextUtils;
-import co.xquick.modules.msg.dto.SmsTplDTO;
 import co.xquick.modules.msg.entity.SmsLogEntity;
+import co.xquick.modules.msg.entity.SmsTplEntity;
 import co.xquick.modules.msg.service.SmsLogService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,7 +33,7 @@ public class JuheSmsService extends AbstractSmsService {
     private static final String JUHE_SMS_SEND_URL = "http://v.juhe.cn/sms/send?key={0}&mobile={1}&tpl_id={2}&tpl_value={3}";
 
     @Override
-    public void sendSms(SmsTplDTO smsTpl, String mobile, String params) {
+    public void sendSms(SmsTplEntity smsTpl, String mobile, String params) {
         SmsProp smsConfig = JacksonUtils.jsonToPojo(smsTpl.getConfig(), SmsProp.class);
         String url;
         StringBuilder paramJuhe = new StringBuilder();

@@ -51,7 +51,7 @@ export default {
     // 富文本编辑器 上传图片成功
     uploadEditorSuccessHandle (res, file, fileList) {
       if (res.code !== 0) {
-        return this.$message.error(res.msg)
+        return this.$message.error(res.toast)
       }
       this.quillEditor.insertEmbed(this.quillEditor.getSelection().index, 'image', res.data.src)
     }

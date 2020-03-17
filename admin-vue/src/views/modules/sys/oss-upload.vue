@@ -5,7 +5,7 @@
       :file-list="fileList"
       drag
       multiple
-      :data="{paramCode : 'OSS_CONFIG_KEY_PRIVATE'}"
+      :data="{paramCode : 'OSS_CFG_PRI'}"
       :headers="{token: token}"
       :before-upload="beforeUploadHandle"
       :on-success="successHandle"
@@ -48,7 +48,7 @@ export default {
     // 上传成功
     successHandle (res, file, fileList) {
       if (res.code !== 0) {
-        return this.$message.error(res.msg)
+        return this.$message.error(res.toast)
       }
       this.fileList = fileList
       this.num--

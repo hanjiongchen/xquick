@@ -4,7 +4,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item :label="$t('base.code')" prop="code">
-                        <el-input v-model="dataForm.code" :placeholder="$t('base.code')"/>
+                        <el-input v-model="dataForm.code" placeholder="CODE开头为验证码,可直接调用"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -21,9 +21,6 @@
             </el-form-item>
             <el-form-item label="平台配置" prop="config">
                 <el-input v-model="dataForm.config" placeholder="平台配置" type="textarea"/>
-            </el-form-item>
-            <el-form-item label="短信参数" prop="param">
-                <el-input v-model="dataForm.param" placeholder="短信参数"/>
             </el-form-item>
             <el-form-item label="短信内容" prop="content">
                 <el-input v-model="dataForm.content" placeholder="短信内容为记录使用,实际短信内容请在短信平台修改"/>
@@ -55,7 +52,6 @@ export default {
         name: '',
         code: '',
         config: '',
-        param: '',
         content: ''
       }
     }
@@ -73,9 +69,6 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         config: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        param: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         content: [

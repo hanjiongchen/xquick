@@ -58,12 +58,13 @@ http.interceptors.response.use(response => {
     router.replace({ name: 'login' })
     return Promise.reject(response.data.msg)
   }
+  // 设置显示用消息
+  response.data.toast = response.data.code + ':' + response.data.msg
   return response
 }, error => {
   if (error.toString() === 'Error: Network Error') {
     vue.$message.error('接口无法访问')
   }
-  console.error(error)
   return Promise.reject(error)
 })
 

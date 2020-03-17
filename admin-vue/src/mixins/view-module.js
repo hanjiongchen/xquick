@@ -99,7 +99,7 @@ export default {
     onGetListError (res) {
       this.dataList = []
       this.total = 0
-      return this.$message.error(res.msg)
+      return this.$message.error(res.toast)
     },
     // 多选
     dataListSelectionChangeHandle (val) {
@@ -173,7 +173,7 @@ export default {
         this.$http.delete(`${this.mixinViewModuleOptions.deleteURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinViewModuleOptions.deleteIsBatchKey]) })
           .then(({ data: res }) => {
             if (res.code !== 0) {
-              return this.$message.error(res.msg)
+              return this.$message.error(res.toast)
             }
             this.$message({
               message: this.$t('prompt.success'),

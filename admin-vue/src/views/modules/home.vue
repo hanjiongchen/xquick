@@ -110,7 +110,7 @@ export default {
     getHomeCount () {
       this.$http.get('/b/index/count').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.homeCount = res.data
       }).catch(() => {

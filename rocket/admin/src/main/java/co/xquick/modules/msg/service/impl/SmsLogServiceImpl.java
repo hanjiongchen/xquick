@@ -1,14 +1,15 @@
 package co.xquick.modules.msg.service.impl;
 
-import co.xquick.booster.exception.XquickException;
+import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.ParamUtils;
+import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.msg.dao.SmsLogDao;
 import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.dto.SmsSendRequest;
-import co.xquick.modules.msg.dto.SmsTplDTO;
 import co.xquick.modules.msg.entity.SmsLogEntity;
+import co.xquick.modules.msg.entity.SmsTplEntity;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.msg.service.SmsTplService;
 import co.xquick.modules.msg.sms.AbstractSmsService;
@@ -55,16 +56,15 @@ public class SmsLogServiceImpl extends CrudServiceImpl<SmsLogDao, SmsLogEntity, 
     @Override
     public void send(SmsSendRequest dto) {
         // 获得template
-        SmsTplDTO smsTemplate = smsTemplateService.getByCode(dto.getTplCode());
-        if (null == smsTemplate) {
-            throw new XquickException("找不到对应的短信模板");
-        }
+        SmsTplEntity smsTpl = smsTemplateService.getByCode(dto.getTplCode());
+
+        AssertUtils.isNull(smsTpl, ErrorCode.SMS_TPL_NOT_EXISTED);
 
         // 获取短信服务
-        AbstractSmsService service = SmsFactory.build(smsTemplate.getPlatform());
+        AbstractSmsService service = SmsFactory.build(smsTpl.getPlatform());
 
         // 发送短信
-        service.sendSms(smsTemplate, dto.getMobile(), dto.getParam());
+        service.sendSms(smsTpl, dto.getMobile(), dto.getParam());
     }
 
     @Override

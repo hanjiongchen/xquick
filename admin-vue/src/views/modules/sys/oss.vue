@@ -88,7 +88,7 @@ export default {
     fileViewHandle () {
       this.$http.get(`/sys/oss/presignedUrl`).then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.code + ':' + res.msg)
+          return this.$message.error(res.toast)
         } else {
           console.log(res)
         }

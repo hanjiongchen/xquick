@@ -85,7 +85,7 @@ export default {
     getUserInfo () {
       return this.$http.get('/uc/user/userInfo').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.$store.state.user = res.data
       }).catch(() => {})
@@ -94,7 +94,7 @@ export default {
     getPermissions () {
       return this.$http.get('/uc/menu/permissions').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         window.SITE_CONFIG['permissions'] = res.data
       }).catch(() => {})

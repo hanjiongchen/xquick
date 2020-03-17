@@ -90,7 +90,7 @@ export default {
     getDeptList () {
       return this.$http.get('/uc/dept/list').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.deptList = res.data
       }).catch(() => {})
@@ -99,7 +99,7 @@ export default {
     getInfo () {
       this.$http.get(`/uc/dept/${this.dataForm.id}`).then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.dataForm = {
           ...this.dataForm,

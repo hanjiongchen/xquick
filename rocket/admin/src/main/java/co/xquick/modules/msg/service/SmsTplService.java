@@ -16,6 +16,6 @@ public interface SmsTplService extends CrudService<SmsTplEntity, SmsTplDTO> {
      * @param code 模板编码
      * @return 模板
      */
-    SmsTplDTO getByCode(String code);
+    SmsTplEntity getByCode(String code);
 
 }

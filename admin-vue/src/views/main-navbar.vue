@@ -98,7 +98,7 @@ export default {
       }).then(() => {
         this.$http.post('/uc/user/logout?type=-10').then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.msg)
+            return this.$message.error(res.toast)
           }
           clearLoginInfo()
           this.$router.push({ name: 'login' })

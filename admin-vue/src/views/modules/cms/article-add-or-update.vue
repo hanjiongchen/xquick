@@ -221,7 +221,7 @@ export default {
     getArticleCategoryList () {
       this.$http.get('/cms/articleCategory/list').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.articleCategoryList = res.data
         this.formLoading = false

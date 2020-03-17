@@ -93,7 +93,7 @@ export default {
     load (tree, treeNode, resolve) {
       this.$http.get('/sys/region/list?withChildNum=true&pid=' + tree.id).then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         // 解析children
         for (let itm of res.data) {

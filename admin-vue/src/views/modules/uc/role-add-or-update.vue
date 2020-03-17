@@ -107,7 +107,7 @@ export default {
     getMenuList () {
       return this.$http.get('/uc/menu/userTree').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.menuList = res.data
       }).catch(() => {})
@@ -116,7 +116,7 @@ export default {
     getDeptList () {
       return this.$http.get('/uc/dept/list').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.deptList = res.data
       }).catch(() => {})

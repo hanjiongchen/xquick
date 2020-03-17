@@ -6,8 +6,8 @@ import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
 import co.xquick.booster.util.SpringContextUtils;
 import co.xquick.common.util.TemplateUtils;
-import co.xquick.modules.msg.dto.SmsTplDTO;
 import co.xquick.modules.msg.entity.SmsLogEntity;
+import co.xquick.modules.msg.entity.SmsTplEntity;
 import co.xquick.modules.msg.service.SmsLogService;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
@@ -39,7 +39,7 @@ public class AliyunSmsService extends AbstractSmsService {
     }
 
     @Override
-    public void sendSms(SmsTplDTO smsTpl, String mobile, String params) {
+    public void sendSms(SmsTplEntity smsTpl, String mobile, String params) {
         SmsProp smsConfig = JacksonUtils.jsonToPojo(smsTpl.getConfig(), SmsProp.class);
         init(smsConfig);
 

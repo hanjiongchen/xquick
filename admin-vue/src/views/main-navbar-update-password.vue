@@ -78,7 +78,7 @@ export default {
         }
         this.$http.put('/uc/user/password', this.dataForm).then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.msg)
+            return this.$message.error(res.toast)
           }
           this.$message({
             message: this.$t('prompt.success'),

@@ -289,7 +289,7 @@ export default {
     getDeptList () {
       return this.$http.get('/uc/dept/list').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.deptList = removeEmptyChildren(res.data)
       }).catch(() => {
@@ -299,7 +299,7 @@ export default {
     getRoleList () {
       return this.$http.get('/uc/role/list').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.roleList = res.data
       }).catch(() => {

@@ -115,7 +115,7 @@ export default {
   methods: {
     // 修改
     editHandle (id, code) {
-      if (code.startsWith('LOGIN_CONFIG_KEY')) {
+      if (code.startsWith('LOGIN_CFG')) {
         this.loginConfigVisible = true
         this.$nextTick(() => {
           this.$refs.loginConfig.dataForm.id = id
@@ -127,13 +127,13 @@ export default {
           this.$refs.smsConfig.dataForm.id = id
           this.$refs.smsConfig.init()
         })
-      } else if (code.startsWith('OSS_CONFIG_KEY')) {
+      } else if (code.startsWith('OSS_CFG')) {
         this.ossConfigVisible = true
         this.$nextTick(() => {
           this.$refs.ossConfig.dataForm.id = id
           this.$refs.ossConfig.init()
         })
-      } else if (code === 'APP_ABOUY_CONFIG_KEY') {
+      } else if (code === 'APP_ABOUT_CONFIG_KEY') {
         this.appAboutConfigVisible = true
         this.$nextTick(() => {
           this.$refs.appAboutConfig.dataForm.id = id

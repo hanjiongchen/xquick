@@ -20,10 +20,15 @@
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"/>
-        <el-table-column prop="code" :label="$t('base.code')" header-align="center" align="center" min-width="120"/>
-        <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center" min-width="150"/>
-        <el-table-column prop="platform" label="发送平台" header-align="center" align="center" width="100"/>
-        <el-table-column prop="config" label="平台配置" header-align="center" align="center" width="250" class-name="nowrap">
+        <el-table-column prop="code" :label="$t('base.code')" header-align="center" align="center" width="180"/>
+        <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center" width="150"/>
+        <el-table-column prop="platform" label="平台" header-align="center" align="center" width="100">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.platform === 'aliyun'">阿里云</el-tag>
+            <el-tag v-else-if="scope.row.platform === 'juhe'">聚合</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="config" label="平台配置" header-align="center" align="center" min-width="250" class-name="nowrap">
           <template slot-scope="scope">
             <el-link type="primary" @click="jsonViewHandle(scope.row.config)" :underline="false">{{ scope.row.config }}</el-link>
           </template>

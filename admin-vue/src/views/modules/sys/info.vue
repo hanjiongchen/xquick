@@ -112,7 +112,7 @@ export default {
       this.$http.get('/sys/info').then(({ data: res }) => {
         this.loading = false
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.sysInfo = res.data
       }).catch(() => {

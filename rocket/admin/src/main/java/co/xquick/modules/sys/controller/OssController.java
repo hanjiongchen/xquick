@@ -65,7 +65,7 @@ public class OssController {
 
     @GetMapping("presignedUrl")
     @ApiOperation(value = "获得授权访问地址")
-    public Result presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CONFIG_KEY_PRIVATE") String paramCode) {
+    public Result presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CFG_PRI") String paramCode) {
         String url = OssFactory.build(paramCode).generatePresignedUrl("oss/20191105/aba10b6b6ea2442ab05cc969f7c380ae.png", 3600 * 1000);
 
         Map<String, Object> data = new HashMap<>(1);
@@ -76,7 +76,7 @@ public class OssController {
 
     @PostMapping("upload")
     @ApiOperation(value = "上传单个文件")
-    public Result upload(@RequestParam(required = false, defaultValue = "OSS_CONFIG_KEY_PUBLIC") String paramCode, @RequestParam("file") MultipartFile file) throws Exception {
+    public Result upload(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode, @RequestParam("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             return new Result().error(ErrorCode.UPLOAD_FILE_EMPTY);
         }
@@ -101,7 +101,7 @@ public class OssController {
 
     @PostMapping("uploadMulti")
     @ApiOperation(value = "上传多个文件")
-    public Result uploadMulti(@RequestParam(required = false, defaultValue = "OSS_CONFIG_KEY_PUBLIC") String paramCode, @RequestParam("file") MultipartFile[] files) throws Exception {
+    public Result uploadMulti(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode, @RequestParam("file") MultipartFile[] files) throws Exception {
         if (files == null || files.length <= 0) {
             return new Result().error(ErrorCode.UPLOAD_FILE_EMPTY);
         }

@@ -148,7 +148,7 @@ export default {
     getRoleList () {
       this.$http.get('/uc/role/list').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.roleList = res.data
       }).catch(() => {

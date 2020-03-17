@@ -166,7 +166,7 @@ export default {
       this.$http.get(`/auth/loginCfg?type=${this.dataForm.type}`).then(({ data: res }) => {
         this.formLoading = false
         if (res.code !== 0) {
-          return this.$message.error(res.code + ':' + res.msg)
+          return this.$message.error(res.toast)
         } else {
           this.loginConfig = JSON.parse(res.data)
           if (this.loginConfig.captcha) {
@@ -181,7 +181,7 @@ export default {
     getCaptcha () {
       this.$http.get(`/auth/captcha`).then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.code + ':' + res.msg)
+          return this.$message.error(res.toast)
         } else {
           this.captcha = res.data
           this.dataForm.uuid = res.data.uuid
@@ -201,7 +201,7 @@ export default {
         }
         this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'LOGIN' }).then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.code + ':' + res.msg)
+            this.$message.error(res.toast)
           } else {
             this.$message.success('短信发送成功')
             // 开始倒计时
@@ -225,7 +225,7 @@ export default {
       if (this.loginConfig.captcha) {
         this.getCaptcha()
       }
-      this.$message.error(res.msg)
+      this.$message.error(res.toast)
     },
     // 表单提交成功
     onFormSubmitSuccess (res) {

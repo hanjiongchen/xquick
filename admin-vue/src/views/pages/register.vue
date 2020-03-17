@@ -113,7 +113,7 @@ export default {
         }
         this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'REGISTER' }).then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.code + ':' + res.msg)
+            return this.$message.error(res.toast)
           } else {
             this.$message.success('短信发送成功')
             // 开始倒计时

@@ -85,7 +85,7 @@ export default {
     syncHandle () {
       this.$http.post('/sys/calendar/sync').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.getDataList()
       }).catch(() => {

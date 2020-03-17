@@ -81,7 +81,7 @@ export default {
     },
     // form信息获取失败
     onGetInfoError (res) {
-      return this.$message.error(res.msg)
+      return this.$message.error(res.toast)
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
@@ -121,7 +121,7 @@ export default {
     }, 1000, { 'leading': true, 'trailing': false }),
     // 表单提交失败
     onFormSubmitError (res) {
-      this.$message.error(res.code + ':' + res.msg)
+      this.$message.error(res.toast)
     },
     // 表单提交成功
     onFormSubmitSuccess (res) {
@@ -167,7 +167,7 @@ export default {
     // 文件上传成功
     uploadSuccessHandle (res, file, fileList) {
       if (res.code !== 0) {
-        return this.$message.error(res.msg)
+        return this.$message.error(res.toast)
       } else {
         this.uploadFileList = fileList
       }
@@ -249,7 +249,7 @@ export default {
     getDictList (type) {
       return this.$http.get('/sys/dict/list?dictType=' + type).then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         return res.data
       }).catch(() => {

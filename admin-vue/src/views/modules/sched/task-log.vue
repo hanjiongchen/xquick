@@ -64,7 +64,7 @@ export default {
     showErrorInfo (id) {
       this.$http.get(`/sched/taskLog/${id}`).then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         this.$alert(res.data.error)
       }).catch(() => {})

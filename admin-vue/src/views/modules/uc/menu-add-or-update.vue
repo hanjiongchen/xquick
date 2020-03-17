@@ -127,7 +127,7 @@ export default {
     getMenuList () {
       return this.$http.get('/uc/menu/tree?type=0').then(({ data: res }) => {
         if (res.code !== 0) {
-          return this.$message.error(res.msg)
+          return this.$message.error(res.toast)
         }
         // 加一个根菜单,用于选择
         this.menuList = [{ 'id': '0', 'name': '根菜单', 'children': removeEmptyChildren(res.data) }]

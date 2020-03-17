@@ -27,7 +27,7 @@ export default {
       // 表单模块参数
       mixinFormModuleOptions: {
         dataFormSaveURL: `/sys/param/save`,
-        dataFormUpdateURL: `/sys/params/update`,
+        dataFormUpdateURL: `/sys/param/update`,
         dataFormInfoURL: `/sys/param/info?id=`
       },
       dataForm: {

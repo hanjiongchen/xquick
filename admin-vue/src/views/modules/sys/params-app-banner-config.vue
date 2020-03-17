@@ -19,7 +19,7 @@
             <el-form-item label="第1张图" prop="img1">
                 <el-upload
                         :before-upload="beforeImageUpload"
-                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.msg) : this.uploadFileList1 = fileList}"
+                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.toast) : this.uploadFileList1 = fileList}"
                         list-type="picture-card"
                         :limit="1"
                         :accept="acceptImageFormat"
@@ -47,7 +47,7 @@
             <el-form-item label="第2张图" prop="img2">
                 <el-upload
                         :before-upload="beforeImageUpload"
-                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.msg) : this.uploadFileList2 = fileList}"
+                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.toast) : this.uploadFileList2 = fileList}"
                         list-type="picture-card"
                         :limit="1"
                         :accept="acceptImageFormat"
@@ -75,7 +75,7 @@
             <el-form-item label="第3张图" prop="img1">
                 <el-upload
                         :before-upload="beforeImageUpload"
-                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.msg) : this.uploadFileList3 = fileList}"
+                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.toast) : this.uploadFileList3 = fileList}"
                         list-type="picture-card"
                         :limit="1"
                         :accept="acceptImageFormat"
@@ -103,7 +103,7 @@
             <el-form-item label="第4张图" prop="img1">
                 <el-upload
                         :before-upload="beforeImageUpload"
-                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.msg) : this.uploadFileList4 = fileList}"
+                        :on-success="(res, file, fileList) => {res.code !== 0 ? this.$message.error(res.toast) : this.uploadFileList4 = fileList}"
                         list-type="picture-card"
                         :limit="1"
                         :accept="acceptImageFormat"

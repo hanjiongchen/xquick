@@ -62,6 +62,7 @@ public interface ErrorCode {
     int SMS_CODE_ERROR = 10042;
     int SMS_CODE_EXPIRED = 10043;
     int AES_ENCRYPT_ERROR = 10044;
+    int SMS_TPL_NOT_EXISTED = 10045;
 
     int WX_CONFIG_ERROR = 11000;
     int WX_API_ERROR = 11001;

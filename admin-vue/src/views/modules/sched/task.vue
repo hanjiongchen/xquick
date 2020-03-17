@@ -133,7 +133,7 @@ export default {
       }).then(() => {
         this.$http.put('/sched/task/pause', id ? [id] : this.dataListSelections.map(item => item.id)).then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.msg)
+            return this.$message.error(res.toast)
           }
           this.$message({
             message: this.$t('prompt.success'),
@@ -162,7 +162,7 @@ export default {
       }).then(() => {
         this.$http.put('/sched/task/resume', id ? [id] : this.dataListSelections.map(item => item.id)).then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.msg)
+            return this.$message.error(res.toast)
           }
           this.$message({
             message: this.$t('prompt.success'),
@@ -191,7 +191,7 @@ export default {
       }).then(() => {
         this.$http.put('/sched/task/run', id ? [id] : this.dataListSelections.map(item => item.id)).then(({ data: res }) => {
           if (res.code !== 0) {
-            return this.$message.error(res.msg)
+            return this.$message.error(res.toast)
           }
           this.$message({
             message: this.$t('prompt.success'),

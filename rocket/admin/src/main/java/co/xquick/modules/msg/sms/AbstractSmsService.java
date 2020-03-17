@@ -1,6 +1,6 @@
 package co.xquick.modules.msg.sms;
 
-import co.xquick.modules.msg.dto.SmsTplDTO;
+import co.xquick.modules.msg.entity.SmsTplEntity;
 
 /**
  * 短信
@@ -16,6 +16,6 @@ public abstract class AbstractSmsService {
      * @param mobile 手机号
      * @param params 短信参数
      */
-    public abstract void sendSms(SmsTplDTO smsTpl, String mobile, String params);
+    public abstract void sendSms(SmsTplEntity smsTpl, String mobile, String params);
 
 }
