@@ -72,8 +72,8 @@
             </el-row>
             <el-form-item prop="imgs" :label="$t('base.cover')">
                 <el-upload
-                        :class="{hide:mode === 'view'}"
-                        :disabled="mode === 'view'"
+                        :class="{hide:dataFormMode === 'view'}"
+                        :disabled="dataFormMode === 'view'"
                         :before-upload="beforeImageUpload"
                         :on-success="uploadSuccessHandle"
                         list-type="picture-card"
@@ -98,7 +98,7 @@
                         :before-upload="beforeImageUpload"
                         :on-success="uploadEditorSuccessHandle"
                         style="display: none;">
-                    <el-button ref="uploadBtn" type="primary" size="small">{{ $t('upload.button') }}</el-button>
+                    <el-button ref="uploadBtn" type="primary" size="small">{{ $t('uploadButton') }}</el-button>
                 </el-upload>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
@@ -148,6 +148,7 @@ export default {
         label: '是'
       }],
       dataForm: {
+        articleCategoryId: '',
         id: '',
         sort: '',
         status: '',
