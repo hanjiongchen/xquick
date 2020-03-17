@@ -65,5 +65,6 @@ public interface ErrorCode {
 
     int WX_CONFIG_ERROR = 11000;
     int WX_API_ERROR = 11001;
+    int APPLE_LOGIN_ERROR = 11100;
 
 }

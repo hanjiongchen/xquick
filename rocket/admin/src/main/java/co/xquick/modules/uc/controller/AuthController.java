@@ -157,7 +157,7 @@ public class AuthController {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
 
-        return userService.login(httpServletRequest, request);
+        return userService.appleLogin(httpServletRequest, request);
     }
 
 }

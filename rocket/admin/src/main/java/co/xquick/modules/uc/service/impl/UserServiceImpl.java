@@ -24,6 +24,8 @@ import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.*;
 import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,6 +158,25 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             }
         }
         return new Result<>().setCode(resultCode);
+    }
+
+    @Override
+    public Result<?> appleLogin(HttpServletRequest request, LoginAppleRequest login) {
+        // jwt解析identityToken, 获取userIdentifier
+        DecodedJWT jwt = JWT.decode(login.getIdentityToken());
+        // app包名
+        String packageName = jwt.getAudience().get(0);
+        // 用户id
+        String userIdentifier = jwt.getSubject();
+        // 有效期
+        Date expireDate = jwt.getExpiresAt();
+        if (expireDate.after(new Date())) {
+            throw new XquickException(ErrorCode.APPLE_LOGIN_ERROR, "登录信息过期");
+        } else {
+            // todo 使用apple keys做验证
+
+            return null;
+        }
     }
 
     @Override

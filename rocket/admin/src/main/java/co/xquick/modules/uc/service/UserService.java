@@ -2,10 +2,7 @@ package co.xquick.modules.uc.service;
 
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.service.CrudService;
-import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
-import co.xquick.modules.uc.dto.LoginRequest;
-import co.xquick.modules.uc.dto.RegisterRequest;
-import co.xquick.modules.uc.dto.UserDTO;
+import co.xquick.modules.uc.dto.*;
 import co.xquick.modules.uc.entity.UserEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +19,11 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
      * 登录
      */
     Result<?> login(HttpServletRequest httpServletRequest, LoginRequest request);
+
+    /**
+     * 苹果登录
+     */
+    Result<?> appleLogin(HttpServletRequest httpServletRequest, LoginAppleRequest request);
 
     /**
      * 通过短信验证码修改密码
