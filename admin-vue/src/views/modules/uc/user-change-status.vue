@@ -24,7 +24,7 @@ export default {
     return {
       mixinFormModuleOptions: {
         dataFormUpdateURL: `/uc/user/changeStatus/`,
-        dataFormInfoRL: `/uc/user/info?id=`
+        dataFormInfoURL: `/uc/user/info?id=`
       },
       dataForm: {
         id: '',

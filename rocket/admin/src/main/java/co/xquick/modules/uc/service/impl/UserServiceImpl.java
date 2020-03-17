@@ -11,7 +11,7 @@ import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.msg.MsgConst;
-import co.xquick.modules.msg.dto.SmsLogDTO;
+import co.xquick.modules.msg.entity.SmsLogEntity;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
@@ -106,7 +106,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             return new Result<>().error(ErrorCode.HAS_DUPLICATED_RECORD, "用户名已注册");
         } else {
             //  校验验证码
-            SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_REGISTER, request.getMobile());
+            SmsLogEntity lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_REGISTER, request.getMobile());
             if (null == lastSmsLog || !request.getSmsCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
                 // 验证码错误,找不到验证码
                 resultCode = ErrorCode.SMS_CODE_ERROR;
@@ -144,7 +144,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             resultCode = ErrorCode.ACCOUNT_DISABLE;
         } else {
             //  校验验证码
-            SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_CHANGE_PASSWORD, request.getMobile());
+            SmsLogEntity lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_CHANGE_PASSWORD, request.getMobile());
             if (null == lastSmsLog || !request.getSmsCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
                 // 验证码错误,找不到验证码
                 resultCode = ErrorCode.SMS_CODE_ERROR;
@@ -237,7 +237,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                         loginResult = ErrorCode.ACCOUNT_DISABLE;
                     } else {
                         //  校验验证码
-                        SmsLogDTO lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_LOGIN, login.getMobile());
+                        SmsLogEntity lastSmsLog = smsLogService.findLastLogByTplCode(MsgConst.SMS_TPL_LOGIN, login.getMobile());
                         if (null == lastSmsLog || !login.getSmsCode().equalsIgnoreCase(JacksonUtils.jsonToMap(lastSmsLog.getParams()).get("code").toString())) {
                             // 验证码错误,找不到验证码
                             loginResult = ErrorCode.SMS_CODE_ERROR;
@@ -335,13 +335,13 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
 
     @Override
     public UserDTO getByUsername(String username) {
-        UserEntity entity = baseMapper.selectOne(new QueryWrapper<UserEntity>().eq("username", username).last("limit 1"));
+        UserEntity entity = query().eq("username", username).last("limit 1").one();
         return ConvertUtils.sourceToTarget(entity, currentDtoClass());
     }
 
     @Override
     public UserDTO getByMobile(String mobileArea, String mobile) {
-        UserEntity entity = baseMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobileArea", mobileArea).eq("mobile", mobile).last("limit 1"));
+        UserEntity entity = query().eq("mobile_area", mobileArea).eq("mobile", mobile).last("limit 1").one();
         return ConvertUtils.sourceToTarget(entity, currentDtoClass());
     }
 
@@ -352,7 +352,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
 
     @Override
     public boolean changeStatus(UserDTO dto) {
-        return update(new UserEntity(), new UpdateWrapper<UserEntity>().set("status", dto.getStatus()).eq("id", dto.getId()));
+        return update().set("status", dto.getStatus()).eq("id", dto.getId()).update(new UserEntity());
     }
 
     @Override
