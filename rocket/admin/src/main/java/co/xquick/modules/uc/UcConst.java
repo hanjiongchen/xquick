@@ -158,7 +158,9 @@ public interface UcConst {
         APP_USER_PWD(50, "APP帐号密码登录"),
         APP_MOBILE_PWD(60, "APP手机密码登录"),
         APP_MOBILE_SMS(70, "APP手机短信登录"),
-        APP_WECHAT(80, "APP微信登录");
+        APP_WECHAT(80, "APP微信登录"),
+        APP_APPLE(81, "APP苹果登录"),
+        APP_APPLE_MOBILE_SMS(82, "APP苹果登录验证手机号");
 
         private int value;
         private String name;

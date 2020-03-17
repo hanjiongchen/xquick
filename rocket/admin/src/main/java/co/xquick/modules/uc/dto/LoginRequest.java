@@ -45,4 +45,10 @@ public class LoginRequest implements Serializable {
     @ApiModelProperty(value = "唯一标识")
     private String uuid;
 
+    /**
+     * jwt
+     */
+    @ApiModelProperty(value = "苹果登录token")
+    private String appleIdentityToken;
+
 }

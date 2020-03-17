@@ -17,7 +17,6 @@ import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
-import co.xquick.modules.uc.dto.LoginAppleRequest;
 import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.RegisterRequest;
 import co.xquick.modules.uc.service.CaptchaService;
@@ -146,18 +145,6 @@ public class AuthController {
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
 
         return userService.register(request);
-    }
-
-    /**
-     * 苹果登录
-     */
-    @PostMapping("appleLogin")
-    @ApiOperation(value = "苹果登录")
-    public Result<?> appleLogin(HttpServletRequest httpServletRequest, @RequestBody LoginAppleRequest request) {
-        // 效验数据
-        ValidatorUtils.validateEntity(request, DefaultGroup.class);
-
-        return userService.appleLogin(httpServletRequest, request);
     }
 
 }

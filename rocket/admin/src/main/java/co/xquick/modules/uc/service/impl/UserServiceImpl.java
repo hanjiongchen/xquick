@@ -20,6 +20,7 @@ import co.xquick.modules.uc.UcConst.UserStatusEnum;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.UserDao;
 import co.xquick.modules.uc.dto.*;
+import co.xquick.modules.uc.entity.UserAppleEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.*;
 import co.xquick.modules.uc.user.SecurityUser;
@@ -62,6 +63,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     private DeptService deptService;
     @Autowired
     private SmsLogService smsLogService;
+    @Autowired
+    private UserAppleService userAppleService;
 
     @Override
     public QueryWrapper<UserEntity> getWrapper(String method, Map<String, Object> params) {
@@ -161,25 +164,6 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
-    public Result<?> appleLogin(HttpServletRequest request, LoginAppleRequest login) {
-        // jwt解析identityToken, 获取userIdentifier
-        DecodedJWT jwt = JWT.decode(login.getIdentityToken());
-        // app包名
-        String packageName = jwt.getAudience().get(0);
-        // 用户id
-        String userIdentifier = jwt.getSubject();
-        // 有效期
-        Date expireDate = jwt.getExpiresAt();
-        if (expireDate.after(new Date())) {
-            throw new XquickException(ErrorCode.APPLE_LOGIN_ERROR, "登录信息过期");
-        } else {
-            // todo 使用apple keys做验证
-
-            return null;
-        }
-    }
-
-    @Override
     public Result<?> login(HttpServletRequest request, LoginRequest login) {
         // 登录日志
         LoginEntity loginLog = new LoginEntity();
@@ -264,6 +248,47 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                             }
                             // 将短信消费掉
                             smsLogService.consumeById(lastSmsLog.getId());
+                        }
+                    }
+                }
+            } else if (LoginTypeEnum.APP_APPLE.value() == login.getType()) {
+                if (StringUtils.isEmpty(login.getAppleIdentityToken())) {
+                    // 参数为空
+                    loginResult = ErrorCode.ERROR_REQUEST;
+                } else {
+                    // jwt解析identityToken, 获取userIdentifier
+                    DecodedJWT jwt = JWT.decode(login.getAppleIdentityToken());
+                    // app包名
+                    String packageName = jwt.getAudience().get(0);
+                    // 用户id
+                    String userIdentifier = jwt.getSubject();
+                    // 有效期
+                    Date expireDate = jwt.getExpiresAt();
+                    if (expireDate.after(new Date())) {
+                        loginResult = ErrorCode.APPLE_LOGIN_ERROR;
+                    } else {
+                        // todo 使用apple keys做验证
+                        // 通过packageName和userIdentifier找对应的数据记录
+                        UserAppleEntity userApple = userAppleService.getByUserIdentifier(packageName, userIdentifier);
+                        if (userApple == null) {
+                            // 不存在记录,则保存记录
+                            userApple = new UserAppleEntity();
+                            userApple.setPackageName(packageName);
+                            userApple.setUserIdentifier(userIdentifier);
+                            userAppleService.save(userApple);
+                        }
+                        if (userApple.getUserId() == null) {
+                            // 未绑定用户
+                            loginResult = ErrorCode.APPLE_NOT_BIND;
+                        } else {
+                            user = getDtoById(userApple.getUserId());
+                            if (user == null) {
+                                // 帐号不存在
+                                loginResult = ErrorCode.ACCOUNT_NOT_EXIST;
+                            } else if (user.getStatus() != UserStatusEnum.ENABLED.value()) {
+                                // 帐号锁定
+                                loginResult = ErrorCode.ACCOUNT_DISABLE;
+                            }
                         }
                     }
                 }

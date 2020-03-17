@@ -21,11 +21,6 @@ public interface UserService extends CrudService<UserEntity, UserDTO> {
     Result<?> login(HttpServletRequest httpServletRequest, LoginRequest request);
 
     /**
-     * 苹果登录
-     */
-    Result<?> appleLogin(HttpServletRequest httpServletRequest, LoginAppleRequest request);
-
-    /**
      * 通过短信验证码修改密码
      */
     Result<?> changePasswordBySmsCode(ChangePasswordBySmsCodeRequest request);

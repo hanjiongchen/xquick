@@ -40,10 +40,8 @@ public class ${className}Controller {
 
     @GetMapping("list")
     @ApiOperation("列表")
-    @ApiImplicitParams({
-    })
     @RequiresPermissions("${moduleName}:${pathName}:list")
-    public Result list(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<${className}DTO> list = ${classname}Service.listDto(params);
 
         return new Result<>().ok(list);
@@ -51,10 +49,8 @@ public class ${className}Controller {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @ApiImplicitParams({
-    })
     @RequiresPermissions("${moduleName}:${pathName}:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<${className}DTO> page = ${classname}Service.pageDto(params);
 
         return new Result<>().ok(page);
@@ -63,7 +59,7 @@ public class ${className}Controller {
     @GetMapping("info")
     @ApiOperation("信息")
     @RequiresPermissions("${moduleName}:${pathName}:info")
-    public Result info(@RequestParam Long id) {
+    public Result<?> info(@RequestParam Long id) {
         ${className}DTO data = ${classname}Service.getDtoById(id);
 
         return new Result<${className}DTO>().ok(data);
@@ -73,11 +69,11 @@ public class ${className}Controller {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("${moduleName}:${pathName}:save")
-    public Result save(@RequestBody ${className}DTO dto) {
+    public Result<?> save(@RequestBody ${className}DTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        ${classname}Service.saveOrUpdateDto(dto);
+        ${classname}Service.saveDto(dto);
 
         return new Result();
     }
@@ -90,7 +86,7 @@ public class ${className}Controller {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        ${classname}Service.saveOrUpdateDto(dto);
+        ${classname}Service.updateDto(dto);
 
         return new Result();
     }
@@ -103,7 +99,7 @@ public class ${className}Controller {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 
-        ${classname}Service.deleteByIds(ids);
+        ${classname}Service.logicDeleteByIds(ids);
 
         return new Result();
     }
