@@ -27,7 +27,7 @@ public class TokenServiceImpl extends BaseServiceImpl<TokenDao, TokenEntity> imp
         // 过期时间
         Date expireTime = new Date(now.getTime() + loginConfig.getExpire() * 1000);
         // 生成的token
-        if (loginConfig.getMulti()) {
+        if (loginConfig.isMultiLogin()) {
             // 支持多点登录
         } else {
             // 不支持多点登录,注销该用户所有token

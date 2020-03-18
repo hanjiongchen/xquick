@@ -9,7 +9,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="多客户端支持">
-                        <el-switch v-model="paramDataForm.multi"/>
+                        <el-switch v-model="paramDataForm.multiLogin"/>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -34,7 +34,19 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="token自动续期">
-                            <el-switch v-model="paramDataForm.renewal"/>
+                            <el-switch v-model="paramDataForm.renewalToken"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="基于权限">
+                            <el-switch v-model="paramDataForm.permissionsBase"/>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="基于角色">
+                            <el-switch v-model="paramDataForm.roleBase"/>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -67,11 +79,13 @@ export default {
       },
       paramDataForm: {
         type: '',
-        captcha: '',
+        captcha: false,
         magicCaptcha: '',
-        renewal: '',
-        expire: 0,
-        multi: 0
+        renewalToken: true,
+        expire: 604800,
+        multiLogin: true,
+        roleBase: false,
+        permissionsBase: true
       }
     }
   },

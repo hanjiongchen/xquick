@@ -28,15 +28,15 @@ public class LoginCfg implements Serializable {
 
     @JsonIgnore
     @ApiModelProperty(value = "支持多客户端登录")
-    private Boolean multi;
+    private boolean multiLogin = true;
 
     @JsonIgnore
     @ApiModelProperty(value = "Token有效时间")
-    private Long expire;
+    private long expire = 604800L;
 
     @JsonIgnore
     @ApiModelProperty(value = "短信验证码有效毫秒长")
-    private Long smsCodeValidTime;
+    private long smsCodeValidTime = 300000L;
 
     @JsonIgnore
     @ApiModelProperty(value = "自动延期")
@@ -51,7 +51,7 @@ public class LoginCfg implements Serializable {
     private boolean permissionsBase = true;
 
     @ApiModelProperty(value = "验证码支持")
-    private Boolean captcha;
+    private boolean captcha = false;
 
     @JsonIgnore
     @ApiModelProperty(value = "魔法验证码")
@@ -59,7 +59,7 @@ public class LoginCfg implements Serializable {
 
     @JsonIgnore
     @ApiModelProperty(value = "自动创建用户")
-    private Boolean autoCreate;
+    private boolean autoCreate = false;
 
     @JsonIgnore
     @ApiModelProperty(value = "最多登录次数")
@@ -81,7 +81,7 @@ public class LoginCfg implements Serializable {
     public static LoginCfg getDefaultCfg(int type) {
         // todo
         LoginCfg loginCfg = new LoginCfg();
-        loginCfg.setMulti(true);
+        loginCfg.setType(type);
         return loginCfg;
     }
 

@@ -181,7 +181,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         if (null == loginConfig) {
             // 未找到登录配置
             loginResult = ErrorCode.UNKNOWN_LOGIN_TYPE;
-        } else if (loginConfig.getCaptcha() && (StringUtils.isEmpty(login.getCaptcha()) || StringUtils.isEmpty(login.getUuid()) || (!login.getCaptcha().equalsIgnoreCase(loginConfig.getMagicCaptcha()) && !captchaService.validate(login.getUuid(), login.getCaptcha())))) {
+        } else if (loginConfig.isCaptcha() && (StringUtils.isEmpty(login.getCaptcha()) || StringUtils.isEmpty(login.getUuid()) || (!login.getCaptcha().equalsIgnoreCase(loginConfig.getMagicCaptcha()) && !captchaService.validate(login.getUuid(), login.getCaptcha())))) {
             // 验证码错误
             loginResult = ErrorCode.CAPTCHA_ERROR;
         } else {
@@ -296,7 +296,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                 loginResult = ErrorCode.UNKNOWN_LOGIN_TYPE;
             }
 
-            if (user == null && loginConfig.getAutoCreate()) {
+            if (user == null && loginConfig.isAutoCreate()) {
                 // 没有该用户，并且需要自动创建用户
                 user = new UserDTO();
                 user.setStatus(UserStatusEnum.ENABLED.value());

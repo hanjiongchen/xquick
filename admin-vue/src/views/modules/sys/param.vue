@@ -66,7 +66,7 @@ import mixinViewModule from '@/mixins/view-module'
 
 import AddOrUpdate from './param-add-or-update'
 import OssConfig from './param-oss-config'
-import LoginConfig from './param-login-config'
+import LoginConfig from './param-login-cfg'
 import AppAboutConfig from './params-app-about-config'
 import AppBannerConfig from './params-app-banner-config'
 import AppLoadingConfig from './params-app-loading-config'
