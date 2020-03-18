@@ -18,7 +18,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -45,14 +47,16 @@ public class Oauth2Realm extends AuthorizingRealm {
         UserDetail user = (UserDetail) principals.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (UcConst.TOKEN_GUEST.equalsIgnoreCase(user.getToken())) {
+        if (UcConst.GUEST_TOKEN.equalsIgnoreCase(user.getToken())) {
             // 游客
             // 塞入游客角色
             Set<String> roles = new HashSet<>();
-            roles.add("guest");
+            roles.add(UcConst.GUEST_ROLE_CODE);
             info.setRoles(roles);
             // 塞入游客具有的权限列表
-            info.setStringPermissions(shiroService.getPermissionsByRoles("guest"));
+            List<String> roleCodes = new ArrayList<>();
+            roleCodes.add(UcConst.GUEST_ROLE_CODE);
+            info.setStringPermissions(shiroService.getPermissionsByRoles(roleCodes));
         } else {
             // 根据登录配置中的roleBase和permissionBase设置SimpleAuthorizationInfo
             LoginCfg loginCfg = user.getLoginCfg();
@@ -76,11 +80,11 @@ public class Oauth2Realm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
         String accessToken = (String) authToken.getPrincipal();
-        if (UcConst.TOKEN_GUEST.equalsIgnoreCase(accessToken)) {
+        if (UcConst.GUEST_TOKEN.equalsIgnoreCase(accessToken)) {
             // 游客token
             UserDetail userDetail = new UserDetail();
-            userDetail.setToken(UcConst.TOKEN_GUEST);
-            return new SimpleAuthenticationInfo(userDetail, UcConst.TOKEN_GUEST, getName());
+            userDetail.setToken(UcConst.GUEST_TOKEN);
+            return new SimpleAuthenticationInfo(userDetail, UcConst.GUEST_TOKEN, getName());
         }
         // 根据accessToken，查询用户信息
         TokenEntity token = shiroService.getUserIdAndTypeByToken(accessToken);

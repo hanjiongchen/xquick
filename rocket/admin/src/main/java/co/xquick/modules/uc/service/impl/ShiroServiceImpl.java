@@ -46,9 +46,9 @@ public class ShiroServiceImpl implements ShiroService {
     private boolean open;
 
     @Override
-    public Set<String> getPermissionsByRoles(String roles) {
+    public Set<String> getPermissionsByRoles(List<String> roleCodes) {
         List<String> permissionsList;
-        permissionsList = menuMapper.getPermissionsByRoles(roles);
+        permissionsList = menuMapper.getPermissionsByRoles(roleCodes);
         // 用户权限列表
         Set<String> set = new HashSet<>();
         for (String permissions : permissionsList) {

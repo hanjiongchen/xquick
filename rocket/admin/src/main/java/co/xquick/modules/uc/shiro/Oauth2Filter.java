@@ -31,12 +31,12 @@ public class Oauth2Filter extends AuthenticatingFilter {
         return new AuthenticationToken() {
             @Override
             public String getPrincipal() {
-                return StringUtils.isEmpty(token) ? UcConst.TOKEN_GUEST : token;
+                return StringUtils.isEmpty(token) ? UcConst.GUEST_TOKEN : token;
             }
 
             @Override
             public String getCredentials() {
-                return StringUtils.isEmpty(token) ? UcConst.TOKEN_GUEST : token;
+                return StringUtils.isEmpty(token) ? UcConst.GUEST_TOKEN : token;
             }
         };
     }

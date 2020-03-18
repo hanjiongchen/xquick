@@ -18,7 +18,7 @@ public interface ShiroService {
     /**
      * 通过角色获取权限列表
      */
-    Set<String> getPermissionsByRoles(String roles);
+    Set<String> getPermissionsByRoles(List<String> roleCodes);
 
     /**
      * 获取用户权限列表
