@@ -43,7 +43,6 @@ public class SiteController {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @LogOperation("分页")
     @RequiresPermissions("cms:site:page")
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SiteDTO> page = siteService.pageDto(params);
@@ -55,6 +54,9 @@ public class SiteController {
     @ApiOperation("信息")
     @RequiresPermissions("cms:site:info")
     public Result<?> info(@RequestParam Long id) {
+        // 效验参数
+        AssertUtils.isEmpty(id, "id");
+
         SiteDTO data = siteService.getDtoById(id);
 
         return new Result<>().ok(data);
@@ -65,7 +67,7 @@ public class SiteController {
     @LogOperation("保存")
     @RequiresPermissions("cms:site:save")
     public Result<?> save(@RequestBody SiteDTO dto) {
-        //效验数据
+        // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
         siteService.saveOrUpdateDto(dto);
@@ -76,12 +78,25 @@ public class SiteController {
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
-    // @RequiresPermissions("cms:site:update")
+    @RequiresPermissions("cms:site:update")
     public Result<?> update(@RequestBody SiteDTO dto) {
-        //效验数据
+        // 效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
         siteService.saveOrUpdateDto(dto);
+
+        return new Result<>().ok(dto);
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("cms:site:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
+        // 效验参数
+        AssertUtils.isListEmpty(ids, "id");
+
+        siteService.logicDeleteByIds(ids);
 
         return new Result<>();
     }
@@ -90,11 +105,11 @@ public class SiteController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("cms:site:delete")
-    public Result<?> delete(@RequestBody List<Long> ids) {
-        //效验数据
-        AssertUtils.isListEmpty(ids, "id");
+    public Result<?> delete(@RequestParam Long id) {
+        // 效验参数
+        AssertUtils.isEmpty(id, "id");
 
-        siteService.logicDeleteByIds(ids);
+        siteService.logicDeleteById(id);
 
         return new Result<>();
     }

@@ -60,6 +60,9 @@ public class ${className}Controller {
     @ApiOperation("信息")
     @RequiresPermissions("${moduleName}:${pathName}:info")
     public Result<?> info(@RequestParam Long id) {
+        // 效验参数
+        AssertUtils.isEmpty(id, "id");
+
         ${className}DTO data = ${classname}Service.getDtoById(id);
 
         return new Result<${className}DTO>().ok(data);
@@ -70,12 +73,12 @@ public class ${className}Controller {
     @LogOperation("保存")
     @RequiresPermissions("${moduleName}:${pathName}:save")
     public Result<?> save(@RequestBody ${className}DTO dto) {
-        //效验数据
+        // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
         ${classname}Service.saveDto(dto);
 
-        return new Result();
+        return new Result<>().ok(dto);
     }
 
     @PutMapping("update")
@@ -88,20 +91,33 @@ public class ${className}Controller {
 
         ${classname}Service.updateDto(dto);
 
-        return new Result();
+        return new Result<>().ok(dto);
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("${moduleName}:${pathName}:delete")
-    public Result delete(@RequestBody List<Long> ids) {
-        //效验数据
+    public Result delete(@RequestBody Long id) {
+        // 效验参数
+        AssertUtils.isEmpty(id, "id");
+
+        ${classname}Service.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("${moduleName}:${pathName}:deleteBatch")
+    public Result deleteBatch(@RequestBody List<Long> ids) {
+        // 效验参数
         AssertUtils.isListEmpty(ids, "id");
 
         ${classname}Service.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
 
     @GetMapping("export")
