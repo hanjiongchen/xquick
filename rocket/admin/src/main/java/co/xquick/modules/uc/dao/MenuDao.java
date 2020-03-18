@@ -66,6 +66,16 @@ public interface MenuDao extends BaseDao<MenuEntity> {
     List<String> getUserPermissionsList(@Param("userId") Long userId);
 
     /**
+     * 查询角色权限列表
+     */
+    @Select("SELECT uc_menu.permissions FROM uc_role_menu" +
+            " LEFT JOIN uc_menu ON uc_role_menu.menu_id = uc_menu.id" +
+            " WHERE uc_role_menu.role_code = #{roleCode}' AND uc_menu.permissions != ''" +
+            " AND uc_menu.deleted = 0 AND uc_role_menu.deleted = 0" +
+            " ORDER BY uc_menu.sort ASC")
+    List<String> getPermissionsByRoles(@Param("roleCode") String roleCode);
+
+    /**
      * 查询所有权限列表
      */
     @Select("select permissions from uc_menu where permissions != '' and deleted = 0")

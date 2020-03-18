@@ -23,7 +23,7 @@ public interface RoleMenuService extends BaseService<RoleMenuEntity> {
 	 * @param roleId      角色ID
 	 * @param menuIdList  菜单ID列表
 	 */
-	void saveOrUpdate(Long roleId, List<Long> menuIdList);
+	void saveOrUpdate(Long roleId, String roleCode, List<Long> menuIdList);
 
 	/**
 	 * 根据角色id，删除角色菜单关系

@@ -8,6 +8,10 @@ package co.xquick.modules.uc;
 public interface UcConst {
 
     /**
+     * 游客token
+     */
+    String TOKEN_GUEST = "00000000000000000000000000000000";
+    /**
      * 登录配置
      */
     String LOGIN_CFG = "LOGIN_CFG";
@@ -155,17 +159,17 @@ public interface UcConst {
          * 详见name
          */
         ADMIN_LOGOUT(-10, "后台退出"),
-        APP_LOGOUT(-50, "APP退出"),
+        APP_LOGOUT(-100, "APP退出"),
         ADMIN_USER_PWD(10, "后台帐号密码登录"),
         ADMIN_MOBILE_PWD(20, "后台手机密码登录"),
         ADMIN_MOBILE_SMS(30, "后台手机短信登录"),
         ADMIN_WECHAT(40, "后台微信登录"),
-        APP_USER_PWD(50, "APP帐号密码登录"),
-        APP_MOBILE_PWD(60, "APP手机密码登录"),
-        APP_MOBILE_SMS(70, "APP手机短信登录"),
-        APP_WECHAT(80, "APP微信登录"),
-        APP_APPLE(81, "APP苹果登录"),
-        APP_APPLE_MOBILE_SMS(82, "APP苹果登录验证手机号");
+        APP_USER_PWD(100, "APP帐号密码登录"),
+        APP_MOBILE_PWD(110, "APP手机密码登录"),
+        APP_MOBILE_SMS(120, "APP手机短信登录"),
+        APP_WECHAT(130, "APP微信登录"),
+        APP_APPLE(140, "APP苹果登录"),
+        APP_APPLE_MOBILE_SMS(150, "APP苹果登录验证手机号");
 
         private int value;
         private String name;

@@ -65,7 +65,7 @@ public class RoleServiceImpl extends CrudServiceImpl<RoleDao, RoleEntity, RoleDT
         // 保存/更新角色
         boolean ret = super.saveOrUpdateDto(dto);
         // 保存角色菜单关系
-        roleMenuService.saveOrUpdate(dto.getId(), dto.getMenuIdList());
+        roleMenuService.saveOrUpdate(dto.getId(), dto.getCode(), dto.getMenuIdList());
         // 保存角色数据权限关系
         roleDataScopeService.saveOrUpdate(dto.getId(), dto.getDeptIdList());
         return ret;

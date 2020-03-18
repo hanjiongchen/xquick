@@ -20,6 +20,10 @@ public class RoleMenuEntity extends BaseEntity {
      */
     private Long roleId;
     /**
+     * 角色编码
+     */
+    private String roleCode;
+    /**
      * 菜单ID
      */
     private Long menuId;

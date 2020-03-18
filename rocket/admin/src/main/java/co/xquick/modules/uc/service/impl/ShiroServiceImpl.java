@@ -46,6 +46,22 @@ public class ShiroServiceImpl implements ShiroService {
     private boolean open;
 
     @Override
+    public Set<String> getPermissionsByRoles(String roles) {
+        List<String> permissionsList;
+        permissionsList = menuMapper.getPermissionsByRoles(roles);
+        // 用户权限列表
+        Set<String> set = new HashSet<>();
+        for (String permissions : permissionsList) {
+            if (StringUtils.isBlank(permissions)) {
+                continue;
+            }
+            set.addAll(Arrays.asList(permissions.trim().split(",")));
+        }
+
+        return set;
+    }
+
+    @Override
     public Set<String> getUserPermissions(UserDetail user) {
         // 系统管理员，拥有最高权限
         List<String> permissionsList;

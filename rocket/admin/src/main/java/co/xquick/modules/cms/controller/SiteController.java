@@ -43,6 +43,7 @@ public class SiteController {
 
     @GetMapping("page")
     @ApiOperation("分页")
+    @LogOperation("分页")
     @RequiresPermissions("cms:site:page")
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SiteDTO> page = siteService.pageDto(params);
@@ -75,7 +76,7 @@ public class SiteController {
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
-    @RequiresPermissions("cms:site:update")
+    // @RequiresPermissions("cms:site:update")
     public Result<?> update(@RequestBody SiteDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);

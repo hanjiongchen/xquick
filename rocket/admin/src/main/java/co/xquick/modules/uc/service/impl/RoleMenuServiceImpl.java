@@ -22,18 +22,19 @@ public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuDao, RoleMenuEn
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveOrUpdate(Long roleId, List<Long> menuIds) {
+    public void saveOrUpdate(Long roleId, String roleCode, List<Long> menuIds) {
         // 先删除角色菜单关系
         deleteByRoleIds(Collections.singletonList(roleId));
 
         if (ObjectUtils.isNotEmpty(menuIds)) {
             //保存角色菜单关系
             for (Long menuId : menuIds) {
-                RoleMenuEntity sysRoleMenuEntity = new RoleMenuEntity();
-                sysRoleMenuEntity.setMenuId(menuId);
-                sysRoleMenuEntity.setRoleId(roleId);
+                RoleMenuEntity roleMenu = new RoleMenuEntity();
+                roleMenu.setMenuId(menuId);
+                roleMenu.setRoleCode(roleCode);
+                roleMenu.setRoleId(roleId);
                 //保存
-                save(sysRoleMenuEntity);
+                save(roleMenu);
             }
         }
     }

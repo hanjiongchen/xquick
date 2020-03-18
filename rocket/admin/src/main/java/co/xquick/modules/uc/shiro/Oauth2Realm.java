@@ -18,6 +18,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 认证
  *
@@ -31,7 +34,7 @@ public class Oauth2Realm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof Oauth2Token;
+        return token != null;
     }
 
     /**
@@ -42,17 +45,27 @@ public class Oauth2Realm extends AuthorizingRealm {
         UserDetail user = (UserDetail) principals.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        // 根据登录配置中的roleBase和permissionBase设置SimpleAuthorizationInfo
-        LoginCfg loginCfg = user.getLoginCfg();
-        if (loginCfg != null) {
-             if (loginCfg.isRoleBase()) {
-                 // 塞入角色列表
-                 info.setRoles(shiroService.getUserRoles(user));
-             }
-             if (loginCfg.isPermissionsBase()) {
-                 // 塞入权限列表
-                 info.setStringPermissions(shiroService.getUserPermissions(user));
-             }
+        if (UcConst.TOKEN_GUEST.equalsIgnoreCase(user.getToken())) {
+            // 游客
+            // 塞入游客角色
+            Set<String> roles = new HashSet<>();
+            roles.add("guest");
+            info.setRoles(roles);
+            // 塞入游客具有的权限列表
+            info.setStringPermissions(shiroService.getPermissionsByRoles("guest"));
+        } else {
+            // 根据登录配置中的roleBase和permissionBase设置SimpleAuthorizationInfo
+            LoginCfg loginCfg = user.getLoginCfg();
+            if (loginCfg != null) {
+                if (loginCfg.isRoleBase()) {
+                    // 塞入角色列表
+                    info.setRoles(shiroService.getUserRoles(user));
+                }
+                if (loginCfg.isPermissionsBase()) {
+                    // 塞入权限列表
+                    info.setStringPermissions(shiroService.getUserPermissions(user));
+                }
+            }
         }
         return info;
     }
@@ -63,6 +76,12 @@ public class Oauth2Realm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
         String accessToken = (String) authToken.getPrincipal();
+        if (UcConst.TOKEN_GUEST.equalsIgnoreCase(accessToken)) {
+            // 游客token
+            UserDetail userDetail = new UserDetail();
+            userDetail.setToken(UcConst.TOKEN_GUEST);
+            return new SimpleAuthenticationInfo(userDetail, UcConst.TOKEN_GUEST, getName());
+        }
         // 根据accessToken，查询用户信息
         TokenEntity token = shiroService.getUserIdAndTypeByToken(accessToken);
         // token失效

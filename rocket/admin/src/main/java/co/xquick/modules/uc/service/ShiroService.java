@@ -16,6 +16,11 @@ import java.util.Set;
 public interface ShiroService {
 
     /**
+     * 通过角色获取权限列表
+     */
+    Set<String> getPermissionsByRoles(String roles);
+
+    /**
      * 获取用户权限列表
      */
     Set<String> getUserPermissions(UserDetail user);
