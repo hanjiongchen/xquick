@@ -1,10 +1,16 @@
 package co.xquick.modules.uc.service.impl;
 
+import co.xquick.booster.util.JacksonUtils;
+import co.xquick.modules.sys.dao.ParamDao;
+import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.*;
+import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.ShiroService;
 import co.xquick.modules.uc.user.UserDetail;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +37,8 @@ public class ShiroServiceImpl implements ShiroService {
     private RoleDao roleMapper;
     @Autowired
     private TokenDao tokenMapper;
+    @Autowired
+    private ParamDao paramMapper;
     @Autowired
     private RoleDataScopeDao roleDataScopeMapper;
 
@@ -81,8 +89,8 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public Long getUserIdByToken(String token) {
-        return tokenMapper.getUserIdByToken(token);
+    public TokenEntity getUserIdAndTypeByToken(String token) {
+        return tokenMapper.getUserIdAndTypeByToken(token);
     }
 
     @Override
@@ -96,32 +104,14 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public void renewalToken(String token) {
-        // tokenMapper.renewalToken(token, )
-        // 实现ParamsService.getValueObject
-        // 如果Autowired和Redis相关内容，会出现RedisAspect不处理的问题
-        /*String code = Constant.LOGIN_CONFIG_KEY + "_" + token.getLoginType().toUpperCase();
-        String content;
-        if (open) {
-            ParamsRedis sysParamsRedis = new ParamsRedis();
-            content = sysParamsRedis.get(code);
-            if (content == null) {
-                content = sysParamsDao.getContentByCode(code);
-                sysParamsRedis.set(code, content);
-            }
-        } else {
-            content = sysParamsDao.getContentByCode(code);
-        }
+    public LoginCfg getLoginCfg(Integer type) {
+        String paramContent = paramMapper.getContentByCode(UcConst.LOGIN_CFG_PREFIX + type);
+        LoginCfg loginCfg = JacksonUtils.jsonToPojo(paramContent, LoginCfg.class);
+        return loginCfg == null ? LoginCfg.getDefaultCfg(type) : loginCfg;
+    }
 
-        LoginConfigDTO loginConfig = null;
-        if (StringUtils.isNotBlank(content)) {
-            loginConfig = JSON.parseObject(content, LoginConfigDTO.class);
-        }
-        if (null == loginConfig) {
-            throw new XquickException(ErrorCode.UNKNOWN_LOGIN_TYPE);
-        }
-        if (loginConfig.getRenewal()) {
-            sysUserTokenDao.renewalToken(token.getToken(), loginConfig.getExpire());
-        }*/
+    @Override
+    public boolean renewalToken(String token, Long expire) {
+        return SqlHelper.retBool(tokenMapper.renewalToken(token, expire));
     }
 }

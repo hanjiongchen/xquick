@@ -13,6 +13,11 @@ public interface UcConst {
     String LOGIN_CFG = "LOGIN_CFG";
 
     /**
+     * 登录配置前缀
+     */
+    String LOGIN_CFG_PREFIX = "LOGIN_CFG_";
+
+    /**
      * token header
      */
     String TOKEN_HEADER = "token";

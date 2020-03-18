@@ -1,5 +1,6 @@
 package co.xquick.modules.uc.user;
 
+import co.xquick.modules.uc.dto.LoginCfg;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -29,6 +30,7 @@ public class UserDetail implements Serializable {
     private Integer type;
     private String nodeIds;
     private String regionCd;
+    private LoginCfg loginCfg;
     /**
      * 部门数据权限
      */

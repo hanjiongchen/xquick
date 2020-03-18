@@ -70,7 +70,7 @@ public class JacksonUtils {
      * @return 转换的对象实例
      */
     public static <T> T jsonToPojo(final String json, final Class<T> pojoClass) {
-        if ((json == null) || "".equals(json.trim())) {
+        if (StringUtils.isBlank(json)) {
             return null;
         }
         try {

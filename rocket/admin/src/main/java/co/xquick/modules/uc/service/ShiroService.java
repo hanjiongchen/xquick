@@ -1,5 +1,7 @@
 package co.xquick.modules.uc.service;
 
+import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.user.UserDetail;
 
@@ -26,13 +28,21 @@ public interface ShiroService {
     /**
      * 通过token获取用户id
      */
-    Long getUserIdByToken(String token);
+    TokenEntity getUserIdAndTypeByToken(String token);
 
     /**
      * 续token的过期时间
      * @param token
+     * @param expire
      */
-    void renewalToken(String token);
+    boolean renewalToken(String token, Long expire);
+
+    /**
+     * 获得登录配置
+     * @param type
+     * @return
+     */
+    LoginCfg getLoginCfg(Integer type);
 
     /**
      * 根据用户ID，查询用户
