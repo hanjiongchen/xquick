@@ -3,7 +3,7 @@ spring:
     druid:
       #MySQL
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://121.36.211.58:3306/xquick?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:mysql://139.9.147.69:3306/xquick?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: xquick
       password: xquick
       initial-size: 10
