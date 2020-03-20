@@ -26,7 +26,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="title" label="标题" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="description" label="描述" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="descr" label="描述" header-align="center" align="center"></el-table-column>
         <el-table-column prop="domain" label="网址" header-align="center" align="center"></el-table-column>
         <el-table-column prop="logo" label="LOGO" header-align="center" align="center"></el-table-column>
         <el-table-column prop="copyright" label="版权信息" header-align="center" align="center"></el-table-column>

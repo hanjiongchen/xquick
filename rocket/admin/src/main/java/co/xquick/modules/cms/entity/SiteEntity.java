@@ -31,7 +31,7 @@ public class SiteEntity extends BaseEntity {
     /**
      * 描述
      */
-	private String description;
+	private String descr;
     /**
      * 网址
      */

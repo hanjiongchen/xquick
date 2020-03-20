@@ -11,7 +11,7 @@
                 <el-input v-model="dataForm.title" placeholder="标题"></el-input>
             </el-form-item>
             <el-form-item label="描述" prop="description">
-                <el-input v-model="dataForm.description" placeholder="描述"></el-input>
+                <el-input v-model="dataForm.descr" placeholder="描述"></el-input>
             </el-form-item>
             <el-form-item label="网址" prop="domain">
                 <el-input v-model="dataForm.domain" placeholder="网址"></el-input>
@@ -70,7 +70,7 @@ export default {
         code: '',
         name: '',
         title: '',
-        description: '',
+        descr: '',
         domain: '',
         logo: '',
         copyright: '',

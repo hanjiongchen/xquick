@@ -33,7 +33,7 @@ public class SiteDTO extends BaseDTO {
     private String title;
 
     @ApiModelProperty(value = "描述")
-    private String description;
+    private String descr;
 
     @ApiModelProperty(value = "网址")
     private String domain;
