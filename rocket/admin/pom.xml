@@ -20,7 +20,7 @@
         <aliyun.dysmsapi.version>2.1.0</aliyun.dysmsapi.version>
         <jpush.version>3.4.3</jpush.version>
         <jwt.version>3.10.0</jwt.version>
-        <okhttp.version>4.4.0</okhttp.version>
+        <okhttp.version>4.4.1</okhttp.version>
         <weixin-java-pay.version>3.7.0</weixin-java-pay.version>
         <weixin-java-miniapp.version>3.7.0</weixin-java-miniapp.version>
         <weixin-java-mp.version>3.7.0</weixin-java-mp.version>

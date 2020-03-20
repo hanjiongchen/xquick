@@ -20,7 +20,6 @@ import java.util.TimeZone;
 
 // TODO 需要注意时间的转换问题
 // TODO 未完整测试，基础转换接口良好
-
 /**
  * JSON 工具类。
  *
@@ -90,8 +89,7 @@ public class JacksonUtils {
      * @throws JsonMappingException
      * @throws JsonParseException
      */
-    public static <T> T jsonToPojo(final Reader src, final Class<T> pojoClass) throws
-            IOException {
+    public static <T> T jsonToPojo(final Reader src, final Class<T> pojoClass) throws IOException {
         return JacksonUtils.getMapper().readValue(src, pojoClass);
     }
 

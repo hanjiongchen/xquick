@@ -27,14 +27,14 @@
         <commons.lang.version>3.9</commons.lang.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <commons.io.version>2.6</commons.io.version>
-        <commons.codec.version>1.10</commons.codec.version>
+        <commons.codec.version>1.14</commons.codec.version>
 
         <mybatisplus.version>3.3.1.tmp</mybatisplus.version>
-        <druid.version>1.1.20</druid.version>
+        <druid.version>1.1.21</druid.version>
         <mysql.version>5.1.48</mysql.version>
         <fastjson.version>1.2.59</fastjson.version>
         <jsoup.version>1.13.1</jsoup.version>
-        <hutool.version>5.2.0</hutool.version>
+        <hutool.version>5.2.3</hutool.version>
         <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>

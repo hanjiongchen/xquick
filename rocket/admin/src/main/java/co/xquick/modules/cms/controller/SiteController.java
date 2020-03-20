@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +53,9 @@ public class SiteController {
 
     @GetMapping("info")
     @ApiOperation("信息")
+    @LogOperation("信息")
     @RequiresPermissions("cms:site:info")
-    public Result<?> info(@RequestParam Long id) {
+    public Result<?> info(HttpServletRequest request, @RequestParam Long id, @RequestParam(required = false) Long idid2) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 

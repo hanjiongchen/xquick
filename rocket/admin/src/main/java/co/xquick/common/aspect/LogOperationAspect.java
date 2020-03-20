@@ -39,11 +39,11 @@ public class LogOperationAspect {
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
         try {
-            //执行方法
+            // 执行方法
             Object result = point.proceed();
-            //执行时长(毫秒)
+            // 执行时长(毫秒)
             long time = System.currentTimeMillis() - beginTime;
-            //保存日志
+            // 保存日志
             saveLog(point, time, OperationStatusEnum.SUCCESS.value());
             return result;
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class LogOperationAspect {
         }
     }
 
-    private void saveLog(ProceedingJoinPoint joinPoint, long time, Integer status) throws Exception {
+    private void saveLog(ProceedingJoinPoint joinPoint, long time, Integer status) throws NoSuchMethodException {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = joinPoint.getTarget().getClass().getDeclaredMethod(signature.getName(), signature.getParameterTypes());
         LogOperation annotation = method.getAnnotation(LogOperation.class);
@@ -82,16 +82,19 @@ public class LogOperationAspect {
             log.setMethod(request.getMethod());
         }
 
-        //请求参数
+        // 请求参数,接口方法中的参数,可能会有HttpServletRequest
+        String params = null;
         Object[] args = joinPoint.getArgs();
-        try {
-            String params = JacksonUtils.pojoToJson(args[0]);
-            log.setParams(params);
-        } catch (Exception e) {
-
+        if (args.length == 1) {
+            // 一个参数
+        } else if (args.length > 1)  {
+            // 多个参数
+            params = JacksonUtils.pojoToJson(args[0]);
         }
+        log.setParams(params);
 
         // 保存到DB
         logOperationService.save(log);
     }
+
 }
