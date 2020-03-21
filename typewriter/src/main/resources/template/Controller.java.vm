@@ -85,7 +85,7 @@ public class ${className}Controller {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("${moduleName}:${pathName}:update")
-    public Result update(@RequestBody ${className}DTO dto) {
+    public Result<?> update(@RequestBody ${className}DTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
@@ -98,7 +98,7 @@ public class ${className}Controller {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("${moduleName}:${pathName}:delete")
-    public Result delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestBody Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
@@ -111,7 +111,7 @@ public class ${className}Controller {
     @ApiOperation("批量删除")
     @LogOperation("批量删除")
     @RequiresPermissions("${moduleName}:${pathName}:deleteBatch")
-    public Result deleteBatch(@RequestBody List<Long> ids) {
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         // 效验参数
         AssertUtils.isListEmpty(ids, "id");
 

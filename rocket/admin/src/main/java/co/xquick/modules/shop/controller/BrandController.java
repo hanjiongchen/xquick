@@ -82,7 +82,7 @@ public class BrandController {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("shop:brand:update")
-    public Result update(@RequestBody BrandDTO dto) {
+    public Result<?> update(@RequestBody BrandDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
@@ -95,7 +95,7 @@ public class BrandController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("shop:brand:delete")
-    public Result delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestBody Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
@@ -108,7 +108,7 @@ public class BrandController {
     @ApiOperation("批量删除")
     @LogOperation("批量删除")
     @RequiresPermissions("shop:brand:deleteBatch")
-    public Result deleteBatch(@RequestBody List<Long> ids) {
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         // 效验参数
         AssertUtils.isListEmpty(ids, "id");
 

@@ -82,7 +82,7 @@ public class SkuController {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("shop:sku:update")
-    public Result update(@RequestBody SkuDTO dto) {
+    public Result<?> update(@RequestBody SkuDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
@@ -95,7 +95,7 @@ public class SkuController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("shop:sku:delete")
-    public Result delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestBody Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
@@ -108,7 +108,7 @@ public class SkuController {
     @ApiOperation("批量删除")
     @LogOperation("批量删除")
     @RequiresPermissions("shop:sku:deleteBatch")
-    public Result deleteBatch(@RequestBody List<Long> ids) {
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         // 效验参数
         AssertUtils.isListEmpty(ids, "id");
 
