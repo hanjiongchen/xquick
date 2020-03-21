@@ -1,9 +1,9 @@
 package co.xquick.common.aspect;
 
-import co.xquick.common.annotation.LogOperation;
 import co.xquick.booster.util.HttpContextUtils;
 import co.xquick.booster.util.JacksonUtils;
-import co.xquick.modules.log.LogConst.*;
+import co.xquick.common.annotation.LogOperation;
+import co.xquick.modules.log.LogConst.OperationStatusEnum;
 import co.xquick.modules.log.entity.OperationEntity;
 import co.xquick.modules.log.service.OperationService;
 import co.xquick.modules.uc.user.SecurityUser;
@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 操作日志，切面处理类
@@ -36,26 +39,25 @@ public class LogOperationAspect {
     public void pointcut() { }
 
     @Around("pointcut()")
-    public Object around(ProceedingJoinPoint point) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        // 记录开始执行时间
         long beginTime = System.currentTimeMillis();
+        // 需要先把param拿出来,不然processed以后可能会被修改赋值
+        String requestParam = getRequestParam(joinPoint);
         try {
             // 执行方法
-            Object result = point.proceed();
-            // 执行时长(毫秒)
-            long time = System.currentTimeMillis() - beginTime;
+            Object result = joinPoint.proceed();
             // 保存日志
-            saveLog(point, time, OperationStatusEnum.SUCCESS.value());
+            saveLog(joinPoint, requestParam, System.currentTimeMillis() - beginTime, OperationStatusEnum.SUCCESS.value());
             return result;
         } catch (Exception e) {
-            //执行时长(毫秒)
-            long time = System.currentTimeMillis() - beginTime;
             //保存日志
-            saveLog(point, time, OperationStatusEnum.FAIL.value());
+            saveLog(joinPoint, requestParam, System.currentTimeMillis() - beginTime, OperationStatusEnum.FAIL.value());
             throw e;
         }
     }
 
-    private void saveLog(ProceedingJoinPoint joinPoint, long time, Integer status) throws NoSuchMethodException {
+    private void saveLog(ProceedingJoinPoint joinPoint,  String requestParam, long time, Integer status) throws NoSuchMethodException {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = joinPoint.getTarget().getClass().getDeclaredMethod(signature.getName(), signature.getParameterTypes());
         LogOperation annotation = method.getAnnotation(LogOperation.class);
@@ -82,19 +84,30 @@ public class LogOperationAspect {
             log.setMethod(request.getMethod());
         }
 
-        // 请求参数,接口方法中的参数,可能会有HttpServletRequest
-        String params = null;
-        Object[] args = joinPoint.getArgs();
-        if (args.length == 1) {
-            // 一个参数
-        } else if (args.length > 1)  {
-            // 多个参数
-            params = JacksonUtils.pojoToJson(args[0]);
-        }
-        log.setParams(params);
-
+        log.setParams(requestParam);
         // 保存到DB
         logOperationService.save(log);
+    }
+
+    /**
+     * 从joinPoint获取参数
+     */
+    private String getRequestParam(ProceedingJoinPoint joinPoint) {
+        // 请求参数,接口方法中的参数,可能会有HttpServletRequest
+        Object[] args = joinPoint.getArgs();
+        List<Object> actualParam = new ArrayList<>();
+        for (Object arg : args) {
+            if (!(arg instanceof ServletRequest)) {
+                actualParam.add(arg);
+            }
+        }
+        if (actualParam.size() == 1) {
+            return JacksonUtils.pojoToJson(actualParam.get(0));
+        } else if  (actualParam.size() > 1) {
+            return JacksonUtils.pojoToJson(actualParam);
+        } else {
+            return null;
+        }
     }
 
 }

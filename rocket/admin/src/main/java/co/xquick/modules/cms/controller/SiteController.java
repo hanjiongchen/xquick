@@ -55,7 +55,7 @@ public class SiteController {
     @ApiOperation("信息")
     @LogOperation("信息")
     @RequiresPermissions("cms:site:info")
-    public Result<?> info(HttpServletRequest request, @RequestParam Long id, @RequestParam(required = false) Long idid2) {
+    public Result<?> info(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
