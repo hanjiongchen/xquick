@@ -135,7 +135,6 @@ public interface UcConst {
      * 登录操作类型
      */
     enum LoginOperationEnum {
-
         /**
          * 用户登录
          */
@@ -154,7 +153,6 @@ public interface UcConst {
         public int value() {
             return this.value;
         }
-
     }
 
     /**
