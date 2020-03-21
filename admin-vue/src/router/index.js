@@ -31,10 +31,10 @@ export const pageRoutes = [
       next()
     }
   },
+  // 添加独立页面
   { path: '/login', component: () => import('@/views/pages/login'), name: 'login', meta: { title: '登录' } },
   { path: '/register', component: () => import('@/views/pages/register'), name: 'register', meta: { title: '注册' } },
   { path: '/forgetPassword', component: () => import('@/views/pages/forgetPassword'), name: 'forgetPassword', meta: { title: '忘记密码' } }
-  // 添加其他独立页面
 ]
 
 // 模块路由(基于主入口布局页面)
@@ -45,8 +45,8 @@ export const moduleRoutes = {
   redirect: { name: 'home' },
   meta: { title: '主入口布局' },
   children: [
+    // 添加模块页面,或者在菜单管理中添加
     { path: '/home', component: () => import('@/views/modules/home'), name: 'home', meta: { title: '首页', isTab: true } }
-    // 添加其他未在菜单中的模块页面
   ]
 }
 
@@ -63,14 +63,19 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   // 获取菜单列表, 添加并全局变量保存
+  // todo replace api
   http.get('/uc/menu/userTree?type=0').then(({ data: res }) => {
     if (res.code !== 0) {
+      // 提示错误,并跳转登录
       Vue.prototype.$message.error(res.toast)
       return next({ name: 'login' })
+    } else {
+      // 将数据塞入menuList
+      window.SITE_CONFIG['menuList'] = res.data
+      // 将页面加入路由
+      fnAddDynamicMenuRoutes(window.SITE_CONFIG['menuList'])
+      next({ ...to, replace: true })
     }
-    window.SITE_CONFIG['menuList'] = res.data
-    fnAddDynamicMenuRoutes(window.SITE_CONFIG['menuList'])
-    next({ ...to, replace: true })
   }).catch(() => {
     next({ name: 'login' })
   })
@@ -100,8 +105,8 @@ function fnCurrentRouteIsPageRoute (route, pageRoutes = []) {
  * @param {*} routes 递归创建的动态(菜单)路由
  */
 function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
-  var temp = []
-  for (var i = 0; i < menuList.length; i++) {
+  let temp = []
+  for (let i = 0; i < menuList.length; i++) {
     if (menuList[i].children && menuList[i].children.length >= 1) {
       temp = temp.concat(menuList[i].children)
       continue

@@ -1,5 +1,6 @@
 package co.xquick.modules.uc.controller;
 
+import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
@@ -36,10 +37,20 @@ public class MenuController {
     @Autowired
     private ShiroService shiroService;
 
+    @GetMapping("menuAndRoute")
+    @ApiOperation("当前用户菜单和路由列表")
+    public Result<?> menuTreeAndRouteList() {
+        UserDetail user = SecurityUser.getUser();
+        List<MenuTreeDTO> menuTree = menuService.getUserMenuList(user, 0);
+
+        Kv data = Kv.init().set("menuTree", menuTree).set("routerList", "");
+        return new Result<>().ok(data);
+    }
+
     @GetMapping("userTree")
     @ApiOperation("当前用户菜单")
     @ApiImplicitParam(name = "type", value = "菜单类型 0：菜单 1：按钮  null：全部", paramType = "query", dataType = "int")
-    public Result userTree(Integer type) {
+    public Result<?> userTree(Integer type) {
         UserDetail user = SecurityUser.getUser();
         List<MenuTreeDTO> list = menuService.getUserMenuList(user, type);
 
@@ -48,7 +59,7 @@ public class MenuController {
 
     @GetMapping("permissions")
     @ApiOperation("登录用户权限范围")
-    public Result<Set<String>> permissions() {
+    public Result<?> permissions() {
         UserDetail user = SecurityUser.getUser();
         Set<String> set = shiroService.getUserPermissions(user);
 
@@ -59,7 +70,7 @@ public class MenuController {
     @ApiOperation("列表")
     @ApiImplicitParam(name = "type", value = "菜单类型 0：菜单 1：按钮  null：全部", paramType = "query", dataType = "int")
     @RequiresPermissions("uc:menu:list")
-    public Result tree(Integer type) {
+    public Result<?> tree(Integer type) {
         List<MenuTreeDTO> list = menuService.getAllMenuList(type);
 
         return new Result<>().ok(list);
@@ -68,7 +79,7 @@ public class MenuController {
     @GetMapping("info")
     @ApiOperation("信息")
     @RequiresPermissions("uc:menu:info")
-    public Result info(@RequestParam Long id) {
+    public Result<?> info(@RequestParam Long id) {
         MenuTreeDTO data = menuService.getDtoById(id);
         data.setParentMenuList(menuService.getParentMenuList(data.getPid()));
 
@@ -79,39 +90,39 @@ public class MenuController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("uc:menu:save")
-    public Result save(@RequestBody MenuTreeDTO dto) {
+    public Result<?> save(@RequestBody MenuTreeDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
         menuService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>().ok(dto);
     }
 
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("uc:menu:update")
-    public Result update(@RequestBody MenuTreeDTO dto) {
+    public Result<?> update(@RequestBody MenuTreeDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
         menuService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>().ok(dto);
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("uc:menu:delete")
-    public Result delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestBody List<Long> ids) {
         // 效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         menuService.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
 
 }

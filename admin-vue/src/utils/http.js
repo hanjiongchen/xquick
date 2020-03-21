@@ -1,11 +1,10 @@
+import Vue from 'vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import router from '@/router'
 import qs from 'qs'
 import { clearLoginInfo } from '@/utils'
 import isPlainObject from 'lodash/isPlainObject'
-import Vue from 'vue'
-let vue = new Vue()
 
 const http = axios.create({
   baseURL: window.SITE_CONFIG['apiURL'],
@@ -20,7 +19,7 @@ http.interceptors.request.use(config => {
   config.headers['Accept-Language'] = Cookies.get('language') || 'zh-CN'
   config.headers['token'] = Cookies.get('token') || ''
   // 默认参数
-  var defaults = {}
+  const defaults = {}
   // 防止缓存，GET请求默认带_t参数
   if (config.method === 'get') {
     config.params = {
@@ -63,7 +62,7 @@ http.interceptors.response.use(response => {
   return response
 }, error => {
   if (error.toString() === 'Error: Network Error') {
-    vue.$message.error('接口无法访问')
+    Vue.prototype.$message.error('接口无法访问')
   }
   return Promise.reject(error)
 })

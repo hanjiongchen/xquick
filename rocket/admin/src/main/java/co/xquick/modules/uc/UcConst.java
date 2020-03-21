@@ -114,7 +114,11 @@ public interface UcConst {
         /**
          * 按钮
          */
-        BUTTON(1);
+        BUTTON(1),
+        /**
+         * 页面
+         */
+        PAGE(1);
 
         private int value;
 
@@ -125,7 +129,6 @@ public interface UcConst {
         public int value() {
             return this.value;
         }
-
     }
 
     /**
