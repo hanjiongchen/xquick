@@ -44,6 +44,11 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 * [登录背景生成网站](https://trianglify.io)
 * [avatar](https://www.iconfinder.com/iconsets/business-avatar-1)
 * [logo](https://www.iconfinder.com/icons/2120156/astronaut_astronomy_rocket_science_space_icon)
+* [Icon](https://www.iconfont.cn/collections/detail?cid=9402)
+--------
+批量加入iconfont标签到购物车js代码
+var iconList = document.querySelectorAll('.icon-gouwuche1'); for (var i = 0; i < iconList.length; i++) { iconList[i].click(); }
+--------
 
 ## Thanks
 * [人人开源](https://www.renren.io/)
