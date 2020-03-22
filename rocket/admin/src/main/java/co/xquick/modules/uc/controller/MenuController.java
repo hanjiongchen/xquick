@@ -70,6 +70,7 @@ public class MenuController {
     @RequiresPermissions("uc:menu:info")
     public Result info(@RequestParam Long id) {
         MenuTreeDTO data = menuService.getDtoById(id);
+
         data.setParentMenuList(menuService.getParentMenuList(data.getPid()));
 
         return new Result<>().ok(data);

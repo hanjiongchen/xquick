@@ -62,6 +62,8 @@ public class CategoryController {
 
         CategoryDTO data = categoryService.getDtoById(id);
 
+        data.setParentMenuList(categoryService.getParentMenuList(data.getPid()));
+
         return new Result<CategoryDTO>().ok(data);
     }
 
@@ -127,4 +129,12 @@ public class CategoryController {
         ExcelUtils.exportExcelToTarget(response, "商品类别", list, CategoryExcel.class);
     }
 
+    @GetMapping("tree")
+    @ApiOperation("列表")
+    @RequiresPermissions("uc:menu:list")
+    public Result tree() {
+        List<CategoryDTO> list = categoryService.getAllMenuList();
+
+        return new Result<>().ok(list);
+    }
 }

@@ -3,6 +3,9 @@ package co.xquick.modules.shop.dao;
 import co.xquick.booster.dao.BaseDao;
 import co.xquick.modules.shop.entity.CategoryEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 商品类别
@@ -11,5 +14,15 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CategoryDao extends BaseDao<CategoryEntity> {
-
+    /**
+     * 查询所有菜单列表
+     *
+     */
+    @Select("<script>" +
+            "select t1.* from shop_category t1" +
+            " <where> t1.deleted = 0" +
+            " </where>" +
+            " order by t1.sort asc" +
+            "</script>")
+    List<CategoryEntity> getCategoryList();
 }

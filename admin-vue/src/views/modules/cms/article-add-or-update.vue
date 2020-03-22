@@ -1,11 +1,14 @@
 <template>
-    <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
+    <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false"
+               :close-on-press-escape="false">
+        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm"
+                 :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="类目" prop="articleCategoryId">
                         <el-select v-model="dataForm.articleCategoryId" placeholder="选择文章类目" class="w-percent-100">
-                            <el-option v-for="item in articleCategoryList" :key="item.id" :label="item.name" :value="item.id"/>
+                            <el-option v-for="item in articleCategoryList" :key="item.id" :label="item.name"
+                                       :value="item.id"/>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -23,7 +26,8 @@
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="排序" prop="sort">
-                        <el-input-number controls-position="right" :min="0" v-model="dataForm.sort" placeholder="排序" class="w-percent-100"/>
+                        <el-input-number controls-position="right" :min="0" v-model="dataForm.sort" placeholder="排序"
+                                         class="w-percent-100"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -66,7 +70,8 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item prop="pubDate" label="发布时间">
-                        <el-date-picker v-model="dataForm.pubDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择发布时间" style="width: 100%"/>
+                        <el-date-picker v-model="dataForm.pubDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
+                                        placeholder="选择发布时间" style="width: 100%"/>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -110,7 +115,8 @@
             <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
         </template>
         <!-- 弹窗, 图片查看 -->
-        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
+        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer"
+                      v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
     </el-dialog>
 </template>
 

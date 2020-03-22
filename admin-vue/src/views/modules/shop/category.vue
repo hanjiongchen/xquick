@@ -3,7 +3,7 @@
     <div class="mod-shop__category}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model="dataForm.id" placeholder="id" clearable></el-input>
+          <el-input v-model="dataForm.name" placeholder="名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -20,19 +20,13 @@
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="id" label="id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="pid" label="父id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="storeId" label="店铺id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="storeCode" label="店铺编码" header-align="center" align="center"></el-table-column>
         <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="logo" label="logo" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="sort" label="排序" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="logo" label="logo" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-image v-if="scope.row.logo" lazy class="table-img" :src="scope.row.logo.split(',')[0]" @click="imageViewerHandle(scope.row.logo.split(','))" fit="cover"/>
+          </template>
+        </el-table-column>
         <el-table-column prop="content" label="介绍" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createId" label="创建者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateId" label="更新者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="deleted" label="删除标记" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:category:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
@@ -52,22 +46,27 @@
       </el-pagination>
       <!-- 弹窗, 新增 / 修改 -->
       <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <!-- 弹窗, 图片查看 -->
+      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
     </div>
   </el-card>
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './category-add-or-update'
+import ImageViewer from 'element-ui/packages/image/src/image-viewer'
+
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinBaseModule, mixinViewModule],
   data () {
     return {
       mixinViewModuleOptions: {
         getDataListURL: '/shop/category/page',
         getDataListIsPage: true,
         exportURL: '/shop/category/export',
-        deleteURL: '/shop/category/delete',
+        deleteURL: '/shop/category/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {
@@ -76,7 +75,8 @@ export default {
     }
   },
   components: {
-    AddOrUpdate
+    AddOrUpdate,
+    ImageViewer
   }
 }
 </script>
