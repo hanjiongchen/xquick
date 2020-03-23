@@ -56,7 +56,8 @@ public class ShiroServiceImpl implements ShiroService {
             if (StringUtils.isBlank(permissions)) {
                 continue;
             }
-            set.addAll(Arrays.asList(permissions.trim().split(",")));
+            // 去除中间的空内容
+            set.addAll(Splitter.on(',').trimResults().omitEmptyStrings().splitToList(permissions.trim()));
         }
 
         return set;
