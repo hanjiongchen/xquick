@@ -121,9 +121,16 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     // eslint-disable-next-line no-eval
     let URL = (urlList[i].url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
     if (isURL(URL)) {
-      route['path'] = route['name'] = `i-${urlList[i].id}`
-      route['meta']['iframeURL'] = URL
+      // 完整url地址
+      // 外链并且外部窗口打开,不需要加入路由
+      if (urlList[i].urlNewBlank === 1) {
+        continue
+      } else {
+        route['path'] = route['name'] = `i-${urlList[i].id}`
+        route['meta']['iframeURL'] = URL
+      }
     } else {
+      // 非完整url地址
       if (URL.indexOf('?') !== -1) {
         // 处理菜单中路径带有参数
         const path = URL.split('?')[0].replace(/^\//, '').replace(/_/g, '-') // 路径
@@ -141,6 +148,7 @@ function fnAddDynamicMenuRoutes (urlList = []) {
         route['path'] = route['name'] = URL.replace(/\//g, '-')
         route['component'] = () => import(`@/views/modules/${URL}`)
       }
+      route['meta']['iframeURL'] = route['path']
     }
     routes.push(route)
   }
