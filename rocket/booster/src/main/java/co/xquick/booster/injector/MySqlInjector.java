@@ -1,10 +1,10 @@
 package co.xquick.booster.injector;
 
 import co.xquick.booster.injector.methods.LogicDeleteBatchByIdsWithFill;
+import co.xquick.booster.injector.methods.LogicDeleteByIdWithFill;
 import co.xquick.booster.injector.methods.LogicDeleteByWrapperWithFill;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
-import com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

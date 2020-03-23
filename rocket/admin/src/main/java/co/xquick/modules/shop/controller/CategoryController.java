@@ -8,9 +8,8 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
-import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.shop.dto.CategoryDTO;
-import co.xquick.modules.shop.excel.CategoryExcel;
+import co.xquick.modules.shop.dto.CategoryTreeDTO;
 import co.xquick.modules.shop.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +30,7 @@ import java.util.Map;
 @RequestMapping("shop/category")
 @Api(tags="商品类别")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
 
@@ -42,6 +41,15 @@ public class CategoryController {
         List<CategoryDTO> list = categoryService.listDto(params);
 
         return new Result<>().ok(list);
+    }
+
+    @GetMapping("tree")
+    @ApiOperation("树表")
+    @RequiresPermissions("shop:category:list")
+    public Result<?> tree(@ApiIgnore @RequestParam Map<String, Object> params) {
+        List<CategoryTreeDTO> tree = categoryService.tree(params);
+
+        return new Result<>().ok(tree);
     }
 
     @GetMapping("page")
@@ -97,7 +105,7 @@ public class CategoryController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("shop:category:delete")
-    public Result<?> delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
@@ -106,35 +114,4 @@ public class CategoryController {
         return new Result<>();
     }
 
-    @DeleteMapping("deleteBatch")
-    @ApiOperation("批量删除")
-    @LogOperation("批量删除")
-    @RequiresPermissions("shop:category:deleteBatch")
-    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
-        // 效验参数
-        AssertUtils.isListEmpty(ids, "id");
-
-        categoryService.logicDeleteByIds(ids);
-
-        return new Result<>();
-    }
-
-    @GetMapping("export")
-    @ApiOperation("导出")
-    @LogOperation("导出")
-    @RequiresPermissions("shop:category:export")
-    public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
-        List<CategoryDTO> list = categoryService.listDto(params);
-
-        ExcelUtils.exportExcelToTarget(response, "商品类别", list, CategoryExcel.class);
-    }
-
-    @GetMapping("tree")
-    @ApiOperation("列表")
-    @RequiresPermissions("uc:menu:list")
-    public Result tree() {
-        List<CategoryDTO> list = categoryService.getAllMenuList();
-
-        return new Result<>().ok(list);
-    }
 }

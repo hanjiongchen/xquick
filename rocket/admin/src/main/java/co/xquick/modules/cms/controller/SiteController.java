@@ -89,19 +89,6 @@ public class SiteController {
         return new Result<>().ok(dto);
     }
 
-    @DeleteMapping("deleteBatch")
-    @ApiOperation("批量删除")
-    @LogOperation("批量删除")
-    @RequiresPermissions("cms:site:deleteBatch")
-    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
-        // 效验参数
-        AssertUtils.isListEmpty(ids, "id");
-
-        siteService.logicDeleteByIds(ids);
-
-        return new Result<>();
-    }
-
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
@@ -111,6 +98,19 @@ public class SiteController {
         AssertUtils.isEmpty(id, "id");
 
         siteService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("cms:site:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
+        // 效验参数
+        AssertUtils.isListEmpty(ids, "id");
+
+        siteService.logicDeleteByIds(ids);
 
         return new Result<>();
     }

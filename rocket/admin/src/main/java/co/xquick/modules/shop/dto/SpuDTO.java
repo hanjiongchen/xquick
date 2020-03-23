@@ -1,12 +1,12 @@
 package co.xquick.modules.shop.dto;
 
 import co.xquick.booster.pojo.BaseDTO;
+import co.xquick.booster.validator.group.DefaultGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
+import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
 
@@ -39,16 +39,20 @@ public class SpuDTO extends BaseDTO {
 	@ApiModelProperty(value = "编号")
 	private String sn;
 
-	@ApiModelProperty(value = "是否需要物流")
+	@ApiModelProperty(value = "是否需要物流", required = true)
+	@Range(min = 0, max = 1, message = "是否需要物流取值0-1", groups = DefaultGroup.class)
 	private Integer delivery;
 
-	@ApiModelProperty(value = "是否上架")
+	@ApiModelProperty(value = "是否上架", required = true)
+	@Range(min = 0, max = 1, message = "是否上架取值0-1", groups = DefaultGroup.class)
 	private Integer marketable;
 
-	@ApiModelProperty(value = "是否置顶")
+	@ApiModelProperty(value = "是否置顶", required = true)
+	@Range(min = 0, max = 1, message = "是否置顶取值0-1", groups = DefaultGroup.class)
 	private Integer top;
 
-	@ApiModelProperty(value = "类型 1 商品 2 积分兑换 3 赠品")
+	@ApiModelProperty(value = "类型", required = true)
+	@Range(min = 0, max = 1, message = "类型顶取值1-3", groups = DefaultGroup.class)
 	private Integer type;
 
 	@ApiModelProperty(value = "名称")
