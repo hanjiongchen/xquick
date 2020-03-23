@@ -53,13 +53,13 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './category-add-or-update'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
-  mixins: [mixinListModule, mixinViewModule],
+  mixins: [mixinListModule, mixinBaseModule],
   data () {
     return {
       mixinListModuleOptions: {
@@ -70,7 +70,7 @@ export default {
         deleteIsBatch: true
       },
       dataForm: {
-        id: ''
+        name: ''
       }
     }
   },
