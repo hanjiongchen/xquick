@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class LogOperationAspect {
         Object[] args = joinPoint.getArgs();
         List<Object> actualParam = new ArrayList<>();
         for (Object arg : args) {
-            if (!(arg instanceof ServletRequest)) {
+            if (!(arg instanceof ServletRequest) && !(arg instanceof ServletResponse)) {
                 actualParam.add(arg);
             }
         }

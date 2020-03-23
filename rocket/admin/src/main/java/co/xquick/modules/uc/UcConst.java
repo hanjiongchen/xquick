@@ -114,7 +114,11 @@ public interface UcConst {
         /**
          * 按钮
          */
-        BUTTON(1);
+        BUTTON(1),
+        /**
+         * 页面
+         */
+        PAGE(1);
 
         private int value;
 
@@ -125,14 +129,12 @@ public interface UcConst {
         public int value() {
             return this.value;
         }
-
     }
 
     /**
      * 登录操作类型
      */
     enum LoginOperationEnum {
-
         /**
          * 用户登录
          */
@@ -151,7 +153,6 @@ public interface UcConst {
         public int value() {
             return this.value;
         }
-
     }
 
     /**

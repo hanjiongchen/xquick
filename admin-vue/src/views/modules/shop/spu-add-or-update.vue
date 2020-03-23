@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
+  <div>
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
           <el-form-item label="店铺id" prop="storeId">
           <el-input v-model="dataForm.storeId" placeholder="店铺id"></el-input>
@@ -72,7 +72,7 @@
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
     </template>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -205,6 +205,9 @@ export default {
         ]
       }
     }
+  },
+  created () {
+    this.init()
   },
   methods: {
     init () {

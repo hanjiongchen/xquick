@@ -1,6 +1,6 @@
 package co.xquick.modules.uc.dto;
 
-import co.xquick.booster.util.TreeNode;
+import co.xquick.booster.pojo.BaseDTO;
 import co.xquick.booster.validator.group.DefaultGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,17 +10,24 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
- * 菜单(树形)
+ * 菜单
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "菜单(树形)")
-public class MenuTreeDTO extends TreeNode<MenuTreeDTO> {
+@ApiModel(value = "菜单")
+public class MenuDTO extends BaseDTO {
+
+    /**
+     * 上级ID
+     */
+    @ApiModelProperty(value = "上级ID")
+    @NotNull(message="请选择上级", groups = DefaultGroup.class)
+    private Long pid;
 
     @ApiModelProperty(value = "菜单名称")
     @NotBlank(message = "{name.require}", groups = DefaultGroup.class)
@@ -42,11 +49,5 @@ public class MenuTreeDTO extends TreeNode<MenuTreeDTO> {
     @ApiModelProperty(value = "排序")
     @Min(value = 0, message = "{sort.number}", groups = DefaultGroup.class)
     private Integer sort;
-
-    @ApiModelProperty(value = "上级菜单名称")
-    private String parentName;
-
-    @ApiModelProperty(value = "上级菜单列表")
-    private List<MenuTreeDTO> parentMenuList;
 
 }
