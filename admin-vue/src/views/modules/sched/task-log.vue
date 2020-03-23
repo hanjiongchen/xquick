@@ -40,13 +40,13 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
       visible: false,
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/sched/taskLog/page',
         getDataListIsPage: true
       },

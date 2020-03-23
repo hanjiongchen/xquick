@@ -67,13 +67,13 @@
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 
 export default {
-  mixins: [mixinBaseModule, mixinViewModule],
+  mixins: [mixinBaseModule, mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/msg/mailLog/page',
         getDataListIsPage: true,
         deleteURL: '/msg/mailLog/delete',

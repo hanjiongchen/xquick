@@ -97,15 +97,15 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './user-add-or-update'
 import ChangeStatus from './user-change-status'
 import Import from './user-import'
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         activatedIsNeed: false,
         getDataListURL: '/uc/user/page',
         getDataListIsPage: true,

@@ -36,14 +36,14 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './menu-add-or-update'
 
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/uc/menu/tree',
         deleteURL: '/uc/menu/delete'
       }

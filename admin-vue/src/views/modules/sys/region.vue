@@ -32,7 +32,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-         v-if="mixinViewModuleOptions.getDataListIsPage"
+         v-if="mixinListModuleOptions.getDataListIsPage"
         :current-page="page"
         :page-sizes="[10, 20, 50, 100]"
         :page-size="limit"
@@ -48,13 +48,13 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './region-add-or-update'
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/sys/region/list',
         getDataListIsPage: false,
         exportURL: '/sys/region/export',
@@ -83,8 +83,8 @@ export default {
     },
     // list信息获取成功
     onGetListSuccess (res) {
-      this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.data.list : res.data
-      this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.data.total : 0
+      this.dataList = this.mixinListModuleOptions.getDataListIsPage ? res.data.list : res.data
+      this.total = this.mixinListModuleOptions.getDataListIsPage ? res.data.total : 0
       for (let itm of this.dataList) {
         itm.hasChildren = itm.childNum > 0
       }

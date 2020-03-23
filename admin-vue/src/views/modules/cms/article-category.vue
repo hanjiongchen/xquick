@@ -48,16 +48,16 @@
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './article-category-add-or-update'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
-  mixins: [mixinBaseModule, mixinViewModule],
+  mixins: [mixinBaseModule, mixinListModule],
   components: { AddOrUpdate, ImageViewer },
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/cms/articleCategory/page',
         getDataListIsPage: true,
         exportURL: '/cms/articleCategory/export',

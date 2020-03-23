@@ -27,7 +27,7 @@
                 </el-table-column>
             </el-table>
             <el-pagination
-                    v-if="mixinViewModuleOptions.getDataListIsPage"
+                    v-if="mixinListModuleOptions.getDataListIsPage"
                     :current-page="page"
                     :page-sizes="[10, 20, 50, 100]"
                     :page-size="limit"
@@ -43,14 +43,14 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './dept-add-or-update'
 
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/uc/dept/tree',
         getDataListIsPage: false,
         deleteURL: '/uc/dept/delete',

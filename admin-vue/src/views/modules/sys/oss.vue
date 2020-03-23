@@ -48,14 +48,14 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import Config from './param-oss-config'
 import Upload from './oss-upload'
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/sys/oss/page',
         getDataListIsPage: true,
         deleteURL: '/sys/oss/delete',

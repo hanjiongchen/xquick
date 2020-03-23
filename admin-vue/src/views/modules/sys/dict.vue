@@ -63,15 +63,15 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './dict-add-or-update'
 import { moduleRoutes } from '@/router'
 
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         activatedIsNeed: false,
         getDataListURL: '/sys/dict/page',
         getDataListIsPage: true,
@@ -94,8 +94,8 @@ export default {
       // 通过路由参数pid, 控制列表请求操作
       this.dataForm.pid = this.$route.params.pid || '0'
       if (this.dataForm.pid !== '0') {
-        this.mixinViewModuleOptions.getDataListURL = '/sys/dict/list'
-        this.mixinViewModuleOptions.getDataListIsPage = false
+        this.mixinListModuleOptions.getDataListURL = '/sys/dict/list'
+        this.mixinListModuleOptions.getDataListIsPage = false
         this.dataForm.type = this.$route.params.type || ''
       }
     }

@@ -79,15 +79,15 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './task-add-or-update'
 import Log from './task-log'
 
 export default {
-  mixins: [mixinViewModule],
+  mixins: [mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/sched/task/page',
         getDataListIsPage: true,
         deleteURL: '/sched/task/delete',
@@ -108,13 +108,13 @@ export default {
     moreEditActionHandler (command) {
       if (command.command === 'pause') {
         // 暂停
-        this.pauseHandle(command.row[this.mixinViewModuleOptions.idKey])
+        this.pauseHandle(command.row[this.mixinListModuleOptions.idKey])
       } else if (command.command === 'run') {
         // 运行
-        this.runHandle(command.row[this.mixinViewModuleOptions.idKey])
+        this.runHandle(command.row[this.mixinListModuleOptions.idKey])
       } else if (command.command === 'resume') {
         // 恢复
-        this.resumeHandle(command.row[this.mixinViewModuleOptions.idKey])
+        this.resumeHandle(command.row[this.mixinListModuleOptions.idKey])
       }
     },
     // 暂停

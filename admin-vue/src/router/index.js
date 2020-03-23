@@ -64,16 +64,16 @@ router.beforeEach((to, from, next) => {
   }
   // 获取菜单列表, 添加并全局变量保存
   // todo replace api
-  http.get('/uc/menu/userTree?type=0').then(({ data: res }) => {
+  http.get('/uc/menu/menuTreeAndUrlList').then(({ data: res }) => {
     if (res.code !== 0) {
       // 提示错误,并跳转登录
       Vue.prototype.$message.error(res.toast)
       return next({ name: 'login' })
     } else {
-      // 将数据塞入menuList
-      window.SITE_CONFIG['menuList'] = res.data
-      // 将页面加入路由
-      fnAddDynamicMenuRoutes(window.SITE_CONFIG['menuList'])
+      // 将菜单塞入menuList
+      window.SITE_CONFIG['menuList'] = res.data.menuTree
+      // 将页面塞入路由
+      fnAddDynamicMenuRoutes(res.data.urlList)
       next({ ...to, replace: true })
     }
   }).catch(() => {
@@ -87,8 +87,8 @@ router.beforeEach((to, from, next) => {
  * @param {*} pageRoutes 页面路由
  */
 function fnCurrentRouteIsPageRoute (route, pageRoutes = []) {
-  var temp = []
-  for (var i = 0; i < pageRoutes.length; i++) {
+  let temp = []
+  for (let i = 0; i < pageRoutes.length; i++) {
     if (route.path === pageRoutes[i].path) {
       return true
     }
@@ -101,31 +101,26 @@ function fnCurrentRouteIsPageRoute (route, pageRoutes = []) {
 
 /**
  * 添加动态(菜单)路由
- * @param {*} menuList 菜单列表
- * @param {*} routes 递归创建的动态(菜单)路由
+ * @param {*} urlList 页面列表
  */
-function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
-  let temp = []
-  for (let i = 0; i < menuList.length; i++) {
-    if (menuList[i].children && menuList[i].children.length >= 1) {
-      temp = temp.concat(menuList[i].children)
-      continue
-    }
+function fnAddDynamicMenuRoutes (urlList = []) {
+  let routes = []
+  for (let i = 0; i < urlList.length; i++) {
     // 组装路由
-    var route = {
+    let route = {
       path: '',
       component: null,
       name: '',
       meta: {
         ...window.SITE_CONFIG['contentTabDefault'],
-        menuId: menuList[i].id,
-        title: menuList[i].name
+        menuId: urlList[i].id,
+        title: urlList[i].name
       }
     }
     // eslint-disable-next-line
-    let URL = (menuList[i].url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
+    let URL = (urlList[i].url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
     if (isURL(URL)) {
-      route['path'] = route['name'] = `i-${menuList[i].id}`
+      route['path'] = route['name'] = `i-${urlList[i].id}`
       route['meta']['iframeURL'] = URL
     } else {
       if (URL.indexOf('?') !== -1) {
@@ -148,9 +143,7 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
     }
     routes.push(route)
   }
-  if (temp.length >= 1) {
-    return fnAddDynamicMenuRoutes(temp, routes)
-  }
+  console.log(routes)
   // 添加路由
   router.addRoutes([
     {
