@@ -19,6 +19,7 @@ import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
+import co.xquick.modules.uc.dto.LoginCfg;
 import co.xquick.modules.uc.dto.LoginRequest;
 import co.xquick.modules.uc.dto.RegisterRequest;
 import co.xquick.modules.uc.service.CaptchaService;
@@ -68,7 +69,7 @@ public class AuthController {
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
     public Result<?> loginCfg(@RequestParam String type) {
-        String content = paramService.getContent(UcConst.LOGIN_CFG + "_" + type.toUpperCase());
+        LoginCfg content = paramService.getContentObject(UcConst.LOGIN_CFG + "_" + type.toUpperCase(), LoginCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
 
         return new Result<>().ok(content);

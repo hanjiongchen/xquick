@@ -57,7 +57,7 @@ export default {
       mixinFormModuleOptions: {
         dataFormSaveURL: `/cms/site/save`,
         dataFormUpdateURL: `/cms/site/update`,
-        dataFormInfoURL: `/cms/site/info?idid2=111&id=`
+        dataFormInfoURL: `/cms/site/info?id=`
       },
       statusOptions: [{
         value: 0,
