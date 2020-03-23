@@ -17,7 +17,7 @@
         <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"/>
         <el-table-column prop="logo" label="图标" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-image v-if="scope.row.logo" lazy class="table-img" :src="scope.row.logo.split(',')[0]" @click="imageViewerHandle(scope.row.logo.split(','))" fit="cover"/>
+            <el-image v-if="scope.row.logo" lazy class="table-img" :src="scope.row.logo.split(',')[0]" :preview-src-list="scope.row.logo.split(',')" fit="cover"/>
           </template>
         </el-table-column>
         <el-table-column prop="content" label="描述" header-align="center" align="center"></el-table-column>
@@ -36,12 +36,9 @@
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"
-        @current-change="pageCurrentChangeHandle">
-      </el-pagination>
+        @current-change="pageCurrentChangeHandle"/>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-      <!-- 弹窗, 图片查看 -->
-      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </div>
   </el-card>
 </template>
@@ -50,7 +47,6 @@
 import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './category-add-or-update'
-import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
   mixins: [mixinListModule, mixinBaseModule],
@@ -70,8 +66,7 @@ export default {
     }
   },
   components: {
-    AddOrUpdate,
-    ImageViewer
+    AddOrUpdate
   }
 }
 </script>

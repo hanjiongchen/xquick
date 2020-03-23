@@ -4,10 +4,14 @@ import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.WrapperUtils;
 import co.xquick.modules.shop.dao.SpuDao;
 import co.xquick.modules.shop.dto.SpuDTO;
+import co.xquick.modules.shop.entity.SkuEntity;
 import co.xquick.modules.shop.entity.SpuEntity;
+import co.xquick.modules.shop.service.SkuService;
 import co.xquick.modules.shop.service.SpuService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -18,6 +22,9 @@ import java.util.Map;
  */
 @Service
 public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> implements SpuService {
+
+    @Autowired
+    SkuService skuService;
 
     @Override
     public QueryWrapper<SpuEntity> getWrapper(String method, Map<String, Object> params){
@@ -32,6 +39,14 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
                 .eq("marketable", "marketable")
 
                 .getQueryWrapper();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteCascade(Long id) {
+        // 删除相关sku数据
+        skuService.logicDeleteByWrapper(new QueryWrapper<SkuEntity>().eq("spu_id", id));
+        return super.logicDeleteById(id);
     }
 
 }

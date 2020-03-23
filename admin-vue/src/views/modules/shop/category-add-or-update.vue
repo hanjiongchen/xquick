@@ -1,18 +1,18 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-       <el-form-item label="父级商品类别" prop="pid">
-          <el-cascader v-model="menuSelected" :options="pidList" clearable :props="{ emitPath: false, checkStrictly: true, value: 'id', label: 'name', children: 'children'}" @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
+       <el-form-item label="大类" prop="pid">
+           <el-select v-model="dataForm.pid" placeholder="选择店铺" class="w-percent-100">
+               <el-option v-for="item in pidList" :key="item.id" :label="item.name" :value="item.id"/>
+           </el-select>
       </el-form-item>
-          <el-form-item label="店铺" prop="storeId">
-          <el-select v-model="dataForm.storeId" placeholder="选择店铺" class="w-percent-100">
-              <el-option v-for="item in storeList" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
-      </el-form-item>
-          <el-form-item label="名称" prop="name">
+       <el-form-item label="名称" prop="name">
           <el-input v-model="dataForm.name" placeholder="名称"></el-input>
       </el-form-item>
-          <el-form-item prop="logo" label="logo">
+      <el-form-item prop="sort" :label="$t('dept.sort')">
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
+        </el-form-item>
+      <el-form-item prop="logo" label="图标">
           <el-upload
                   :class="{hide:uploadFileList.length >= 1}"
                   :before-upload="beforeImageUpload"
@@ -30,13 +30,10 @@
               <i class="el-icon-plus"/>
           </el-upload>
       </el-form-item>
-        <el-form-item prop="sort" :label="$t('dept.sort')">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
-        </el-form-item>
-      <el-form-item label="介绍" prop="content">
-          <el-input v-model="dataForm.content" placeholder="介绍" type="textarea"></el-input>
+      <el-form-item label="描述" prop="content">
+          <el-input v-model="dataForm.content" placeholder="描述" type="textarea"></el-input>
       </el-form-item>
-                </el-form>
+    </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
@@ -49,7 +46,6 @@
 <script>
 import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
-import { removeEmptyChildren } from '@/utils'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
@@ -63,17 +59,11 @@ export default {
         dataFormUpdateURL: `/shop/category/update`,
         dataFormInfoURL: `/shop/category/info?id=`
       },
-      // 文章分类列表
-      storeList: [],
-      // 已选中菜单
-      menuSelected: ['0'],
-      // 父类列表
+      // 一级列表
       pidList: [],
       dataForm: {
         id: '',
         pid: '0',
-        storeId: '',
-        storeCode: '',
         name: '',
         logo: '',
         sort: '',
@@ -87,19 +77,10 @@ export default {
         pid: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        storeId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        logo: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         sort: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        content: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -111,39 +92,22 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.resetForm()
-        this.menuSelected = ['0']
         this.pidList = []
-        this.setUploadUrl()
-        this.uploadFileList = []
+        this.initUpload()
         Promise.all([
-          this.getStoreList(),
           this.getPidList()
         ]).then(() => {
           this.initFormData()
         })
       })
     },
-    // 获取店铺列表
-    getStoreList () {
-      this.$http.get('/shop/store/list').then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        this.storeList = res.data
-        this.formLoading = false
-      }).catch(resp => {
-        this.formLoading = false
-        this.$message.error(this.$t('prompt.apierror') + resp)
-      })
-    },
-    // 获取父类列表
+    // 获取一级列表
     getPidList () {
-      return this.$http.get('/shop/category/tree').then(({ data: res }) => {
+      return this.$http.get('/shop/category/list?pid=0').then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
-        // 加一个根菜单,用于选择
-        this.pidList = [{ 'id': '0', 'name': '根菜单', 'children': removeEmptyChildren(res.data) }]
+        this.pidList = res.data
       }).catch(() => {
       })
     },

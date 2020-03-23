@@ -22,7 +22,8 @@ public interface CategoryService extends CrudService<CategoryEntity, CategoryDTO
     /**
      * 递归上级菜单列表
      *
-     * @param id 菜单ID
+     * @param id 类别id
      */
     List<CategoryDTO> getParentMenuList(Long id);
+
 }

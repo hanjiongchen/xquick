@@ -171,21 +171,39 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        this.$http.delete(this.mixinListModuleOptions.deleteIsBatch ? `${this.mixinListModuleOptions.deleteBatchURL}` : `${this.mixinListModuleOptions.deleteURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIsBatchKey]) })
-          .then(({ data: res }) => {
-            if (res.code !== 0) {
-              return this.$message.error(res.toast)
-            }
-            this.$message({
-              message: this.$t('prompt.success'),
-              type: 'success',
-              duration: 500,
-              onClose: () => {
-                this.getDataList()
+        if (this.mixinListModuleOptions.deleteIsBatch) {
+          // 批量删除
+          this.$http.delete(`${this.mixinListModuleOptions.deleteBatchURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIsBatchKey]) })
+            .then(({ data: res }) => {
+              if (res.code !== 0) {
+                return this.$message.error(res.toast)
               }
+              this.$message({
+                message: this.$t('prompt.success'),
+                type: 'success',
+                duration: 500,
+                onClose: () => {
+                  this.getDataList()
+                }
+              })
             })
-          }).catch(() => {
-          })
+        } else {
+          // 单个删除
+          this.$http.delete(`${this.mixinListModuleOptions.deleteURL}?` + this.mixinListModuleOptions.deleteIsBatchKey + '=' + id)
+            .then(({ data: res }) => {
+              if (res.code !== 0) {
+                return this.$message.error(res.toast)
+              }
+              this.$message({
+                message: this.$t('prompt.success'),
+                type: 'success',
+                duration: 500,
+                onClose: () => {
+                  this.getDataList()
+                }
+              })
+            })
+        }
       }).catch(() => {
       })
     },

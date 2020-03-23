@@ -11,4 +11,11 @@ import co.xquick.modules.shop.entity.SpuEntity;
  */
 public interface SpuService extends CrudService<SpuEntity, SpuDTO> {
 
+    /**
+     * 级联删除
+     *
+     * @param id 类别id
+     */
+    boolean deleteCascade(Long id);
+
 }
