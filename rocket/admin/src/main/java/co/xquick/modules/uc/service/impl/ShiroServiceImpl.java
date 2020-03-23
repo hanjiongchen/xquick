@@ -11,6 +11,7 @@ import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.ShiroService;
 import co.xquick.modules.uc.user.UserDetail;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.google.common.base.Splitter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,7 +78,8 @@ public class ShiroServiceImpl implements ShiroService {
             if (StringUtils.isBlank(permissions)) {
                 continue;
             }
-            set.addAll(Arrays.asList(permissions.trim().split(",")));
+            // 去除中间的空内容
+            set.addAll(Splitter.on(',').trimResults().omitEmptyStrings().splitToList(permissions.trim()));
         }
 
         return set;
