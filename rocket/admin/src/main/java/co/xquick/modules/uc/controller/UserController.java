@@ -156,7 +156,19 @@ public class UserController {
     @DeleteMapping("delete")
     @LogOperation("删除")
     @RequiresPermissions("uc:user:delete")
-    public Result<?> delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestParam Long id) {
+        //效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        userService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @LogOperation("批量删除")
+    @RequiresPermissions("uc:user:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 

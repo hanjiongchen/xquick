@@ -9,7 +9,6 @@ import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.cms.dto.ArticleCategoryDTO;
-import co.xquick.modules.cms.dto.ArticleDTO;
 import co.xquick.modules.cms.service.ArticleCategoryService;
 import co.xquick.modules.cms.service.ArticleService;
 import io.swagger.annotations.Api;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -94,17 +92,34 @@ public class ArticleCategoryController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("cms:articleCategory:delete")
-    public Result<?> delete(@RequestBody Long[] ids) {
+    public Result<?> delete(@RequestParam Long id) {
         //效验数据
-        AssertUtils.isArrayEmpty(ids, "id");
+        AssertUtils.isEmpty(id, "id");
 
         // 判断是否有文章
-        List<ArticleDTO> list = articleService.getListByCategoryIds(Arrays.asList(ids));
-        if (list.size() > 0) {
-            return new Result<>().error("类目下存在文章");
+        if (articleService.query().eq("article_category_id", id).count() > 0) {
+            return new Result<>().error("该类别存在文章内容,不允许删除");
         }
 
-        articleCategoryService.logicDeleteByIds(Arrays.asList(ids));
+        articleCategoryService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("cms:articleCategory:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
+        //效验数据
+        AssertUtils.isListEmpty(ids, "id");
+
+        // 判断是否有文章
+        if (articleService.query().in("article_category_id", ids).count() > 0) {
+            return new Result<>().error("该类别存在文章内容,不允许删除");
+        }
+
+        articleCategoryService.logicDeleteByIds(ids);
 
         return new Result<>();
     }

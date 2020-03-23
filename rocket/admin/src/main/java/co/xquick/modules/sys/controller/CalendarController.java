@@ -11,7 +11,6 @@ import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.sys.dto.CalendarDTO;
 import co.xquick.modules.sys.service.CalendarService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -39,10 +38,8 @@ public class CalendarController {
 
     @GetMapping("list")
     @ApiOperation("列表")
-    @ApiImplicitParams({
-    })
     @RequiresPermissions("sys:calendar:list")
-    public Result list(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<CalendarDTO> list = calendarService.listDto(params);
 
         return new Result<>().ok(list);
@@ -50,10 +47,8 @@ public class CalendarController {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @ApiImplicitParams({
-    })
     @RequiresPermissions("sys:calendar:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<CalendarDTO> page = calendarService.pageDto(params);
 
         return new Result<>().ok(page);
@@ -62,7 +57,7 @@ public class CalendarController {
     @GetMapping("info")
     @ApiOperation("信息")
     @RequiresPermissions("sys:calendar:info")
-    public Result info(@RequestParam Long id) {
+    public Result<?> info(@RequestParam Long id) {
         CalendarDTO data = calendarService.getDtoById(id);
 
         return new Result<>().ok(data);
@@ -159,39 +154,52 @@ public class CalendarController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("sys:calendar:save")
-    public Result save(@RequestBody CalendarDTO dto) {
+    public Result<?> save(@RequestBody CalendarDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
         calendarService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>().ok(dto);
     }
 
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("sys:calendar:update")
-    public Result update(@RequestBody CalendarDTO dto) {
+    public Result<?> update(@RequestBody CalendarDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
         calendarService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>().ok(dto);
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:calendar:delete")
-    public Result delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestParam Long id) {
+        //效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        calendarService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("删除")
+    @LogOperation("删除")
+    @RequiresPermissions("sys:calendar:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         calendarService.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
 
 }

@@ -12,8 +12,6 @@ import co.xquick.modules.uc.dto.DeptDTO;
 import co.xquick.modules.uc.dto.DeptTreeDTO;
 import co.xquick.modules.uc.service.DeptService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +54,6 @@ public class DeptController {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "name", value = "名称", paramType = "query", dataType = "String"),
-            @ApiImplicitParam(name = "code", value = "编号", paramType = "query", dataType = "String")
-    })
     @RequiresPermissions("uc:dept:page")
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<DeptDTO> page = deptService.pageDto(params);
@@ -106,7 +100,7 @@ public class DeptController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("uc:dept:delete")
-    public Result<?> delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestParam Long id) {
         //效验数据
         AssertUtils.isEmpty(id, "id");
 

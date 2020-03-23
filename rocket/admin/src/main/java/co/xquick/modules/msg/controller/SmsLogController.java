@@ -1,6 +1,5 @@
 package co.xquick.modules.msg.controller;
 
-import co.xquick.booster.constant.Constant;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.validator.AssertUtils;
@@ -15,8 +14,6 @@ import co.xquick.modules.msg.dto.SmsSendRequest;
 import co.xquick.modules.msg.excel.SmsLogExcel;
 import co.xquick.modules.msg.service.SmsLogService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +73,7 @@ public class SmsLogController {
 
         smsLogService.saveOrUpdateDto(dto);
 
-        return new Result<>();
+        return new Result<>().ok(dto);
     }
 
     @PutMapping("update")
@@ -89,14 +86,27 @@ public class SmsLogController {
 
         smsLogService.saveOrUpdateDto(dto);
 
-        return new Result<>();
+        return new Result<>().ok(dto);
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("msg:smsLog:delete")
-    public Result<?> delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestParam Long id) {
+        //效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        smsLogService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("msg:smsLog:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 

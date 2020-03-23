@@ -43,7 +43,7 @@ public class MailLogController {
             @ApiImplicitParam(name = "status", value = "status", paramType = "query", dataType = "String")
     })
     @RequiresPermissions("msg:mailLog:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<MailLogDTO> page = mailLogService.pageDto(params);
         //测试
         return new Result<>().ok(page);
@@ -53,29 +53,42 @@ public class MailLogController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("msg:mailLog:delete")
-    public Result delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestParam Long id) {
+        //效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        mailLogService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量")
+    @LogOperation("批量")
+    @RequiresPermissions("msg:mailLog:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         mailLogService.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
 
     @PostMapping("/send")
     @ApiOperation("发送邮件")
     @LogOperation("发送邮件")
     @RequiresPermissions("msg:mailLog:save")
-    public Result send(@RequestBody MailSendRequest dto) {
+    public Result<?> send(@RequestBody MailSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
 
         boolean flag = mailLogService.send(dto);
         if (flag) {
-            return new Result();
+            return new Result<>();
         }
 
-        return new Result().error("邮件发送失败");
+        return new Result<>().error("邮件发送失败");
     }
 
 }

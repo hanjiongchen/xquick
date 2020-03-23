@@ -45,7 +45,7 @@ public class OperationController {
             @ApiImplicitParam(name = "createName", value = "用户名", paramType = "query", dataType = "String")
     })
     @RequiresPermissions("log:operation:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<OperationDTO> page = logOperationService.pageDto(params);
 
         return new Result<>().ok(page);
