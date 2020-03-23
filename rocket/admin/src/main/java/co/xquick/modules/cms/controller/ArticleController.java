@@ -91,6 +91,19 @@ public class ArticleController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("cms:article:delete")
+    public Result<?> delete(@RequestParam Long id) {
+        // 效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        articleService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("cms:article:deleteBatch")
     public Result<?> delete(@RequestBody List<Long> ids) {
         // 效验数据
         AssertUtils.isListEmpty(ids, "id");

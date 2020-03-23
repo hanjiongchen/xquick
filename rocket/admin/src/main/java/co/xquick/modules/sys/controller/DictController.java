@@ -10,8 +10,6 @@ import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.sys.dto.DictDTO;
 import co.xquick.modules.sys.service.DictService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +31,8 @@ public class DictController {
 
     @GetMapping("page")
     @ApiOperation("字典分类")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "type", value = "字典类型", paramType = "query", dataType="String"),
-        @ApiImplicitParam(name = "name", value = "字典名称", paramType = "query", dataType="String")
-    })
     @RequiresPermissions("sys:dict:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<DictDTO> page = dictService.pageDto(params);
 
         return new Result<>().ok(page);
@@ -46,13 +40,8 @@ public class DictController {
 
     @GetMapping("list")
     @ApiOperation("字典分类数据")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "type", value = "字典类型", paramType = "query", dataType="String"),
-        @ApiImplicitParam(name = "name", value = "字典名称", paramType = "query", dataType="String"),
-        @ApiImplicitParam(name = "value", value = "字典值", paramType = "query", dataType="String")
-    })
     @RequiresPermissions("sys:dict:list")
-    public Result<List<DictDTO>> list(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<DictDTO> list = dictService.listDto(params);
 
         return new Result<List<DictDTO>>().ok(list);
@@ -71,39 +60,52 @@ public class DictController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("sys:dict:save")
-    public Result save(@RequestBody DictDTO dto){
+    public Result<?> save(@RequestBody DictDTO dto){
         // 效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
         dictService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("sys:dict:update")
-    public Result update(@RequestBody DictDTO dto){
+    public Result<?> update(@RequestBody DictDTO dto){
         // 效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
         dictService.saveOrUpdateDto(dto);
 
-        return new Result();
+        return new Result<>();
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:dict:delete")
-    public Result delete(@RequestBody List<Long> ids){
+    public Result<?> delete(@RequestParam Long id){
+        // 效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        dictService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("sys:dict:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids){
         // 效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         dictService.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
 
 }

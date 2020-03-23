@@ -42,7 +42,7 @@ public class ErrorController {
             @ApiImplicitParam(name = "startCreateTime", value = "开始时间", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "endCreateTime", value = "结束时间", paramType = "query", dataType = "String")})
     @RequiresPermissions("log:error:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ErrorDTO> page = logErrorService.pageDto(params);
 
         return new Result<>().ok(page);

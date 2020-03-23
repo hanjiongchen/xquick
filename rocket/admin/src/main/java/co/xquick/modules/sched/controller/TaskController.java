@@ -60,7 +60,7 @@ public class TaskController {
 
         taskService.saveDto(dto);
 
-        return new Result<>();
+        return new Result<>().ok(dto);
     }
 
     @PutMapping("update")
@@ -72,18 +72,31 @@ public class TaskController {
 
         taskService.updateDto(dto);
 
-        return new Result<>();
+        return new Result<>().ok(dto);
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sched:task:delete")
-    public Result<?> delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestParam Long id) {
 		//效验数据
-		AssertUtils.isListEmpty(ids, "id");
+		AssertUtils.isEmpty(id, "id");
 
-		taskService.logicDeleteByIds(ids);
+		taskService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("批量删除")
+    @RequiresPermissions("sched:task:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
+        //效验数据
+        AssertUtils.isListEmpty(ids, "id");
+
+        taskService.logicDeleteByIds(ids);
 
         return new Result<>();
     }

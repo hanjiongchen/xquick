@@ -1,5 +1,6 @@
 package co.xquick.modules.sys.controller;
 
+import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.DateUtils;
 import com.sun.management.OperatingSystemMXBean;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 系统接口
@@ -27,32 +26,32 @@ public class SystemController {
 
     @GetMapping("info")
     @ApiOperation("系统信息")
-    public Result info() {
+    public Result<?> info() {
         OperatingSystemMXBean osmx = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("sysTime", DateUtils.now());
-        map.put("osName", System.getProperty("os.name"));
-        map.put("osArch", System.getProperty("os.arch"));
-        map.put("osVersion", System.getProperty("os.version"));
-        map.put("userLanguage", System.getProperty("user.language"));
-        map.put("userDir", System.getProperty("user.dir"));
-        map.put("totalPhysical", osmx.getTotalPhysicalMemorySize() / 1024 / 1024);
-        map.put("freePhysical", osmx.getFreePhysicalMemorySize() / 1024 / 1024);
+        Kv data = Kv.init();
+        data.set("sysTime", DateUtils.now());
+        data.set("osName", System.getProperty("os.name"));
+        data.set("osArch", System.getProperty("os.arch"));
+        data.set("osVersion", System.getProperty("os.version"));
+        data.set("userLanguage", System.getProperty("user.language"));
+        data.set("userDir", System.getProperty("user.dir"));
+        data.set("totalPhysical", osmx.getTotalPhysicalMemorySize() / 1024 / 1024);
+        data.set("freePhysical", osmx.getFreePhysicalMemorySize() / 1024 / 1024);
 
-        map.put("memoryRate", BigDecimal.valueOf((1 - osmx.getFreePhysicalMemorySize() * 1.0 / osmx.getTotalPhysicalMemorySize()) * 100).setScale(2, RoundingMode.HALF_UP));
-        map.put("processors", osmx.getAvailableProcessors());
-        map.put("jvmName", System.getProperty("java.vm.name"));
-        map.put("javaVersion", System.getProperty("java.version"));
-        map.put("javaHome", System.getProperty("java.home"));
-        map.put("javaTotalMemory", Runtime.getRuntime().totalMemory() / 1024 / 1024);
-        map.put("javaFreeMemory", Runtime.getRuntime().freeMemory() / 1024 / 1024);
-        map.put("javaMaxMemory", Runtime.getRuntime().maxMemory() / 1024 / 1024);
-        map.put("userName", System.getProperty("user.name"));
-        map.put("systemCpuLoad", BigDecimal.valueOf(osmx.getSystemCpuLoad() * 100).setScale(2, RoundingMode.HALF_UP));
-        map.put("userTimezone", System.getProperty("user.timezone"));
+        data.set("memoryRate", BigDecimal.valueOf((1 - osmx.getFreePhysicalMemorySize() * 1.0 / osmx.getTotalPhysicalMemorySize()) * 100).setScale(2, RoundingMode.HALF_UP));
+        data.set("processors", osmx.getAvailableProcessors());
+        data.set("jvmName", System.getProperty("java.vm.name"));
+        data.set("javaVersion", System.getProperty("java.version"));
+        data.set("javaHome", System.getProperty("java.home"));
+        data.set("javaTotalMemory", Runtime.getRuntime().totalMemory() / 1024 / 1024);
+        data.set("javaFreeMemory", Runtime.getRuntime().freeMemory() / 1024 / 1024);
+        data.set("javaMaxMemory", Runtime.getRuntime().maxMemory() / 1024 / 1024);
+        data.set("userName", System.getProperty("user.name"));
+        data.set("systemCpuLoad", BigDecimal.valueOf(osmx.getSystemCpuLoad() * 100).setScale(2, RoundingMode.HALF_UP));
+        data.set("userTimezone", System.getProperty("user.timezone"));
 
-        return new Result<>().ok(map);
+        return new Result<>().ok(data);
     }
 
 }

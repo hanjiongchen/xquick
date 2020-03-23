@@ -1,6 +1,7 @@
 package co.xquick.modules.sys.controller;
 
 import co.xquick.booster.exception.ErrorCode;
+import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.validator.AssertUtils;
@@ -36,49 +37,27 @@ public class OssController {
     @GetMapping("page")
     @ApiOperation(value = "分页")
     @RequiresPermissions("sys:oss:page")
-    public Result page(@ApiIgnore @RequestParam Map<String, Object> params) {
+    public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<OssDTO> page = ossService.pageDto(params);
 
         return new Result<>().ok(page);
     }
 
-    /*@PostMapping
-    @ApiOperation(value = "保存云存储配置信息")
-    @LogOperation("保存云存储配置信息")
-    @RequiresPermissions("sys:oss:all")
-    public Result saveConfig(@RequestBody CloudStorageConfig config) {
-        //校验类型
-        ValidatorUtils.validateEntity(config);
-
-        if (config.getType() == Constant.CloudService.ALIYUN.getValue()) {
-            //校验阿里云数据
-            ValidatorUtils.validateEntity(config, AliyunGroup.class);
-        } else if (config.getType() == Constant.CloudService.QCLOUD.getValue()) {
-            //校验腾讯云数据
-            ValidatorUtils.validateEntity(config, QcloudGroup.class);
-        }
-
-        paramsService.updateContentByCode(KEY, new Gson().toJson(config));
-
-        return new Result();
-    }*/
-
     @GetMapping("presignedUrl")
     @ApiOperation(value = "获得授权访问地址")
-    public Result presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CFG_PRI") String paramCode) {
-        String url = OssFactory.build(paramCode).generatePresignedUrl("oss/20191105/aba10b6b6ea2442ab05cc969f7c380ae.png", 3600 * 1000);
+    public Result<?> presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CFG_PRI") String paramCode,
+                                  @RequestParam String objectName,
+                                  @RequestParam(required = false, defaultValue = "3600000")  long expiration) {
+        String url = OssFactory.build(paramCode).generatePresignedUrl(objectName, expiration);
 
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("src", url);
-
-        return new Result<>().ok(data);
+        return new Result<>().ok(Kv.init().set("src",url));
     }
 
     @PostMapping("upload")
     @ApiOperation(value = "上传单个文件")
-    public Result upload(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode, @RequestParam("file") MultipartFile file) throws Exception {
+    public Result<?> upload(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode, @RequestParam("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) {
-            return new Result().error(ErrorCode.UPLOAD_FILE_EMPTY);
+            return new Result<>().error(ErrorCode.UPLOAD_FILE_EMPTY);
         }
 
         // 上传文件
@@ -93,17 +72,14 @@ public class OssController {
         oss.setContentType(file.getContentType());
         ossService.save(oss);
 
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("src", url);
-
-        return new Result<>().ok(data);
+        return new Result<>().ok(Kv.init().set("src",url));
     }
 
     @PostMapping("uploadMulti")
     @ApiOperation(value = "上传多个文件")
-    public Result uploadMulti(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode, @RequestParam("file") MultipartFile[] files) throws Exception {
+    public Result<?> uploadMulti(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode, @RequestParam("file") MultipartFile[] files) throws Exception {
         if (files == null || files.length <= 0) {
-            return new Result().error(ErrorCode.UPLOAD_FILE_EMPTY);
+            return new Result<>().error(ErrorCode.UPLOAD_FILE_EMPTY);
         }
 
         List<String> srcList = new ArrayList<>();
@@ -122,23 +98,36 @@ public class OssController {
             srcList.add(url);
         }
 
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("src", StringUtils.join(srcList, ","));
-
-        return new Result<>().ok(data);
+        return new Result<>().ok(Kv.init().set("src", StringUtils.join(srcList, ",")));
     }
 
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:oss:delete")
-    public Result delete(@RequestBody List<Long> ids) {
+    public Result<?> delete(@RequestParam Long id) {
+        //效验数据
+        AssertUtils.isEmpty(id, "id");
+
+        ossService.logicDeleteById(id);
+
+        return new Result<>();
+    }
+
+    @DeleteMapping("deleteBatch")
+    @ApiOperation("批量删除")
+    @LogOperation("删除")
+    @RequiresPermissions("sys:oss:deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         //效验数据
         AssertUtils.isListEmpty(ids, "id");
 
         ossService.logicDeleteByIds(ids);
 
-        return new Result();
+        return new Result<>();
     }
+
+
+
 
 }
