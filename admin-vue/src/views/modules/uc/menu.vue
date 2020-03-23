@@ -17,7 +17,6 @@
           <template slot-scope="scope">
             <el-tag v-if="scope.row.type === 0" size="small">{{ $t('menu.type0') }}</el-tag>
             <el-tag v-else-if="scope.row.type === 1" size="small" type="success">{{ $t('menu.type1') }}</el-tag>
-            <el-tag v-else-if="scope.row.type === 2" size="small" type="warning">{{ $t('menu.type2') }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="sort" :label="$t('menu.sort')" header-align="center" align="center" width="120"/>

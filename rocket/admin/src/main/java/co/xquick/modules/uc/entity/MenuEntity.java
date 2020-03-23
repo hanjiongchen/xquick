@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  * @author Charles (zhanngchaoxu@gmail.com)
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @TableName("uc_menu")
 public class MenuEntity extends BaseEntity {
 	/**
@@ -24,9 +24,17 @@ public class MenuEntity extends BaseEntity {
 	 */
 	private String name;
 	/**
+	 * 英文名称
+	 */
+	private String nameEn;
+	/**
 	 * 菜单URL
 	 */
 	private String url;
+	/**
+	 * 是否显示
+	 */
+	private Integer showMenu;
 	/**
 	 * 菜单新页面打开
 	 */
@@ -36,7 +44,7 @@ public class MenuEntity extends BaseEntity {
 	 */
 	private String permissions;
 	/**
-	 * 类型   0:菜单   1:按钮  2:页面
+	 * 类型   0:菜单/页面   1:按钮/接口
 	 */
 	private Integer type;
 	/**

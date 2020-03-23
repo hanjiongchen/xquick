@@ -36,6 +36,13 @@ public interface MenuService extends CrudService<MenuEntity, MenuTreeDTO> {
     List<MenuTreeDTO> getUserMenuList(UserDetail user, Integer type);
 
     /**
+     * 用户Url列表
+     *
+     * @param user 用户
+     */
+    List<MenuEntity> getListByUser(UserDetail user);
+
+    /**
      * 根据父菜单，查询子菜单
      *
      * @param pid 父菜单ID

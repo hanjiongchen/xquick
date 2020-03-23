@@ -5,7 +5,6 @@
         <el-radio-group v-model="dataForm.type" :disabled="!!dataForm.id">
           <el-radio :label="0">{{ $t('menu.type0') }}</el-radio>
           <el-radio :label="1">{{ $t('menu.type1') }}</el-radio>
-          <el-radio :label="2">{{ $t('menu.type2') }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item prop="name" :label="$t('menu.name')">
@@ -15,7 +14,7 @@
         <el-cascader v-model="menuSelected" :options="menuList" clearable :props="{ emitPath: false, checkStrictly: true, value: 'id', label: 'name', children: 'children'}"
                      @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
       </el-form-item>
-      <el-row v-if="dataForm.type === 0 || dataForm.type === 2">
+      <el-row v-if="dataForm.type === 0">
         <el-col :span="12">
           <el-form-item prop="url" :label="$t('menu.url')">
             <el-input v-model="dataForm.url" :placeholder="$t('menu.url')"/>
@@ -34,7 +33,7 @@
         <el-input v-model="dataForm.permissions" :placeholder="$t('menu.permissionsTips')"/>
       </el-form-item>
       <el-row>
-        <el-col :span="12" v-if="dataForm.type !== 2">
+        <el-col :span="12">
           <el-form-item prop="sort" :label="$t('menu.sort')" >
             <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('menu.sort')" class="w-percent-100"/>
           </el-form-item>
@@ -88,6 +87,7 @@ export default {
         id: '',
         type: 0,
         urlNewBlank: 0,
+        show: 1,
         name: '',
         pid: '0',
         parentName: '',

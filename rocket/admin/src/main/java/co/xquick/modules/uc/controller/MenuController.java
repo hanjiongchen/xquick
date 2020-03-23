@@ -3,6 +3,7 @@ package co.xquick.modules.uc.controller;
 import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.ConvertUtils;
+import co.xquick.booster.util.TreeUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.DefaultGroup;
@@ -10,17 +11,22 @@ import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.dto.MenuDTO;
 import co.xquick.modules.uc.dto.MenuTreeDTO;
+import co.xquick.modules.uc.entity.MenuEntity;
 import co.xquick.modules.uc.service.MenuService;
 import co.xquick.modules.uc.service.ShiroService;
 import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
+import com.google.common.base.Splitter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,16 +46,33 @@ public class MenuController {
     @Autowired
     private ShiroService shiroService;
 
-    @GetMapping("menuTreeAndUrlList")
-    @ApiOperation("当前用户菜单和路由列表")
-    public Result<?> menuTreeAndUrlList() {
+    @GetMapping("userMenu")
+    @ApiOperation("用户菜单权限")
+    public Result<?> userMenu() {
         UserDetail user = SecurityUser.getUser();
-        List<MenuTreeDTO> menuTree = menuService.getUserMenuList(user, UcConst.MenuTypeEnum.MENU.value());
-        // todo filter with user info
-        List<MenuDTO> routeList = ConvertUtils.sourceToTarget(menuService.query().ne("url", "").list(), MenuDTO.class);
-
-        Kv data = Kv.init().set("menuTree", menuTree).set("urlList", routeList);
-        return new Result<>().ok(data);
+        // 获取该用户所有menu
+        List<MenuEntity> allList = menuService.getListByUser(user);
+        // 过滤出其中显示菜单
+        List<MenuTreeDTO> menuList = new ArrayList<>();
+        // 过滤出其中路由菜单
+        List<MenuDTO> urlList = new ArrayList<>();
+        // 过滤处出其权限
+        Set<String> permissions = new HashSet<>();
+        allList.forEach(menu -> {
+            if (menu.getShowMenu() == 1 && menu.getType() == UcConst.MenuTypeEnum.MENU.value()) {
+                menuList.add(ConvertUtils.sourceToTarget(menu, MenuTreeDTO.class));
+            }
+            if (StringUtils.isNotBlank(menu.getUrl())) {
+                urlList.add(ConvertUtils.sourceToTarget(menu, MenuDTO.class));
+            }
+            if (StringUtils.isNotBlank(menu.getPermissions())) {
+                // 去除中间的空内容
+                permissions.addAll(Splitter.on(',').trimResults().omitEmptyStrings().splitToList(menu.getPermissions().trim()));
+            }
+        });
+        // 将菜单列表转成菜单树
+        List<MenuTreeDTO> menuTree = TreeUtils.build(menuList);
+        return new Result<>().ok(Kv.init().set("menuTree", menuTree).set("urlList", urlList).set("permissions", permissions));
     }
 
     @GetMapping("userTree")

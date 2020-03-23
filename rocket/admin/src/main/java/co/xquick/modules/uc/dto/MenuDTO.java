@@ -32,13 +32,19 @@ public class MenuDTO extends BaseDTO {
     @NotBlank(message = "{name.require}", groups = DefaultGroup.class)
     private String name;
 
+    @ApiModelProperty(value = "菜单英文名称")
+    private String nameEn;
+
     @ApiModelProperty(value = "菜单URL")
     private String url;
+
+    @ApiModelProperty(value = "是否显示")
+    private Integer showMenu;
 
     @ApiModelProperty(value = "菜单新页面打开")
     private Integer urlNewBlank;
 
-    @ApiModelProperty(value = "类型  0:菜单   1:按钮   2:页面")
+    @ApiModelProperty(value = "类型  0:菜单/页面   1:按钮/接口")
     @Range(min = 0, max = 2, message = "{type.range}", groups = DefaultGroup.class)
     private Integer type;
 

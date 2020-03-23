@@ -76,6 +76,17 @@ public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuTr
     }
 
     @Override
+    public List<MenuEntity> getListByUser(UserDetail user) {
+        // 系统管理员，拥有最高权限
+        if (user.getType() == UserTypeEnum.ADMIN.value()) {
+            return query().orderByAsc("sort").list();
+        } else {
+            return baseMapper.getListByUserId(user.getId());
+        }
+    }
+
+
+    @Override
     public List<MenuTreeDTO> getListPid(Long pid) {
         List<MenuEntity> menuList = baseMapper.getListPid(pid);
 

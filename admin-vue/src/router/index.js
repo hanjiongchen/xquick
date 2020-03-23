@@ -65,16 +65,18 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   // 获取菜单列表, 添加并全局变量保存
-  http.get('/uc/menu/menuTreeAndUrlList').then(({ data: res }) => {
+  http.get('/uc/menu/userMenu').then(({ data: res }) => {
     if (res.code !== 0) {
       // 提示错误,并跳转登录
       Vue.prototype.$message.error(res.toast)
       return next({ name: 'login' })
     } else {
-      // 将菜单塞入menuList
+      // 菜单塞入menuList
       window.SITE_CONFIG['menuList'] = res.data.menuTree
-      // 将页面塞入路由
+      // 页面塞入路由
       fnAddDynamicMenuRoutes(res.data.urlList)
+      // 权限塞入权限列表
+      window.SITE_CONFIG['permissions'] = res.data.permissions
       next({ ...to, replace: true })
     }
   }).catch(() => {

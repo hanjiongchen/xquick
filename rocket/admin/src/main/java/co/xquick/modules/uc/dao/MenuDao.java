@@ -36,6 +36,20 @@ public interface MenuDao extends BaseDao<MenuEntity> {
     List<MenuEntity> getMenuList(@Param("type") Integer type);
 
     /**
+     * 查询用户Url列表
+     *
+     * @param userId 用户ID
+     */
+    @Select("<script>" +
+            "select uc_menu.* from uc_role_user" +
+            " left join uc_role_menu on uc_role_user.role_id = uc_role_menu.role_id" +
+            " left join uc_menu on uc_role_menu.menu_id = uc_menu.id" +
+            " where uc_role_user.user_id = #{userId} and uc_role_user.deleted = 0 and uc_role_menu.deleted = 0 and uc_menu.deleted = 0" +
+            " order by uc_menu.sort asc" +
+            "</script>")
+    List<MenuEntity> getListByUserId(@Param("userId") Long userId);
+
+    /**
      * 查询用户菜单列表
      *
      * @param userId 用户ID
