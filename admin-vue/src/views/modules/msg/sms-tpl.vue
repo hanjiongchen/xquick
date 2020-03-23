@@ -65,16 +65,16 @@
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 
 import AddOrUpdate from './sms-tpl-add-or-update'
 import Send from './sms-send'
 
 export default {
-  mixins: [mixinBaseModule, mixinViewModule],
+  mixins: [mixinBaseModule, mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/msg/smsTpl/page',
         getDataListIsPage: true,
         exportURL: '/msg/smsTpl/export',

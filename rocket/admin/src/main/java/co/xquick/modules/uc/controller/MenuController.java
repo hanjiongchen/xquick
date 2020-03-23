@@ -2,10 +2,13 @@ package co.xquick.modules.uc.controller;
 
 import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
+import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.common.annotation.LogOperation;
+import co.xquick.modules.uc.UcConst;
+import co.xquick.modules.uc.dto.MenuDTO;
 import co.xquick.modules.uc.dto.MenuTreeDTO;
 import co.xquick.modules.uc.service.MenuService;
 import co.xquick.modules.uc.service.ShiroService;
@@ -37,13 +40,14 @@ public class MenuController {
     @Autowired
     private ShiroService shiroService;
 
-    @GetMapping("menuAndRoute")
+    @GetMapping("menuTreeAndUrlList")
     @ApiOperation("当前用户菜单和路由列表")
-    public Result<?> menuTreeAndRouteList() {
+    public Result<?> menuTreeAndUrlList() {
         UserDetail user = SecurityUser.getUser();
-        List<MenuTreeDTO> menuTree = menuService.getUserMenuList(user, 0);
+        List<MenuTreeDTO> menuTree = menuService.getUserMenuList(user, UcConst.MenuTypeEnum.MENU.value());
+        List<MenuDTO> routeList = ConvertUtils.sourceToTarget(menuService.query().isNotNull("url").ne("url", "").list(), MenuDTO.class);
 
-        Kv data = Kv.init().set("menuTree", menuTree).set("routerList", "");
+        Kv data = Kv.init().set("menuTree", menuTree).set("urlList", routeList);
         return new Result<>().ok(data);
     }
 

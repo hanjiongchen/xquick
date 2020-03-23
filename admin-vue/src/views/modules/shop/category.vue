@@ -35,7 +35,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        v-if="mixinViewModuleOptions.getDataListIsPage"
+        v-if="mixinListModuleOptions.getDataListIsPage"
         :current-page="page"
         :page-sizes="[10, 20, 50, 100]"
         :page-size="limit"
@@ -53,16 +53,16 @@
 </template>
 
 <script>
-import mixinBaseModule from '@/mixins/base-module'
 import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './category-add-or-update'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
-  mixins: [mixinBaseModule, mixinViewModule],
+  mixins: [mixinListModule, mixinViewModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/shop/category/page',
         getDataListIsPage: true,
         exportURL: '/shop/category/export',

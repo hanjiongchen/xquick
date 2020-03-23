@@ -9,11 +9,12 @@ export default {
   data () {
     return {
       // 设置属性
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         activatedIsNeed: true, // 此页面是否在激活（进入）时，调用查询数据列表接口
         getDataListURL: '', // 数据列表接口，API地址
         getDataListIsPage: false, // 数据列表接口，是否需要分页
         deleteURL: '', // 删除接口，API地址
+        deleteBatchURL: '', // 删除接口，API地址
         deleteIsBatch: false, // 删除接口，是否需要批量
         deleteIsBatchKey: 'id', // 删除接口，批量状态下由那个key进行标记操作？比如：pid，uid...
         exportURL: '', // 导出接口，API地址
@@ -38,7 +39,7 @@ export default {
     }
   },
   activated () {
-    if (this.mixinViewModuleOptions.activatedIsNeed) {
+    if (this.mixinListModuleOptions.activatedIsNeed) {
       this.getDataList()
     }
   },
@@ -60,13 +61,13 @@ export default {
       }
       this.dataListLoading = true
       this.$http.get(
-        this.mixinViewModuleOptions.getDataListURL,
+        this.mixinListModuleOptions.getDataListURL,
         {
           params: {
             order: this.order,
             orderField: this.orderField,
-            page: this.mixinViewModuleOptions.getDataListIsPage ? this.page : null,
-            limit: this.mixinViewModuleOptions.getDataListIsPage ? this.limit : null,
+            page: this.mixinListModuleOptions.getDataListIsPage ? this.page : null,
+            limit: this.mixinListModuleOptions.getDataListIsPage ? this.limit : null,
             ...this.dataForm
           }
         }
@@ -92,8 +93,8 @@ export default {
     },
     // list信息获取成功
     onGetListSuccess (res) {
-      this.dataList = this.mixinViewModuleOptions.getDataListIsPage ? res.data.list : res.data
-      this.total = this.mixinViewModuleOptions.getDataListIsPage ? res.data.total : res.data.list.length
+      this.dataList = this.mixinListModuleOptions.getDataListIsPage ? res.data.list : res.data
+      this.total = this.mixinListModuleOptions.getDataListIsPage ? res.data.total : res.data.list.length
     },
     // list信息获取失败
     onGetListError (res) {
@@ -156,7 +157,7 @@ export default {
     },
     // 删除
     deleteHandle (id) {
-      if (this.mixinViewModuleOptions.deleteIsBatch && !id && this.dataListSelections.length <= 0) {
+      if (this.mixinListModuleOptions.deleteIsBatch && !id && this.dataListSelections.length <= 0) {
         // 批量删除先检查已选中个数
         return this.$message({
           message: this.$t('prompt.deleteBatch'),
@@ -170,7 +171,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        this.$http.delete(`${this.mixinViewModuleOptions.deleteURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinViewModuleOptions.deleteIsBatchKey]) })
+        this.$http.delete(this.mixinListModuleOptions.deleteIsBatch ? `${this.mixinListModuleOptions.deleteBatchURL}` : `${this.mixinListModuleOptions.deleteURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIsBatchKey]) })
           .then(({ data: res }) => {
             if (res.code !== 0) {
               return this.$message.error(res.toast)
@@ -194,7 +195,7 @@ export default {
         'token': Cookies.get('token'),
         ...this.dataForm
       })
-      window.location.href = `${window.SITE_CONFIG['apiURL']}${this.mixinViewModuleOptions.exportURL}?${params}`
+      window.location.href = `${window.SITE_CONFIG['apiURL']}${this.mixinListModuleOptions.exportURL}?${params}`
     },
     // 地图查看
     mapViewHandle (address, lat, lng) {
@@ -224,10 +225,10 @@ export default {
     editActionHandler (command) {
       if (command.command === 'addOrUpdate') {
         // 新增/修改
-        this.addOrUpdateHandle(command.row[this.mixinViewModuleOptions.idKey])
+        this.addOrUpdateHandle(command.row[this.mixinListModuleOptions.idKey])
       } else if (command.command === 'delete') {
         // 删除
-        this.deleteHandle(command.row[this.mixinViewModuleOptions.idKey])
+        this.deleteHandle(command.row[this.mixinListModuleOptions.idKey])
       } else {
         this.moreEditActionHandler(command)
       }

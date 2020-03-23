@@ -62,7 +62,7 @@
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
-import mixinViewModule from '@/mixins/view-module'
+import mixinListModule from '@/mixins/list-module'
 
 import AddOrUpdate from './param-add-or-update'
 import OssConfig from './param-oss-config'
@@ -74,10 +74,10 @@ import AppServiceConfig from './params-app-service-config'
 import AppVersionConfig from './params-app-version-config'
 
 export default {
-  mixins: [mixinBaseModule, mixinViewModule],
+  mixins: [mixinBaseModule, mixinListModule],
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         activatedIsNeed: false,
         getDataListURL: '/sys/param/page',
         getDataListIsPage: true,

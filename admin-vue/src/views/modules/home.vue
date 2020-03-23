@@ -4,7 +4,7 @@
       <!-- 全局数量 -->
       <el-row :gutter="40">
         <el-col :xs="12" :sm="12" :lg="6">
-          <chart-card :loading="loading" title="总订单量" :total="dataForm.orderCount">
+          <chart-card :loading="loading" title="总订单量" :total="dataForm.orderCount + '个'">
             <el-tooltip class="item" effect="dark" content="最近一段时间销售额" placement="top" slot="action">
               <i class="el-icon-info"/>
             </el-tooltip>
@@ -14,7 +14,7 @@
           </chart-card>
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6">
-          <chart-card :loading="loading" title="总会员数" :total="dataForm.userCount">
+          <chart-card :loading="loading" title="总会员数" :total="dataForm.userCount + '个'">
             <el-tooltip class="item" effect="dark" content="最近一段时间销售额" placement="top" slot="action">
               <i class="el-icon-info"/>
             </el-tooltip>
@@ -48,8 +48,8 @@ export default {
       loading: true,
       // 统计数据
       dataForm: {
-        orderCount: 0,
-        userCount: 0
+        orderCount: '0',
+        userCount: '0'
       }
     }
   },
