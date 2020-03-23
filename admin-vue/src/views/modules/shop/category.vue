@@ -8,25 +8,19 @@
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:category:export')">
-          <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-        </el-form-item>
         <el-form-item v-if="$hasPermission('shop:category:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:category:delete')">
-          <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-        </el-form-item>
       </el-form>
-      <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="logo" label="logo" header-align="center" align="center">
+      <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;" row-key="id">
+        <el-table-column prop="name" label="名称" header-align="center" align="left" min-width="100"/>
+        <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"/>
+        <el-table-column prop="logo" label="图标" header-align="center" align="center" width="100">
           <template slot-scope="scope">
             <el-image v-if="scope.row.logo" lazy class="table-img" :src="scope.row.logo.split(',')[0]" @click="imageViewerHandle(scope.row.logo.split(','))" fit="cover"/>
           </template>
         </el-table-column>
-        <el-table-column prop="content" label="介绍" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="content" label="描述" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:category:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
@@ -63,11 +57,12 @@ export default {
   data () {
     return {
       mixinListModuleOptions: {
-        getDataListURL: '/shop/category/page',
-        getDataListIsPage: true,
+        getDataListURL: '/shop/category/tree',
+        getDataListIsPage: false,
         exportURL: '/shop/category/export',
-        deleteURL: '/shop/category/deleteBatch',
-        deleteIsBatch: true
+        deleteURL: '/shop/category/delete',
+        deleteBatchURL: '/shop/category/deleteBatch',
+        deleteIsBatch: false
       },
       dataForm: {
         name: ''

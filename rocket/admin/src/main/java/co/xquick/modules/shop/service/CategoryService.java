@@ -2,9 +2,11 @@ package co.xquick.modules.shop.service;
 
 import co.xquick.booster.service.CrudService;
 import co.xquick.modules.shop.dto.CategoryDTO;
+import co.xquick.modules.shop.dto.CategoryTreeDTO;
 import co.xquick.modules.shop.entity.CategoryEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品类别
@@ -13,10 +15,9 @@ import java.util.List;
  */
 public interface CategoryService extends CrudService<CategoryEntity, CategoryDTO> {
     /**
-     * 菜单列表
-     *
+     * 树状列表
      */
-    public List<CategoryDTO> getAllMenuList();
+    List<CategoryTreeDTO> tree(Map<String, Object> params);
 
     /**
      * 递归上级菜单列表

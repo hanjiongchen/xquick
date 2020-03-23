@@ -10,6 +10,7 @@ import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.shop.dto.CategoryDTO;
+import co.xquick.modules.shop.dto.CategoryTreeDTO;
 import co.xquick.modules.shop.excel.CategoryExcel;
 import co.xquick.modules.shop.service.CategoryService;
 import io.swagger.annotations.Api;
@@ -42,6 +43,15 @@ public class CategoryController {
         List<CategoryDTO> list = categoryService.listDto(params);
 
         return new Result<>().ok(list);
+    }
+
+    @GetMapping("tree")
+    @ApiOperation("树表")
+    @RequiresPermissions("shop:category:list")
+    public Result<?> tree(@ApiIgnore @RequestParam Map<String, Object> params) {
+        List<CategoryTreeDTO> tree = categoryService.tree(params);
+
+        return new Result<>().ok(tree);
     }
 
     @GetMapping("page")
@@ -129,12 +139,4 @@ public class CategoryController {
         ExcelUtils.exportExcelToTarget(response, "商品类别", list, CategoryExcel.class);
     }
 
-    @GetMapping("tree")
-    @ApiOperation("列表")
-    @RequiresPermissions("uc:menu:list")
-    public Result tree() {
-        List<CategoryDTO> list = categoryService.getAllMenuList();
-
-        return new Result<>().ok(list);
-    }
 }

@@ -54,6 +54,7 @@ export default {
         getDataListURL: '/uc/dept/tree',
         getDataListIsPage: false,
         deleteURL: '/uc/dept/delete',
+        deleteBatchURL: '/uc/dept/deleteBatch',
         deleteIsBatch: false,
         exportURL: '/uc/dept/export'
       },

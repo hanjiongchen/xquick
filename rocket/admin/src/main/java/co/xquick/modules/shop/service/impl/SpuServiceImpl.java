@@ -1,12 +1,12 @@
 package co.xquick.modules.shop.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import co.xquick.booster.service.impl.CrudServiceImpl;
+import co.xquick.booster.util.WrapperUtils;
 import co.xquick.modules.shop.dao.SpuDao;
 import co.xquick.modules.shop.dto.SpuDTO;
 import co.xquick.modules.shop.entity.SpuEntity;
 import co.xquick.modules.shop.service.SpuService;
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,12 +21,17 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
 
     @Override
     public QueryWrapper<SpuEntity> getWrapper(String method, Map<String, Object> params){
-        String id = (String)params.get("id");
+        return new WrapperUtils<SpuEntity>(new QueryWrapper<>(), params)
+                .like("name", "name")
+                .eq("storeId", "store_id")
+                .eq("sn", "sn")
+                .eq("status", "status")
+                .eq("top", "top")
+                .eq("type", "type")
+                .eq("delivery", "delivery")
+                .eq("marketable", "marketable")
 
-        QueryWrapper<SpuEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(id), "id", id);
-
-        return wrapper;
+                .getQueryWrapper();
     }
 
 }

@@ -1,7 +1,7 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-          <el-form-item label="父级商品类别" prop="pid">
+       <el-form-item label="父级商品类别" prop="pid">
           <el-cascader v-model="menuSelected" :options="pidList" clearable :props="{ emitPath: false, checkStrictly: true, value: 'id', label: 'name', children: 'children'}" @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
       </el-form-item>
           <el-form-item label="店铺" prop="storeId">
@@ -30,11 +30,11 @@
               <i class="el-icon-plus"/>
           </el-upload>
       </el-form-item>
-          <!--<el-form-item label="排序" prop="sort">
-          <el-input v-model="dataForm.sort" placeholder="排序"></el-input>
-      </el-form-item>-->
-          <el-form-item label="介绍" prop="content">
-          <el-input v-model="dataForm.content" placeholder="介绍"></el-input>
+        <el-form-item prop="sort" :label="$t('dept.sort')">
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
+        </el-form-item>
+      <el-form-item label="介绍" prop="content">
+          <el-input v-model="dataForm.content" placeholder="介绍" type="textarea"></el-input>
       </el-form-item>
                 </el-form>
     <template slot="footer">
