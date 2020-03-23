@@ -2,8 +2,7 @@
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
           <el-form-item label="父级商品类别" prop="pid">
-          <el-cascader v-model="menuSelected" :options="pidList" clearable :props="{ emitPath: false, checkStrictly: true, value: 'id', label: 'name', children: 'children'}"
-                       @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
+          <el-cascader v-model="menuSelected" :options="pidList" clearable :props="{ emitPath: false, checkStrictly: true, value: 'id', label: 'name', children: 'children'}" @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
       </el-form-item>
           <el-form-item label="店铺" prop="storeId">
           <el-select v-model="dataForm.storeId" placeholder="选择店铺" class="w-percent-100">
@@ -78,12 +77,7 @@ export default {
         name: '',
         logo: '',
         sort: '',
-        content: '',
-        createId: '',
-        createTime: '',
-        updateId: '',
-        updateTime: '',
-        deleted: ''
+        content: ''
       }
     }
   },
@@ -96,9 +90,6 @@ export default {
         storeId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        storeCode: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
@@ -109,21 +100,6 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         content: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        deleted: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
