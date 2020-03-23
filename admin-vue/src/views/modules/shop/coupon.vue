@@ -76,6 +76,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/shop/coupon/export',
         deleteURL: '/shop/coupon/delete',
+        deleteBatchURL: '/shop/coupon/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

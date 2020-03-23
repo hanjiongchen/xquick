@@ -77,6 +77,7 @@ export default {
         getDataListURL: '/msg/mailLog/page',
         getDataListIsPage: true,
         deleteURL: '/msg/mailLog/delete',
+        deleteBatchURL: '/msg/mailLog/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

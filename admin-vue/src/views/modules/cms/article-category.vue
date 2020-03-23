@@ -62,6 +62,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/cms/articleCategory/export',
         deleteURL: '/cms/articleCategory/delete',
+        deleteBatchURL: '/cms/articleCategory/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

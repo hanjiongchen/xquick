@@ -70,6 +70,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/sys/calendar/export',
         deleteURL: '/sys/calendar/delete',
+        deleteBatchURL: '/sys/calendar/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

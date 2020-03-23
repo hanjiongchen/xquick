@@ -80,6 +80,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/msg/smsLog/export',
         deleteURL: '/msg/smsLog/delete',
+        deleteBatchURL: '/msg/smsLog/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

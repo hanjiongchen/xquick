@@ -110,6 +110,7 @@ export default {
         getDataListURL: '/uc/user/page',
         getDataListIsPage: true,
         deleteURL: '/uc/user/delete',
+        deleteBatchURL: '/uc/user/deleteBatch',
         deleteIsBatch: true,
         exportURL: '/uc/user/export',
         importURL: '/uc/user/import'

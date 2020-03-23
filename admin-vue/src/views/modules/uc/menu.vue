@@ -45,7 +45,9 @@ export default {
     return {
       mixinListModuleOptions: {
         getDataListURL: '/uc/menu/tree',
-        deleteURL: '/uc/menu/delete'
+        deleteURL: '/uc/menu/delete',
+        deleteBatchURL: '/uc/menu/deleteBatch',
+        deleteIsBatch: true
       }
     }
   },

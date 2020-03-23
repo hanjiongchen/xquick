@@ -67,6 +67,7 @@ export default {
         getDataListURL: '/msg/mailTpl/page',
         getDataListIsPage: true,
         deleteURL: '/msg/mailTpl/delete',
+        deleteBatchURL: '/msg/mailTpl/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

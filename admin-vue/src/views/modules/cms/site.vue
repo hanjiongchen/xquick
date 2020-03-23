@@ -66,6 +66,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/cms/site/export',
         deleteURL: '/cms/site/delete',
+        deleteBatchURL: '/cms/site/deleteBatch',
         deleteIsBatch: false
       },
       dataForm: {

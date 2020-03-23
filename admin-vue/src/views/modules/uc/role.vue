@@ -58,7 +58,9 @@ export default {
       mixinListModuleOptions: {
         getDataListURL: '/uc/role/page',
         getDataListIsPage: true,
-        deleteURL: '/uc/role/delete'
+        deleteURL: '/uc/role/delete',
+        deleteBatchURL: '/uc/role/deleteBatch',
+        deleteIsBatch: true
       },
       dataForm: {
         code: '',

@@ -82,6 +82,7 @@ export default {
         getDataListURL: '/sys/param/page',
         getDataListIsPage: true,
         deleteURL: '/sys/param/delete',
+        deleteBatchURL: '/sys/param/deleteBatch',
         deleteIsBatch: true
       },
       // 登录配置

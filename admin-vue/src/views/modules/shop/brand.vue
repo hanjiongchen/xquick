@@ -67,6 +67,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/shop/brand/export',
         deleteURL: '/shop/brand/delete',
+        deleteBatchURL: '/shop/brand/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

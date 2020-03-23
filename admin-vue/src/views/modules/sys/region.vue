@@ -59,6 +59,7 @@ export default {
         getDataListIsPage: false,
         exportURL: '/sys/region/export',
         deleteURL: '/sys/region/delete',
+        deleteBatchURL: '/sys/region/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

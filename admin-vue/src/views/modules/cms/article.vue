@@ -113,6 +113,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/cms/article/export',
         deleteURL: '/cms/article/delete',
+        deleteBatchURL: '/cms/article/deleteBatch',
         deleteIsBatch: true
       },
       statusOptions: [{

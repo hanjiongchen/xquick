@@ -76,6 +76,7 @@ export default {
         getDataListURL: '/sys/dict/page',
         getDataListIsPage: true,
         deleteURL: '/sys/dict/delete',
+        deleteBatchURL: '/sys/dict/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

@@ -79,6 +79,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/msg/smsTpl/export',
         deleteURL: '/msg/smsTpl/delete',
+        deleteBatchURL: '/msg/smsTpl/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {

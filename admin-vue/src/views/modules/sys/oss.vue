@@ -59,6 +59,7 @@ export default {
         getDataListURL: '/sys/oss/page',
         getDataListIsPage: true,
         deleteURL: '/sys/oss/delete',
+        deleteBatchURL: '/sys/oss/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {},

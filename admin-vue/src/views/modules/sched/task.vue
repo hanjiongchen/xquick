@@ -91,6 +91,7 @@ export default {
         getDataListURL: '/sched/task/page',
         getDataListIsPage: true,
         deleteURL: '/sched/task/delete',
+        deleteBatchURL: '/sched/task/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {
