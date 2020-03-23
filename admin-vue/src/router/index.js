@@ -63,7 +63,6 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   // 获取菜单列表, 添加并全局变量保存
-  // todo replace api
   http.get('/uc/menu/menuTreeAndUrlList').then(({ data: res }) => {
     if (res.code !== 0) {
       // 提示错误,并跳转登录
@@ -143,7 +142,6 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     }
     routes.push(route)
   }
-  console.log(routes)
   // 添加路由
   router.addRoutes([
     {

@@ -14,6 +14,7 @@ export default {
         getDataListURL: '', // 数据列表接口，API地址
         getDataListIsPage: false, // 数据列表接口，是否需要分页
         deleteURL: '', // 删除接口，API地址
+        deleteBatchURL: '', // 删除接口，API地址
         deleteIsBatch: false, // 删除接口，是否需要批量
         deleteIsBatchKey: 'id', // 删除接口，批量状态下由那个key进行标记操作？比如：pid，uid...
         exportURL: '', // 导出接口，API地址
@@ -170,7 +171,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        this.$http.delete(`${this.mixinListModuleOptions.deleteURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIsBatchKey]) })
+        this.$http.delete(this.mixinListModuleOptions.deleteIsBatch ? `${this.mixinListModuleOptions.deleteBatchURL}` : `${this.mixinListModuleOptions.deleteURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIsBatchKey]) })
           .then(({ data: res }) => {
             if (res.code !== 0) {
               return this.$message.error(res.toast)

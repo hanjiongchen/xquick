@@ -65,8 +65,6 @@
         @size-change="pageSizeChangeHandle"
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
-      <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
     </div>
   </el-card>
 </template>
@@ -83,6 +81,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/shop/spu/export',
         deleteURL: '/shop/spu/delete',
+        deleteBatchURL: '/shop/spu/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {
@@ -92,6 +91,12 @@ export default {
   },
   components: {
     AddOrUpdate
+  },
+  methods: {
+    // 新增/修改
+    addOrUpdateHandle (id) {
+      this.$router.push({ name: 'shop-spu-add-or-update', query: { id: id }, meta: { title: id ? '课程edit' : '课程add', isTab: true, isDynamic: true } })
+    }
   }
 }
 </script>
