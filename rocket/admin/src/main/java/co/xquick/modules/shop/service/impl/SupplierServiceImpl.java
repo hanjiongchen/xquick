@@ -21,10 +21,10 @@ public class SupplierServiceImpl extends CrudServiceImpl<SupplierDao, SupplierEn
 
     @Override
     public QueryWrapper<SupplierEntity> getWrapper(String method, Map<String, Object> params){
-        String id = (String)params.get("id");
+        String name = (String)params.get("name");
 
         QueryWrapper<SupplierEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(id), "id", id);
+        wrapper.like(StringUtils.isNotBlank(name), "name", name);
 
         return wrapper;
     }

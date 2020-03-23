@@ -1,24 +1,40 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-          <el-form-item label="编码" prop="code">
-          <el-input v-model="dataForm.code" placeholder="编码"></el-input>
-      </el-form-item>
           <el-form-item label="名称" prop="name">
           <el-input v-model="dataForm.name" placeholder="名称"></el-input>
       </el-form-item>
           <el-form-item label="备注" prop="remark">
           <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
-          <el-form-item label="图片" prop="imgs">
-          <el-input v-model="dataForm.imgs" placeholder="图片"></el-input>
+          <el-form-item prop="imgs" label="图片">
+          <el-upload
+                  :class="{hide:uploadFileList.length >= 1}"
+                  :before-upload="beforeImageUpload"
+                  :on-success="uploadSuccessHandle"
+                  :on-error="uploadErrorHandle"
+                  list-type="picture-card"
+                  :limit="1"
+                  :accept="acceptImageFormat"
+                  :file-list="uploadFileList"
+                  :on-preview="uploadPreviewHandle"
+                  :multiple="false"
+                  :on-exceed="uploadExceedHandle"
+                  :on-remove="uploadRemoveHandle"
+                  :action="uploadUrl">
+              <i class="el-icon-plus"/>
+          </el-upload>
       </el-form-item>
-          <el-form-item label="排序" prop="sort">
-          <el-input v-model="dataForm.sort" placeholder="排序"></el-input>
-      </el-form-item>
-          <el-form-item label="状态0 未审核 1 已审核" prop="status">
-          <el-input v-model="dataForm.status" placeholder="状态0 未审核 1 已审核"></el-input>
-      </el-form-item>
+        <el-form-item label="状态" prop="status">
+            <el-select v-model="dataForm.status" placeholder="请选择" class="w-percent-100">
+                <el-option
+                        v-for="item in statusOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+        </el-form-item>
           <el-form-item label="内容" prop="content">
           <el-input v-model="dataForm.content" placeholder="内容"></el-input>
       </el-form-item>
@@ -27,13 +43,18 @@
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
     </template>
+      <!-- 弹窗, 图片查看 -->
+      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
   </el-dialog>
 </template>
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
+import mixinBaseModule from '@/mixins/base-module'
+import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 export default {
-  mixins: [mixinFormModule],
+  mixins: [mixinBaseModule, mixinFormModule],
+  components: { ImageViewer },
   data () {
     return {
       // 表单模块参数
@@ -43,28 +64,24 @@ export default {
         dataFormInfoURL: `/shop/supplier/info?id=`
       },
       dataForm: {
-        id: '',
-        code: '',
         name: '',
         remark: '',
         imgs: '',
-        sort: '',
         status: '',
-        content: '',
-        createId: '',
-        createTime: '',
-        updateId: '',
-        updateTime: '',
-        deleted: ''
-      }
+        content: ''
+      },
+      statusOptions: [{
+        value: 0,
+        label: '未审核'
+      }, {
+        value: 1,
+        label: '已审核'
+      }]
     }
   },
   computed: {
     dataRule () {
       return {
-        code: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
@@ -74,28 +91,10 @@ export default {
         imgs: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        sort: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         status: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         content: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        deleted: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -107,8 +106,25 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.resetForm()
+        this.setUploadUrl()
+        this.uploadFileList = []
         this.initFormData()
       })
+    },
+    // form信息获取成功
+    onGetInfoSuccess (res) {
+      this.dataForm = {
+        ...this.dataForm,
+        ...res.data
+      }
+      // 赋值图片
+      this.setUploadFileList(this.dataForm.imgs)
+    },
+    // 表单提交之前的操作
+    beforeDateFormSubmit () {
+      this.dataForm.imgs = this.getUploadFileString()
+      this.dataFormSubmitParam = this.dataForm
+      return true
     }
   }
 }
