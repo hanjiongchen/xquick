@@ -42,16 +42,19 @@
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
     </template>
+      <!-- 弹窗, 图片查看 -->
+      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
   </el-dialog>
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
 import { removeEmptyChildren } from '@/utils'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
-  mixins: [mixinFormModule],
+  mixins: [mixinBaseModule, mixinFormModule],
   components: { ImageViewer },
   data () {
     return {
