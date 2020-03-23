@@ -45,7 +45,8 @@ public class MenuController {
     public Result<?> menuTreeAndUrlList() {
         UserDetail user = SecurityUser.getUser();
         List<MenuTreeDTO> menuTree = menuService.getUserMenuList(user, UcConst.MenuTypeEnum.MENU.value());
-        List<MenuDTO> routeList = ConvertUtils.sourceToTarget(menuService.query().isNotNull("url").ne("url", "").list(), MenuDTO.class);
+        // todo filter with user info
+        List<MenuDTO> routeList = ConvertUtils.sourceToTarget(menuService.query().ne("url", "").list(), MenuDTO.class);
 
         Kv data = Kv.init().set("menuTree", menuTree).set("urlList", routeList);
         return new Result<>().ok(data);

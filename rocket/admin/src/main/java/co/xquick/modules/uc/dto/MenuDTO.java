@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "菜单")
 public class MenuDTO extends BaseDTO {
-
     /**
      * 上级ID
      */
@@ -36,7 +35,10 @@ public class MenuDTO extends BaseDTO {
     @ApiModelProperty(value = "菜单URL")
     private String url;
 
-    @ApiModelProperty(value = "类型  0：菜单   1：按钮   2：页面")
+    @ApiModelProperty(value = "菜单新页面打开")
+    private Integer urlNewBlank;
+
+    @ApiModelProperty(value = "类型  0:菜单   1:按钮   2:页面")
     @Range(min = 0, max = 2, message = "{type.range}", groups = DefaultGroup.class)
     private Integer type;
 

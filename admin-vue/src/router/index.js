@@ -51,7 +51,9 @@ export const moduleRoutes = {
 }
 
 const router = new Router({
-  mode: 'hash',
+  // 使用has或者history
+  // history可以避免出现#
+  mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   routes: pageRoutes.concat(moduleRoutes)
 })
@@ -116,7 +118,7 @@ function fnAddDynamicMenuRoutes (urlList = []) {
         title: urlList[i].name
       }
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-eval
     let URL = (urlList[i].url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
     if (isURL(URL)) {
       route['path'] = route['name'] = `i-${urlList[i].id}`

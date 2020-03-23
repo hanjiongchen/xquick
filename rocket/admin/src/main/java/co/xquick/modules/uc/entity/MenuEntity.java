@@ -28,11 +28,15 @@ public class MenuEntity extends BaseEntity {
 	 */
 	private String url;
 	/**
+	 * 菜单新页面打开
+	 */
+	private Integer urlNewBlank;
+	/**
 	 * 授权
 	 */
 	private String permissions;
 	/**
-	 * 类型   0：菜单   1：按钮
+	 * 类型   0:菜单   1:按钮  2:页面
 	 */
 	private Integer type;
 	/**

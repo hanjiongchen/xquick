@@ -15,9 +15,21 @@
         <el-cascader v-model="menuSelected" :options="menuList" clearable :props="{ emitPath: false, checkStrictly: true, value: 'id', label: 'name', children: 'children'}"
                      @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
       </el-form-item>
-      <el-form-item v-if="dataForm.type === 0 || dataForm.type === 2" prop="url" :label="$t('menu.url')">
-        <el-input v-model="dataForm.url" :placeholder="$t('menu.url')"/>
-      </el-form-item>
+      <el-row v-if="dataForm.type === 0 || dataForm.type === 2">
+        <el-col :span="12">
+          <el-form-item prop="url" :label="$t('menu.url')">
+            <el-input v-model="dataForm.url" :placeholder="$t('menu.url')"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="urlNewBlank" label="打开方式" size="mini">
+            <el-radio-group v-model="dataForm.urlNewBlank">
+              <el-radio :label="0">本窗口打开</el-radio>
+              <el-radio :label="1">新窗口打开</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item prop="permissions" :label="$t('menu.permissions')">
         <el-input v-model="dataForm.permissions" :placeholder="$t('menu.permissionsTips')"/>
       </el-form-item>
@@ -75,6 +87,7 @@ export default {
       dataForm: {
         id: '',
         type: 0,
+        urlNewBlank: 0,
         name: '',
         pid: '0',
         parentName: '',
