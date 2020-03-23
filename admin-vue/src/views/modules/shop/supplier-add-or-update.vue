@@ -4,9 +4,9 @@
           <el-form-item label="名称" prop="name">
           <el-input v-model="dataForm.name" placeholder="名称"></el-input>
       </el-form-item>
-          <el-form-item label="备注" prop="remark">
-          <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
-      </el-form-item>
+        <el-form-item prop="sort" :label="$t('dept.sort')">
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
+        </el-form-item>
           <el-form-item prop="imgs" label="图片">
           <el-upload
                   :class="{hide:uploadFileList.length >= 1}"
@@ -34,6 +34,9 @@
                         :value="item.value">
                 </el-option>
             </el-select>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+            <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
         </el-form-item>
           <el-form-item label="内容" prop="content">
           <el-input v-model="dataForm.content" placeholder="内容"></el-input>
@@ -68,7 +71,8 @@ export default {
         remark: '',
         imgs: '',
         status: '',
-        content: ''
+        content: '',
+        sort: ''
       },
       statusOptions: [{
         value: 0,
