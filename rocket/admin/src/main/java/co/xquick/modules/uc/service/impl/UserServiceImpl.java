@@ -377,8 +377,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateDto(UserDTO dto) {
+    protected void beforeSaveOrUpdateDto(UserDTO dto, int type) {
         // 检查用户权限
         UserDetail user = SecurityUser.getUser();
         if (user.getType() > dto.getType()) {
@@ -397,23 +396,22 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         // 检查用户名和手机号是否已存在
         AssertUtils.isTrue(hasDuplicated(dto.getId(), "username", dto.getUsername()), ErrorCode.HAS_DUPLICATED_RECORD, "用户名");
         AssertUtils.isTrue(hasDuplicated(dto.getId(), "mobile", dto.getMobile()), ErrorCode.HAS_DUPLICATED_RECORD, "手机号");
-
-        boolean ret;
-        if (dto.hasId()) {
+        if (type == 1) {
             // 更新
             UserEntity existEntity = getById(dto.getId());
             AssertUtils.isNull(existEntity, ErrorCode.DB_RECORD_NOT_EXISTED);
             // 检查是否需要修改密码,对于null的不会更新字段
             dto.setPassword(StringUtils.isEmpty(dto.getPassword()) ? null : PasswordUtils.encode(dto.getPassword()));
-            ret = updateDto(dto);
         } else {
             // 新增
             dto.setPassword(PasswordUtils.encode(dto.getPassword()));
-            ret = saveDto(dto);
         }
+    }
+
+    @Override
+    protected void afterSaveOrUpdateDto(boolean ret, UserDTO dto,UserEntity existedEntity, int type) {
         // 保存角色用户关系
         roleUserService.saveOrUpdate(dto.getId(), dto.getRoleIdList());
-        return ret;
     }
 
     /**

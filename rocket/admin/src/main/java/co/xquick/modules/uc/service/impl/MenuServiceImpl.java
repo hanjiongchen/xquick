@@ -38,16 +38,14 @@ public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuTr
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateDto(MenuTreeDTO dto) {
-        if (dto.hasId()) {
+    protected void beforeSaveOrUpdateDto(MenuTreeDTO dto, int type) {
+        if (1 == type) {
             // 更新
             // 上级菜单不能为自身
             if (dto.getId().equals(dto.getPid())) {
                 throw new XquickException(ErrorCode.SUPERIOR_MENU_ERROR);
             }
         }
-        return super.saveOrUpdateDto(dto);
     }
 
     @Override

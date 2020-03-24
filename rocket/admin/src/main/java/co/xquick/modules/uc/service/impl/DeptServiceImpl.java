@@ -97,10 +97,9 @@ public class DeptServiceImpl extends CrudServiceImpl<DeptDao, DeptEntity, DeptDT
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateDto(DeptDTO dto) {
-        if (dto.getId() != null) {
-            // 更新
+    protected void beforeSaveOrUpdateDto(DeptDTO dto, int type) {
+        if (type == 1) {
+            // 更新下面所有的父类
             if (dto.getId().equals(dto.getPid())) {
                 throw new XquickException(ErrorCode.SUPERIOR_DEPT_ERROR);
             }
@@ -111,9 +110,7 @@ public class DeptServiceImpl extends CrudServiceImpl<DeptDao, DeptEntity, DeptDT
                 throw new XquickException(ErrorCode.SUPERIOR_DEPT_ERROR);
             }
         }
-
         dto.setPids(getPidList(dto.getPid()));
-        return super.saveOrUpdateDto(dto);
     }
 
     @Override

@@ -1,9 +1,7 @@
 package co.xquick.modules.msg.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
-import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
-import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.msg.dao.MailTplDao;
 import co.xquick.modules.msg.dto.MailTplDTO;
@@ -34,16 +32,13 @@ public class MailTplServiceImpl extends CrudServiceImpl<MailTplDao, MailTplEntit
     }
 
     @Override
-    public MailTplDTO getByCode(String code) {
-        return ConvertUtils.sourceToTarget(baseMapper.selectOne(new QueryWrapper<MailTplEntity>()
-                .eq("code", code)
-                .last("limit 1")), MailTplDTO.class);
+    public MailTplEntity getByCode(String code) {
+        return query().eq("code", code).last("limit 1").one();
     }
 
     @Override
     protected void beforeSaveOrUpdateDto(MailTplDTO dto, int type) {
-        boolean hasRecord = hasDuplicated(dto.getId(), "code", dto.getCode());
-        AssertUtils.isTrue(hasRecord, ErrorCode.HAS_DUPLICATED_RECORD, "编码");
+        AssertUtils.isTrue(hasDuplicated(dto.getId(), "code", dto.getCode()), ErrorCode.HAS_DUPLICATED_RECORD, "编码");
     }
 
 }

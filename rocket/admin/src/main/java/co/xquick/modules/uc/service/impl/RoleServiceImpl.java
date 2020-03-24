@@ -1,9 +1,9 @@
 package co.xquick.modules.uc.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
-import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.WrapperUtils;
+import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.RoleDao;
 import co.xquick.modules.uc.dto.RoleDTO;
@@ -56,19 +56,16 @@ public class RoleServiceImpl extends CrudServiceImpl<RoleDao, RoleEntity, RoleDT
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateDto(RoleDTO dto) {
-        // 校验是否有重复数据
-        if (hasDuplicated(dto.getId(), "code", dto.getCode())) {
-            throw new XquickException(ErrorCode.HAS_DUPLICATED_RECORD, "编码");
-        }
-        // 保存/更新角色
-        boolean ret = super.saveOrUpdateDto(dto);
+    protected void beforeSaveOrUpdateDto(RoleDTO dto, int type) {
+        AssertUtils.isTrue(hasDuplicated(dto.getId(), "code", dto.getCode()), ErrorCode.HAS_DUPLICATED_RECORD, "编码");
+    }
+
+    @Override
+    protected void afterSaveOrUpdateDto(boolean ret, RoleDTO dto, RoleEntity existedEntity, int type) {
         // 保存角色菜单关系
         roleMenuService.saveOrUpdate(dto.getId(), dto.getCode(), dto.getMenuIdList());
         // 保存角色数据权限关系
         roleDataScopeService.saveOrUpdate(dto.getId(), dto.getDeptIdList());
-        return ret;
     }
 
     @SuppressWarnings("unchecked")

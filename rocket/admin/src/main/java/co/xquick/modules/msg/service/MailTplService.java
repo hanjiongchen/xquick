@@ -16,6 +16,6 @@ public interface MailTplService extends CrudService<MailTplEntity, MailTplDTO> {
      * @param code 模板编码
      * @return 模板
      */
-    MailTplDTO getByCode(String code);
+    MailTplEntity getByCode(String code);
 
 }

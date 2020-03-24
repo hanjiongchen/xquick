@@ -5,10 +5,11 @@ import co.xquick.booster.constant.Constant;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
+import co.xquick.booster.validator.AssertUtils;
 import co.xquick.common.util.TemplateUtils;
 import co.xquick.modules.msg.dto.MailSendRequest;
-import co.xquick.modules.msg.dto.MailTplDTO;
 import co.xquick.modules.msg.entity.MailLogEntity;
+import co.xquick.modules.msg.entity.MailTplEntity;
 import co.xquick.modules.msg.service.MailLogService;
 import co.xquick.modules.msg.service.MailTplService;
 import freemarker.template.Template;
@@ -54,7 +55,7 @@ public class EmailUtils {
      * @param mailTpl 邮件模板
      * @return 邮件发送器
      */
-    private JavaMailSenderImpl createMailSender(MailTplDTO mailTpl) {
+    private JavaMailSenderImpl createMailSender(MailTplEntity mailTpl) {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setHost(mailTpl.getSenderHost());
         sender.setPort(mailTpl.getSenderHostPort());
@@ -75,10 +76,9 @@ public class EmailUtils {
      * @return true：成功   false：失败
      */
     public boolean sendMail(MailSendRequest mailSendRequest) {
-        MailTplDTO mailTpl = mailTplService.getByCode(mailSendRequest.getTplCode());
-        if (null == mailTpl) {
-            throw new XquickException(ErrorCode.MAIL_CONFIG_ERROR);
-        }
+        MailTplEntity mailTpl = mailTplService.getByCode(mailSendRequest.getTplCode());
+        AssertUtils.isEmpty(mailTpl, ErrorCode.MAIL_CONFIG_ERROR);
+
         String title = TemplateUtils.getTemplateContent("mailTitle", mailTpl.getTitle(), JacksonUtils.jsonToMap(mailSendRequest.getTitleParam()));
         String content = TemplateUtils.getTemplateContent("mailContent", mailTpl.getContent(), JacksonUtils.jsonToMap(mailSendRequest.getContentParam()));
 
@@ -127,26 +127,6 @@ public class EmailUtils {
         mailLogService.save(log);
 
         return status == Constant.SUCCESS;
-    }
-
-    /**
-     * 获取Freemarker渲染后的内容
-     *
-     * @param content 模板内容
-     * @param params  参数
-     */
-    private String getFreemarkerContent(String content, Map<String, Object> params) {
-        if (StringUtils.isEmpty(content) || MapUtil.isEmpty(params)) {
-            return content;
-        }
-        // 模板
-        try {
-            Template template = new Template("mail", new StringReader(content), null, "utf-8");
-            return FreeMarkerTemplateUtils.processTemplateIntoString(template, params);
-        } catch (IOException | TemplateException e) {
-            logger.error("渲染内容失败", e);
-            throw new XquickException("渲染内容失败");
-        }
     }
 
 }
