@@ -95,6 +95,7 @@ public interface BaseService<T> extends IService<T> {
 
     /**
      * 是否存在主键id对应的记录
+     * @param id 查询主键
      */
     boolean hasIdRecord(Serializable id);
 

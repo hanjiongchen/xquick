@@ -70,7 +70,7 @@ public class NoticeLogController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        noticeLogService.saveOrUpdateDto(dto);
+        noticeLogService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -83,7 +83,7 @@ public class NoticeLogController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        noticeLogService.saveOrUpdateDto(dto);
+        noticeLogService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

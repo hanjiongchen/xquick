@@ -96,7 +96,7 @@ public class PushLogController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        pushLogService.saveOrUpdateDto(dto);
+        pushLogService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -109,7 +109,7 @@ public class PushLogController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        pushLogService.saveOrUpdateDto(dto);
+        pushLogService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

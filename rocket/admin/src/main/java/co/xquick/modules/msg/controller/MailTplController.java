@@ -65,7 +65,7 @@ public class MailTplController {
         //校验类型
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        mailTplService.saveOrUpdateDto(dto);
+        mailTplService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -78,7 +78,7 @@ public class MailTplController {
         //校验类型
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        mailTplService.saveOrUpdateDto(dto);
+        mailTplService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

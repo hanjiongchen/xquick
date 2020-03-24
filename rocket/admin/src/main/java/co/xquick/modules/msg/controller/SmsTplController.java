@@ -70,9 +70,9 @@ public class SmsTplController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        smsTplService.saveOrUpdateDto(dto);
+        smsTplService.saveDto(dto);
 
-        return new Result().ok(dto);
+        return new Result<>().ok(dto);
     }
 
     @PutMapping("update")
@@ -83,7 +83,7 @@ public class SmsTplController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        smsTplService.saveOrUpdateDto(dto);
+        smsTplService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

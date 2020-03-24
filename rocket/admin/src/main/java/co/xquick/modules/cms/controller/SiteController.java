@@ -29,6 +29,7 @@ import java.util.Map;
 @RequestMapping("cms/site")
 @Api(tags="站点")
 public class SiteController {
+
     @Autowired
     private SiteService siteService;
 
@@ -71,7 +72,7 @@ public class SiteController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        siteService.saveOrUpdateDto(dto);
+        siteService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -84,7 +85,7 @@ public class SiteController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        siteService.saveOrUpdateDto(dto);
+        siteService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

@@ -125,7 +125,7 @@ public class UserController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        userService.saveOrUpdateDto(dto);
+        userService.saveDto(dto);
 
         return new Result<>();
     }
@@ -138,7 +138,7 @@ public class UserController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        userService.saveOrUpdateDto(dto);
+        userService.updateDto(dto);
 
         return new Result<>();
     }

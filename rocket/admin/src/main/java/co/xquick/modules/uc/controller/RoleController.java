@@ -80,7 +80,7 @@ public class RoleController {
 		//效验数据
 		ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-		roleService.saveOrUpdateDto(dto);
+		roleService.saveDto(dto);
 
 		return new Result<>().ok(dto);
 	}
@@ -93,7 +93,7 @@ public class RoleController {
 		// 效验数据
 		ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-		roleService.saveOrUpdateDto(dto);
+		roleService.updateDto(dto);
 
 		return new Result<>().ok(dto);
 	}

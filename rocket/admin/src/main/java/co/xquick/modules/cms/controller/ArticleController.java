@@ -69,7 +69,7 @@ public class ArticleController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        articleService.saveOrUpdateDto(dto);
+        articleService.saveDto(dto);
 
         return new Result<>();
     }
@@ -82,7 +82,7 @@ public class ArticleController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        articleService.saveOrUpdateDto(dto);
+        articleService.updateDto(dto);
 
         return new Result<>();
     }

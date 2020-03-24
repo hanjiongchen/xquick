@@ -70,7 +70,7 @@ public class NoticeTplController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        noticeTplService.saveOrUpdateDto(dto);
+        noticeTplService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -83,7 +83,7 @@ public class NoticeTplController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        noticeTplService.saveOrUpdateDto(dto);
+        noticeTplService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

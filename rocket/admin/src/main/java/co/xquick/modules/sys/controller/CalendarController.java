@@ -158,7 +158,7 @@ public class CalendarController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        calendarService.saveOrUpdateDto(dto);
+        calendarService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -171,7 +171,7 @@ public class CalendarController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        calendarService.saveOrUpdateDto(dto);
+        calendarService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

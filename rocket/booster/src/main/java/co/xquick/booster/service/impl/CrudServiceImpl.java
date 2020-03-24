@@ -2,6 +2,7 @@ package co.xquick.booster.service.impl;
 
 import co.xquick.booster.dao.BaseDao;
 import co.xquick.booster.exception.ErrorCode;
+import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.service.CrudService;
 import co.xquick.booster.util.ConvertUtils;
@@ -78,16 +79,52 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
         return ConvertUtils.sourceToTarget(entity, currentDtoClass());
     }
 
+    /**
+     * 新增和修改之间的操作
+     * @param type 0 保存 1 修改
+     */
+    protected void beforeSaveOrUpdate(D dto, int type) {
+
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveDto(D dto) {
         T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
+        // 检查id
+        Object idVal = getIdVal(entity);
+        if (ObjectUtils.isNotEmpty(idVal)) {
+            throw new XquickException(ErrorCode.ID_NOT_NULL_IN_SAVE);
+        }
+        // 自定义检查
+        beforeSaveOrUpdate(dto, 0);
         boolean ret = save(entity);
         // copy主键值到dto
         BeanUtils.copyProperties(entity, dto);
         return ret;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateDto(D dto) {
+        T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
+        // 检查id
+        Object idVal = getIdVal(entity);
+        if (ObjectUtils.isEmpty(idVal)) {
+            throw new XquickException(ErrorCode.ID_NULL_IN_UPDATE);
+        }
+        // 自定义检查
+        beforeSaveOrUpdate(dto, 1);
+        // 更新之前,先检查一下对应记录存不存在
+        // 要直接使用hasIdVal,可能就会出现问题
+        // 传了一个fake id,就变成保存了
+        boolean hasIdRecord = hasIdRecord((Serializable) idVal);
+        AssertUtils.isFalse(hasIdRecord, ErrorCode.DB_RECORD_NOT_EXISTED);
+
+        return updateById(entity);
+    }
+
+    //[+] 尽量避免使用批量和saveOrUpdate方法,按照实际需要调用
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveDtos(List<D> dtos) {
@@ -99,36 +136,23 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateDto(D dto) {
-        T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
-        return updateById(entity);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean updateDtos(List<D> dtos) {
         List<T> entityList = ConvertUtils.sourceToTarget(dtos, currentModelClass());
         return updateBatchById(entityList);
     }
 
+    /**
+     * 尽量避免直接使用saveOrUpdate,按照实际需要调用save或者update
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateDto(D dto) {
         T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
         Object idVal = getIdVal(entity);
         if (ObjectUtils.isNotEmpty(idVal)) {
-            // 更新之前,先检查一下对应记录存不存在
-            // 要直接使用hasIdVal,可能就会出现问题
-            // 传了一个fake id,就变成保存了
-            boolean hasIdRecord = hasIdRecord((Serializable) idVal);
-            AssertUtils.isFalse(hasIdRecord, ErrorCode.DB_RECORD_NOT_EXISTED);
-
-            return updateById(entity);
+            return updateDto(dto);
         } else {
-            boolean ret = save(entity);
-            // copy主键值到dto
-            BeanUtils.copyProperties(entity, dto);
-            return ret;
+            return saveDto(dto);
         }
     }
 

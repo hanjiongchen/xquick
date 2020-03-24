@@ -64,7 +64,7 @@ public class DictController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
-        dictService.saveOrUpdateDto(dto);
+        dictService.saveDto(dto);
 
         return new Result<>();
     }
@@ -77,7 +77,7 @@ public class DictController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        dictService.saveOrUpdateDto(dto);
+        dictService.updateDto(dto);
 
         return new Result<>();
     }

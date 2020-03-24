@@ -77,7 +77,7 @@ public class RegionController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        regionService.saveOrUpdateDto(dto);
+        regionService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -90,7 +90,7 @@ public class RegionController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        regionService.saveOrUpdateDto(dto);
+        regionService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

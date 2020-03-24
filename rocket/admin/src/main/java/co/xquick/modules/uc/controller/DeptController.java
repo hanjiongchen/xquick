@@ -78,7 +78,7 @@ public class DeptController {
         //效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        deptService.saveOrUpdateDto(dto);
+        deptService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -91,7 +91,7 @@ public class DeptController {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        deptService.saveOrUpdateDto(dto);
+        deptService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }

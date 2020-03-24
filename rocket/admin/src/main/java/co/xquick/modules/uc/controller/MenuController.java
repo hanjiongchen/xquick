@@ -123,7 +123,7 @@ public class MenuController {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
-        menuService.saveOrUpdateDto(dto);
+        menuService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -136,7 +136,7 @@ public class MenuController {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
-        menuService.saveOrUpdateDto(dto);
+        menuService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }
