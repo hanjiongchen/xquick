@@ -8,10 +8,12 @@ import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.cms.dao.ArticleDao;
 import co.xquick.modules.cms.dto.ArticleDTO;
 import co.xquick.modules.cms.entity.ArticleEntity;
+import co.xquick.modules.cms.service.ArticleCategoryService;
 import co.xquick.modules.cms.service.ArticleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,9 @@ import java.util.Map;
  */
 @Service
 public class ArticleServiceImpl extends CrudServiceImpl<ArticleDao, ArticleEntity, ArticleDTO> implements ArticleService {
+
+    @Autowired
+    ArticleCategoryService articleCategoryService;
 
     @Override
     public QueryWrapper<ArticleEntity> getWrapper(String method, Map<String, Object> params) {
@@ -41,6 +46,17 @@ public class ArticleServiceImpl extends CrudServiceImpl<ArticleDao, ArticleEntit
                 .eq("cms_article.deleted", 0)
                 .orderByAsc("sort");
     }
+
+    /*@Override
+    public PageData<ArticleDTO> pageDto(Map<String, Object> params) {
+        PageData<ArticleDTO> page = super.pageDto(params);
+        page.getList().forEach(dto -> {
+            String categoryName = articleCategoryService.query().select("name").eq("id", dto.getArticleCategoryId()).last("limit 1").one().getName();
+            dto.setArticleCategoryName(categoryName);
+        });
+
+        return page;
+    }*/
 
     @Override
     public List<ArticleDTO> getListByCategoryId(Long categoryId) {

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -51,7 +50,7 @@ public class ArticleEntity extends BaseEntity {
     /**
      * 文章来源
      */
-    private String source;
+    private String sourceName;
     /**
      * 文章来源连接
      */
@@ -69,37 +68,17 @@ public class ArticleEntity extends BaseEntity {
      */
     private String content;
     /**
-     * 纬度
-     */
-    private Double lat;
-    /**
-     * 经度
-     */
-    private Double lng;
-    /**
-     * 详细地址
-     */
-    private String address;
-    /**
-     * 所属区域编码
-     */
-    private String regionCd;
-    /**
-     * 所属区域
-     */
-    private String regionNm;
-    /**
      * 发布时间
      */
-    private Date pubDate;
+    private Date pubTime;
     /**
      * 有效期开始
      */
-    private Date validFromDate;
+    private Date validStartTime;
     /**
      * 有效期结束
      */
-    private Date validToDate;
+    private Date validEndTime;
     /**
      * 文章类别id
      */
@@ -107,13 +86,13 @@ public class ArticleEntity extends BaseEntity {
     /**
      * 点击次数
      */
-    private Integer readNum;
+    private Integer hits;
     /**
      * 是否置顶
      */
     private Integer top;
 
-    private BigInteger siteId;
+    private Long siteId;
 
     private String siteCode;
     /**

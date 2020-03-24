@@ -50,34 +50,19 @@ public class ArticleDTO extends BaseDTO {
 	private String content;
 
 	@ApiModelProperty(value = "文章来源")
-	private String source;
+	private String sourceName;
 
 	@ApiModelProperty(value = "文章来源链接")
 	private String sourceLink;
 
-	@ApiModelProperty(value = "纬度")
-	private Double lat;
-
-	@ApiModelProperty(value = "经度")
-	private Double lng;
-
-	@ApiModelProperty(value = "详细地址")
-	private String address;
-
-	@ApiModelProperty(value = "所属区域编码")
-	private String regionCd;
-
-	@ApiModelProperty(value = "所属区域")
-	private String regionNm;
-
 	@ApiModelProperty(value = "发布时间")
-	private Date pubDate;
+	private Date pubTime;
 
 	@ApiModelProperty(value = "有效期开始")
-	private Date validFromDate;
+	private Date validStartTime;
 
 	@ApiModelProperty(value = "有效期结束")
-	private Date validToDate;
+	private Date validEndTime;
 
 	@ApiModelProperty(value = "文章类别id")
 	private Long articleCategoryId;
