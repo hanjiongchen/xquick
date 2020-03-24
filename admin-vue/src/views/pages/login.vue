@@ -77,8 +77,12 @@
             </template>
           </el-form>
           <div>
-            <el-link href="#/register" :underline="false" type="info" style="float: left;">注册</el-link>
-            <el-link href="#/forgetPassword" :underline="false" type="info" style="float: right;">忘记密码</el-link>
+            <router-link :to="{ name: 'register' }">
+              <el-link :underline="false" type="info" style="float: left;">注册</el-link>
+            </router-link>
+            <router-link :to="{ name: 'forgetPassword' }">
+              <el-link :underline="false" type="info" style="float: right;">忘记密码</el-link>
+            </router-link>
           </div>
         </div>
         <div class="login-footer">

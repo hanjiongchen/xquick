@@ -51,7 +51,7 @@ export const moduleRoutes = {
 }
 
 const router = new Router({
-  // 使用has或者history
+  // 使用hash或者history
   // history可以避免出现#
   mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
@@ -154,7 +154,10 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     }
     routes.push(route)
   }
+  console.log(router.options.routes)
   // 添加路由
+  // 自定义addRoutes方法,解决Duplicate named routes definition的问题
+  // router.matcher = new Router({ mode: 'history' }).matcher
   router.addRoutes([
     {
       ...moduleRoutes,
@@ -163,6 +166,7 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     },
     { path: '*', redirect: { name: '404' } }
   ])
+  console.log(router.options.routes)
   window.SITE_CONFIG['dynamicMenuRoutes'] = routes
   window.SITE_CONFIG['dynamicMenuRoutesHasAdded'] = true
 }

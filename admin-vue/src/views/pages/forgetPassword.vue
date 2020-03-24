@@ -33,8 +33,12 @@
               </el-form-item>
           </el-form>
           <div>
-            <el-link href="#/register" :underline="false" type="info" style="float: left;">注册</el-link>
-            <el-link href="#/login" :underline="false" type="info" style="float: right;">已有帐号登录</el-link>
+              <router-link :to="{ name: 'register' }">
+                  <el-link :underline="false" type="info" style="float: left;">注册</el-link>
+              </router-link>
+              <router-link :to="{ name: 'login' }">
+                  <el-link :underline="false" type="info" style="float: right;">已有帐号登录</el-link>
+              </router-link>
           </div>
         </div>
       </main>

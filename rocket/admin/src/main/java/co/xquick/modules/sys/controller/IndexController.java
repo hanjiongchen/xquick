@@ -7,7 +7,6 @@ import com.sun.management.OperatingSystemMXBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.management.ManagementFactory;
@@ -20,13 +19,18 @@ import java.math.RoundingMode;
  * @author Charles zhangchaoxu@gmail.com
  */
 @RestController
-@RequestMapping("/sys")
-@Api(tags = "系统接口")
-public class SystemController {
+@Api(tags = "首页接口")
+public class IndexController {
 
-    @GetMapping("info")
+    @GetMapping("/")
     @ApiOperation("系统信息")
-    public Result<?> info() {
+    public Result<?> index() {
+        return new Result<>().ok("api success");
+    }
+
+    @GetMapping("sys/info")
+    @ApiOperation("系统信息")
+    public Result<?> sysInfo() {
         OperatingSystemMXBean osmx = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
         Kv data = Kv.init();
