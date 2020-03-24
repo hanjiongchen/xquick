@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import CryptoJS from 'crypto-js'
 import store from '@/store'
+import router from '@/router'
 
 /**
  * AES加密
@@ -39,6 +40,23 @@ export function clearLoginInfo () {
   store.commit('resetStore')
   Cookies.remove('token')
   window.SITE_CONFIG['dynamicMenuRoutesHasAdded'] = false
+}
+
+/**
+ * 跳转到登录页面
+ */
+export function redirectLogin () {
+  // 清除登录信息
+  clearLoginInfo()
+  Promise.all([
+    // 跳转到登录页面
+    router.replace({ name: 'login' })
+  ]).then(() => {
+    // 为避免出现Duplicate named routes definition
+    // 刷新一下页面,达到清空路由的目地
+    // 注意需要在replace login完成后执行,要不然会出现刷新原页面的情况
+    location.reload()
+  })
 }
 
 /**

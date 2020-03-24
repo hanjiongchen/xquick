@@ -28,7 +28,7 @@
 
 <script>
 import debounce from 'lodash/debounce'
-import { clearLoginInfo } from '@/utils'
+import { redirectLogin } from '@/utils'
 
 export default {
   data () {
@@ -86,8 +86,7 @@ export default {
             duration: 500,
             onClose: () => {
               this.visible = false
-              clearLoginInfo()
-              this.$router.replace({ name: 'login' })
+              redirectLogin()
             }
           })
         }).catch(() => {})

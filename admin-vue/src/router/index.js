@@ -154,10 +154,7 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     }
     routes.push(route)
   }
-  console.log(router.options.routes)
   // 添加路由
-  // 自定义addRoutes方法,解决Duplicate named routes definition的问题
-  // router.matcher = new Router({ mode: 'history' }).matcher
   router.addRoutes([
     {
       ...moduleRoutes,
@@ -166,7 +163,6 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     },
     { path: '*', redirect: { name: '404' } }
   ])
-  console.log(router.options.routes)
   window.SITE_CONFIG['dynamicMenuRoutes'] = routes
   window.SITE_CONFIG['dynamicMenuRoutesHasAdded'] = true
 }

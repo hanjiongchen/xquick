@@ -60,7 +60,8 @@
 import { messages } from '@/i18n'
 import screenfull from 'screenfull'
 import UpdatePassword from './main-navbar-update-password'
-import { clearLoginInfo } from '@/utils'
+import { redirectLogin } from '@/utils'
+
 export default {
   components: { UpdatePassword },
   inject: ['refresh'],
@@ -100,8 +101,7 @@ export default {
           if (res.code !== 0) {
             return this.$message.error(res.toast)
           }
-          clearLoginInfo()
-          this.$router.push({ name: 'login' })
+          redirectLogin()
         }).catch(() => {})
       }).catch(() => {})
     }

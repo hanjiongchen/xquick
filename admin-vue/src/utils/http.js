@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import router from '@/router'
 import qs from 'qs'
-import { clearLoginInfo } from '@/utils'
+import { redirectLogin } from '@/utils'
 import isPlainObject from 'lodash/isPlainObject'
 
 const http = axios.create({
@@ -53,8 +52,7 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(response => {
   if (response.data.code === 401 || response.data.code === 10001) {
     // 清空登录信息，跳转登录页面
-    clearLoginInfo()
-    router.replace({ name: 'login' })
+    redirectLogin()
     return Promise.reject(response.data.msg)
   }
   // 设置显示用消息
