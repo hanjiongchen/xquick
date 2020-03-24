@@ -10,7 +10,6 @@ import co.xquick.modules.sys.service.DictService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -37,16 +36,13 @@ public class DictServiceImpl extends CrudServiceImpl<DictDao, DictEntity, DictDT
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateDto(DictDTO dto) {
-        if (dto.hasId()) {
+    protected void beforeSaveOrUpdateDto(DictDTO dto, int type) {
+        if (type == 1) {
             // 更新下面所有的父类
             if (dto.getPid() == DICT_ROOT.longValue()){
                 baseMapper.update(new DictEntity(), new UpdateWrapper<DictEntity>().eq("pid", dto.getId()).set("type", dto.getType()));
             }
         }
-
-        return super.saveOrUpdateDto(dto);
     }
 
 }

@@ -37,10 +37,8 @@ public class SmsTplServiceImpl extends CrudServiceImpl<SmsTplDao, SmsTplEntity, 
     }
 
     @Override
-    public boolean saveOrUpdateDto(SmsTplDTO dto) {
-        // 检查code是否存在
+    protected void beforeSaveOrUpdateDto(SmsTplDTO dto, int type) {
         AssertUtils.isTrue(hasDuplicated(dto.getId(), "code", dto.getCode()), ErrorCode.HAS_DUPLICATED_RECORD, "编码");
-        return super.saveOrUpdateDto(dto);
     }
 
 }

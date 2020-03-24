@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -60,15 +59,11 @@ public class ArticleServiceImpl extends CrudServiceImpl<ArticleDao, ArticleEntit
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveOrUpdateDto(ArticleDTO dto) {
-        // 检查code是否存在
+    protected void beforeSaveOrUpdateDto(ArticleDTO dto, int type) {
         boolean hasRecord = hasRecord(new QueryWrapper<ArticleEntity>().eq(StringUtils.isNotBlank(dto.getCode()), "code", dto.getCode())
                 .eq("site_id", dto.getSiteId())
                 .ne(dto.getId() != null, "id", dto.getId()));
         AssertUtils.isTrue(hasRecord, ErrorCode.HAS_DUPLICATED_RECORD, "编码");
-
-        return super.saveOrUpdateDto(dto);
     }
 
     @Override
