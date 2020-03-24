@@ -1,10 +1,7 @@
 package co.xquick.modules.cms.service.impl;
 
-import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.service.impl.CrudServiceImpl;
-import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.WrapperUtils;
-import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.cms.dao.SiteDao;
 import co.xquick.modules.cms.dto.SiteDTO;
 import co.xquick.modules.cms.entity.SiteEntity;
@@ -12,11 +9,8 @@ import co.xquick.modules.cms.service.ArticleCategoryService;
 import co.xquick.modules.cms.service.ArticleService;
 import co.xquick.modules.cms.service.SiteService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -41,7 +35,7 @@ public class SiteServiceImpl extends CrudServiceImpl<SiteDao, SiteEntity, SiteDT
                 .getQueryWrapper();
     }
 
-    @Override
+    /*@Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateDto(SiteDTO dto) {
         // 检查code是否存在
@@ -66,6 +60,6 @@ public class SiteServiceImpl extends CrudServiceImpl<SiteDao, SiteEntity, SiteDT
             BeanUtils.copyProperties(entity, dto);
             return ret;
         }
-    }
+    }*/
 
 }

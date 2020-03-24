@@ -72,7 +72,6 @@ public class ShiroConfig {
         filterMap.put("/auth/**", "anon");
         // 开放微信接口
         filterMap.put("/wx/**", "anon");
-        filterMap.put("/cms/site/update", "anon");
         // 开放app接口
         // filterMap.put("/app/**", "anon");
 

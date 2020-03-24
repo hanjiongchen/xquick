@@ -78,11 +78,24 @@ public interface BaseService<T> extends IService<T> {
     boolean hasRecord(Wrapper<T> wrapper);
 
     /**
-     * 是否存在id主键
+     * 是否存在id主键,并且存在主键对应记录
      *
      * @param entity 查询条件
      * @return 是否有id主键值
      */
     boolean hasIdVal(T entity);
+
+    /**
+     * 获得id主键
+     *
+     * @param entity 查询条件
+     * @return id值
+     */
+    Object getIdVal(T entity);
+
+    /**
+     * 是否存在主键id对应的记录
+     */
+    boolean hasIdRecord(Serializable id);
 
 }

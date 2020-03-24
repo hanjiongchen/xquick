@@ -1,13 +1,16 @@
 package co.xquick.booster.service.impl;
 
 import co.xquick.booster.dao.BaseDao;
+import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.service.CrudService;
 import co.xquick.booster.util.ConvertUtils;
+import co.xquick.booster.validator.AssertUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,7 +115,14 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateDto(D dto) {
         T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
-        if (hasIdVal(entity)) {
+        Object idVal = getIdVal(entity);
+        if (ObjectUtils.isNotEmpty(idVal)) {
+            // 更新之前,先检查一下对应记录存不存在
+            // 要直接使用hasIdVal,可能就会出现问题
+            // 传了一个fake id,就变成保存了
+            boolean hasIdRecord = hasIdRecord((Serializable) idVal);
+            AssertUtils.isFalse(hasIdRecord, ErrorCode.DB_RECORD_NOT_EXISTED);
+
             return updateById(entity);
         } else {
             boolean ret = save(entity);

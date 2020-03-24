@@ -25,7 +25,7 @@ public interface BaseDao<T> extends com.baomidou.mybatisplus.core.mapper.BaseMap
      * @param id 主键
      * @return result
      */
-    int deleteByIdWithFill(@Param(Constants.ENTITY) T entity, Serializable id);
+    Integer deleteByIdWithFill(@Param(Constants.ENTITY) T entity, Serializable id);
 
     /**
      * 删除（根据ID 批量删除）
@@ -35,7 +35,7 @@ public interface BaseDao<T> extends com.baomidou.mybatisplus.core.mapper.BaseMap
      * @param idList 主键ID列表(不能为 null 以及 empty)
      * * @return result
      */
-    int deleteBatchByIdsWithFill(@Param(Constants.ENTITY) T entity, @Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+    Integer deleteBatchByIdsWithFill(@Param(Constants.ENTITY) T entity, @Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
 
     /**
      * 通过wrapper软删除
@@ -45,5 +45,12 @@ public interface BaseDao<T> extends com.baomidou.mybatisplus.core.mapper.BaseMap
      * @param wrapper wrapper
      * @return result
      */
-    int deleteByWrapperWithFill(@Param(Constants.ENTITY) T entity, @Param(Constants.WRAPPER) Wrapper<T> wrapper);
+    Integer deleteByWrapperWithFill(@Param(Constants.ENTITY) T entity, @Param(Constants.WRAPPER) Wrapper<T> wrapper);
+
+    /**
+     * 根据 ID 查询条数
+     *
+     * @param id 主键ID
+     */
+    Integer selectCountById(Serializable id);
 }

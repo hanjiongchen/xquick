@@ -74,6 +74,7 @@
             </template>
             <!-- 微信登录 -->
             <template v-else-if="dataForm.type === 40">
+              未开放
             </template>
           </el-form>
           <div>

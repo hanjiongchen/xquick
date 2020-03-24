@@ -89,6 +89,35 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> implements BaseService<T> 
         return SqlHelper.retBool(count(wrapper));
     }
 
+    @Override
+    public boolean hasIdRecord(Serializable id) {
+        return SqlHelper.retBool(getBaseMapper().selectCountById(id));
+    }
+
+    /**
+     * id是否只值,并且存在对应记录
+     * @param entity 查询实体
+     * @return 结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Object getIdVal(T entity) {
+        if (null != entity) {
+            Class<?> cls = entity.getClass();
+            TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
+            Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
+            String keyProperty = tableInfo.getKeyProperty();
+            Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
+            return ReflectionKit.getMethodValue(cls, entity, tableInfo.getKeyProperty());
+        }
+        return null;
+    }
+
+    /**
+     * id是否只值,并且存在对应记录
+     * @param entity 查询实体
+     * @return 结果
+     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean hasIdVal(T entity) {
