@@ -81,9 +81,21 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
 
     /**
      * 新增和修改之间的操作
+     * @param dto 保存dto
      * @param type 0 保存 1 修改
      */
-    protected void beforeSaveOrUpdate(D dto, int type) {
+    protected void beforeSaveOrUpdateDto(D dto, int type) {
+
+    }
+
+    /**
+     * 新增和修改之间的操作
+     * @param ret 结果
+     * @param dto 保存dto
+     * @param existedEntity 数据库中原记录
+     * @param type 0 保存 1 修改
+     */
+    protected void afterSaveOrUpdateDto(boolean ret, D dto, T existedEntity, int type) {
 
     }
 
@@ -96,11 +108,13 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
         if (ObjectUtils.isNotEmpty(idVal)) {
             throw new XquickException(ErrorCode.ID_NOT_NULL_IN_SAVE);
         }
-        // 自定义检查
-        beforeSaveOrUpdate(dto, 0);
+        // 自定义操作前检查
+        beforeSaveOrUpdateDto(dto, 0);
         boolean ret = save(entity);
         // copy主键值到dto
         BeanUtils.copyProperties(entity, dto);
+        // 自定义操作后检查
+        this.afterSaveOrUpdateDto(ret, dto, entity, 0);
         return ret;
     }
 
@@ -113,18 +127,23 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
         if (ObjectUtils.isEmpty(idVal)) {
             throw new XquickException(ErrorCode.ID_NULL_IN_UPDATE);
         }
-        // 自定义检查
-        beforeSaveOrUpdate(dto, 1);
+        // 自定义操作前检查
+        this.beforeSaveOrUpdateDto(dto, 1);
         // 更新之前,先检查一下对应记录存不存在
         // 要直接使用hasIdVal,可能就会出现问题
         // 传了一个fake id,就变成保存了
-        boolean hasIdRecord = hasIdRecord((Serializable) idVal);
-        AssertUtils.isFalse(hasIdRecord, ErrorCode.DB_RECORD_NOT_EXISTED);
-
-        return updateById(entity);
+        T existedEntity = getById((Serializable) idVal);
+        AssertUtils.isEmpty(existedEntity, ErrorCode.DB_RECORD_NOT_EXISTED);
+        // 更新数据
+        boolean ret = updateById(entity);
+        // 自定义操作后检查
+        this.afterSaveOrUpdateDto(ret, dto, existedEntity, 1);
+        return ret;
     }
 
-    //[+] 尽量避免使用批量和saveOrUpdate方法,按照实际需要调用
+    /**
+     * 尽量避免使用批量和saveOrUpdate方法,按照实际需要调用
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveDtos(List<D> dtos) {
