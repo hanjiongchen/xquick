@@ -22,7 +22,7 @@
             <el-image v-if="scope.row.logo" lazy class="table-img" :src="scope.row.logo.split(',')[0]" @click="imageViewerHandle(scope.row.logo.split(','))" fit="cover"/>
           </template>
         </el-table-column>
-        <el-table-column prop="tel" label="联系电话" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" header-align="center" align="center" width="120"></el-table-column>
         <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"></el-table-column>
         <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
