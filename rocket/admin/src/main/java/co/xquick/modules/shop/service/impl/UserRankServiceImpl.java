@@ -2,10 +2,10 @@ package co.xquick.modules.shop.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import co.xquick.booster.service.impl.CrudServiceImpl;
-import co.xquick.modules.shop.dao.UserrankDao;
+import co.xquick.modules.shop.dao.UserRankDao;
 import co.xquick.modules.shop.dto.UserrankDTO;
 import co.xquick.modules.shop.entity.UserrankEntity;
-import co.xquick.modules.shop.service.UserrankService;
+import co.xquick.modules.shop.service.UserRankService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Service
-public class UserrankServiceImpl extends CrudServiceImpl<UserrankDao, UserrankEntity, UserrankDTO> implements UserrankService {
+public class UserRankServiceImpl extends CrudServiceImpl<UserRankDao, UserrankEntity, UserrankDTO> implements UserRankService {
 
     @Override
     public QueryWrapper<UserrankEntity> getWrapper(String method, Map<String, Object> params){

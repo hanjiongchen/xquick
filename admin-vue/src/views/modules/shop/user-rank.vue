@@ -1,37 +1,29 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
-    <div class="mod-shop__userrank}">
+    <div class="mod-shop__user-rank}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-        <el-form-item>
-          <el-input v-model="dataForm.id" placeholder="id" clearable></el-input>
+        <el-form-item class="small-item">
+          <el-input v-model="dataForm.name" placeholder="名称" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:userrank:export')">
-          <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-        </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:userrank:save')">
+        <el-form-item v-if="$hasPermission('shop:userRank:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-        </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:userrank:delete')">
-          <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="id" label="id" header-align="center" align="center"></el-table-column>
         <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
         <el-table-column prop="amount" label="消费金额" header-align="center" align="center"></el-table-column>
         <el-table-column prop="defaultItem" label="默认项" header-align="center" align="center"></el-table-column>
         <el-table-column prop="special" label="是否特殊" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="scale" label="优惠比例0-1" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态  0：停用   1：正常" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createId" label="创建者id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateId" label="更新者id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="deleted" label="逻辑删除" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="scale" label="优惠比例" header-align="center" align="center" width="80"/>
+        <el-table-column prop="status" label="状态  0：停用   1：正常" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status === 0" type="info">停用</el-tag>
+            <el-tag v-else-if="scope.row.status === 1" type="success">正常</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:userrank:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
@@ -50,28 +42,28 @@
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </div>
   </el-card>
 </template>
 
 <script>
 import mixinListModule from '@/mixins/list-module'
-import AddOrUpdate from './userrank-add-or-update'
+import AddOrUpdate from './user-rank-add-or-update'
+
 export default {
   mixins: [mixinListModule],
   data () {
     return {
       mixinListModuleOptions: {
-        getDataListURL: '/shop/userrank/page',
+        getDataListURL: '/shop/userRank/page',
         getDataListIsPage: true,
-        exportURL: '/shop/userrank/export',
-        deleteURL: '/shop/userrank/delete',
-        deleteBatchURL: '/shop/userrank/deleteBatch',
-        deleteIsBatch: true
+        exportURL: '/shop/userRank/export',
+        deleteURL: '/shop/userRank/delete',
+        deleteIsBatch: false
       },
       dataForm: {
-        id: ''
+        name: ''
       }
     }
   },

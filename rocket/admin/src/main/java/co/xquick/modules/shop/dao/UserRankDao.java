@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Mapper
-public interface UserrankDao extends BaseDao<UserrankEntity> {
+public interface UserRankDao extends BaseDao<UserrankEntity> {
 
 }

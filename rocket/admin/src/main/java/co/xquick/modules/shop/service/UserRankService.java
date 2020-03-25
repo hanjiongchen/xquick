@@ -9,6 +9,6 @@ import co.xquick.modules.shop.entity.UserrankEntity;
  *
  * @author Charles zhangchaoxu@gmail.com
  */
-public interface UserrankService extends CrudService<UserrankEntity, UserrankDTO> {
+public interface UserRankService extends CrudService<UserrankEntity, UserrankDTO> {
 
 }

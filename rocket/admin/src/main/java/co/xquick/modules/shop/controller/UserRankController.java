@@ -8,10 +8,8 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
-import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.shop.dto.UserrankDTO;
-import co.xquick.modules.shop.excel.UserrankExcel;
-import co.xquick.modules.shop.service.UserrankService;
+import co.xquick.modules.shop.service.UserRankService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -29,15 +26,15 @@ import java.util.Map;
  * @author Charles zhangchaoxu@gmail.com
  */
 @RestController
-@RequestMapping("shop/userrank")
+@RequestMapping("shop/userRank")
 @Api(tags="用户等级")
-public class UserrankController {
+public class UserRankController {
     @Autowired
-    private UserrankService userrankService;
+    private UserRankService userrankService;
 
     @GetMapping("list")
     @ApiOperation("列表")
-    @RequiresPermissions("shop:userrank:list")
+    @RequiresPermissions("shop:userRank:list")
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<UserrankDTO> list = userrankService.listDto(params);
 
@@ -46,7 +43,7 @@ public class UserrankController {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @RequiresPermissions("shop:userrank:page")
+    @RequiresPermissions("shop:userRank:page")
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<UserrankDTO> page = userrankService.pageDto(params);
 
@@ -55,7 +52,7 @@ public class UserrankController {
 
     @GetMapping("info")
     @ApiOperation("信息")
-    @RequiresPermissions("shop:userrank:info")
+    @RequiresPermissions("shop:userRank:info")
     public Result<?> info(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
@@ -68,7 +65,7 @@ public class UserrankController {
     @PostMapping("save")
     @ApiOperation("保存")
     @LogOperation("保存")
-    @RequiresPermissions("shop:userrank:save")
+    @RequiresPermissions("shop:userRank:save")
     public Result<?> save(@RequestBody UserrankDTO dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
@@ -81,7 +78,7 @@ public class UserrankController {
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
-    @RequiresPermissions("shop:userrank:update")
+    @RequiresPermissions("shop:userRank:update")
     public Result<?> update(@RequestBody UserrankDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
@@ -94,7 +91,7 @@ public class UserrankController {
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
-    @RequiresPermissions("shop:userrank:delete")
+    @RequiresPermissions("shop:userRank:delete")
     public Result<?> delete(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
@@ -102,29 +99,6 @@ public class UserrankController {
         userrankService.logicDeleteById(id);
 
         return new Result<>();
-    }
-
-    @DeleteMapping("deleteBatch")
-    @ApiOperation("批量删除")
-    @LogOperation("批量删除")
-    @RequiresPermissions("shop:userrank:deleteBatch")
-    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
-        // 效验参数
-        AssertUtils.isListEmpty(ids, "id");
-
-        userrankService.logicDeleteByIds(ids);
-
-        return new Result<>();
-    }
-
-    @GetMapping("export")
-    @ApiOperation("导出")
-    @LogOperation("导出")
-    @RequiresPermissions("shop:userrank:export")
-    public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
-        List<UserrankDTO> list = userrankService.listDto(params);
-
-        ExcelUtils.exportExcelToTarget(response, "用户等级", list, UserrankExcel.class);
     }
 
 }
