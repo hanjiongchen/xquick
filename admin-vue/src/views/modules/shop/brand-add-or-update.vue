@@ -65,6 +65,7 @@ export default {
         name: '',
         imgs: '',
         sort: '',
+        status: 1,
         content: ''
       }
     }
