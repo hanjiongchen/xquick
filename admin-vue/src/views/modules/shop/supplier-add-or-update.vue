@@ -1,11 +1,23 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-          <el-form-item label="名称" prop="name">
-          <el-input v-model="dataForm.name" placeholder="名称"></el-input>
-      </el-form-item>
-        <el-form-item prop="sort" :label="$t('dept.sort')">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
+        <el-row>
+            <el-col :span="12">
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="dataForm.name" placeholder="名称"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item prop="sort" :label="$t('base.sort')">
+                    <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('base.sort')"/>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-form-item label="状态" prop="status">
+            <el-radio-group v-model="dataForm.status">
+                <el-radio-button :label="1">已审核</el-radio-button>
+                <el-radio-button :label="0">未审核</el-radio-button>
+            </el-radio-group>
         </el-form-item>
           <el-form-item prop="imgs" label="图片">
           <el-upload
@@ -25,22 +37,12 @@
               <i class="el-icon-plus"/>
           </el-upload>
       </el-form-item>
-        <el-form-item label="状态" prop="status">
-            <el-select v-model="dataForm.status" placeholder="请选择" class="w-percent-100">
-                <el-option
-                        v-for="item in statusOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                </el-option>
-            </el-select>
+        <el-form-item label="简介" prop="content">
+            <el-input v-model="dataForm.content" placeholder="简介" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-            <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
+            <el-input v-model="dataForm.remark" placeholder="备注" type="textarea"></el-input>
         </el-form-item>
-          <el-form-item label="内容" prop="content">
-          <el-input v-model="dataForm.content" placeholder="内容"></el-input>
-      </el-form-item>
                 </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
@@ -70,17 +72,10 @@ export default {
         name: '',
         remark: '',
         imgs: '',
-        status: '',
+        status: 0,
         content: '',
         sort: ''
-      },
-      statusOptions: [{
-        value: 0,
-        label: '未审核'
-      }, {
-        value: 1,
-        label: '已审核'
-      }]
+      }
     }
   },
   computed: {
@@ -89,7 +84,7 @@ export default {
         name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        remark: [
+        sort: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         imgs: [
@@ -110,8 +105,7 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.resetForm()
-        this.setUploadUrl()
-        this.uploadFileList = []
+        this.initUpload()
         this.initFormData()
       })
     },
