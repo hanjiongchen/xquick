@@ -14,13 +14,12 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class StockLogExcel {
-    @Excel(name = "id")
-    private Long id;
+
     @Excel(name = "spu id")
     private Long spuId;
     @Excel(name = "sku id")
     private Long skuId;
-    @Excel(name = "类型 0 入库 1 出库")
+    @Excel(name = "类型", replace = {"入库_0", "出库_1"})
     private Integer type;
     @Excel(name = "入库数量")
     private Integer inQty;
@@ -28,15 +27,9 @@ public class StockLogExcel {
     private Integer outQty;
     @Excel(name = "出入库后库存")
     private Integer stock;
-    @Excel(name = "创建者")
+    @Excel(name = "操作人")
     private Long createId;
-    @Excel(name = "创建时间")
+    @Excel(name = "操作时间")
     private Date createTime;
-    @Excel(name = "更新者")
-    private Long updateId;
-    @Excel(name = "更新时间")
-    private Date updateTime;
-    @Excel(name = "删除标记")
-    private Integer deleted;
 
 }

@@ -2,8 +2,23 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-shop__stock-log}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+        <el-form-item class="small-item">
+          <el-select v-model="dataForm.type" placeholder="类型" clearable>
+            <el-option label="入库" :value="0"/>
+            <el-option label="出库" :value="1"/>
+          </el-select>
+        </el-form-item>
         <el-form-item>
-          <el-input v-model="dataForm.id" placeholder="id" clearable></el-input>
+          <el-date-picker
+                  v-model="dateRange"
+                  type="datetimerange"
+                  @change="dateRangeChangeHandle"
+                  :picker-options="dateRangePickerOptions"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :range-separator="$t('datePicker.range')"
+                  :start-placeholder="$t('datePicker.start')"
+                  :end-placeholder="$t('datePicker.end')">
+          </el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -14,30 +29,19 @@
         <el-form-item v-if="$hasPermission('shop:stockLog:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:stockLog:delete')">
-          <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-        </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="id" label="id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="spuId" label="spu id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="skuId" label="sku id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="type" label="类型 0 入库 1 出库" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="inQty" label="入库数量" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="outQty" label="出库数量" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="stock" label="出入库后库存" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createId" label="创建者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateId" label="更新者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="deleted" label="删除标记" header-align="center" align="center"></el-table-column>
-        <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+        <el-table-column prop="type" label="类型" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('shop:stockLog:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('shop:stockLog:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-tag v-if="scope.row.type === 0" type="success">入库</el-tag>
+            <el-tag v-else-if="scope.row.type === 1" type="danger">出库</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="inQty" label="入库数量" header-align="center" align="center" width="120"></el-table-column>
+        <el-table-column prop="outQty" label="出库数量" header-align="center" align="center" width="120"></el-table-column>
+        <el-table-column prop="stock" label="操作后库存" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="createId" label="操作人" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="createTime" label="操作时间" header-align="center" align="center"></el-table-column>
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"
@@ -50,16 +54,18 @@
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </div>
   </el-card>
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './stock-log-add-or-update'
+
 export default {
-  mixins: [mixinListModule],
+  mixins: [mixinBaseModule, mixinListModule],
   data () {
     return {
       mixinListModuleOptions: {
@@ -67,16 +73,30 @@ export default {
         getDataListIsPage: true,
         exportURL: '/shop/stockLog/export',
         deleteURL: '/shop/stockLog/delete',
-        deleteBatchURL: '/shop/stockLog/deleteBatch',
-        deleteIsBatch: true
+        deleteIsBatch: false
       },
+      dateRange: null,
       dataForm: {
-        id: ''
+        type: '',
+        startCreateTime: '',
+        endCreateTime: ''
       }
     }
   },
   components: {
     AddOrUpdate
+  },
+  methods: {
+    // 时间区间选择器变化
+    dateRangeChangeHandle (value) {
+      if (value !== null && value.length === 2) {
+        this.dataForm.startCreateTime = value[0]
+        this.dataForm.endCreateTime = value[1]
+      } else {
+        this.dataForm.startCreateTime = ''
+        this.dataForm.endCreateTime = ''
+      }
+    }
   }
 }
 </script>

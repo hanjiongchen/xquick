@@ -1,7 +1,7 @@
 <template>
   <el-card>
       <el-tabs tab-position="left" v-model="step" @tab-click="tabClickHandle" :before-leave="beforeTabLeaveHandle">
-          <el-tab-pane name="info" label="基本信息">
+          <el-tab-pane name="1" label="基本信息">
               <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
                   <el-form-item label="类型" prop="type">
                       <el-radio-group v-model="dataForm.type" disabled>
@@ -101,7 +101,7 @@
                   <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
               </div>
           </el-tab-pane>
-          <el-tab-pane name="content" label="图文详情">
+          <el-tab-pane name="2" label="图文详情">
               <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
                   <el-form-item prop="content" label="图文详情">
                       <!-- 富文本编辑器, 容器 -->
@@ -122,8 +122,8 @@
                   <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
               </div>
           </el-tab-pane>
-          <el-tab-pane name="param" label="参数管理">配置管理</el-tab-pane>
-          <el-tab-pane name="spec" label="规格管理">角色管理</el-tab-pane>
+          <el-tab-pane name="3" label="参数管理">配置管理</el-tab-pane>
+          <el-tab-pane name="4" label="规格管理">角色管理</el-tab-pane>
       </el-tabs>
       <!-- 弹窗, 图片查看 -->
       <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
@@ -150,7 +150,7 @@ export default {
         dataFormInfoURL: `/shop/spu/info?id=`
       },
       // 当前激活tab
-      step: 'info',
+      step: '1',
       // 品牌列表
       brandList: [],
       // 供应商列表
@@ -188,14 +188,14 @@ export default {
   },
   activated () {
     let queryId = this.$route.query.id
-    let queryStep = this.$route.query.step || 'info'
-    if (this.dataForm[this.mixinFormModuleOptions.idKey] !== queryId || this.step !== queryStep) {
+    let queryStep = this.$route.query.step || '1'
+    if (this.dataForm.id !== queryId || this.step !== queryStep) {
       // 参数发生了变化
       if (!queryId && queryStep > 1) {
         this.$message.error(this.$t('addneedstep'))
         return
       } else {
-        this.dataForm[this.mixinFormModuleOptions.idKey] = queryId
+        this.dataForm.id = queryId
         this.step = queryStep
       }
       // 根据id刷新tab名称
@@ -204,8 +204,7 @@ export default {
         tab.title = queryId ? '编辑商品' : '新增商品'
       }
       // 根据step刷新数据
-      if (this.step === 'info') {
-        console.log('step info')
+      if (this.step === '1') {
         Promise.all([
           this.getBrandList(''),
           this.getSupplierList(''),
@@ -299,25 +298,43 @@ export default {
     },
     // 跳转步骤
     onStep (result) {
-      if (!this.dataForm.id && result !== 'info') {
+      if (!this.dataForm.id && result !== 1) {
         this.$message.error('保存基本信息后才能跳转步骤')
         return false
       }
-      this.step = result
+      if (result === 100) {
+        this.step = Number.parseInt(this.step) + 1
+      } else if (result === -100) {
+        this.step = Number.parseInt(this.step) - 1
+      } else {
+        this.step = result
+      }
       this.$router.replace({ name: this.$route.name, query: { id: this.dataForm.id, step: this.step } })
       this.refresh()
     },
     tabClickHandle (tab, event) {
       console.log(tab, event)
-      this.onStep(tab.name)
+      this.onStep(Number.parseInt(tab.name))
     },
     beforeTabLeaveHandle (activeName) {
-      if (!this.dataForm.id && activeName !== 'info') {
+      if (!this.dataForm.id && activeName !== '1') {
         this.$message.error('请保存基本信息')
         return false
       } else {
         return true
       }
+    },
+    // 表单提交成功
+    onFormSubmitSuccess (res) {
+      // 跳到下一步
+      this.onStep(100)
+      // 弹出提示框
+      this.$message({
+        message: '保存成功',
+        type: 'success',
+        duration: 500,
+        onClose: () => {}
+      })
     },
     // 品牌列表
     getBrandList (name) {

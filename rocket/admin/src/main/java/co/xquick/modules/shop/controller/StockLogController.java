@@ -104,19 +104,6 @@ public class StockLogController {
         return new Result<>();
     }
 
-    @DeleteMapping("deleteBatch")
-    @ApiOperation("批量删除")
-    @LogOperation("批量删除")
-    @RequiresPermissions("shop:stockLog:deleteBatch")
-    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
-        // 效验参数
-        AssertUtils.isListEmpty(ids, "id");
-
-        stockLogService.logicDeleteByIds(ids);
-
-        return new Result<>();
-    }
-
     @GetMapping("export")
     @ApiOperation("导出")
     @LogOperation("导出")

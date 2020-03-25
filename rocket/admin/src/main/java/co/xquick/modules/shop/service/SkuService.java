@@ -11,4 +11,10 @@ import co.xquick.modules.shop.entity.SkuEntity;
  */
 public interface SkuService extends CrudService<SkuEntity, SkuDTO> {
 
+    /**
+     * 修改sku库存数量
+     *
+     * @param stock 正数添加,负数减少
+     */
+    boolean addStock(Integer stock);
 }
