@@ -91,6 +91,19 @@ public class ReceiverController {
         return new Result<>().ok(dto);
     }
 
+    @PutMapping("setDefaultItem")
+    @ApiOperation("设置默认")
+    @LogOperation("设置默认")
+    @RequiresPermissions("shop:receiver:update")
+    public Result<?> setDefaultItem(@RequestParam Long id) {
+        // 效验参数
+        AssertUtils.isEmpty(id, "id");
+
+        receiverService.setDefaultItem(id);
+
+        return new Result<>();
+    }
+
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")

@@ -13,6 +13,9 @@ public interface ReceiverService extends CrudService<ReceiverEntity, ReceiverDTO
 
     /**
      * 将地址设置为默认项
+     *
+     * @param id 地址id
+     * @return 结果
      */
     boolean setDefaultItem(Long id);
 
