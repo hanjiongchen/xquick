@@ -1,6 +1,6 @@
 package co.xquick.modules.uc.service.impl;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
@@ -148,8 +148,8 @@ public class DeptServiceImpl extends CrudServiceImpl<DeptDao, DeptEntity, DeptDT
      */
     private String getPidList(Long pid) {
         //顶级部门，无上级部门
-        if (Constant.DEPT_ROOT.equals(pid)) {
-            return Constant.DEPT_ROOT + "";
+        if (Const.DEPT_ROOT.equals(pid)) {
+            return Const.DEPT_ROOT + "";
         }
 
         //所有部门的id、pid列表
@@ -170,7 +170,7 @@ public class DeptServiceImpl extends CrudServiceImpl<DeptDao, DeptEntity, DeptDT
 
     private void getPidTree(Long pid, Map<Long, DeptEntity> map, List<Long> pidList) {
         // 顶级部门，无上级部门
-        if (Constant.DEPT_ROOT.equals(pid)) {
+        if (Const.DEPT_ROOT.equals(pid)) {
             return;
         }
 

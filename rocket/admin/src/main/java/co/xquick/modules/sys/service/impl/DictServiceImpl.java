@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-import static co.xquick.booster.constant.Constant.DICT_ROOT;
+import static co.xquick.booster.pojo.Const.DICT_ROOT;
 
 /**
  * 数据字典

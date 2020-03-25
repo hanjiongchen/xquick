@@ -1,6 +1,6 @@
 package co.xquick.modules.msg.sms;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
@@ -62,7 +62,7 @@ public class AliyunSmsService extends AbstractSmsService {
         request.putQueryParameter("TemplateParam", params);
 
         // 最后发送结果
-        int status = Constant.FAIL;
+        int status = Const.FAIL;
         String result = "";
         CommonResponse response;
         try {
@@ -70,7 +70,7 @@ public class AliyunSmsService extends AbstractSmsService {
             if (response.getHttpStatus() == 200) {
                 result = response.getData();
                 Map<String, Object> json = JacksonUtils.jsonToMap(result);
-                status = "OK".equalsIgnoreCase(json.get("Code").toString()) ? Constant.SUCCESS : Constant.FAIL;
+                status = "OK".equalsIgnoreCase(json.get("Code").toString()) ? Const.SUCCESS : Const.FAIL;
             }
         } catch (ClientException ce) {
             ce.printStackTrace();
@@ -93,7 +93,7 @@ public class AliyunSmsService extends AbstractSmsService {
         smsLog.setParams(params);
         smsLog.setConsumed(0);
         smsLogService.save(smsLog);
-        if (status == Constant.FAIL) {
+        if (status == Const.FAIL) {
             throw new XquickException(ErrorCode.SEND_SMS_ERROR);
         }
     }

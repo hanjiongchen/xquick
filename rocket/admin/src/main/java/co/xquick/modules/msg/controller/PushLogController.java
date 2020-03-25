@@ -1,6 +1,6 @@
 package co.xquick.modules.msg.controller;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.validator.AssertUtils;
@@ -47,7 +47,7 @@ public class PushLogController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
 
-        PushConfig config = paramService.getContentObject(Constant.PUSH_CONFIG_KEY, PushConfig.class);
+        PushConfig config = paramService.getContentObject(Const.PUSH_CONFIG_KEY, PushConfig.class);
         if (config == null) {
             return new Result<>().error("未找到对应的推送配置");
         }

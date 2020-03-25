@@ -1,7 +1,6 @@
 package co.xquick.modules.msg.email;
 
-import cn.hutool.core.map.MapUtil;
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
@@ -12,8 +11,6 @@ import co.xquick.modules.msg.entity.MailLogEntity;
 import co.xquick.modules.msg.entity.MailTplEntity;
 import co.xquick.modules.msg.service.MailLogService;
 import co.xquick.modules.msg.service.MailTplService;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,16 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -106,12 +99,12 @@ public class EmailUtils {
             throw new XquickException("构建邮件发送器失败");
         }
 
-        int status = Constant.SUCCESS;
+        int status = Const.SUCCESS;
         //发送邮件
         try {
             mailSender.send(mimeMessage);
         } catch (Exception e) {
-            status = Constant.FAIL;
+            status = Const.FAIL;
             logger.error("send error", e);
         }
 
@@ -126,7 +119,7 @@ public class EmailUtils {
         log.setStatus(status);
         mailLogService.save(log);
 
-        return status == Constant.SUCCESS;
+        return status == Const.SUCCESS;
     }
 
 }

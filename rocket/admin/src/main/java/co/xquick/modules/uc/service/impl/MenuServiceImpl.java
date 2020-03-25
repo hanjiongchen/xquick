@@ -1,6 +1,6 @@
 package co.xquick.modules.uc.service.impl;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
@@ -54,7 +54,7 @@ public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuTr
 
         List<MenuTreeDTO> dtoList = ConvertUtils.sourceToTarget(menuList, MenuTreeDTO.class);
 
-        return TreeUtils.build(dtoList, Constant.MENU_ROOT);
+        return TreeUtils.build(dtoList, Const.MENU_ROOT);
     }
 
     @Override

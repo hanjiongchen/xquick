@@ -1,6 +1,6 @@
 package co.xquick.modules.sched.utils;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.util.ExceptionUtils;
 import co.xquick.booster.util.SpringContextUtils;
 import co.xquick.modules.sched.SchedConst;
@@ -46,7 +46,7 @@ public class ScheduleJob extends QuartzJobBean {
             long times = System.currentTimeMillis() - startTime;
             log.setTimes((int) times);
             //任务状态
-            log.setStatus(Constant.SUCCESS);
+            log.setStatus(Const.SUCCESS);
 
             logger.info("任务执行完毕，任务ID：{}  总共耗时：{} 毫秒", task.getId(), times);
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class ScheduleJob extends QuartzJobBean {
             log.setTimes((int) times);
 
             //任务状态
-            log.setStatus(Constant.FAIL);
+            log.setStatus(Const.FAIL);
             log.setError(ExceptionUtils.getErrorStackTrace(e));
         } finally {
             // 获取spring bean

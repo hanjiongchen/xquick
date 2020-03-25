@@ -1,6 +1,6 @@
 package co.xquick.modules.msg.push;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.modules.sys.service.ParamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class PushService {
     ParamService paramsService;
 
     public void send(int pushType, String alias, String tags, String title, String content, String extras, Boolean apnsProd) {
-        PushConfig config = paramsService.getContentObject(Constant.PUSH_CONFIG_KEY, PushConfig.class);
+        PushConfig config = paramsService.getContentObject(Const.PUSH_CONFIG_KEY, PushConfig.class);
         if (config == null) {
             throw new XquickException("未找到对应的推送配置");
         }

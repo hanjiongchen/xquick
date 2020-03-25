@@ -1,6 +1,6 @@
 package co.xquick.modules.cms.dao;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.dao.BaseDao;
 import co.xquick.modules.cms.entity.ArticleCategoryEntity;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -21,6 +21,6 @@ public interface ArticleCategoryDao extends BaseDao<ArticleCategoryEntity> {
             " FROM cms_article_category LEFT JOIN cms_site ON cms_article_category.site_id = cms_site.id" +
             " ${ew.customSqlSegment}")
     @Override
-    <E extends IPage<ArticleCategoryEntity>> E selectPage(@Param(Constant.PAGE) E page, Wrapper<ArticleCategoryEntity> ew);
+    <E extends IPage<ArticleCategoryEntity>> E selectPage(@Param(Const.PAGE) E page, Wrapper<ArticleCategoryEntity> ew);
 
 }

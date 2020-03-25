@@ -22,6 +22,18 @@ public class ReceiverEntity extends BaseEntity {
      * 用户id
      */
 	private Long userId;
+	/**
+	 * 标签
+	 */
+	private String tag;
+	/**
+	 * 纬度
+	 */
+	private Double lat;
+	/**
+	 * 经度
+	 */
+	private Double lng;
     /**
      * 区域名称,如浙江省,宁波市,鄞州区
      */

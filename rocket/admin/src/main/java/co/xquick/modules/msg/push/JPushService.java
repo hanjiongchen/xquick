@@ -13,7 +13,7 @@ import cn.jpush.api.push.model.audience.AudienceTarget;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
@@ -53,11 +53,11 @@ public class JPushService extends AbstractPushService {
         PushLogService logService = SpringContextUtils.getBean(PushLogService.class);
         PushLogEntity log = new PushLogEntity();
         // 最后发送结果
-        int status = Constant.FAIL;
+        int status = Const.FAIL;
         try {
             PushResult result = jpushClient.sendPush(payload);
             log.setResult(result.toString());
-            status = result.statusCode == 0 ? Constant.SUCCESS : Constant.FAIL;
+            status = result.statusCode == 0 ? Const.SUCCESS : Const.FAIL;
         } catch (APIConnectionException e) {
             logger.error(e.getMessage());
             log.setResult(e.toString());
@@ -78,7 +78,7 @@ public class JPushService extends AbstractPushService {
         log.setTitle(title);
         log.setContent(content);
         logService.save(log);
-        if (status == Constant.FAIL) {
+        if (status == Const.FAIL) {
             throw new XquickException(ErrorCode.SEND_PUSH_ERROR);
         }
     }

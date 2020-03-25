@@ -1,11 +1,11 @@
-package co.xquick.booster.constant;
+package co.xquick.booster.pojo;
 
 /**
  * 常量
  *
  * @author Charles zhangchaoxu@gmail.com
  */
-public interface Constant {
+public interface Const {
 
     /**
      * 成功
@@ -93,5 +93,37 @@ public interface Constant {
      */
     String PUSH_CONFIG_KEY = "PUSH_CONFIG_KEY";
 
+    /**
+     * 二元布尔枚举
+     */
+    enum BooleanEnum {
+
+        /**
+         * 详见name
+         */
+        TRUE(1, "是"),
+        FALSE(0, "否");
+
+        private int value;
+        private String name;
+
+        BooleanEnum(int value) {
+            this.value = value;
+        }
+
+        BooleanEnum(int value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public int value() {
+            return this.value;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+    }
 
 }

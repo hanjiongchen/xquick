@@ -36,6 +36,11 @@
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="userName" label="用户" header-align="center" align="center" width="120"></el-table-column>
+        <el-table-column prop="tag" label="标签" header-align="center" align="center" width="120">
+          <template slot-scope="scope">
+              <el-tag>{{ scope.row.tag }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="regionName" label="区域名称" header-align="center" align="center" min-width="100"></el-table-column>
         <el-table-column prop="address" label="详细门牌号" header-align="center" align="center" min-width="120"/>
         <el-table-column prop="consignee" label="收件人" header-align="center" align="center" width="120"/>

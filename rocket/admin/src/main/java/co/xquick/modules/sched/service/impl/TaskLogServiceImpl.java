@@ -1,6 +1,6 @@
 package co.xquick.modules.sched.service.impl;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.service.impl.BaseServiceImpl;
 import co.xquick.booster.util.ConvertUtils;
@@ -21,7 +21,7 @@ public class TaskLogServiceImpl extends BaseServiceImpl<TaskLogDao, TaskLogEntit
 	@Override
 	public PageData<TaskLogDTO> page(Map<String, Object> params) {
 		IPage<TaskLogEntity> page = baseMapper.selectPage(
-			getPage(params, Constant.CREATE_DATE, false),
+			getPage(params, Const.CREATE_DATE, false),
 			getWrapper(params)
 		);
 		return getPageData(page, TaskLogDTO.class);

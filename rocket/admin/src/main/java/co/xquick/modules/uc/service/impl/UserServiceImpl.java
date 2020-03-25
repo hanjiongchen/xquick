@@ -1,6 +1,6 @@
 package co.xquick.modules.uc.service.impl;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.pojo.Result;
@@ -76,7 +76,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                 .like("mobile", "mobile")
                 .like("realName", "real_name")
                 // 数据过滤
-                .apply(Constant.SQL_FILTER)
+                .apply(Const.SQL_FILTER)
                 .getQueryWrapper()
                 .eq("uc_user.deleted", 0);
 

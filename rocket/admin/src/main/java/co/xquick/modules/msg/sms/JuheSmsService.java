@@ -1,6 +1,6 @@
 package co.xquick.modules.msg.sms;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.JacksonUtils;
@@ -62,9 +62,9 @@ public class JuheSmsService extends AbstractSmsService {
             throw new XquickException(ErrorCode.SEND_SMS_ERROR, ioe, "调用接口失败");
         }
         // 接口结果
-        int status = response.isSuccessful() ? Constant.SUCCESS : Constant.FAIL;
+        int status = response.isSuccessful() ? Const.SUCCESS : Const.FAIL;
         String result = "";
-        if (Constant.SUCCESS == status) {
+        if (Const.SUCCESS == status) {
             try {
                 assert response.body() != null;
                 result = response.body().string();
@@ -72,8 +72,8 @@ public class JuheSmsService extends AbstractSmsService {
                 throw new XquickException(ErrorCode.SEND_SMS_ERROR, "接口返回数据异常");
             }
             Map<String, Object> json = JacksonUtils.jsonToMap(result);
-            status = (int) json.get("error_code") == 0 ? Constant.SUCCESS : Constant.FAIL;
-            if (status == Constant.FAIL) {
+            status = (int) json.get("error_code") == 0 ? Const.SUCCESS : Const.FAIL;
+            if (status == Const.FAIL) {
                 throw new XquickException(ErrorCode.SEND_SMS_ERROR, json.get("reason").toString());
             }
         }
@@ -90,7 +90,7 @@ public class JuheSmsService extends AbstractSmsService {
         smsLog.setParams(params);
         smsLog.setConsumed(0);
         smsLogService.save(smsLog);
-        if (status == Constant.FAIL) {
+        if (status == Const.FAIL) {
             throw new XquickException(ErrorCode.SEND_SMS_ERROR);
         }
     }

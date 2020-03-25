@@ -1,6 +1,6 @@
 package co.xquick.modules.msg.service.impl;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.WrapperUtils;
 import co.xquick.modules.msg.dao.NoticeLogDao;
@@ -30,8 +30,8 @@ public class NoticeLogServiceImpl extends CrudServiceImpl<NoticeLogDao, NoticeLo
                 .eq("status", "status")
                 .eq("read", "read")
                 .like("content", "content")
-                .apply(Constant.SQL_FILTER)
-                .apply(Constant.SQL_FILTER_MY)
+                .apply(Const.SQL_FILTER)
+                .apply(Const.SQL_FILTER_MY)
                 .getQueryWrapper();
     }
 

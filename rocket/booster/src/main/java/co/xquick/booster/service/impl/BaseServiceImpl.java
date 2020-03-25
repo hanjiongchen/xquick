@@ -1,6 +1,6 @@
 package co.xquick.booster.service.impl;
 
-import co.xquick.booster.constant.Constant;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.dao.BaseDao;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.service.BaseService;
@@ -157,18 +157,18 @@ public class BaseServiceImpl<M extends BaseDao<T>, T> implements BaseService<T> 
      */
     protected IPage<T> getPage(Map<String, Object> params, String defaultOrderField, boolean isAsc) {
         // 分页对象 参数,当前页和每页数
-        Page<T> page = new Page<>(ParamUtils.toLong(params.get(Constant.PAGE), 1), ParamUtils.toLong(params.get(Constant.LIMIT), 10));
+        Page<T> page = new Page<>(ParamUtils.toLong(params.get(Const.PAGE), 1), ParamUtils.toLong(params.get(Const.LIMIT), 10));
 
         // 分页参数?
         // params.put(Constant.PAGE, page);
 
         // 排序字段
-        String orderField = (String) params.get(Constant.ORDER_FIELD);
-        String order = (String) params.get(Constant.ORDER);
+        String orderField = (String) params.get(Const.ORDER_FIELD);
+        String order = (String) params.get(Const.ORDER);
 
         // 前端字段排序
         if (StringUtils.isNotBlank(orderField) && StringUtils.isNotBlank(order)) {
-            return page.addOrder(new OrderItem().setColumn(orderField).setAsc(Constant.ASC.equalsIgnoreCase(order)));
+            return page.addOrder(new OrderItem().setColumn(orderField).setAsc(Const.ASC.equalsIgnoreCase(order)));
         }
 
         // 没有排序字段，则不排序
