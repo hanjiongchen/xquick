@@ -8,7 +8,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="商品" prop="spuId">
-                <el-select v-model="dataForm.spuId" filterable placeholder="请选择商品" class="w-percent-100" @select="getSkuList('')">
+                <el-select v-model="dataForm.spuId" filterable placeholder="请选择商品" class="w-percent-100" @change="getSkuList('')">
                     <el-option v-for="item in spuList" :key="item.id" :label="item.name" :value="item.id">
                         <span style="float: left">{{ item.name }}</span>
                         <span style="float: right; color: #8492a6; font-size: 13px">{{ item.sn }}</span>
@@ -105,7 +105,7 @@ export default {
     },
     // 规格列表
     getSkuList (search) {
-      return this.$http.get(`/shop/spu/list?limit=20&search=` + search + `&spuId=` + this.dataForm.spuId).then(({ data: res }) => {
+      return this.$http.get(`/shop/sku/list?limit=20&search=` + search + `&spuId=` + this.dataForm.spuId).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }

@@ -37,11 +37,13 @@
             <el-tag v-else-if="scope.row.type === 1" type="danger">出库</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="inQty" label="入库数量" header-align="center" align="center" width="120"></el-table-column>
-        <el-table-column prop="outQty" label="出库数量" header-align="center" align="center" width="120"></el-table-column>
-        <el-table-column prop="stock" label="操作后库存" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createId" label="操作人" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="操作时间" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="spuName" label="商品" header-align="center" align="center" min-width="120"/>
+        <el-table-column prop="skuName" label="规格" header-align="center" align="center" min-width="120"/>
+        <el-table-column prop="inQty" label="入库数量" header-align="center" align="center" width="120"/>
+        <el-table-column prop="outQty" label="出库数量" header-align="center" align="center" width="120"/>
+        <el-table-column prop="stock" label="操作后库存" header-align="center" align="center" width="120"/>
+        <el-table-column prop="createName" label="操作人" header-align="center" align="center" width="120"/>
+        <el-table-column prop="createTime" label="操作时间" header-align="center" align="center" width="150"/>
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"

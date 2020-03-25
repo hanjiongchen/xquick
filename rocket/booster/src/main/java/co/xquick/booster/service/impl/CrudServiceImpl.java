@@ -85,6 +85,16 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
      * @param type 0 保存 1 修改
      */
     protected void beforeSaveOrUpdateDto(D dto, int type) {
+        this.beforeSaveOrUpdateDto(dto, null, type);
+    }
+
+    /**
+     * 新增和修改之前的操作
+     * @param dto 保存dto
+     * @param toSaveEntity 待保存entity
+     * @param type 0 保存 1 修改
+     */
+    protected void beforeSaveOrUpdateDto(D dto, T toSaveEntity, int type) {
 
     }
 
@@ -119,7 +129,7 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
             throw new XquickException(ErrorCode.ID_NOT_NULL_IN_SAVE);
         }
         // 自定义操作前检查
-        beforeSaveOrUpdateDto(dto, 0);
+        beforeSaveOrUpdateDto(dto, entity,0);
         boolean ret = save(entity);
         // copy主键值到dto
         BeanUtils.copyProperties(entity, dto);
@@ -138,7 +148,7 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
             throw new XquickException(ErrorCode.ID_NULL_IN_UPDATE);
         }
         // 自定义操作前检查
-        this.beforeSaveOrUpdateDto(dto, 1);
+        this.beforeSaveOrUpdateDto(dto, entity, 1);
         // 更新之前,先检查一下对应记录存不存在
         // 要直接使用hasIdVal,可能就会出现问题
         // 传了一个fake id,就变成保存了

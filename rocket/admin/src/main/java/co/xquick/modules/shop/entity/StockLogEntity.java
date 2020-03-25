@@ -1,11 +1,9 @@
 package co.xquick.modules.shop.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 出入库记录
@@ -18,6 +16,10 @@ import java.util.Date;
 public class StockLogEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 创建人姓名
+	 */
+	private String createName;
     /**
      * spu id
      */

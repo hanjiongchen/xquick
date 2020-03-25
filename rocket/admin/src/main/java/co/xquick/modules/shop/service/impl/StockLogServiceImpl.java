@@ -45,24 +45,24 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
     }
 
     @Override
-    protected void beforeSaveOrUpdateDto(StockLogDTO dto, int type) {
+    protected void beforeSaveOrUpdateDto(StockLogDTO dto, StockLogEntity toSaveEntity, int type) {
         // 检查商品规格
         SkuEntity skuEntity = skuService.getById(dto.getSkuId());
         AssertUtils.isEmpty(skuEntity, ErrorCode.RECORD_NOT_EXISTED, "商品规格");
-        dto.setSpuId(skuEntity.getSpuId());
+        toSaveEntity.setSpuId(skuEntity.getSpuId());
 
         if (type == ShopConst.StockLogTypeEnum.IN.value()) {
             // 入库
-            dto.setOutQty(0);
+            toSaveEntity.setOutQty(0);
             if (dto.getInQty() <= 0) {
                 throw new XquickException("入库数量不能小于0");
             }
             // 添加库存
             skuService.addStock(dto.getSkuId(), dto.getInQty());
-            dto.setStock(skuEntity.getStock() + dto.getInQty());
+            toSaveEntity.setStock(skuEntity.getStock() + dto.getInQty());
         } else if (type == ShopConst.StockLogTypeEnum.OUT.value()) {
             // 出库
-            dto.setInQty(0);
+            toSaveEntity.setInQty(0);
             if (dto.getOutQty() <= 0) {
                 throw new XquickException("出库数量不能小于0");
             }
@@ -71,7 +71,7 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
             }
             // 减少库存
             skuService.addStock(dto.getSkuId(), -dto.getOutQty());
-            dto.setStock(skuEntity.getStock() - dto.getInQty());
+            toSaveEntity.setStock(skuEntity.getStock() - dto.getInQty());
         }
     }
 }

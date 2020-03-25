@@ -21,6 +21,9 @@ import javax.validation.constraints.NotNull;
 public class StockLogDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(value = "创建人姓名")
+	private String createName;
+
 	@ApiModelProperty(value = "spu id")
 	private Long spuId;
 
