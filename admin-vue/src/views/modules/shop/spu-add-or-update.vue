@@ -1,84 +1,146 @@
 <template>
-  <div>
-    <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-          <el-form-item label="店铺id" prop="storeId">
-          <el-input v-model="dataForm.storeId" placeholder="店铺id"></el-input>
-      </el-form-item>
-          <el-form-item label="品牌id" prop="brandId">
-          <el-input v-model="dataForm.brandId" placeholder="品牌id"></el-input>
-      </el-form-item>
-          <el-form-item label="分类id" prop="categoryId">
-          <el-input v-model="dataForm.categoryId" placeholder="分类id"></el-input>
-      </el-form-item>
-          <el-form-item label="供应商id" prop="supplierId">
-          <el-input v-model="dataForm.supplierId" placeholder="供应商id"></el-input>
-      </el-form-item>
-          <el-form-item label="排序" prop="sort">
-          <el-input v-model="dataForm.sort" placeholder="排序"></el-input>
-      </el-form-item>
-          <el-form-item label="编号" prop="sn">
-          <el-input v-model="dataForm.sn" placeholder="编号"></el-input>
-      </el-form-item>
-          <el-form-item label="是否需要物流" prop="delivery">
-          <el-input v-model="dataForm.delivery" placeholder="是否需要物流"></el-input>
-      </el-form-item>
-          <el-form-item label="是否上架" prop="marketable">
-          <el-input v-model="dataForm.marketable" placeholder="是否上架"></el-input>
-      </el-form-item>
-          <el-form-item label="是否置顶" prop="top">
-          <el-input v-model="dataForm.top" placeholder="是否置顶"></el-input>
-      </el-form-item>
-          <el-form-item label="类型 1 商品 2 积分兑换 3 赠品" prop="type">
-          <el-input v-model="dataForm.type" placeholder="类型 1 商品 2 积分兑换 3 赠品"></el-input>
-      </el-form-item>
-          <el-form-item label="名称" prop="name">
-          <el-input v-model="dataForm.name" placeholder="名称"></el-input>
-      </el-form-item>
-          <el-form-item label="标题" prop="title">
-          <el-input v-model="dataForm.title" placeholder="标题"></el-input>
-      </el-form-item>
-          <el-form-item label="标签,逗号分隔" prop="tags">
-          <el-input v-model="dataForm.tags" placeholder="标签,逗号分隔"></el-input>
-      </el-form-item>
-          <el-form-item label="市场价" prop="marketPrice">
-          <el-input v-model="dataForm.marketPrice" placeholder="市场价"></el-input>
-      </el-form-item>
-          <el-form-item label="售价" prop="salePrice">
-          <el-input v-model="dataForm.salePrice" placeholder="售价"></el-input>
-      </el-form-item>
-          <el-form-item label="属性,不会影响价格、数量等业务" prop="attrs">
-          <el-input v-model="dataForm.attrs" placeholder="属性,不会影响价格、数量等业务"></el-input>
-      </el-form-item>
-          <el-form-item label="规格,与sku关联" prop="specs">
-          <el-input v-model="dataForm.specs" placeholder="规格,与sku关联"></el-input>
-      </el-form-item>
-          <el-form-item label="状态" prop="status">
-          <el-input v-model="dataForm.status" placeholder="状态"></el-input>
-      </el-form-item>
-          <el-form-item label="点击数" prop="hits">
-          <el-input v-model="dataForm.hits" placeholder="点击数"></el-input>
-      </el-form-item>
-          <el-form-item label="图片" prop="imgs">
-          <el-input v-model="dataForm.imgs" placeholder="图片"></el-input>
-      </el-form-item>
-          <el-form-item label="图文内容" prop="content">
-          <el-input v-model="dataForm.content" placeholder="图文内容"></el-input>
-      </el-form-item>
-          <el-form-item label="评分" prop="score">
-          <el-input v-model="dataForm.score" placeholder="评分"></el-input>
-      </el-form-item>
-                </el-form>
-    <template slot="footer">
-      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-      <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-    </template>
-  </div>
+  <el-card>
+      <el-tabs tab-position="left" v-model="step" @tab-click="tabClickHandle" :before-leave="beforeTabLeaveHandle">
+          <el-tab-pane name="info" label="基本信息">
+              <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+                  <el-form-item label="类型" prop="type">
+                      <el-radio-group v-model="dataForm.type" disabled>
+                          <el-radio :label="1">商品</el-radio>
+                          <el-radio :label="2">积分兑换</el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+                  <el-row>
+                      <el-col :span="12">
+                          <el-form-item label="供应商" prop="supplierId">
+                              <el-select v-model="dataForm.supplierId" filterable placeholder="请选择供应商" class="w-percent-100">
+                                  <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id"/>
+                              </el-select>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                          <el-form-item label="品牌" prop="brandId">
+                              <el-select v-model="dataForm.brandId" filterable placeholder="请选择品牌" class="w-percent-100">
+                                  <el-option v-for="item in brandList" :key="item.id" :label="item.name" :value="item.id"/>
+                              </el-select>
+                          </el-form-item>
+                      </el-col>
+                  </el-row>
+                  <el-row>
+                      <el-col :span="12">
+                          <el-form-item label="分类" prop="categoryId">
+                              <el-cascader v-model="categorySelected" :options="spuCategoryList" clearable
+                                           :props="{ emitPath: false, checkStrictly: false, value: 'id', label: 'name'}"
+                                           @change="(value) => this.dataForm.categoryId = value" class="w-percent-100"/>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                          <el-form-item prop="sort" :label="$t('base.sort')">
+                              <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')"/>
+                          </el-form-item>
+                      </el-col>
+                  </el-row>
+                  <el-row>
+                      <el-col :span="12">
+                          <el-form-item label="名称" prop="name">
+                              <el-input v-model="dataForm.name" placeholder="输入名称"/>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                          <el-form-item label="编号" prop="sn">
+                              <el-input v-model="dataForm.sn" placeholder="编号"/>
+                          </el-form-item>
+                      </el-col>
+                  </el-row>
+                  <el-row>
+                      <el-col :span="12">
+                          <el-form-item label="市场价" prop="marketPrice">
+                              <el-input-number v-model="dataForm.marketPrice" placeholder="输入市场价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                          <el-form-item label="销售价" prop="salePrice">
+                              <el-input-number v-model="dataForm.salePrice" placeholder="输入销售价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
+                          </el-form-item>
+                      </el-col>
+                  </el-row>
+                  <el-row>
+                      <el-col :span="8">
+                          <el-form-item label="物流" prop="delivery">
+                              <el-radio-group v-model="dataForm.delivery" size="small">
+                                  <el-radio-button :label="1">需要</el-radio-button>
+                                  <el-radio-button :label="0">不需要</el-radio-button>
+                              </el-radio-group>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                          <el-form-item label="上架" prop="marketable">
+                              <el-radio-group v-model="dataForm.marketable" size="small">
+                                  <el-radio-button :label="1">上架</el-radio-button>
+                                  <el-radio-button :label="0">下架</el-radio-button>
+                              </el-radio-group>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                          <el-form-item label="置顶" prop="top">
+                              <el-radio-group v-model="dataForm.top" size="small">
+                                  <el-radio-button :label="1">置顶</el-radio-button>
+                                  <el-radio-button :label="0">不置顶</el-radio-button>
+                              </el-radio-group>
+                          </el-form-item>
+                      </el-col>
+                  </el-row>
+                  <el-form-item label="标题" prop="title">
+                      <el-input v-model="dataForm.title" placeholder="标题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="标签,逗号分隔" prop="tags">
+                      <el-input v-model="dataForm.tags" placeholder="标签,逗号分隔"></el-input>
+                  </el-form-item>
+            </el-form>
+              <div style="text-align: center;">
+                  <el-button type="warning" @click="visible = false">{{ $t('reset') }}</el-button>
+                  <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane name="content" label="图文详情">
+              <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+                  <el-form-item prop="content" label="图文详情">
+                      <!-- 富文本编辑器, 容器 -->
+                      <div id="J_quillEditor"></div>
+                      <!-- 自定义上传图片功能 (使用element upload组件) -->
+                      <el-upload
+                              :action="uploadUrl"
+                              :show-file-list="false"
+                              :before-upload="beforeImageUpload"
+                              :on-success="uploadEditorSuccessHandle"
+                              style="display: none;">
+                          <el-button ref="uploadBtn" type="primary" size="small">{{ $t('uploadButton') }}</el-button>
+                      </el-upload>
+                  </el-form-item>
+              </el-form>
+              <div style="text-align: center;">
+                  <el-button type="warning" @click="resetForm">{{ $t('reset') }}</el-button>
+                  <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane name="param" label="参数管理">配置管理</el-tab-pane>
+          <el-tab-pane name="spec" label="规格管理">角色管理</el-tab-pane>
+      </el-tabs>
+      <!-- 弹窗, 图片查看 -->
+      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
+  </el-card>
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
+import mixinQuillModule from '@/mixins/quill-module'
+import ImageViewer from 'element-ui/packages/image/src/image-viewer'
+import { removeEmptyChildren } from '@/utils'
+
 export default {
-  mixins: [mixinFormModule],
+  inject: ['refresh'],
+  mixins: [mixinBaseModule, mixinFormModule, mixinQuillModule],
+  components: { ImageViewer },
   data () {
     return {
       // 表单模块参数
@@ -87,6 +149,16 @@ export default {
         dataFormUpdateURL: `/shop/spu/update`,
         dataFormInfoURL: `/shop/spu/info?id=`
       },
+      // 当前激活tab
+      step: 'info',
+      // 品牌列表
+      brandList: [],
+      // 供应商列表
+      supplierList: [],
+      // 分类列表
+      spuCategoryList: [],
+      // 已选中分类
+      categorySelected: [],
       dataForm: {
         id: '',
         storeId: '',
@@ -95,27 +167,52 @@ export default {
         supplierId: '',
         sort: '',
         sn: '',
-        delivery: '',
-        marketable: '',
-        top: '',
-        type: '',
+        delivery: 1,
+        marketable: 1,
+        top: 1,
+        type: 1,
         name: '',
         title: '',
         tags: '',
-        marketPrice: '',
-        salePrice: '',
+        marketPrice: 0,
+        salePrice: 0,
         attrs: '',
         specs: '',
         status: '',
         hits: '',
         imgs: '',
         content: '',
-        score: '',
-        createId: '',
-        createTime: '',
-        updateId: '',
-        updateTime: '',
-        deleted: ''
+        score: ''
+      }
+    }
+  },
+  activated () {
+    let queryId = this.$route.query.id
+    let queryStep = this.$route.query.step || 'info'
+    if (this.dataForm[this.mixinFormModuleOptions.idKey] !== queryId || this.step !== queryStep) {
+      // 参数发生了变化
+      if (!queryId && queryStep > 1) {
+        this.$message.error(this.$t('addneedstep'))
+        return
+      } else {
+        this.dataForm[this.mixinFormModuleOptions.idKey] = queryId
+        this.step = queryStep
+      }
+      // 根据id刷新tab名称
+      let tab = this.$store.state.contentTabs.filter(item => item.name === this.$route.name)[0]
+      if (tab) {
+        tab.title = queryId ? '编辑商品' : '新增商品'
+      }
+      // 根据step刷新数据
+      if (this.step === 'info') {
+        console.log('step info')
+        Promise.all([
+          this.getBrandList(''),
+          this.getSupplierList(''),
+          this.getSpuCategoryList('')
+        ]).then(() => {
+          this.init()
+        })
       }
     }
   },
@@ -182,25 +279,7 @@ export default {
         imgs: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        content: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         score: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        deleted: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -216,6 +295,58 @@ export default {
       this.$nextTick(() => {
         this.resetForm()
         this.initFormData()
+      })
+    },
+    // 跳转步骤
+    onStep (result) {
+      if (!this.dataForm.id && result !== 'info') {
+        this.$message.error('保存基本信息后才能跳转步骤')
+        return false
+      }
+      this.step = result
+      this.$router.replace({ name: this.$route.name, query: { id: this.dataForm.id, step: this.step } })
+      this.refresh()
+    },
+    tabClickHandle (tab, event) {
+      console.log(tab, event)
+      this.onStep(tab.name)
+    },
+    beforeTabLeaveHandle (activeName) {
+      if (!this.dataForm.id && activeName !== 'info') {
+        this.$message.error('请保存基本信息')
+        return false
+      } else {
+        return true
+      }
+    },
+    // 品牌列表
+    getBrandList (name) {
+      return this.$http.get(`/shop/brand/list?name=` + name).then(({ data: res }) => {
+        if (res.code !== 0) {
+          return this.$message.error(res.toast)
+        }
+        this.brandList = res.data
+      }).catch(() => {
+      })
+    },
+    // 供应商列表
+    getSupplierList (name) {
+      return this.$http.get(`/shop/supplier/list?name=` + name).then(({ data: res }) => {
+        if (res.code !== 0) {
+          return this.$message.error(res.toast)
+        }
+        this.supplierList = res.data
+      }).catch(() => {
+      })
+    },
+    // 供应商列表
+    getSpuCategoryList (name) {
+      return this.$http.get(`/shop/spuCategory/tree?name=` + name).then(({ data: res }) => {
+        if (res.code !== 0) {
+          return this.$message.error(res.toast)
+        }
+        this.spuCategoryList = removeEmptyChildren(res.data)
+      }).catch(() => {
       })
     }
   }
