@@ -34,70 +34,70 @@
 </template>
 
 <script>
-    import mixinFormModule from '@/mixins/form-module'
+import mixinFormModule from '@/mixins/form-module'
 
-    export default {
-        mixins: [mixinFormModule],
-        data() {
-            return {
-                // 表单模块参数
-                mixinFormModuleOptions: {
-                    dataFormSaveURL: `/shop/receiver/save`,
-                    dataFormUpdateURL: `/shop/receiver/update`,
-                    dataFormInfoURL: `/shop/receiver/info?id=`
-                },
-                dataForm: {
-                    id: '',
-                    userId: '',
-                    regionName: '',
-                    regionCode: '',
-                    address: '',
-                    consignee: '',
-                    zipCode: '',
-                    mobile: '',
-                    defaultItem: ''
-                }
-            }
-        },
-        computed: {
-            dataRule() {
-                return {
-                    userId: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    regionName: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    regionCode: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    address: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    consignee: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    zipCode: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    mobile: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    defaultItem: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ]
-                }
-            }
-        },
-        methods: {
-            init() {
-                this.formLoading = true
-                this.visible = true
-                this.$nextTick(() => {
-                    this.resetForm()
-                    this.initFormData()
-                })
-            }
-        }
+export default {
+  mixins: [mixinFormModule],
+  data () {
+    return {
+      // 表单模块参数
+      mixinFormModuleOptions: {
+        dataFormSaveURL: `/shop/receiver/save`,
+        dataFormUpdateURL: `/shop/receiver/update`,
+        dataFormInfoURL: `/shop/receiver/info?id=`
+      },
+      dataForm: {
+        id: '',
+        userId: '',
+        regionName: '',
+        regionCode: '',
+        address: '',
+        consignee: '',
+        zipCode: '',
+        mobile: '',
+        defaultItem: ''
+      }
     }
+  },
+  computed: {
+    dataRule () {
+      return {
+        userId: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        regionName: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        regionCode: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        consignee: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        zipCode: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        defaultItem: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    init () {
+      this.formLoading = true
+      this.visible = true
+      this.$nextTick(() => {
+        this.resetForm()
+        this.initFormData()
+      })
+    }
+  }
+}
 </script>

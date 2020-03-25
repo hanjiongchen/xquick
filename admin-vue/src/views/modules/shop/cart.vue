@@ -8,30 +8,18 @@
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:cart:export')">
-          <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-        </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:cart:save')">
-          <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
-        </el-form-item>
         <el-form-item v-if="$hasPermission('shop:cart:delete')">
           <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="id" label="id" header-align="center" align="center"></el-table-column>
         <el-table-column prop="userId" label="会员id" header-align="center" align="center"></el-table-column>
         <el-table-column prop="spuId" label="spu id" header-align="center" align="center"></el-table-column>
         <el-table-column prop="skuId" label="sku id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="storeId" label="商铺id" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="qty" label="数量" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="qty" label="数量" header-align="center" align="center" width="120"/>
         <el-table-column prop="status" label="状态0 未下单 1 已下单" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createId" label="创建者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateId" label="更新者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="deleted" label="删除标记" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="createTime" label="加入时间" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:cart:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

@@ -9,7 +9,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item prop="sort" :label="$t('base.sort')">
-                        <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')"/>
+                        <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')" class="w-percent-100"/>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -21,14 +21,14 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="优惠比例" prop="scale">
-                        <el-input-number v-model="dataForm.marketPrice" placeholder="输入优惠比例" controls-position="right" :min="0" :max="1" :precision="2" :step="0.1" class="w-percent-100"/>
+                        <el-input-number v-model="dataForm.scale" placeholder="输入优惠比例" controls-position="right" :min="0" :max="1" :precision="2" :step="0.1" class="w-percent-100"/>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="默认项" prop="defaultItem">
-                        <el-radio-group v-model="dataForm.defaultItem">
+                        <el-radio-group v-model="dataForm.defaultItem" size="small">
                             <el-radio-button :label="1">默认</el-radio-button>
                             <el-radio-button :label="0">非默认</el-radio-button>
                         </el-radio-group>
@@ -36,7 +36,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="状态" prop="status">
-                        <el-radio-group v-model="dataForm.status">
+                        <el-radio-group v-model="dataForm.status" size="small">
                             <el-radio-button :label="1">正常</el-radio-button>
                             <el-radio-button :label="0">停用</el-radio-button>
                         </el-radio-group>
@@ -52,62 +52,65 @@
 </template>
 
 <script>
-    import mixinFormModule from '@/mixins/form-module'
+import mixinFormModule from '@/mixins/form-module'
 
-    export default {
-        mixins: [mixinFormModule],
-        data() {
-            return {
-                // 表单模块参数
-                mixinFormModuleOptions: {
-                    dataFormSaveURL: `/shop/userRank/save`,
-                    dataFormUpdateURL: `/shop/userRank/update`,
-                    dataFormInfoURL: `/shop/userRank/info?id=`
-                },
-                dataForm: {
-                    id: '',
-                    name: '',
-                    amount: '',
-                    defaultItem: '',
-                    special: '',
-                    scale: '',
-                    status: ''
-                }
-            }
-        },
-        computed: {
-            dataRule() {
-                return {
-                    name: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    amount: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    defaultItem: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    special: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    scale: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ],
-                    status: [
-                        {required: true, message: this.$t('validate.required'), trigger: 'blur'}
-                    ]
-                }
-            }
-        },
-        methods: {
-            init() {
-                this.formLoading = true
-                this.visible = true
-                this.$nextTick(() => {
-                    this.resetForm()
-                    this.initFormData()
-                })
-            }
-        }
+export default {
+  mixins: [mixinFormModule],
+  data () {
+    return {
+      // 表单模块参数
+      mixinFormModuleOptions: {
+        dataFormSaveURL: `/shop/userRank/save`,
+        dataFormUpdateURL: `/shop/userRank/update`,
+        dataFormInfoURL: `/shop/userRank/info?id=`
+      },
+      dataForm: {
+        id: '',
+        name: '',
+        amount: '',
+        defaultItem: 0,
+        special: '',
+        scale: 1,
+        status: 1
+      }
     }
+  },
+  computed: {
+    dataRule () {
+      return {
+        name: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        sort: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        amount: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        defaultItem: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        special: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        scale: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        status: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    init () {
+      this.formLoading = true
+      this.visible = true
+      this.$nextTick(() => {
+        this.resetForm()
+        this.initFormData()
+      })
+    }
+  }
+}
 </script>

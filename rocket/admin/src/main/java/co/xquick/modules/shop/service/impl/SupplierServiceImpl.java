@@ -2,10 +2,12 @@ package co.xquick.modules.shop.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.service.impl.CrudServiceImpl;
+import co.xquick.booster.util.WrapperUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.shop.dao.SupplierDao;
 import co.xquick.modules.shop.dto.SupplierDTO;
 import co.xquick.modules.shop.entity.SupplierEntity;
+import co.xquick.modules.shop.entity.UserRankEntity;
 import co.xquick.modules.shop.service.SpuService;
 import co.xquick.modules.shop.service.SupplierService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -29,13 +31,10 @@ public class SupplierServiceImpl extends CrudServiceImpl<SupplierDao, SupplierEn
     private SpuService spuService;
 
     @Override
-    public QueryWrapper<SupplierEntity> getWrapper(String method, Map<String, Object> params){
-        String name = (String)params.get("name");
-
-        QueryWrapper<SupplierEntity> wrapper = new QueryWrapper<>();
-        wrapper.like(StringUtils.isNotBlank(name), "name", name);
-
-        return wrapper;
+    public QueryWrapper<SupplierEntity> getWrapper(String method, Map<String, Object> params) {
+        return new WrapperUtils<SupplierEntity>(new QueryWrapper<>(), params)
+                .like("name", "name")
+                .getQueryWrapper();
     }
 
     @Override
