@@ -1,12 +1,12 @@
 package co.xquick.modules.shop.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import co.xquick.booster.service.impl.CrudServiceImpl;
+import co.xquick.booster.util.WrapperUtils;
 import co.xquick.modules.shop.dao.ReceiverDao;
 import co.xquick.modules.shop.dto.ReceiverDTO;
 import co.xquick.modules.shop.entity.ReceiverEntity;
 import co.xquick.modules.shop.service.ReceiverService;
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,12 +21,19 @@ public class ReceiverServiceImpl extends CrudServiceImpl<ReceiverDao, ReceiverEn
 
     @Override
     public QueryWrapper<ReceiverEntity> getWrapper(String method, Map<String, Object> params){
-        String id = (String)params.get("id");
+       return new WrapperUtils<ReceiverEntity>(new QueryWrapper<>(), params)
+                .eq("defaultItem", "shop_receiver.status")
+                .eq("userId", "shop_receiver.user_id")
+                .eq("mobile", "shop_receiver.mobile")
+                .like("address", "shop_receiver.address")
+                .like("consignee", "shop_receiver.consignee")
+                .getQueryWrapper()
+                .eq("shop_receiver.deleted", 0);
+    }
 
-        QueryWrapper<ReceiverEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(id), "id", id);
-
-        return wrapper;
+    @Override
+    public boolean setDefaultItem(Long id) {
+        return false;
     }
 
 }

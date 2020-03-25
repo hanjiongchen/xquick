@@ -11,4 +11,9 @@ import co.xquick.modules.shop.entity.ReceiverEntity;
  */
 public interface ReceiverService extends CrudService<ReceiverEntity, ReceiverDTO> {
 
+    /**
+     * 将地址设置为默认项
+     */
+    boolean setDefaultItem(Long id);
+
 }

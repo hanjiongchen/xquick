@@ -14,8 +14,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ReceiverExcel {
-    @Excel(name = "id")
-    private Long id;
+
     @Excel(name = "用户id")
     private Long userId;
     @Excel(name = "区域名称,如浙江省,宁波市,鄞州区")
@@ -30,17 +29,7 @@ public class ReceiverExcel {
     private String zipCode;
     @Excel(name = "收件人手机号")
     private String mobile;
-    @Excel(name = "默认项")
+    @Excel(name = "默认项", replace = {"否_0", "是_1", "保密_2"})
     private Integer defaultItem;
-    @Excel(name = "创建者")
-    private Long createId;
-    @Excel(name = "创建时间")
-    private Date createTime;
-    @Excel(name = "更新者")
-    private Long updateId;
-    @Excel(name = "更新时间")
-    private Date updateTime;
-    @Excel(name = "删除标记")
-    private Integer deleted;
 
 }

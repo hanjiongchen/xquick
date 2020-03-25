@@ -67,6 +67,15 @@ public class UserController {
     @Autowired
     private LoginService logLoginService;
 
+    @GetMapping("list")
+    @ApiOperation("列表")
+    @RequiresPermissions("uc:user:list")
+    public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
+        List<UserDTO> list = userService.listDto(params);
+
+        return new Result<>().ok(list);
+    }
+
     @GetMapping("page")
     @ApiOperation("分页")
     @RequiresPermissions("uc:user:page")
