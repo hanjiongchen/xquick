@@ -9,7 +9,7 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 结合代码生成器工具,减轻开发人员的繁琐开发工作。
 
 ## 演示地址
-* [极速开发demo后台](http://xquick.nbxuda.com)
+* [极速开发后台](http://xquick.nb6868.com)
 
 ## 项目组成
 项目前后端分离
@@ -34,6 +34,7 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 包含站点管理、文章分类管理、文章管理,实现了一个简易的CMS系统;
 
 ## 待实现功能模块
+* [] 商城模块
 * [] 微信模块
 * [] 更加灵活的用户权限管理,目前RBAC0
 * [] 定时任务模具
@@ -45,16 +46,14 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 * [avatar](https://www.iconfinder.com/iconsets/business-avatar-1)
 * [logo](https://www.iconfinder.com/icons/2120156/astronaut_astronomy_rocket_science_space_icon)
 * [Icon](https://www.iconfont.cn/collections/detail?cid=9402)
---------
-批量加入iconfont标签到购物车js代码
-var iconList = document.querySelectorAll('.icon-gouwuche1'); for (var i = 0; i < iconList.length; i++) { iconList[i].click(); }
---------
+
 
 ## Thanks
-* [人人开源](https://www.renren.io/)
+* [renren.io](https://www.renren.io/)
 * [Jeecg-Boot](http://www.jeecg.com/)
 * [Bladex](https://bladex.vip/#/)
 * [litemall](https://github.com/linlinjava/litemall)
+* [shopxx](https://www.shopxx.net/products/shopxx-b2b2c)
 
 ## 文档 
 更多详细内容见[gitbook文档](https://zhangchaoxu.gitbook.io/xquick/)
