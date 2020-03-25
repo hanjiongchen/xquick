@@ -62,6 +62,7 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
         if (dto.getCategoryId() != null) {
             SpuCategoryEntity category = categoryService.getById(dto.getCategoryId());
             AssertUtils.isEmpty(category, ErrorCode.RECORD_NOT_EXISTED, "分类");
+            AssertUtils.isTrue(category.getPid() == 0L, ErrorCode.COMMON_ERROR, "请选择小类");
         }
 
     }

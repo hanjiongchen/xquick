@@ -11,7 +11,7 @@
                 </el-form-item>
             </el-col>
             <el-col :span="12" v-if="dataForm.depth === 2">
-                <el-form-item label="大类" prop="pid">
+                <el-form-item label="上级类别" prop="pid">
                     <el-select v-model="dataForm.pid" placeholder="选择类别" class="w-percent-100">
                         <el-option v-for="item in pidList" :key="item.id" :label="item.name" :value="item.id"/>
                     </el-select>
@@ -141,12 +141,17 @@ export default {
       }
       // 赋值图片
       this.setUploadFileList(this.dataForm.logo)
+      if (this.dataForm.pid === '0') {
+        this.dataForm.depth = 1
+      } else {
+        this.dataForm.depth = 2
+      }
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
       this.dataForm.logo = this.getUploadFileString()
       if (this.dataForm.depth === 1) {
-        this.dataForm.pid = 0
+        this.dataForm.pid = '0'
       }
       this.dataFormSubmitParam = this.dataForm
       return true

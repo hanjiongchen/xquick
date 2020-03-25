@@ -1,7 +1,6 @@
 package co.xquick.modules.shop.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
-import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.TreeUtils;
@@ -14,6 +13,7 @@ import co.xquick.modules.shop.entity.SpuCategoryEntity;
 import co.xquick.modules.shop.service.SpuCategoryService;
 import co.xquick.modules.shop.service.SpuService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,20 +70,16 @@ public class SpuCategoryServiceImpl extends CrudServiceImpl<CategoryDao, SpuCate
     @Override
     protected void inSaveOrUpdateDto(SpuCategoryDTO dto, SpuCategoryEntity existedEntity, int type) {
         // 一级变x级,已存在下级,不允许修改级别
-        if (1 == type && 0L != dto.getPid() && existedEntity.getPid() == 0) {
-            boolean hasSub = hasSub("pid", dto.getId());
-            AssertUtils.isTrue(hasSub, ErrorCode.COMMON_ERROR,"存在小类,不允许变更级别");
+        if (1 == type && !dto.getPid().equals(existedEntity.getPid())) {
+            AssertUtils.isTrue(hasSub("pid", dto.getId()), ErrorCode.COMMON_ERROR,"存在小类,不允许变更级别");
+            AssertUtils.isTrue(SqlHelper.retBool(spuService.query().eq("category_id",  dto.getId()).count()), ErrorCode.COMMON_ERROR,"类别下存在商品,不允许变更级别");
         }
     }
 
     @Override
     public boolean logicDeleteById(Serializable id) {
-        if (query().eq("pid", id).count() > 0) {
-            throw new XquickException("存在子类别,不允许删除");
-        }
-        if (spuService.query().eq("category_id", id).count() > 0) {
-            throw new XquickException("该类别下存在商品,不允许删除");
-        }
+        AssertUtils.isTrue(hasSub("pid", id), ErrorCode.COMMON_ERROR, "存在子类别,不允许删除");
+        AssertUtils.isTrue(SqlHelper.retBool(spuService.query().eq("category_id", id).count()), ErrorCode.COMMON_ERROR, "类别下存在商品,不允许删除");
         return super.logicDeleteById(id);
     }
 
