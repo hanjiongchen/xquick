@@ -1,11 +1,9 @@
 package co.xquick.modules.shop.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 商品类别
@@ -13,9 +11,9 @@ import java.util.Date;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
-@TableName("shop_category")
-public class CategoryEntity extends BaseEntity {
+@EqualsAndHashCode(callSuper = false)
+@TableName("shop_spu_category")
+public class SpuCategoryEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
     /**

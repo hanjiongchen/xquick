@@ -1,17 +1,35 @@
 <template>
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-       <el-form-item label="大类" prop="pid">
-           <el-select v-model="dataForm.pid" placeholder="选择店铺" class="w-percent-100">
-               <el-option v-for="item in pidList" :key="item.id" :label="item.name" :value="item.id"/>
-           </el-select>
-      </el-form-item>
-       <el-form-item label="名称" prop="name">
-          <el-input v-model="dataForm.name" placeholder="名称"></el-input>
-      </el-form-item>
-      <el-form-item prop="sort" :label="$t('dept.sort')">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
-        </el-form-item>
+        <el-row>
+            <el-col :span="12">
+                <el-form-item prop="depth" :label="$t('base.type')">
+                    <el-radio-group v-model="dataForm.depth" @change="dataForm.pid = null">
+                        <el-radio :label="1">大类</el-radio>
+                        <el-radio :label="2">小类</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="dataForm.depth === 2">
+                <el-form-item label="大类" prop="pid">
+                    <el-select v-model="dataForm.pid" placeholder="选择类别" class="w-percent-100">
+                        <el-option v-for="item in pidList" :key="item.id" :label="item.name" :value="item.id"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="12">
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="dataForm.name" placeholder="名称"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item prop="sort" :label="$t('base.sort')">
+                    <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')"/>
+                </el-form-item>
+            </el-col>
+        </el-row>
       <el-form-item prop="logo" label="图标">
           <el-upload
                   :class="{hide:uploadFileList.length >= 1}"
@@ -55,15 +73,16 @@ export default {
     return {
       // 表单模块参数
       mixinFormModuleOptions: {
-        dataFormSaveURL: `/shop/category/save`,
-        dataFormUpdateURL: `/shop/category/update`,
-        dataFormInfoURL: `/shop/category/info?id=`
+        dataFormSaveURL: `/shop/spuCategory/save`,
+        dataFormUpdateURL: `/shop/spuCategory/update`,
+        dataFormInfoURL: `/shop/spuCategory/info?id=`
       },
       // 一级列表
       pidList: [],
       dataForm: {
         id: '',
-        pid: '0',
+        depth: 1,
+        pid: null,
         name: '',
         logo: '',
         sort: '',
@@ -75,6 +94,9 @@ export default {
     dataRule () {
       return {
         pid: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        depth: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         name: [
@@ -91,8 +113,8 @@ export default {
       this.formLoading = true
       this.visible = true
       this.$nextTick(() => {
-        this.resetForm()
         this.pidList = []
+        this.resetForm()
         this.initUpload()
         Promise.all([
           this.getPidList()
@@ -103,7 +125,7 @@ export default {
     },
     // 获取一级列表
     getPidList () {
-      return this.$http.get('/shop/category/list?pid=0').then(({ data: res }) => {
+      return this.$http.get('/shop/spuCategory/list?pid=0').then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
@@ -119,13 +141,13 @@ export default {
       }
       // 赋值图片
       this.setUploadFileList(this.dataForm.logo)
-      // 置空
-      this.menuSelected = ['0']
-      res.data.parentMenuList.forEach(item => this.menuSelected.push(item.id))
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
       this.dataForm.logo = this.getUploadFileString()
+      if (this.dataForm.depth === 1) {
+        this.dataForm.pid = 0
+      }
       this.dataFormSubmitParam = this.dataForm
       return true
     }

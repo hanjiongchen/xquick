@@ -80,7 +80,7 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
     }
 
     /**
-     * 新增和修改之间的操作
+     * 新增和修改之前的操作
      * @param dto 保存dto
      * @param type 0 保存 1 修改
      */
@@ -90,6 +90,16 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
 
     /**
      * 新增和修改之间的操作
+     * @param dto 保存dto
+     * @param existedEntity 数据库中原记录
+     * @param type 0 保存 1 修改
+     */
+    protected void inSaveOrUpdateDto(D dto, T existedEntity, int type) {
+
+    }
+
+    /**
+     * 新增和修改之后的操作
      * @param ret 结果
      * @param dto 保存dto
      * @param existedEntity 数据库中原记录
@@ -134,6 +144,8 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
         // 传了一个fake id,就变成保存了
         T existedEntity = getById((Serializable) idVal);
         AssertUtils.isEmpty(existedEntity, ErrorCode.DB_RECORD_NOT_EXISTED);
+        // 自定义操作前检查
+        this.inSaveOrUpdateDto(dto, existedEntity, 1);
         // 更新数据
         boolean ret = updateById(entity);
         // 自定义操作后检查

@@ -1,8 +1,6 @@
 <template>
-    <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false"
-               :close-on-press-escape="false">
-        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm"
-                 :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
+    <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="'80px'">
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="类目" prop="articleCategoryId">
@@ -115,8 +113,7 @@
             <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
         </template>
         <!-- 弹窗, 图片查看 -->
-        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer"
-                      v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
+        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
     </el-dialog>
 </template>
 

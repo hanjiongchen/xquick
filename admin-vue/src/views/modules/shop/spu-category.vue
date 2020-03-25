@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
-    <div class="mod-shop__category}">
+    <div class="mod-shop__spu-category}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
           <el-input v-model="dataForm.name" placeholder="名称" clearable></el-input>
@@ -8,7 +8,7 @@
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:category:save')">
+        <el-form-item v-if="$hasPermission('shop:spuCategory:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
       </el-form>
@@ -23,8 +23,8 @@
         <el-table-column prop="content" label="描述" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('shop:category:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('shop:category:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-button v-if="$hasPermission('shop:spuCategory:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button v-if="$hasPermission('shop:spuCategory:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,18 +46,18 @@
 <script>
 import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
-import AddOrUpdate from './category-add-or-update'
+import AddOrUpdate from './spu-category-add-or-update'
 
 export default {
   mixins: [mixinListModule, mixinBaseModule],
   data () {
     return {
       mixinListModuleOptions: {
-        getDataListURL: '/shop/category/tree',
+        getDataListURL: '/shop/spuCategory/tree',
         getDataListIsPage: false,
-        exportURL: '/shop/category/export',
-        deleteURL: '/shop/category/delete',
-        deleteBatchURL: '/shop/category/deleteBatch',
+        exportURL: '/shop/spuCategory/export',
+        deleteURL: '/shop/spuCategory/delete',
+        deleteBatchURL: '/shop/spuCategory/deleteBatch',
         deleteIsBatch: false
       },
       dataForm: {

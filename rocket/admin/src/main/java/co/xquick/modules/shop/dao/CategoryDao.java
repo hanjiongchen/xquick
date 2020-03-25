@@ -1,7 +1,7 @@
 package co.xquick.modules.shop.dao;
 
 import co.xquick.booster.dao.BaseDao;
-import co.xquick.modules.shop.entity.CategoryEntity;
+import co.xquick.modules.shop.entity.SpuCategoryEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Mapper
-public interface CategoryDao extends BaseDao<CategoryEntity> {
+public interface CategoryDao extends BaseDao<SpuCategoryEntity> {
     /**
      * 查询所有菜单列表
      *
@@ -24,5 +24,5 @@ public interface CategoryDao extends BaseDao<CategoryEntity> {
             " </where>" +
             " order by t1.sort asc" +
             "</script>")
-    List<CategoryEntity> getCategoryList();
+    List<SpuCategoryEntity> getCategoryList();
 }

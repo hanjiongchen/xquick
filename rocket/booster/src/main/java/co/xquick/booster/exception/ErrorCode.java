@@ -65,6 +65,10 @@ public interface ErrorCode {
     int SMS_TPL_NOT_EXISTED = 10045;
     int ID_NOT_NULL_IN_SAVE = 10046;
     int ID_NULL_IN_UPDATE = 10047;
+    int PARENT_NOT_EXISTED = 10048;
+    int PARENT_EQ_SELF = 10049;
+    int RECORD_NOT_EXISTED = 10050;
+    int COMMON_ERROR = 10051;
 
     int WX_CONFIG_ERROR = 11000;
     int WX_API_ERROR = 11001;

@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "商品类别树结构")
-public class CategoryTreeDTO extends TreeNode<CategoryTreeDTO> {
+public class SpuCategoryTreeDTO extends TreeNode<SpuCategoryTreeDTO> {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,5 +42,5 @@ public class CategoryTreeDTO extends TreeNode<CategoryTreeDTO> {
 	private String parentName;
 
 	@ApiModelProperty(value = "上级菜单列表")
-	private List<CategoryTreeDTO> parentMenuList;
+	private List<SpuCategoryTreeDTO> parentMenuList;
 }
