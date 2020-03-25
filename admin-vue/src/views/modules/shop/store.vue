@@ -30,7 +30,7 @@
             <el-tag v-else-if="scope.row.status === 1" size="small" type="success">已审核</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="content" label="介绍" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="content" label="介绍" header-align="center" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:store:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
