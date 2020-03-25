@@ -8,7 +8,7 @@ import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
 import co.xquick.common.annotation.LogOperation;
-import co.xquick.modules.shop.dto.UserrankDTO;
+import co.xquick.modules.shop.dto.UserRankDTO;
 import co.xquick.modules.shop.service.UserRankService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class UserRankController {
     @ApiOperation("列表")
     @RequiresPermissions("shop:userRank:list")
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
-        List<UserrankDTO> list = userrankService.listDto(params);
+        List<UserRankDTO> list = userrankService.listDto(params);
 
         return new Result<>().ok(list);
     }
@@ -45,7 +45,7 @@ public class UserRankController {
     @ApiOperation("分页")
     @RequiresPermissions("shop:userRank:page")
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
-        PageData<UserrankDTO> page = userrankService.pageDto(params);
+        PageData<UserRankDTO> page = userrankService.pageDto(params);
 
         return new Result<>().ok(page);
     }
@@ -57,16 +57,16 @@ public class UserRankController {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
-        UserrankDTO data = userrankService.getDtoById(id);
+        UserRankDTO data = userrankService.getDtoById(id);
 
-        return new Result<UserrankDTO>().ok(data);
+        return new Result<UserRankDTO>().ok(data);
     }
 
     @PostMapping("save")
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("shop:userRank:save")
-    public Result<?> save(@RequestBody UserrankDTO dto) {
+    public Result<?> save(@RequestBody UserRankDTO dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
@@ -79,7 +79,7 @@ public class UserRankController {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("shop:userRank:update")
-    public Result<?> update(@RequestBody UserrankDTO dto) {
+    public Result<?> update(@RequestBody UserRankDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 

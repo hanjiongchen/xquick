@@ -15,8 +15,8 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-@TableName("shop_userrank")
-public class UserrankEntity extends BaseEntity {
+@TableName("shop_user_rank")
+public class UserRankEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
     /**
@@ -31,6 +31,10 @@ public class UserrankEntity extends BaseEntity {
      * 默认项
      */
 	private Integer defaultItem;
+	/**
+	 * 排序
+	 */
+	private Integer sort;
     /**
      * 是否特殊
      */

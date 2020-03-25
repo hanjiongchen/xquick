@@ -1,7 +1,7 @@
 package co.xquick.modules.shop.dao;
 
 import co.xquick.booster.dao.BaseDao;
-import co.xquick.modules.shop.entity.UserrankEntity;
+import co.xquick.modules.shop.entity.UserRankEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Charles zhangchaoxu@gmail.com
  */
 @Mapper
-public interface UserRankDao extends BaseDao<UserrankEntity> {
+public interface UserRankDao extends BaseDao<UserRankEntity> {
 
 }

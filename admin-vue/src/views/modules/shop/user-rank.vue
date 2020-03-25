@@ -13,12 +13,17 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="amount" label="消费金额" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="defaultItem" label="默认项" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="special" label="是否特殊" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="name" label="名称" header-align="center" align="center" min-width="120"/>
+        <el-table-column prop="sort" label="排序" header-align="center" align="center" min-width="100"/>
+        <el-table-column prop="amount" label="消费金额" header-align="center" align="center" width="120"/>
+        <el-table-column prop="defaultItem" label="默认项" header-align="center" align="center" width="80">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.defaultItem === 0" type="danger">否</el-tag>
+            <el-tag v-else-if="scope.row.defaultItem === 1" type="success">是</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="scale" label="优惠比例" header-align="center" align="center" width="80"/>
-        <el-table-column prop="status" label="状态  0：停用   1：正常" header-align="center" align="center">
+        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status === 0" type="info">停用</el-tag>
             <el-tag v-else-if="scope.row.status === 1" type="success">正常</el-tag>
@@ -26,8 +31,8 @@
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('shop:userrank:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('shop:userrank:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-button v-if="$hasPermission('shop:userRank:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button v-if="$hasPermission('shop:userRank:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
