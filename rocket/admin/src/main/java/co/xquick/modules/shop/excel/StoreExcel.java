@@ -26,5 +26,4 @@ public class StoreExcel {
     private Integer status;
     @Excel(name = "介绍")
     private String content;
-
 }

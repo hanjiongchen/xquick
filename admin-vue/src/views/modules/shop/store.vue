@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="name" label="名称" header-align="center" align="center" min-width="120"></el-table-column>
         <el-table-column prop="logo" label="图标" header-align="center" align="center" width="100">
           <template slot-scope="scope">
             <el-image v-if="scope.row.logo" lazy class="table-img" :src="scope.row.logo.split(',')[0]" @click="imageViewerHandle(scope.row.logo.split(','))" fit="cover"/>
