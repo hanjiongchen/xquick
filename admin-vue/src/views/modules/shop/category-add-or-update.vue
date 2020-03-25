@@ -12,7 +12,7 @@
       <el-form-item prop="sort" :label="$t('dept.sort')">
             <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
         </el-form-item>
-      <el-form-item prop="logo" label="图标">
+      <el-form-item prop="logo" Alabel="图标">
           <el-upload
                   :class="{hide:uploadFileList.length >= 1}"
                   :before-upload="beforeImageUpload"
