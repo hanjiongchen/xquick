@@ -14,12 +14,8 @@
         <el-form-item v-if="$hasPermission('shop:store:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:store:delete')">
-          <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-        </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
         <el-table-column prop="logo" label="图标" header-align="center" align="center" width="100">
           <template slot-scope="scope">
@@ -78,8 +74,7 @@ export default {
         getDataListIsPage: true,
         exportURL: '/shop/store/export',
         deleteURL: '/shop/store/delete',
-        deleteBatchURL: '/shop/store/deleteBatch',
-        deleteIsBatch: true
+        deleteIsBatch: false
       },
       dataForm: {
         name: ''
