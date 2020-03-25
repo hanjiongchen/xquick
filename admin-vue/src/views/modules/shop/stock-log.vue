@@ -68,6 +68,7 @@ import AddOrUpdate from './stock-log-add-or-update'
 
 export default {
   mixins: [mixinBaseModule, mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -84,9 +85,6 @@ export default {
         endCreateTime: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   },
   methods: {
     // 时间区间选择器变化

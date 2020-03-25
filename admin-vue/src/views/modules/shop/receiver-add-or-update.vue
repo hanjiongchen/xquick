@@ -4,14 +4,14 @@
             <el-form-item label="用户id" prop="userId">
                 <el-input v-model="dataForm.userId" placeholder="用户id"></el-input>
             </el-form-item>
-            <el-form-item label="区域名称,如浙江省,宁波市,鄞州区" prop="regionName">
-                <el-input v-model="dataForm.regionName" placeholder="区域名称,如浙江省,宁波市,鄞州区"></el-input>
-            </el-form-item>
-            <el-form-item label="区域编号,如33000,33010,33011" prop="regionCode">
-                <el-input v-model="dataForm.regionCode" placeholder="区域编号,如33000,33010,33011"></el-input>
+            <el-form-item label="区域" prop="regionName">
+                <el-input v-model="dataForm.regionName" placeholder="区域名称"></el-input>
             </el-form-item>
             <el-form-item label="详细门牌号" prop="address">
-                <el-input v-model="dataForm.address" placeholder="详细门牌号"></el-input>
+                <el-input v-model="dataForm.address" placeholder="详细门牌号">
+                    <el-button slot="append" icon="el-icon-map-location" @click="mapLocationPickVisible = true"></el-button>
+                    <amap-location-pick v-if="mapLocationPickVisible"></amap-location-pick>
+                </el-input>
             </el-form-item>
             <el-form-item label="收件人" prop="consignee">
                 <el-input v-model="dataForm.consignee" placeholder="收件人"></el-input>
@@ -35,9 +35,11 @@
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
+import AmapLocationPick from '@/components/amap-location-pick'
 
 export default {
   mixins: [mixinFormModule],
+  components: { AmapLocationPick },
   data () {
     return {
       // 表单模块参数
@@ -46,6 +48,8 @@ export default {
         dataFormUpdateURL: `/shop/receiver/update`,
         dataFormInfoURL: `/shop/receiver/info?id=`
       },
+      // 位置选择是否可见
+      mapLocationPickVisible: false,
       dataForm: {
         id: '',
         userId: '',
@@ -97,6 +101,12 @@ export default {
         this.resetForm()
         this.initFormData()
       })
+    },
+    /**
+    * 挑选地址
+    */
+    pickAddressHandle () {
+      console.log('pickAddressHandle')
     }
   }
 }

@@ -61,6 +61,7 @@ import AddOrUpdate from './mail-tpl-add-or-update'
 import Send from './mail-send'
 export default {
   mixins: [mixinBaseModule, mixinListModule],
+  components: { AddOrUpdate, Send },
   data () {
     return {
       mixinListModuleOptions: {
@@ -75,10 +76,6 @@ export default {
       },
       sendVisible: false
     }
-  },
-  components: {
-    AddOrUpdate,
-    Send
   },
   methods: {
     // 发送邮件

@@ -63,10 +63,7 @@ import mixinBaseModule from '@/mixins/base-module'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 export default {
   mixins: [mixinListModule, mixinBaseModule],
-  components: {
-    AddOrUpdate,
-    ImageViewer
-  },
+  components: { AddOrUpdate, ImageViewer },
   data () {
     return {
       mixinListModuleOptions: {

@@ -52,6 +52,7 @@ import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './region-add-or-update'
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -68,9 +69,6 @@ export default {
         withChildNum: true // 带上子节点数量
       }
     }
-  },
-  components: {
-    AddOrUpdate
   },
   methods: {
     // 获取list之前的操作

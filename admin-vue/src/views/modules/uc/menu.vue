@@ -41,6 +41,7 @@ import AddOrUpdate from './menu-add-or-update'
 
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -50,9 +51,6 @@ export default {
         deleteIsBatch: true
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

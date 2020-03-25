@@ -106,6 +106,7 @@ import AddOrUpdate from './article-add-or-update'
 
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -156,9 +157,6 @@ export default {
       }).catch(() => {
       })
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

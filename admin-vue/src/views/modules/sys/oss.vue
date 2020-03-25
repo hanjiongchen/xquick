@@ -53,6 +53,7 @@ import Config from './param-oss-config'
 import Upload from './oss-upload'
 export default {
   mixins: [mixinListModule],
+  components: { Config, Upload },
   data () {
     return {
       mixinListModuleOptions: {
@@ -66,10 +67,6 @@ export default {
       configVisible: false,
       uploadVisible: false
     }
-  },
-  components: {
-    Config,
-    Upload
   },
   methods: {
     // 云存储配置

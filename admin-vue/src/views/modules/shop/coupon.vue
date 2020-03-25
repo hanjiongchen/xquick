@@ -69,6 +69,7 @@ import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './coupon-add-or-update'
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -83,9 +84,6 @@ export default {
         id: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

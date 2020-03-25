@@ -75,6 +75,7 @@ import AppVersionConfig from './params-app-version-config'
 
 export default {
   mixins: [mixinBaseModule, mixinListModule],
+  components: { LoginConfig, OssConfig, AddOrUpdate, AppAboutConfig, AppBannerConfig, AppLoadingConfig, AppServiceConfig, AppVersionConfig },
   data () {
     return {
       mixinListModuleOptions: {
@@ -168,16 +169,6 @@ export default {
         this.addOrUpdateHandle(id)
       }
     }
-  },
-  components: {
-    LoginConfig,
-    OssConfig,
-    AddOrUpdate,
-    AppAboutConfig,
-    AppBannerConfig,
-    AppLoadingConfig,
-    AppServiceConfig,
-    AppVersionConfig
   }
 }
 </script>

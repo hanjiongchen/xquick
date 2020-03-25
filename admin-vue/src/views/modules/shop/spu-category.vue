@@ -50,6 +50,7 @@ import AddOrUpdate from './spu-category-add-or-update'
 
 export default {
   mixins: [mixinListModule, mixinBaseModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -64,9 +65,6 @@ export default {
         name: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

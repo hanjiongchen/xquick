@@ -72,6 +72,7 @@ import Send from './sms-send'
 
 export default {
   mixins: [mixinBaseModule, mixinListModule],
+  components: { AddOrUpdate, Send },
   data () {
     return {
       mixinListModuleOptions: {
@@ -88,10 +89,6 @@ export default {
       // 短信发送
       sendVisible: false
     }
-  },
-  components: {
-    AddOrUpdate,
-    Send
   },
   methods: {
     // 发送短信

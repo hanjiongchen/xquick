@@ -43,6 +43,7 @@
 import ChartCard from '@/components/ChartCard'
 
 export default {
+  components: { ChartCard },
   data () {
     return {
       loading: true,
@@ -52,9 +53,6 @@ export default {
         userCount: '0'
       }
     }
-  },
-  components: {
-    ChartCard
   },
   created () {
     this.getHomeCount()

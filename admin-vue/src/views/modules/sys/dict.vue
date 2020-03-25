@@ -69,6 +69,7 @@ import { moduleRoutes } from '@/router'
 
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -86,9 +87,6 @@ export default {
         type: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   },
   activated () {
     if (this.$route.params.pid) {

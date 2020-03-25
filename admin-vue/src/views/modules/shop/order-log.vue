@@ -46,15 +46,13 @@
         @size-change="pageSizeChangeHandle"
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
-      <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
     </div>
   </el-card>
 </template>
 
 <script>
 import mixinListModule from '@/mixins/list-module'
-import AddOrUpdate from './order-log-add-or-update'
+
 export default {
   mixins: [mixinListModule],
   data () {
@@ -71,9 +69,6 @@ export default {
         id: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

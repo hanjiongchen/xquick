@@ -59,6 +59,7 @@ import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './site-add-or-update'
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -74,9 +75,6 @@ export default {
         name: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

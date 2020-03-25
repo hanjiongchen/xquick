@@ -103,6 +103,7 @@ import ChangeStatus from './user-change-status'
 import Import from './user-import'
 export default {
   mixins: [mixinListModule],
+  components: { ChangeStatus, AddOrUpdate, Import },
   data () {
     return {
       mixinListModuleOptions: {
@@ -138,11 +139,6 @@ export default {
   },
   created () {
     this.getRoleList()
-  },
-  components: {
-    ChangeStatus,
-    AddOrUpdate,
-    Import
   },
   methods: {
     // 获取角色列表

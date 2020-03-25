@@ -58,6 +58,7 @@ import AddOrUpdate from './user-rank-add-or-update'
 
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -71,9 +72,6 @@ export default {
         name: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

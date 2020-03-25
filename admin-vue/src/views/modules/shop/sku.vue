@@ -60,6 +60,7 @@ import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './sku-add-or-update'
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
@@ -71,12 +72,10 @@ export default {
         deleteIsBatch: true
       },
       dataForm: {
-        id: ''
+        spuId: '',
+        name: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

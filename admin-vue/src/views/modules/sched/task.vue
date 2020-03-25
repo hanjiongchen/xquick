@@ -85,6 +85,7 @@ import Log from './task-log'
 
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate, Log },
   data () {
     return {
       mixinListModuleOptions: {
@@ -99,10 +100,6 @@ export default {
       },
       logVisible: false
     }
-  },
-  components: {
-    AddOrUpdate,
-    Log
   },
   methods: {
     /** 其它更多按钮操作 */

@@ -102,8 +102,6 @@ export default {
       }
     }
   },
-  components: {
-  },
   methods: {
     // 新增/修改
     addOrUpdateHandle (id) {
