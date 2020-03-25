@@ -14,7 +14,8 @@ public interface SkuService extends CrudService<SkuEntity, SkuDTO> {
     /**
      * 修改sku库存数量
      *
+     * @param id skuId
      * @param stock 正数添加,负数减少
      */
-    boolean addStock(Integer stock);
+    boolean addStock(Long id, Integer stock);
 }

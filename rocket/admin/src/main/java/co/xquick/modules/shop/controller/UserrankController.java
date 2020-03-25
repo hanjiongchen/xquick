@@ -95,7 +95,7 @@ public class UserrankController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("shop:userrank:delete")
-    public Result<?> delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 

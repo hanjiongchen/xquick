@@ -95,24 +95,11 @@ public class SupplierController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("shop:supplier:delete")
-    public Result<?> delete(@RequestBody Long id) {
+    public Result<?> delete(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
         supplierService.logicDeleteById(id);
-
-        return new Result<>();
-    }
-
-    @DeleteMapping("deleteBatch")
-    @ApiOperation("批量删除")
-    @LogOperation("批量删除")
-    @RequiresPermissions("shop:supplier:deleteBatch")
-    public Result<?> deleteBatch(@RequestBody List<Long> ids) {
-        // 效验参数
-        AssertUtils.isListEmpty(ids, "id");
-
-        supplierService.logicDeleteByIds(ids);
 
         return new Result<>();
     }

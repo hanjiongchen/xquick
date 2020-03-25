@@ -49,6 +49,7 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
         // 检查商品规格
         SkuEntity skuEntity = skuService.getById(dto.getSkuId());
         AssertUtils.isEmpty(skuEntity, ErrorCode.RECORD_NOT_EXISTED, "商品规格");
+        dto.setSpuId(skuEntity.getSpuId());
 
         if (type == ShopConst.StockLogTypeEnum.IN.value()) {
             // 入库
@@ -57,7 +58,7 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
                 throw new XquickException("入库数量不能小于0");
             }
             // 添加库存
-            skuService.addStock(dto.getInQty());
+            skuService.addStock(dto.getSkuId(), dto.getInQty());
             dto.setStock(skuEntity.getStock() + dto.getInQty());
         } else if (type == ShopConst.StockLogTypeEnum.OUT.value()) {
             // 出库
@@ -69,7 +70,7 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
                 throw new XquickException("出库数量不能超过当前库存");
             }
             // 减少库存
-            skuService.addStock(-dto.getOutQty());
+            skuService.addStock(dto.getSkuId(), -dto.getOutQty());
             dto.setStock(skuEntity.getStock() - dto.getInQty());
         }
     }
