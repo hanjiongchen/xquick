@@ -2,12 +2,15 @@
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
             <el-form-item label="用户" prop="userId">
-                <el-input v-model="dataForm.userId" placeholder="用户id"></el-input>
+                <el-input v-model="dataForm.userName" placeholder="会员" disabled>
+                    <!-- 用户选择器 -->
+                    <user-pick slot="append" :userId="dataForm.userId" v-on:onUserPicked="onUserPicked"/>
+                </el-input>
             </el-form-item>
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="收件人" prop="consignee">
-                        <el-input v-model="dataForm.consignee" placeholder="收件人"></el-input>
+                        <el-input v-model="dataForm.consignee" placeholder="收件人"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -49,10 +52,11 @@
 <script>
 import mixinFormModule from '@/mixins/form-module'
 import AmapLocPick from '@/components/amap-loc-pick'
+import UserPick from '@/components/user-pick'
 
 export default {
   mixins: [mixinFormModule],
-  components: { AmapLocPick },
+  components: { AmapLocPick, UserPick },
   data () {
     return {
       // 表单模块参数
@@ -120,6 +124,14 @@ export default {
         this.dataForm.address = result.address
         this.dataForm.lat = result.lat
         this.dataForm.lng = result.lng
+      }
+    },
+    // 选中用户
+    onUserPicked (result) {
+      console.log(result)
+      if (result && result.length > 0) {
+        this.dataForm.userId = result[0].id
+        this.dataForm.userName = result[0].username
       }
     }
   }
