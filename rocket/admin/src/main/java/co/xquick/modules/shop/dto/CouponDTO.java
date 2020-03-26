@@ -1,6 +1,7 @@
 package co.xquick.modules.shop.dto;
 
 import co.xquick.booster.pojo.BaseDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -66,4 +67,7 @@ public class CouponDTO extends BaseDTO {
 	@ApiModelProperty(value = "价格计算表达式")
 	private String priceExpress;
 
+	@ApiModelProperty(value = "商铺名称")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String storeName;
 }

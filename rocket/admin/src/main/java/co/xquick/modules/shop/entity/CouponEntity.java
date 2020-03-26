@@ -1,5 +1,6 @@
 package co.xquick.modules.shop.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
 import lombok.Data;
@@ -79,4 +80,9 @@ public class CouponEntity extends BaseEntity {
      * 价格计算表达式
      */
 	private String priceExpress;
+	/**
+	 * 用户名
+	 */
+	@TableField(exist = false)
+	private String storeName;
 }

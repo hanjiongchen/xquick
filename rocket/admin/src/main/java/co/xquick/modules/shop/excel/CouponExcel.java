@@ -15,47 +15,25 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CouponExcel {
-    @Excel(name = "id")
-    private Long id;
-    @Excel(name = "商铺id")
-    private Long storeId;
+    @Excel(name = "商铺")
+    private String storeName;
     @Excel(name = "名称")
     private String name;
     @Excel(name = "描述")
     private String content;
-    @Excel(name = "类型")
+    @Excel(name = "类型", replace = {"满减券_1"})
     private Integer type;
-    @Excel(name = "有效期开始")
+    @Excel(name = "有效期开始", format = "yyyy-MM-dd HH:mm:ss")
     private Date validStartTime;
-    @Excel(name = "有效期结束")
+    @Excel(name = "有效期结束", format = "yyyy-MM-dd HH:mm:ss")
     private Date validEndTime;
-    @Excel(name = "状态 0 未激活 1 已激活")
+    @Excel(name = "状态", replace = {"未审核_0", "已激活_1"})
     private Integer status;
-    @Excel(name = "是否可以积分兑换")
+    @Excel(name = "是否可以积分兑换", replace = {"否_0", "是_1"})
     private Integer pointExchangeEnable;
     @Excel(name = "兑换积分")
     private Integer pointExchange;
     @Excel(name = "当前数量")
     private Integer stock;
-    @Excel(name = "最大商品价格")
-    private BigDecimal maxPrice;
-    @Excel(name = "最大sku数量")
-    private Integer maxQty;
-    @Excel(name = "最小商品价格")
-    private BigDecimal minPrice;
-    @Excel(name = "最小sku数量")
-    private Integer minQty;
-    @Excel(name = "价格计算表达式")
-    private String priceExpress;
-    @Excel(name = "创建者")
-    private Long createId;
-    @Excel(name = "创建时间")
-    private Date createTime;
-    @Excel(name = "更新者")
-    private Long updateId;
-    @Excel(name = "更新时间")
-    private Date updateTime;
-    @Excel(name = "删除标记")
-    private Integer deleted;
 
 }
