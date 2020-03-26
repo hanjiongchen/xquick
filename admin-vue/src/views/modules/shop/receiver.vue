@@ -38,14 +38,18 @@
         <el-table-column prop="userName" label="用户" header-align="center" align="center" width="120"></el-table-column>
         <el-table-column prop="tag" label="标签" header-align="center" align="center" width="120">
           <template slot-scope="scope">
-              <el-tag>{{ scope.row.tag }}</el-tag>
+              <el-tag v-if="scope.row.tag">{{ scope.row.tag }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="regionName" label="区域名称" header-align="center" align="center" min-width="100"></el-table-column>
-        <el-table-column prop="address" label="详细门牌号" header-align="center" align="center" min-width="120"/>
+        <el-table-column prop="regionName" label="区域" header-align="center" align="center" min-width="100"></el-table-column>
+        <el-table-column prop="address" label="详细地址" header-align="center" align="center" min-width="120">
+          <template slot-scope="scope">
+            {{ scope.row.address }}<amap-loc-view :poi="{ regionName: scope.row.regionName, regionCd: scope.row.regionCd, address: scope.row.address, lat: scope.row.lat, lng: scope.row.lng }" />
+          </template>
+        </el-table-column>
         <el-table-column prop="consignee" label="收件人" header-align="center" align="center" width="120"/>
         <el-table-column prop="mobile" label="收件人手机号" header-align="center" align="center" width="120"/>
-        <el-table-column prop="defaultItem" label="默认项" header-align="center" align="center" width="80">
+        <el-table-column prop="defaultItem" label="默认" header-align="center" align="center" width="80">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.defaultItem === 0" type="danger">否</el-tag>
             <el-tag v-else-if="scope.row.defaultItem === 1" type="success">是</el-tag>
@@ -77,9 +81,11 @@
 <script>
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './receiver-add-or-update'
+import AmapLocView from '@/components/amap-loc-view'
+
 export default {
   mixins: [mixinListModule],
-  components: { AddOrUpdate },
+  components: { AddOrUpdate, AmapLocView },
   data () {
     return {
       mixinListModuleOptions: {

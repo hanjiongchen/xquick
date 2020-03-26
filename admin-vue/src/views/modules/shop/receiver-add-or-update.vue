@@ -17,18 +17,27 @@
                 </el-col>
             </el-row>
             <el-form-item label="地址" prop="address">
-                <el-input v-model="dataForm.address" placeholder="详细门牌号">
+                <el-input v-model="dataForm.address" placeholder="详细地址">
                     <template slot="prepend">{{ dataForm.regionName }}</template>
                     <!-- 位置选择器 -->
                     <amap-loc-pick slot="append" :poi="{ regionName: dataForm.regionName, regionCd: dataForm.regionCd, address: dataForm.address, lat: dataForm.lat, lng: dataForm.lng }" v-on:onLocationInfoResult="onLocPicked"/>
                 </el-input>
             </el-form-item>
-            <el-form-item label="默认" prop="defaultItem">
-                <el-radio-group v-model="dataForm.defaultItem" size="small">
-                    <el-radio-button :label="1">默认</el-radio-button>
-                    <el-radio-button :label="0">非默认</el-radio-button>
-                </el-radio-group>
-            </el-form-item>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="标签" prop="tag">
+                        <el-input v-model="dataForm.tag" placeholder="请输入标签"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="默认" prop="defaultItem">
+                        <el-radio-group v-model="dataForm.defaultItem" size="small">
+                            <el-radio-button :label="1">默认</el-radio-button>
+                            <el-radio-button :label="0">非默认</el-radio-button>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
+            </el-row>
         </el-form>
         <template slot="footer">
             <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
@@ -56,6 +65,7 @@ export default {
         id: '',
         userId: '',
         regionName: '',
+        tag: '',
         regionCode: '',
         address: '',
         consignee: '',

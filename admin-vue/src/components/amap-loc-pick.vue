@@ -1,6 +1,5 @@
 <template>
-    <div class="vue-map">
-        <el-button icon="el-icon-map-location" @click="visible = true"/>
+    <el-button icon="el-icon-map-location vue-map" @click="visible = true">
         <el-dialog title="位置选择" :visible.sync="visible" append-to-body modal-append-to-body
                    :close-on-click-modal="false" :close-on-press-escape="false"
                    @close="closeHandle"
@@ -14,20 +13,19 @@
                     <!-- 搜索结果 -->
                     <div id="map__result" class="vue-map__content-result"/>
                 </div>
-                <span>{{ poiResult.address }}</span>
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button type="info" icon="el-icon-full-screen" @click="fullscreen = !fullscreen">{{ fullscreen ? '缩小':'放大' }}</el-button>
                 <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
             </div>
         </el-dialog>
-    </div>
+    </el-button>
 </template>
 
 <script>
 export default {
   // 参考https://gitee.com/smallweigit/avue-plugin-map
-  name: 'AmapLocationPick',
+  name: 'AmapLocPick',
   // 参数
   props: {
     poi: {

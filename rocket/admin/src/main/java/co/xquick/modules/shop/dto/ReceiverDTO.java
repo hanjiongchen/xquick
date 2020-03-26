@@ -8,8 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 /**
  * 收件地址
@@ -23,7 +22,7 @@ public class ReceiverDTO extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "用户id", required = true)
-	@NotBlank(message = "用户id不能为空", groups = DefaultGroup.class)
+	@NotNull(message = "用户id不能为空", groups = DefaultGroup.class)
 	private Long userId;
 
 	@ApiModelProperty(value = "纬度")

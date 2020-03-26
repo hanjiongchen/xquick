@@ -5,7 +5,6 @@ import co.xquick.booster.pojo.Const;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.WrapperUtils;
 import co.xquick.booster.validator.AssertUtils;
-import co.xquick.modules.log.controller.ErrorController;
 import co.xquick.modules.shop.dao.ReceiverDao;
 import co.xquick.modules.shop.dto.ReceiverDTO;
 import co.xquick.modules.shop.entity.ReceiverEntity;
@@ -28,7 +27,7 @@ public class ReceiverServiceImpl extends CrudServiceImpl<ReceiverDao, ReceiverEn
     @Override
     public QueryWrapper<ReceiverEntity> getWrapper(String method, Map<String, Object> params) {
         return new WrapperUtils<ReceiverEntity>(new QueryWrapper<>(), params)
-                .eq("defaultItem", "shop_receiver.status")
+                .eq("defaultItem", "shop_receiver.default_item")
                 .eq("userId", "shop_receiver.user_id")
                 .eq("mobile", "shop_receiver.mobile")
                 .like("address", "shop_receiver.address")
