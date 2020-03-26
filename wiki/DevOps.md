@@ -1,5 +1,13 @@
 # DevOps
 
+# 前端部署
+```
+# 解决404
+location / {
+	try_files /$uri /$uri/ /index.html$args;
+}
+```
+
 ## 部署运行
 
 SpringBoot支持war和jar两种方法部署运行 部署服务器需要有jdk1.8+
