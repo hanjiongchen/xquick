@@ -85,7 +85,6 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
      * @param type 0 保存 1 修改
      */
     protected void beforeSaveOrUpdateDto(D dto, int type) {
-        this.beforeSaveOrUpdateDto(dto, null, type);
     }
 
     /**
@@ -95,7 +94,7 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
      * @param type 0 保存 1 修改
      */
     protected void beforeSaveOrUpdateDto(D dto, T toSaveEntity, int type) {
-
+        this.beforeSaveOrUpdateDto(dto, type);
     }
 
     /**

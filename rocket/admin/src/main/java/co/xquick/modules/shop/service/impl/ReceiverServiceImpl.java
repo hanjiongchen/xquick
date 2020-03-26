@@ -9,8 +9,10 @@ import co.xquick.modules.shop.dao.ReceiverDao;
 import co.xquick.modules.shop.dto.ReceiverDTO;
 import co.xquick.modules.shop.entity.ReceiverEntity;
 import co.xquick.modules.shop.service.ReceiverService;
+import co.xquick.modules.uc.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -24,6 +26,9 @@ import java.util.Map;
 @Service
 public class ReceiverServiceImpl extends CrudServiceImpl<ReceiverDao, ReceiverEntity, ReceiverDTO> implements ReceiverService {
 
+    @Autowired
+    UserService userService;
+
     @Override
     public QueryWrapper<ReceiverEntity> getWrapper(String method, Map<String, Object> params) {
         return new WrapperUtils<ReceiverEntity>(new QueryWrapper<>(), params)
@@ -34,6 +39,11 @@ public class ReceiverServiceImpl extends CrudServiceImpl<ReceiverDao, ReceiverEn
                 .like("consignee", "shop_receiver.consignee")
                 .getQueryWrapper()
                 .eq("shop_receiver.deleted", 0);
+    }
+
+    @Override
+    protected void beforeSaveOrUpdateDto(ReceiverDTO dto, int type) {
+        AssertUtils.isEmpty(userService.getById(dto.getUserId()), ErrorCode.ACCOUNT_NOT_EXIST);
     }
 
     @Override
@@ -66,8 +76,6 @@ public class ReceiverServiceImpl extends CrudServiceImpl<ReceiverDao, ReceiverEn
         update().eq("id", id).set("default_item", 1).update(new ReceiverEntity());
         return true;
     }
-
-
 
     @Override
     public boolean logicDeleteById(Serializable id) {
