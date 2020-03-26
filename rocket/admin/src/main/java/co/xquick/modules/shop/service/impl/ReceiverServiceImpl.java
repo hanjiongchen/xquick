@@ -9,6 +9,7 @@ import co.xquick.modules.shop.dao.ReceiverDao;
 import co.xquick.modules.shop.dto.ReceiverDTO;
 import co.xquick.modules.shop.entity.ReceiverEntity;
 import co.xquick.modules.shop.service.ReceiverService;
+import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -75,6 +76,17 @@ public class ReceiverServiceImpl extends CrudServiceImpl<ReceiverDao, ReceiverEn
         // 将该地址设置为默认项
         update().eq("id", id).set("default_item", 1).update(new ReceiverEntity());
         return true;
+    }
+
+    @Override
+    public ReceiverDTO getDtoById(Serializable id) {
+        ReceiverDTO dto = super.getDtoById(id);
+        AssertUtils.isEmpty(dto, ErrorCode.RECORD_NOT_EXISTED);
+
+        UserEntity user = userService.getById(dto.getUserId());
+        AssertUtils.isEmpty(user, ErrorCode.ACCOUNT_NOT_EXIST);
+        dto.setUserName(user.getUsername());
+        return dto;
     }
 
     @Override

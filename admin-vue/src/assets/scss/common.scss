@@ -961,3 +961,10 @@ body .el-table th.gutter {
   margin-left: 10px;
   vertical-align: bottom;
 }
+
+/**
+输入框右侧append时候缩小左右边距
+ */
+.el-input-group__append, .el-input-group__prepend .small-button {
+  padding: 0 10px;
+}

@@ -2,6 +2,7 @@ package co.xquick.modules.shop.dto;
 
 import co.xquick.booster.pojo.BaseDTO;
 import co.xquick.booster.validator.group.DefaultGroup;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,6 +25,10 @@ public class ReceiverDTO extends BaseDTO {
 	@ApiModelProperty(value = "用户id", required = true)
 	@NotNull(message = "用户id不能为空", groups = DefaultGroup.class)
 	private Long userId;
+
+	@ApiModelProperty(value = "用户名")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String userName;
 
 	@ApiModelProperty(value = "纬度")
 	private Double lat;

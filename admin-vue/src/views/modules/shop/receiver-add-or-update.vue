@@ -2,7 +2,7 @@
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
             <el-form-item label="用户" prop="userId">
-                <el-input v-model="dataForm.userName" placeholder="会员" disabled>
+                <el-input v-model="dataForm.userName" placeholder="会员" readonly>
                     <!-- 用户选择器 -->
                     <user-pick slot="append" :userId="dataForm.userId" v-on:onUserPicked="onUserPicked"/>
                 </el-input>
@@ -128,7 +128,6 @@ export default {
     },
     // 选中用户
     onUserPicked (result) {
-      console.log(result)
       if (result && result.length > 0) {
         this.dataForm.userId = result[0].id
         this.dataForm.userName = result[0].username

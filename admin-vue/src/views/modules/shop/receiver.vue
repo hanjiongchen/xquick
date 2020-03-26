@@ -2,8 +2,10 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-shop__receiver}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-        <el-form-item class="small-item">
-          <el-input v-model="dataForm.userName" placeholder="用户" clearable/>
+        <el-form-item style="width: 150px;">
+          <el-input v-model="dataForm.userName" placeholder="用户" clearable readonly>
+            <user-pick class="small-button" slot="append" :userId="dataForm.userId" v-on:onUserPicked="onUserPicked"/>
+          </el-input>
         </el-form-item>
         <el-form-item class="small-item">
           <el-input v-model="dataForm.consignee" placeholder="收件人" clearable/>
@@ -82,10 +84,11 @@
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './receiver-add-or-update'
 import AmapLocView from '@/components/amap-loc-view'
+import UserPick from '@/components/user-pick'
 
 export default {
   mixins: [mixinListModule],
-  components: { AddOrUpdate, AmapLocView },
+  components: { AddOrUpdate, AmapLocView, UserPick },
   data () {
     return {
       mixinListModuleOptions: {
@@ -105,6 +108,15 @@ export default {
         address: '',
         consignee: '',
         mobile: ''
+      }
+    }
+  },
+  methods: {
+    // 选中用户
+    onUserPicked (result) {
+      if (result && result.length > 0) {
+        this.dataForm.userId = result[0].id
+        this.dataForm.userName = result[0].username
       }
     }
   }

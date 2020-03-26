@@ -1,11 +1,10 @@
 package co.xquick.modules.shop.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 收件地址
@@ -62,4 +61,10 @@ public class ReceiverEntity extends BaseEntity {
      * 默认项
      */
 	private Integer defaultItem;
+
+	/**
+	 * 用户名
+	 */
+	@TableField(exist = false)
+	private String userName;
 }
