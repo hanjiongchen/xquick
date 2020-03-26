@@ -24,6 +24,7 @@
                             v-loading="dataListLoading"
                             :data="dataList"
                             border
+                            ref="dataTable"
                             @selection-change="dataListSelectionChangeHandle"
                             @sort-change="dataListSortChangeHandle"
                             style="width: 100%;">
@@ -125,10 +126,13 @@ export default {
 
     },
     dataListSelectionChangeHandle (val) {
-      console.log(val)
       if (this.type === 'multi') {
         this.dataListSelections = val
       } else {
+        if (val.length > 1) {
+          this.$refs.dataTable.toggleRowSelection(val[0], false)
+          val.splice(0, 1)
+        }
         this.dataListSelections = val
       }
     },
