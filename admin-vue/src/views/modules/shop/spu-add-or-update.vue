@@ -12,9 +12,13 @@
                   <el-row>
                       <el-col :span="12">
                           <el-form-item label="供应商" prop="supplierId">
-                              <el-select v-model="dataForm.supplierId" filterable placeholder="请选择供应商" class="w-percent-100">
-                                  <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id"/>
-                              </el-select>
+                              <el-autocomplete
+                                      class="w-percent-100"
+                                      value-key="name"
+                                      v-model="dataForm.supplierName"
+                                      :fetch-suggestions="getSupplierList"
+                                      placeholder="请选择供应商"
+                                      @select="item => dataForm.supplierId = item.id"/>
                           </el-form-item>
                       </el-col>
                       <el-col :span="12">
@@ -153,8 +157,6 @@ export default {
       step: '1',
       // 品牌列表
       brandList: [],
-      // 供应商列表
-      supplierList: [],
       // 分类列表
       spuCategoryList: [],
       // 已选中分类
@@ -165,6 +167,7 @@ export default {
         brandId: '',
         categoryId: '',
         supplierId: '',
+        supplierName: '',
         sort: '',
         sn: '',
         delivery: 1,
@@ -207,7 +210,7 @@ export default {
       if (this.step === '1') {
         Promise.all([
           this.getBrandList(''),
-          this.getSupplierList(''),
+          // this.getSupplierList(''),
           this.getSpuCategoryList('')
         ]).then(() => {
           this.init()
@@ -347,12 +350,12 @@ export default {
       })
     },
     // 供应商列表
-    getSupplierList (name) {
+    getSupplierList (name, callback) {
       return this.$http.get(`/shop/supplier/list?name=` + name).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
-        this.supplierList = res.data
+        callback(res.data)
       }).catch(() => {
       })
     },

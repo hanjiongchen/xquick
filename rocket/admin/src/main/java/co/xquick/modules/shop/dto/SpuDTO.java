@@ -33,6 +33,9 @@ public class SpuDTO extends BaseDTO {
 	@ApiModelProperty(value = "供应商id")
 	private Long supplierId;
 
+	@ApiModelProperty(value = "供应商名称")
+	private String supplierName;
+
 	@ApiModelProperty(value = "排序")
 	private Integer sort;
 

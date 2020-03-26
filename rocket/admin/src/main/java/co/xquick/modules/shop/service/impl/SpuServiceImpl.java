@@ -6,19 +6,14 @@ import co.xquick.booster.util.WrapperUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.modules.shop.dao.SpuDao;
 import co.xquick.modules.shop.dto.SpuDTO;
-import co.xquick.modules.shop.entity.BrandEntity;
-import co.xquick.modules.shop.entity.SpuCategoryEntity;
-import co.xquick.modules.shop.entity.SkuEntity;
-import co.xquick.modules.shop.entity.SpuEntity;
-import co.xquick.modules.shop.service.BrandService;
-import co.xquick.modules.shop.service.SpuCategoryService;
-import co.xquick.modules.shop.service.SkuService;
-import co.xquick.modules.shop.service.SpuService;
+import co.xquick.modules.shop.entity.*;
+import co.xquick.modules.shop.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -33,6 +28,8 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
     SkuService skuService;
     @Autowired
     BrandService brandService;
+    @Autowired
+    SupplierService supplierService;
     @Autowired
     SpuCategoryService categoryService;
 
@@ -64,7 +61,24 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
             AssertUtils.isEmpty(category, ErrorCode.RECORD_NOT_EXISTED, "分类");
             AssertUtils.isTrue(category.getPid() == 0L, ErrorCode.COMMON_ERROR, "请选择小类");
         }
+        // 检查一下供应商
+        if (dto.getSupplierId() != null) {
+            SupplierEntity supplier = supplierService.getById(dto.getSupplierId());
+            AssertUtils.isEmpty(supplier, ErrorCode.RECORD_NOT_EXISTED, "供应商");
+        }
+    }
 
+    @Override
+    public SpuDTO getDtoById(Serializable id) {
+        SpuDTO dto = super.getDtoById(id);
+        AssertUtils.isEmpty(dto, ErrorCode.RECORD_NOT_EXISTED);
+
+        SupplierEntity supplier = supplierService.getById(dto.getSupplierId());
+        if (supplier != null) {
+            dto.setSupplierName(supplier.getName());
+        }
+
+        return dto;
     }
 
     @Override
