@@ -1,6 +1,8 @@
 package co.xquick.modules.shop.entity;
 
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +21,7 @@ public class StockLogEntity extends BaseEntity {
 	/**
 	 * 创建人姓名
 	 */
+	@TableField(fill = FieldFill.INSERT)
 	private String createName;
     /**
      * spu id

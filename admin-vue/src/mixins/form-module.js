@@ -4,6 +4,7 @@
 import Cookies from 'js-cookie'
 import debounce from 'lodash/debounce'
 import { aesEncrypt } from '@/utils'
+import { isURL } from '@/utils/validate'
 import { beforeImageUpload } from '@/utils/upload'
 
 export default {
@@ -173,7 +174,7 @@ export default {
       }
     },
     // 图片上传失败
-    uploadErrorHandle  (err, file, fileList) {
+    uploadErrorHandle (err, file, fileList) {
       console.log(err)
       console.log(file)
       console.log(fileList)
@@ -195,7 +196,7 @@ export default {
       let files = []
       fileList.forEach(function (item) {
         if (item.status === 'success') {
-          if (item.url && item.url.startsWith('http')) {
+          if (isURL(item.url)) {
             files.push(item.url)
           } else if (item.response && item.response.code === 0 && item.response.data) {
             files.push(item.response.data.src)
@@ -220,18 +221,6 @@ export default {
           uploadFileList.push({ url: item, name: item })
         })
       }
-    },
-    // 选择地址
-    mapLocationPickHandle () {
-      this.mapLocationPickVisible = true
-      this.$nextTick(() => {
-        // 如果有地址的回到原先地址
-        this.$refs.mapLocationPick.dataForm.position = [!this.dataForm.lng ? 120.210649 : this.dataForm.lng, !this.dataForm.lat ? 30.246071 : this.dataForm.lat]
-        this.$refs.mapLocationPick.dataForm.regionNm = this.dataForm.regionNm
-        this.$refs.mapLocationPick.dataForm.regionCd = this.dataForm.regionCd
-        this.$refs.mapLocationPick.dataForm.address = this.dataForm.address
-        this.$refs.mapLocationPick.init()
-      })
     },
     // 接受位置选择返回结果
     onLocationInfoResult (result) {

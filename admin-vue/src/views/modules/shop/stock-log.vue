@@ -43,7 +43,7 @@
         <el-table-column prop="outQty" label="出库数量" header-align="center" align="center" width="120"/>
         <el-table-column prop="stock" label="操作后库存" header-align="center" align="center" width="120"/>
         <el-table-column prop="createName" label="操作人" header-align="center" align="center" width="120"/>
-        <el-table-column prop="createTime" label="操作时间" header-align="center" align="center" width="150"/>
+        <el-table-column prop="createTime" label="操作时间" header-align="center" align="center" width="160"/>
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"

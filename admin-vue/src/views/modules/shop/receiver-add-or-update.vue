@@ -1,29 +1,33 @@
 <template>
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-            <el-form-item label="用户id" prop="userId">
+            <el-form-item label="用户" prop="userId">
                 <el-input v-model="dataForm.userId" placeholder="用户id"></el-input>
             </el-form-item>
-            <el-form-item label="区域" prop="regionName">
-                <el-input v-model="dataForm.regionName" placeholder="区域名称"></el-input>
-            </el-form-item>
-            <el-form-item label="详细门牌号" prop="address">
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="收件人" prop="consignee">
+                        <el-input v-model="dataForm.consignee" placeholder="收件人"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="联系电话" prop="mobile">
+                        <el-input v-model="dataForm.mobile" placeholder="收件人手机号"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-form-item label="地址" prop="address">
                 <el-input v-model="dataForm.address" placeholder="详细门牌号">
-                    <el-button slot="append" icon="el-icon-map-location" @click="mapLocationPickVisible = true"></el-button>
-                    <amap-location-pick v-if="mapLocationPickVisible"></amap-location-pick>
+                    <template slot="prepend">{{ dataForm.regionName }}</template>
+                    <!-- 位置选择器 -->
+                    <amap-loc-pick slot="append" :poi="{ regionName: dataForm.regionName, regionCd: dataForm.regionCd, address: dataForm.address, lat: dataForm.lat, lng: dataForm.lng }" v-on:onLocationInfoResult="onLocPicked"/>
                 </el-input>
             </el-form-item>
-            <el-form-item label="收件人" prop="consignee">
-                <el-input v-model="dataForm.consignee" placeholder="收件人"></el-input>
-            </el-form-item>
-            <el-form-item label="邮编" prop="zipCode">
-                <el-input v-model="dataForm.zipCode" placeholder="邮编"></el-input>
-            </el-form-item>
-            <el-form-item label="收件人手机号" prop="mobile">
-                <el-input v-model="dataForm.mobile" placeholder="收件人手机号"></el-input>
-            </el-form-item>
-            <el-form-item label="默认项" prop="defaultItem">
-                <el-input v-model="dataForm.defaultItem" placeholder="默认项"></el-input>
+            <el-form-item label="默认" prop="defaultItem">
+                <el-radio-group v-model="dataForm.defaultItem" size="small">
+                    <el-radio-button :label="1">默认</el-radio-button>
+                    <el-radio-button :label="0">非默认</el-radio-button>
+                </el-radio-group>
             </el-form-item>
         </el-form>
         <template slot="footer">
@@ -35,11 +39,11 @@
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
-import AmapLocationPick from '@/components/amap-location-pick'
+import AmapLocPick from '@/components/amap-loc-pick'
 
 export default {
   mixins: [mixinFormModule],
-  components: { AmapLocationPick },
+  components: { AmapLocPick },
   data () {
     return {
       // 表单模块参数
@@ -48,8 +52,6 @@ export default {
         dataFormUpdateURL: `/shop/receiver/update`,
         dataFormInfoURL: `/shop/receiver/info?id=`
       },
-      // 位置选择是否可见
-      mapLocationPickVisible: false,
       dataForm: {
         id: '',
         userId: '',
@@ -59,7 +61,7 @@ export default {
         consignee: '',
         zipCode: '',
         mobile: '',
-        defaultItem: ''
+        defaultItem: 0
       }
     }
   },
@@ -81,9 +83,6 @@ export default {
         consignee: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        zipCode: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         mobile: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
@@ -102,11 +101,16 @@ export default {
         this.initFormData()
       })
     },
-    /**
-    * 挑选地址
-    */
-    pickAddressHandle () {
-      console.log('pickAddressHandle')
+    // 接受位置选择返回结果
+    onLocPicked (result) {
+      console.log(result)
+      if (result) {
+        this.dataForm.regionCode = result.regionCode
+        this.dataForm.regionName = result.regionName
+        this.dataForm.address = result.address
+        this.dataForm.lat = result.lat
+        this.dataForm.lng = result.lng
+      }
     }
   }
 }
