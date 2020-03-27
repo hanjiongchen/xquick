@@ -58,6 +58,14 @@ public interface CrudService<T, D> extends BaseService<T> {
     D getDtoById(Serializable id);
 
     /**
+     * 通过id获取获取指定字段的值
+     * @param id 查询id
+     * @param column 指定字段
+     * @return 结果
+     */
+    <E> E getSelectColumnById(Serializable id, String column);
+
+    /**
      * 插入数据
      * @param dto 数据
      * @return 插入结果

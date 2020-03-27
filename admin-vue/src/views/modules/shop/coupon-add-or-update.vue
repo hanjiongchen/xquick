@@ -3,33 +3,64 @@
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
         <el-row>
             <el-col :span="12">
-                <el-form-item label="商铺" prop="storeId">
-                    <el-autocomplete
-                            class="w-percent-100"
-                            value-key="name"
-                            v-model="dataForm.storeName"
-                            :fetch-suggestions="getStoreList"
-                            placeholder="请选择商铺"
-                            @select="item => dataForm.storeId = item.id"/>
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="dataForm.name" placeholder="名称"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="名称" prop="name">
-                    <el-input v-model="dataForm.name" placeholder="名称"></el-input>
+                <el-form-item label="类型" prop="type">
+                    <el-select v-model="dataForm.type" placeholder="选择类型" class="w-percent-100">
+                        <el-option label="满减券" :value="1"/>
+                    </el-select>
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="12">
-                <el-form-item label="类型" prop="type">
-                    <el-radio-group v-model="dataForm.type">
-                        <el-radio-button :label="1">满减券</el-radio-button>
+                <el-form-item label="领取方式" prop="giveType">
+                    <el-radio-group v-model="dataForm.giveType">
+                        <el-radio-button :label="1">注册赠送</el-radio-button>
+                        <el-radio-button :label="2">积分兑换</el-radio-button>
+                        <el-radio-button :label="3">会员领取</el-radio-button>
                     </el-radio-group>
                 </el-form-item>
             </el-col>
+            <el-col :span="12" v-if="dataForm.giveType === 2">
+                <el-form-item label="所需积分" prop="pointExchange">
+                    <el-input-number controls-position="right" :min="0" v-model="dataForm.pointExchange" placeholder="兑换所需积分" class="w-percent-100"/>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
             <el-col :span="12">
+                <el-form-item label="满足金额" prop="limitPrice">
+                    <el-input-number controls-position="right" :min="0" :max="99999" :precision="2" :step="1" v-model="dataForm.limitPrice" placeholder="满面额" class="w-percent-100"/>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item label="减免金额" prop="reducedPrice">
+                    <el-input-number controls-position="right" :min="0" :max="99999" :precision="2" :step="1" v-model="dataForm.reducedPrice" placeholder="减免金额" class="w-percent-100"/>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="16">
+                <el-form-item label="有效期" prop="validStartTime">
+                    <el-date-picker
+                            v-model="dateRange"
+                            type="datetimerange"
+                            @change="dateRangeChangeHandle"
+                            :picker-options="dateRangePickerOptions"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :range-separator="$t('datePicker.range')"
+                            :start-placeholder="$t('datePicker.start')"
+                            :end-placeholder="$t('datePicker.end')">
+                    </el-date-picker>
+                </el-form-item>
+            </el-col>
+            <el-col :span="8">
                 <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="dataForm.status">
+                    <el-radio-group v-model="dataForm.status" size="small">
                         <el-radio-button :label="1">已激活</el-radio-button>
                         <el-radio-button :label="0">未激活</el-radio-button>
                     </el-radio-group>
@@ -38,35 +69,13 @@
         </el-row>
         <el-row>
             <el-col :span="12">
-                <el-form-item label="是否可以积分兑换" prop="pointExchangeEnable">
-                    <el-radio-group v-model="dataForm.pointExchangeEnable">
-                        <el-radio-button :label="1">是</el-radio-button>
-                        <el-radio-button :label="0">否</el-radio-button>
-                    </el-radio-group>
+                <el-form-item label="发放数量" prop="totalQty">
+                    <el-input-number controls-position="right" :min="0" v-model="dataForm.totalQty" placeholder="当前数量" class="w-percent-100"/>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-                <el-form-item label="兑换所需积分" prop="pointExchange">
-                    <el-input-number controls-position="right" :min="0" v-model="dataForm.pointExchange" placeholder="兑换所需积分" class="w-percent-100"/>
-                </el-form-item>
-            </el-col>
-        </el-row>
-        <el-form-item label="有效期开始" prop="validStartTime">
-            <el-date-picker
-                    v-model="dateRange"
-                    type="datetimerange"
-                    @change="dateRangeChangeHandle"
-                    :picker-options="dateRangePickerOptions"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    :range-separator="$t('datePicker.range')"
-                    :start-placeholder="$t('datePicker.start')"
-                    :end-placeholder="$t('datePicker.end')">
-            </el-date-picker>
-        </el-form-item>
-        <el-row>
-            <el-col :span="12">
-                <el-form-item label="当前数量" prop="stock">
-                    <el-input-number controls-position="right" :min="0" v-model="dataForm.stock" placeholder="当前数量" class="w-percent-100"/>
+                <el-form-item label="每人限领" prop="userQtyLimit">
+                    <el-input-number controls-position="right" :min="0" v-model="dataForm.userQtyLimit" placeholder="当前数量" class="w-percent-100"/>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -101,21 +110,28 @@ export default {
         name: '',
         content: '',
         type: 1,
+        giveType: 3,
         validStartTime: '',
+        limitPrice: '',
+        reducedPrice: '',
         validEndTime: '',
         status: 0,
-        pointExchangeEnable: 0,
         pointExchange: '',
-        stock: 0,
-        priceExpress: '',
-        storeName: ''
+        totalQty: 0,
+        userQtyLimit: 0
       }
     }
   },
   computed: {
     dataRule () {
       return {
-        storeId: [
+        giveType: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        limitPrice: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        reducedPrice: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         name: [
@@ -133,13 +149,13 @@ export default {
         status: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        pointExchangeEnable: [
+        totalQty: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        userQtyLimit: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         pointExchange: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        stock: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

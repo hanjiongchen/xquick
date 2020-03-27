@@ -124,10 +124,6 @@ public class CouponController {
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<CouponDTO> list = couponService.listDto(params);
 
-        for (CouponDTO c : list) {
-            System.out.println(c.getStoreName());
-        }
-
         ExcelUtils.exportExcelToTarget(response, "优惠券", list, CouponExcel.class);
     }
 

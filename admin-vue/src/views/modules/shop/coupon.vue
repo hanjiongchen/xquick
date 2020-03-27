@@ -2,18 +2,15 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-shop__coupon}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-        <el-form-item>
-          <el-input v-model="dataForm.storeName" placeholder="店铺" clearable></el-input>
-        </el-form-item>
-        <el-form-item>
+        <el-form-item class="small-item">
           <el-input v-model="dataForm.name" placeholder="名称" clearable></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="small-item">
           <el-select v-model="dataForm.type" clearable placeholder="类型">
             <el-option label="满减券" value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="small-item">
           <el-select v-model="dataForm.status" clearable placeholder="状态">
             <el-option label="未激活" value="0"></el-option>
             <el-option label="已激活" value="1"></el-option>
@@ -30,29 +27,40 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column prop="storeName" label="商铺" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="type" label="类型" header-align="center" align="center">
+        <el-table-column prop="name" label="名称" header-align="center" align="center"/>
+        <el-table-column prop="type" label="类型" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.type === 1" size="small" type="success">满减券</el-tag>
+            <el-tag v-if="scope.row.type === 1" size="small">满减券</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="validStartTime" label="有效期开始" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="validEndTime" label="有效期结束" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" label="状态" header-align="center" align="center">
+        <el-table-column prop="type" label="面额" header-align="center" align="center" width="120">
+          <template slot-scope="scope">
+            满{{ scope.row.limitPrice }}减{{ scope.row.reducedPrice }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="giveType" label="发放方式" header-align="center" align="center" width="100">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.giveType === 1" size="small">注册赠送</el-tag>
+            <el-tag v-if="scope.row.giveType === 2" size="small">{{pointExchange}}积分兑换</el-tag>
+            <el-tag v-if="scope.row.giveType === 3" size="small">会员领取</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="validStartTime" label="有效期" header-align="center" align="center" width="300">
+          <template slot-scope="scope">
+            {{ scope.row.validStartTime }}<i class="el-icon-arrow-right"/>{{ scope.row.validEndTime }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" header-align="center" align="center" width="80">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status === 0" size="small" type="info">未激活</el-tag>
             <el-tag v-else-if="scope.row.status === 1" size="small" type="success">已激活</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="pointExchangeEnable" label="是否可以积分兑换" header-align="center" align="center">
+        <el-table-column prop="stock" label="数量" header-align="center" align="center" width="210">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="info">否</el-tag>
-            <el-tag v-else-if="scope.row.status === 1" size="small" type="success">是</el-tag>
+            共{{ scope.row.totalQty }}张/每人限领{{ scope.row.userQtyLimit }}张/已领{{ scope.row.giveQty }}张
           </template>
         </el-table-column>
-        <el-table-column prop="pointExchange" label="兑换所需积分" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="stock" label="当前数量" header-align="center" align="center"></el-table-column>
         <el-table-column prop="content" label="描述" header-align="center" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">

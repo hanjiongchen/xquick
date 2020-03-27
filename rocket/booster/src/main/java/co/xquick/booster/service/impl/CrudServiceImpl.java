@@ -79,6 +79,19 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
         return ConvertUtils.sourceToTarget(entity, currentDtoClass());
     }
 
+    @Override
+    public <E> E getSelectColumnById(Serializable id, String column) {
+        if (ObjectUtils.isEmpty(id) || ObjectUtils.isEmpty(column)) {
+            return null;
+        }
+        Map<String, Object> entity = getMap(new QueryWrapper<T>().select(column).eq("id", id).last("LIMIT 1"));
+        if (entity == null) {
+            return null;
+        } else {
+            return (E) entity.get(column);
+        }
+    }
+
     /**
      * 新增和修改之前的操作
      * @param dto 保存dto

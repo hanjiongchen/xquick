@@ -15,25 +15,40 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CouponExcel {
-    @Excel(name = "商铺")
-    private String storeName;
+
     @Excel(name = "名称")
     private String name;
     @Excel(name = "描述")
     private String content;
-    @Excel(name = "类型", replace = {"满减券_1"})
+    @Excel(name = "类型,1 满减券")
     private Integer type;
-    @Excel(name = "有效期开始", format = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "有效期开始")
     private Date validStartTime;
-    @Excel(name = "有效期结束", format = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "有效期结束")
     private Date validEndTime;
-    @Excel(name = "状态", replace = {"未审核_0", "已激活_1"})
+    @Excel(name = "发放方式, 1注册赠送 2积分兑换 3用户领取")
+    private Integer giveType;
+    @Excel(name = "状态 0 未激活 1 已激活")
     private Integer status;
-    @Excel(name = "是否可以积分兑换", replace = {"否_0", "是_1"})
-    private Integer pointExchangeEnable;
     @Excel(name = "兑换积分")
     private Integer pointExchange;
-    @Excel(name = "当前数量")
-    private Integer stock;
+    @Excel(name = "发放总量")
+    private Integer totalQty;
+    @Excel(name = "用户领取限制")
+    private Integer userQtyLimit;
+    @Excel(name = "已发放量")
+    private Integer giveQty;
+    @Excel(name = "限制商品类别")
+    private Long limitSpuCategoryId;
+    @Excel(name = "限制spu")
+    private Long limitSpuId;
+    @Excel(name = "限制sku")
+    private Long limitSkuId;
+    @Excel(name = "达标价格")
+    private BigDecimal limitPrice;
+    @Excel(name = "减免价格")
+    private BigDecimal reducedPrice;
+    @Excel(name = "价格计算表达式")
+    private String priceExpress;
 
 }

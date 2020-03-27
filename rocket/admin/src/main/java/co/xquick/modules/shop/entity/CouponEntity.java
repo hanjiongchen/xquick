@@ -1,6 +1,5 @@
 package co.xquick.modules.shop.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
 import lombok.Data;
@@ -33,7 +32,7 @@ public class CouponEntity extends BaseEntity {
      */
 	private String content;
     /**
-     * 类型
+     * 类型,1 满减券
      */
 	private Integer type;
     /**
@@ -45,44 +44,51 @@ public class CouponEntity extends BaseEntity {
      */
 	private Date validEndTime;
     /**
+     * 发放方式, 1注册赠送 2积分兑换 3用户领取
+     */
+	private Integer giveType;
+    /**
      * 状态 0 未激活 1 已激活
      */
 	private Integer status;
-    /**
-     * 是否可以积分兑换
-     */
-	private Integer pointExchangeEnable;
     /**
      * 兑换积分
      */
 	private Integer pointExchange;
     /**
-     * 当前数量
+     * 发放总量
      */
-	private Integer stock;
+	private Integer totalQty;
     /**
-     * 最大商品价格
+     * 用户领取限制
      */
-	private BigDecimal maxPrice;
+	private Integer userQtyLimit;
     /**
-     * 最大sku数量
+     * 已发放量
      */
-	private Integer maxQty;
+	private Integer giveQty;
     /**
-     * 最小商品价格
+     * 限制商品类别
      */
-	private BigDecimal minPrice;
+	private Long limitSpuCategoryId;
     /**
-     * 最小sku数量
+     * 限制spu
      */
-	private Integer minQty;
+	private Long limitSpuId;
+    /**
+     * 限制sku
+     */
+	private Long limitSkuId;
+    /**
+     * 达标价格
+     */
+	private BigDecimal limitPrice;
+    /**
+     * 减免价格
+     */
+	private BigDecimal reducedPrice;
     /**
      * 价格计算表达式
      */
 	private String priceExpress;
-	/**
-	 * 用户名
-	 */
-	@TableField(exist = false)
-	private String storeName;
 }
