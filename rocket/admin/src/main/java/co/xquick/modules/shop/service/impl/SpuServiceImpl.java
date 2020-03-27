@@ -44,7 +44,6 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
                 .eq("type", "type")
                 .eq("delivery", "delivery")
                 .eq("marketable", "marketable")
-
                 .getQueryWrapper();
     }
 

@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column prop="marketable" label="上架" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.delivery === 0" type="danger">下架</el-tag>
+            <el-tag v-if="scope.row.marketable === 0" type="danger">下架</el-tag>
             <el-tag v-else-if="scope.row.marketable === 1" type="success">上架</el-tag>
           </template>
         </el-table-column>
