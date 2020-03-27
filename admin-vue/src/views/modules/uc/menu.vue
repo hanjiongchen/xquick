@@ -10,7 +10,7 @@
         <el-table-column prop="name" :label="$t('menu.name')" header-align="center" min-width="150"/>
         <el-table-column prop="icon" :label="$t('menu.icon')" header-align="center" align="center" width="120">
           <template slot-scope="scope">
-            <svg class="icon-svg" aria-hidden="true"><use :xlink:href="`#${scope.row.icon}`"/></svg>
+            <i :class="scope.row.icon"/>
           </template>
         </el-table-column>
         <el-table-column prop="type" :label="$t('menu.type')" header-align="center" align="center" width="120">

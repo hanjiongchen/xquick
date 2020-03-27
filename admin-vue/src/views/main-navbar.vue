@@ -9,10 +9,10 @@
     <div class="aui-navbar__body">
       <el-menu class="aui-navbar__menu mr-auto" mode="horizontal">
         <el-menu-item index="1" @click="$store.state.sidebarFold = !$store.state.sidebarFold">
-          <svg class="icon-svg aui-navbar__icon-menu aui-navbar__icon-menu--switch" aria-hidden="true"><use xlink:href="#icon-outdent"/></svg>
+          <i class="aui-navbar__icon-menu aui-navbar__icon-menu--switch el-icon-s-fold"/>
         </el-menu-item>
         <el-menu-item index="2" @click="refresh()">
-          <svg class="icon-svg aui-navbar__icon-menu aui-navbar__icon-menu--refresh" aria-hidden="true"><use xlink:href="#icon-sync"/></svg>
+          <i class="aui-navbar__icon-menu aui-navbar__icon-menu--refresh el-icon-refresh"/>
         </el-menu-item>
       </el-menu>
       <el-menu class="aui-navbar__menu" mode="horizontal">
@@ -30,7 +30,7 @@
           </a>
         </el-menu-item>-->
         <el-menu-item index="3" @click="fullscreenHandle()">
-          <svg class="icon-svg aui-navbar__icon-menu" aria-hidden="true"><use xlink:href="#icon-fullscreen"/></svg>
+          <i class="aui-navbar__icon-menu el-icon-full-screen"/>
         </el-menu-item>
         <el-menu-item index="4" class="aui-navbar__avatar">
           <el-dropdown placement="bottom" :show-timeout="0">

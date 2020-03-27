@@ -1,13 +1,13 @@
 <template>
   <el-submenu v-if="menu.children && menu.children.length >= 1" :index="menu.id" :popper-append-to-body="false">
     <template slot="title">
-      <svg class="icon-svg aui-sidebar__menu-icon" aria-hidden="true"><use :xlink:href="`#${menu.icon}`"/></svg>
+      <i :class="`aui-sidebar__menu-icon ${menu.icon}`"></i>
       <span>{{ menu.name }}</span>
     </template>
     <sub-menu v-for="item in menu.children" :key="item.id" :menu="item"/>
   </el-submenu>
   <el-menu-item v-else :index="menu.id" @click="gotoRouteHandle(menu)">
-    <svg class="icon-svg aui-sidebar__menu-icon" aria-hidden="true"><use :xlink:href="`#${menu.icon}`"/></svg>
+    <i :class="`aui-sidebar__menu-icon ${menu.icon}`"></i>
     <span>{{ menu.name }}</span>
   </el-menu-item>
 </template>

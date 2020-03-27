@@ -21,10 +21,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="urlNewBlank" label="打开方式" size="mini">
-            <el-radio-group v-model="dataForm.urlNewBlank">
-              <el-radio :label="0">本窗口打开</el-radio>
-              <el-radio :label="1">新窗口打开</el-radio>
+          <el-form-item prop="urlNewBlank" label="打开方式">
+            <el-radio-group v-model="dataForm.urlNewBlank" size="mini">
+              <el-radio-button :label="0">本窗口</el-radio-button>
+              <el-radio-button :label="1">新窗口</el-radio-button>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -44,7 +44,7 @@
               <div class="mod-uc__menu-icon-inner">
                 <div class="mod-uc__menu-icon-list">
                   <el-button v-for="(item, index) in iconList" :key="index" @click="iconListCurrentChangeHandle(item)" :class="{ 'is-active': dataForm.icon === item }">
-                    <svg class="icon-svg" aria-hidden="true"><use :xlink:href="`#${item}`"/></svg>
+                    <i :class="item"/>
                   </el-button>
                 </div>
               </div>

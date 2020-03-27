@@ -19,7 +19,7 @@
           :closable="item.name !== 'home'"
           :class="{ 'is-iframe': tabIsIframe(item.iframeURL) }">
           <template v-if="item.name === 'home'">
-            <svg slot="label" class="icon-svg aui-content--tabs-icon-nav" aria-hidden="true"><use xlink:href="#icon-home"/></svg>
+            <i slot="label" class="aui-content--tabs-icon-nav ad-icon-home"/>
           </template>
           <iframe v-if="tabIsIframe(item.iframeURL)" :src="item.iframeURL" width="100%" height="100%" frameborder="0" scrolling="yes"/>
           <keep-alive v-else>
