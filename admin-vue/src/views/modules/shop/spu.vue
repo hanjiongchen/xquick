@@ -61,7 +61,7 @@
             <el-tag v-else-if="scope.row.type === 3" type="danger">赠品</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"></el-table-column>
+        <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100" sortable="custom"/>
         <el-table-column prop="delivery" label="物流" header-align="center" align="center" width="100">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.delivery === 0" type="danger">不需要</el-tag>

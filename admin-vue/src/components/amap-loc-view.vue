@@ -12,7 +12,7 @@
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button type="info" icon="el-icon-full-screen" @click="fullscreen = !fullscreen">{{ fullscreen ? '缩小':'放大' }}</el-button>
-                <el-button type="primary" @click="closeHandle()">{{ $t('close') }}</el-button>
+                <el-button @click="closeHandle()">{{ $t('close') }}</el-button>
             </div>
         </el-dialog>
     </i>

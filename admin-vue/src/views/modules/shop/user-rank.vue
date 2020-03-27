@@ -14,7 +14,7 @@
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column prop="name" label="名称" header-align="center" align="center" min-width="120"/>
-        <el-table-column prop="sort" label="排序" header-align="center" align="center" min-width="100"/>
+        <el-table-column prop="sort" sortable="custom" label="排序" header-align="center" align="center" min-width="100"/>
         <el-table-column prop="amount" label="消费金额" header-align="center" align="center" width="120"/>
         <el-table-column prop="defaultItem" label="默认项" header-align="center" align="center" width="80">
           <template slot-scope="scope">

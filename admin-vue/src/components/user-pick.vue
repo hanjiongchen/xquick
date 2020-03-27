@@ -4,7 +4,6 @@
                    :close-on-click-modal="false" :close-on-press-escape="false"
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
-            <el-card shadow="never" class="aui-card--fill">
                 <div class="mod-uc__user">
                     <el-form :inline="true" :model="dataForm">
                         <el-form-item class="small-item">
@@ -23,7 +22,6 @@
                     <el-table
                             v-loading="dataListLoading"
                             :data="dataList"
-                            border
                             ref="dataTable"
                             :select-on-indeterminate="false"
                             @selection-change="dataListSelectionChangeHandle"
@@ -63,13 +61,13 @@
                             :current-page="page"
                             :page-sizes="[10, 20, 50, 100]"
                             :page-size="limit"
+                            hide-on-single-page
                             :total="total"
-                            layout="total, sizes, prev, pager, next, jumper"
+                            layout="total, prev, pager, next"
                             @size-change="pageSizeChangeHandle"
                             @current-change="pageCurrentChangeHandle">
                     </el-pagination>
                 </div>
-            </el-card>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
                 <el-button type="primary" @click="dataFormSubmitHandle()" :disabled="!dataListSelections || dataListSelections.length === 0">{{ $t('confirm') }}</el-button>

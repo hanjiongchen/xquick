@@ -22,8 +22,8 @@
             <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" :preview-src-list="scope.row.imgs.split(',')" fit="cover"/>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"></el-table-column>
-        <el-table-column prop="content" label="品牌介绍" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="sort" sortable="custom" label="排序" header-align="center" align="center" width="100"/>
+        <el-table-column prop="content" label="品牌介绍" header-align="center" align="center"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:brand:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

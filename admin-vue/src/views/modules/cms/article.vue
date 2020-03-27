@@ -75,7 +75,7 @@
                         <el-tag v-else-if="scope.row.top === 1" size="small" type="success">是</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"/>
+                <el-table-column prop="sort" sortable="custom" label="排序" header-align="center" align="center" width="100"/>
                 <el-table-column prop="readNum" label="阅读量" header-align="center" align="center" width="100" sortable="custom"/>
                 <el-table-column prop="pubDate" label="发布时间" header-align="center" align="center" width="180"/>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">

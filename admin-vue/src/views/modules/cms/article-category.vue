@@ -20,7 +20,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="remark" label="备注" header-align="center" align="center"/>
-                <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100"/>
+                <el-table-column prop="sort" label="排序" header-align="center" align="center" sortable="custom" width="100"/>
                 <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center" width="180"/>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
