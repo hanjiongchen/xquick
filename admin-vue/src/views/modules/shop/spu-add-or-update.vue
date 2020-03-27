@@ -77,7 +77,7 @@
                           </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                          <el-form-item label="上架" prop="marketable">
+                          <el-form-item label="在架" prop="marketable">
                               <el-radio-group v-model="dataForm.marketable" size="small">
                                   <el-radio-button :label="1">上架</el-radio-button>
                                   <el-radio-button :label="0">下架</el-radio-button>
