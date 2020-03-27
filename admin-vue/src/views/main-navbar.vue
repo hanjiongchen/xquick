@@ -26,7 +26,7 @@
         </el-menu-item>
          <!--<el-menu-item index="2">
           <a href="" target="_blank">
-            <svg class="icon-svg aui-navbar__icon-menu" aria-hidden="true"><use xlink:href="#icon-earth"></use></svg>
+            <i class="el-icon-arrow-down el-icon-link"/>
           </a>
         </el-menu-item>-->
         <el-menu-item index="3" @click="fullscreenHandle()">

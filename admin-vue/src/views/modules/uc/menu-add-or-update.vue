@@ -49,7 +49,7 @@
                 </div>
               </div>
             </el-popover>
-            <el-input v-model="dataForm.icon" v-popover:iconListPopover readonly :placeholder="$t('menu.icon')"/>
+            <el-input v-model="dataForm.icon" v-popover:iconListPopover readonly :placeholder="$t('menu.icon')" :suffix-icon="dataForm.icon"/>
           </el-form-item>
         </el-col>
       </el-row>
