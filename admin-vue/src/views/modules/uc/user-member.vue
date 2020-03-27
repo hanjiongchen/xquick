@@ -12,11 +12,6 @@
                     <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')" clearable/>
                 </el-form-item>
                 <el-form-item>
-                    <el-select v-model="roleSelected" multiple collapse-tags :placeholder="$t('user.role')" @change="(value) => this.dataForm.roleIds = value.join(',')">
-                        <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"/>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
                     <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
                 </el-form-item>
                 <el-form-item>
@@ -114,16 +109,6 @@ export default {
     }
   },
   methods: {
-    // 获取角色列表
-    getRoleList () {
-      this.$http.get('/uc/role/list').then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        this.roleList = res.data
-      }).catch(() => {
-      })
-    },
     // 导入处理
     importHandle () {
       this.importVisible = true
