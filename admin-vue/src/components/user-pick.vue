@@ -25,6 +25,7 @@
                             :data="dataList"
                             border
                             ref="dataTable"
+                            :select-on-indeterminate="false"
                             @selection-change="dataListSelectionChangeHandle"
                             @sort-change="dataListSortChangeHandle"
                             style="width: 100%;">
@@ -84,17 +85,18 @@ export default {
   name: 'UserPick',
   // 参数
   props: {
+    // 请求码
+    requestCode: {
+      type: String,
+      default: null
+    },
     userId: {
       type: String,
-      default: () => {
-        return ''
-      }
+      default: ''
     },
     type: {
       type: String,
-      default: () => {
-        return 'single'
-      }
+      default: 'single'
     }
   },
   mixins: [mixinListModule],
@@ -138,7 +140,7 @@ export default {
     },
     dataFormSubmitHandle () {
       // 验证通过,提交表单
-      this.$emit('onUserPicked', this.dataListSelections)
+      this.$emit('onUserPicked', this.dataListSelections, this.requestCode)
       this.visible = false
     }
   }

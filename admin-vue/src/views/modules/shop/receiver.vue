@@ -43,10 +43,10 @@
               <el-tag v-if="scope.row.tag">{{ scope.row.tag }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="regionName" label="区域" header-align="center" align="center" min-width="100"></el-table-column>
-        <el-table-column prop="address" label="详细地址" header-align="center" align="center" min-width="120">
+        <el-table-column prop="regionName" label="区域" header-align="center" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="address" label="详细地址" header-align="center" align="center" min-width="120" show-overflow-tooltip>
           <template slot-scope="scope">
-            {{ scope.row.address }}<amap-loc-view :poi="{ regionName: scope.row.regionName, regionCd: scope.row.regionCd, address: scope.row.address, lat: scope.row.lat, lng: scope.row.lng }" />
+            <amap-loc-view :poi="{ regionName: scope.row.regionName, regionCd: scope.row.regionCd, address: scope.row.address, lat: scope.row.lat, lng: scope.row.lng }" />{{ scope.row.address }}
           </template>
         </el-table-column>
         <el-table-column prop="consignee" label="收件人" header-align="center" align="center" width="120"/>

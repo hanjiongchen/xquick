@@ -23,7 +23,8 @@
                 <el-input v-model="dataForm.address" placeholder="详细地址">
                     <template slot="prepend">{{ dataForm.regionName }}</template>
                     <!-- 位置选择器 -->
-                    <amap-loc-pick slot="append" :poi="{ regionName: dataForm.regionName, regionCd: dataForm.regionCd, address: dataForm.address, lat: dataForm.lat, lng: dataForm.lng }" v-on:onLocationInfoResult="onLocPicked"/>
+                    <amap-loc-pick slot="append" ref="ampLocPick" :poi="{ regionName: dataForm.regionName, regionCd: dataForm.regionCd, address: dataForm.address, lat: dataForm.lat, lng:
+                    dataForm.lng }" @onLocPicked="onLocPicked"/>
                 </el-input>
             </el-form-item>
             <el-row>
@@ -116,7 +117,8 @@ export default {
       })
     },
     // 接受位置选择返回结果
-    onLocPicked (result) {
+    onLocPicked (result, key) {
+      console.log(key)
       console.log(result)
       if (result) {
         this.dataForm.regionCode = result.regionCode

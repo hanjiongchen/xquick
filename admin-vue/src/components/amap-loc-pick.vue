@@ -28,6 +28,11 @@ export default {
   name: 'AmapLocPick',
   // 参数
   props: {
+    // 请求码
+    requestCode: {
+      type: String,
+      default: null
+    },
     poi: {
       type: Object,
       default: () => {
@@ -142,7 +147,7 @@ export default {
     },
     dataFormSubmitHandle () {
       // 验证通过,提交表单
-      this.$emit('onLocationInfoResult', this.poiResult)
+      this.$emit('onLocPicked', this.poiResult, this.requestCode)
       this.poiResult = {}
       this.visible = false
     },
