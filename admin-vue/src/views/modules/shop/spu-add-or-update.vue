@@ -114,7 +114,31 @@
                     <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="2" label="图文详情" v-if="!!dataForm.id">
+            <el-tab-pane name="2" label="商品图片" v-if="!!dataForm.id">
+                <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
+                    <el-form-item prop="imgs">
+                        <span>图片建议尺寸800*400,大小限制2MB内</span>
+                        <el-upload
+                                :before-upload="beforeImageUpload"
+                                :on-success="uploadSuccessHandle"
+                                list-type="picture-card"
+                                :limit="4"
+                                :accept="acceptImageFormat"
+                                :file-list="uploadFileList"
+                                :on-preview="uploadPreviewHandle"
+                                :multiple="false"
+                                :on-exceed="uploadExceedHandle"
+                                :on-remove="uploadRemoveHandle"
+                                :action="uploadUrl">
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+                    </el-form-item>
+                </el-form>
+                <div style="text-align: center;">
+                    <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="3" label="详情介绍" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
                     <el-form-item prop="content">
                         <!-- 富文本编辑器, 容器 -->
@@ -134,7 +158,7 @@
                     <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="3" label="参数管理" v-if="!!dataForm.id">
+            <el-tab-pane name="4" label="参数管理" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="70px">
                     <el-row v-for="(attrGroup, index) in dataForm.attrGroups" :key="index" :prop="'attrGroup.' + index + '.value'">
                         <el-col :span="6">
@@ -169,7 +193,7 @@
                     <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="4" label="规格管理" v-if="!!dataForm.id">角色管理</el-tab-pane>
+            <el-tab-pane name="5" label="规格管理" v-if="!!dataForm.id && dataForm.specType === 1">暂不支持多规格</el-tab-pane>
         </el-tabs>
         <!-- 弹窗, 图片查看 -->
         <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
@@ -340,6 +364,7 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         if (this.step === '1') {
+          // 详情
           this.tags = []
           this.tagInputVisible = false
           this.tagInputValue = ''
@@ -352,11 +377,17 @@ export default {
             this.initFormData()
           })
         } else if (this.step === '2') {
+          // 图片
+          this.initUpload()
+          this.initFormData()
+        } else if (this.step === '3') {
+          // 详情
           this.resetForm()
           this.quillEditorHandle()
           this.initUpload()
           this.initFormData()
-        } else if (this.step === '3') {
+        } else if (this.step === '4') {
+          // 参数
           this.initFormData()
         }
       })
@@ -387,14 +418,20 @@ export default {
         ...res.data
       }
       if (this.step === '1') {
+        // 详情
         // 分割关键词
         if (this.dataForm.tags) {
           this.tags = this.dataForm.tags.split(',').filter(item => item !== '')
         }
       } else if (this.step === '2') {
+        // 图片
+        // 赋值图片
+        this.setUploadFileList(this.dataForm.imgs)
+      } else if (this.step === '3') {
+        // 详情
         // set富文本编辑器
         this.quillEditor.root.innerHTML = this.dataForm.content
-      } else if (this.step === '3') {
+      } else if (this.step === '4') {
         // 参数管理
         if (this.dataForm.attrs) {
           this.dataForm.attrGroups = JSON.parse(this.dataForm.attrs)
@@ -408,9 +445,12 @@ export default {
       if (this.step === '1') {
         this.dataForm.tags = this.tags.join(',')
       } else if (this.step === '2') {
-        // set富文本编辑器
-        this.dataForm.content = this.quillEditor.root.innerHTML
+        // 图片
+        this.dataForm.imgs = this.getUploadFileString()
       } else if (this.step === '3') {
+        // 图文详情
+        this.dataForm.content = this.quillEditor.root.innerHTML
+      } else if (this.step === '4') {
         // 参数管理
         this.dataForm.attrs = JSON.stringify(this.dataForm.attrGroups)
       }
