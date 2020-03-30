@@ -24,12 +24,19 @@ public class StockLogDTO extends BaseDTO {
 	@ApiModelProperty(value = "创建人姓名")
 	private String createName;
 
-	@ApiModelProperty(value = "spu id")
+	@ApiModelProperty(value = "spu id", required = true)
+	@NotNull(message = "商品id不能为空", groups = DefaultGroup.class)
 	private Long spuId;
 
-	@ApiModelProperty(value = "sku id")
+	@ApiModelProperty(value = "商品名称")
+	private String spuName;
+
+	@ApiModelProperty(value = "sku id", required = true)
 	@NotNull(message = "商品规格id不能为空", groups = DefaultGroup.class)
 	private Long skuId;
+
+	@ApiModelProperty(value = "规格名称")
+	private String skuName;
 
 	@ApiModelProperty(value = "类型", required = true)
 	@Range(min = 0, max = 1, message = "类型取值0-1", groups = DefaultGroup.class)

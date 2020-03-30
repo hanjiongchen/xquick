@@ -1,12 +1,11 @@
 package co.xquick.modules.shop.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 商品规格sku
@@ -38,9 +37,17 @@ public class SkuEntity extends BaseEntity {
     /**
      * 是否默认项
      */
-	private Integer isDefault;
+	private Integer defaultItem;
     /**
      * 当前库存
      */
 	private Integer stock;
+	/**
+     * 编号
+     */
+	private String sn;
+	/**
+	 * 名称
+	 */
+	private String name;
 }

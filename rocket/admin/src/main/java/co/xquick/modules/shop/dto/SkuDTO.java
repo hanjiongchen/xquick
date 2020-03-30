@@ -6,8 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
 import java.math.BigDecimal;
 
 /**
@@ -34,9 +32,15 @@ public class SkuDTO extends BaseDTO {
 	private BigDecimal salePrice;
 
 	@ApiModelProperty(value = "是否默认项")
-	private Integer isDefault;
+	private Integer defaultItem;
 
 	@ApiModelProperty(value = "当前库存")
 	private Integer stock;
+
+	@ApiModelProperty(value = "编号")
+	private String sn;
+
+	@ApiModelProperty(value = "名称")
+	private String name;
 
 }

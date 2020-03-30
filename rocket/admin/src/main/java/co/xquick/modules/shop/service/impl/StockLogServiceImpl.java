@@ -9,8 +9,10 @@ import co.xquick.modules.shop.ShopConst;
 import co.xquick.modules.shop.dao.StockLogDao;
 import co.xquick.modules.shop.dto.StockLogDTO;
 import co.xquick.modules.shop.entity.SkuEntity;
+import co.xquick.modules.shop.entity.SpuEntity;
 import co.xquick.modules.shop.entity.StockLogEntity;
 import co.xquick.modules.shop.service.SkuService;
+import co.xquick.modules.shop.service.SpuService;
 import co.xquick.modules.shop.service.StockLogService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
 
     @Autowired
     SkuService skuService;
+    @Autowired
+    SpuService spuService;
 
     @Override
     public QueryWrapper<StockLogEntity> getWrapper(String method, Map<String, Object> params) {
@@ -49,7 +53,13 @@ public class StockLogServiceImpl extends CrudServiceImpl<StockLogDao, StockLogEn
         // 检查商品规格
         SkuEntity skuEntity = skuService.getById(dto.getSkuId());
         AssertUtils.isEmpty(skuEntity, ErrorCode.RECORD_NOT_EXISTED, "商品规格");
-        toSaveEntity.setSpuId(skuEntity.getSpuId());
+
+        SpuEntity spuEntity = spuService.getById(skuEntity.getSpuId());
+        AssertUtils.isEmpty(skuEntity, ErrorCode.RECORD_NOT_EXISTED, "商品");
+
+        toSaveEntity.setSpuId(spuEntity.getId());
+        toSaveEntity.setSpuName(spuEntity.getName());
+        toSaveEntity.setSkuName(skuEntity.getName());
 
         if (type == ShopConst.StockLogTypeEnum.IN.value()) {
             // 入库

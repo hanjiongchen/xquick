@@ -27,6 +27,14 @@ public class StockLogEntity extends BaseEntity {
      * spu id
      */
 	private Long spuId;
+	/**
+	 * spu name
+	 */
+	private String spuName;
+	/**
+	 * sku name
+	 */
+	private String skuName;
     /**
      * sku id
      */

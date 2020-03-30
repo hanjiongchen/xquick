@@ -33,4 +33,9 @@ public class SkuServiceImpl extends CrudServiceImpl<SkuDao, SkuEntity, SkuDTO> i
     public boolean addStock(Long id, Integer stock) {
         return update().eq("id", id).setSql("stock = stock + " + stock).update(new SkuEntity());
     }
+
+    @Override
+    public SkuEntity getDefaultItemBySpuId(Long spuId) {
+        return query().eq("default_item", 1).eq("spu_id", spuId).last("LIMIT 1").one();
+    }
 }

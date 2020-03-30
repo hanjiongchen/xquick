@@ -1,12 +1,11 @@
 package co.xquick.modules.shop.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import co.xquick.booster.pojo.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 商品spu
@@ -35,6 +34,10 @@ public class SpuEntity extends BaseEntity {
      * 供应商id
      */
 	private Long supplierId;
+	/**
+	 * 规格类型
+	 */
+	private Integer specType;
     /**
      * 排序
      */

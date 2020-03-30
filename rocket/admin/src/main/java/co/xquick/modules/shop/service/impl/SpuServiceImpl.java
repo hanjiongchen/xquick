@@ -1,6 +1,8 @@
 package co.xquick.modules.shop.service.impl;
 
 import co.xquick.booster.exception.ErrorCode;
+import co.xquick.booster.exception.XquickException;
+import co.xquick.booster.pojo.Const;
 import co.xquick.booster.service.impl.CrudServiceImpl;
 import co.xquick.booster.util.WrapperUtils;
 import co.xquick.booster.validator.AssertUtils;
@@ -64,6 +66,45 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
         if (dto.getSupplierId() != null) {
             SupplierEntity supplier = supplierService.getById(dto.getSupplierId());
             AssertUtils.isEmpty(supplier, ErrorCode.RECORD_NOT_EXISTED, "供应商");
+        }
+        // todo 多规格支持
+        if (dto.getSpecType() == 0) {
+            // 单规格
+            if (dto.getMarketPrice() == null || dto.getSalePrice() == null) {
+                throw new XquickException("销售价不允许为空");
+            }
+        } else {
+            // 多规格
+            throw new XquickException("目前只支持单规格");
+        }
+    }
+
+    @Override
+    protected void afterSaveOrUpdateDto(boolean ret, SpuDTO dto, SpuEntity existedEntity, int type) {
+        if (dto.getSpecType() == 0) {
+            // 单规格
+            if (0 == type) {
+                // 新增
+                SkuEntity sku = new SkuEntity();
+                sku.setDefaultItem(Const.BooleanEnum.TRUE.value());
+                sku.setSpuId(dto.getId());
+                sku.setSpuImgs(null);
+                sku.setStock(0);
+                sku.setSn(dto.getSn());
+                sku.setName("default");
+                sku.setMarketPrice(dto.getMarketPrice());
+                sku.setSalePrice(dto.getSalePrice());
+                skuService.save(sku);
+            } else if (1 == type) {
+                // 修改
+                SkuEntity sku = skuService.getDefaultItemBySpuId(dto.getId());
+                sku.setMarketPrice(dto.getMarketPrice());
+                sku.setSalePrice(dto.getSalePrice());
+                skuService.updateById(sku);
+            }
+        } else {
+            // 多规格
+            throw new XquickException("暂不支持多规格");
         }
     }
 

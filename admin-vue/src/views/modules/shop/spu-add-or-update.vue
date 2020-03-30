@@ -55,7 +55,15 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row>
+                    <el-form-item label="规格类型" prop="specType">
+                        <el-radio-group v-model="dataForm.specType" size="small" disabled>
+                            <el-radio-button :label="0">单规格</el-radio-button>
+                            <el-radio-button :label="1">多规格</el-radio-button>
+                        </el-radio-group>
+                        <br/>
+                        <span style="color: red">注意:规格类型和规格内容保存后无法修改,规格留空表示不启用</span>
+                    </el-form-item>
+                    <el-row v-if="dataForm.specType === 0">
                         <el-col :span="12">
                             <el-form-item label="市场价" prop="marketPrice">
                                 <el-input-number v-model="dataForm.marketPrice" placeholder="输入市场价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
@@ -106,7 +114,7 @@
                     <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="2" label="图文详情">
+            <el-tab-pane name="2" label="图文详情" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
                     <el-form-item prop="content">
                         <!-- 富文本编辑器, 容器 -->
@@ -126,7 +134,7 @@
                     <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="3" label="参数管理">
+            <el-tab-pane name="3" label="参数管理" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="70px">
                     <el-row v-for="(attrGroup, index) in dataForm.attrGroups" :key="index" :prop="'attrGroup.' + index + '.value'">
                         <el-col :span="6">
@@ -161,7 +169,7 @@
                     <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="4" label="规格管理">角色管理</el-tab-pane>
+            <el-tab-pane name="4" label="规格管理" v-if="!!dataForm.id">角色管理</el-tab-pane>
         </el-tabs>
         <!-- 弹窗, 图片查看 -->
         <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
@@ -217,6 +225,7 @@ export default {
         attrs: '',
         attrGroups: [],
         specs: '',
+        specType: 0,
         status: '',
         hits: '',
         imgs: '',
@@ -258,6 +267,9 @@ export default {
         storeId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
+        specType: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
         brandId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
@@ -289,9 +301,6 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         title: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        tags: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         marketPrice: [

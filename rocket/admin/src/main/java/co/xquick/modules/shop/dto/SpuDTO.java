@@ -76,6 +76,10 @@ public class SpuDTO extends BaseDTO {
 	@ApiModelProperty(value = "属性,不会影响价格、数量等业务")
 	private String attrs;
 
+	@ApiModelProperty(value = "规格类型", required = true)
+	@Range(min = 0, max = 1, message = "规格类型取值0-1", groups = DefaultGroup.class)
+	private Integer specType;
+
 	@ApiModelProperty(value = "规格,与sku关联")
 	private String specs;
 
