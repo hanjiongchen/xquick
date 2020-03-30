@@ -8,8 +8,12 @@ t.brand.lg = '极速开发'
 t.brand.mini = ''
 t.brand.owner = 'xquick.co'
 
+/**
+ * 常用操作
+ */
 t.view = '查看'
 t.add = '新增'
+t.save = '保存'
 t.delete = '删除'
 t.deleteBatch = '删除'
 t.update = '修改'
@@ -32,9 +36,14 @@ t.pause = '暂停'
 t.resume = '恢复'
 t.run = '运行'
 
+/**
+ * 基本表结构
+ */
 t.base = {}
+t.base.top = '指定'
 t.base.sort = '排序'
 t.base.name = '名称'
+t.base.category = '分类'
 t.base.code = '编码'
 t.base.type = '类型'
 t.base.value = '值'

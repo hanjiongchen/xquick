@@ -1,141 +1,176 @@
 <template>
-  <el-card>
-      <el-tabs tab-position="left" v-model="step" @tab-click="tabClickHandle" :before-leave="beforeTabLeaveHandle">
-          <el-tab-pane name="1" label="基本信息">
-              <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-                  <el-form-item label="类型" prop="type">
-                      <el-radio-group v-model="dataForm.type" disabled>
-                          <el-radio :label="1">商品</el-radio>
-                          <el-radio :label="2">积分兑换</el-radio>
-                      </el-radio-group>
-                  </el-form-item>
-                  <el-row>
-                      <el-col :span="12">
-                          <el-form-item label="供应商" prop="supplierId">
-                              <el-autocomplete
-                                      class="w-percent-100"
-                                      value-key="name"
-                                      v-model="dataForm.supplierName"
-                                      :fetch-suggestions="getSupplierList"
-                                      placeholder="请选择供应商"
-                                      @select="item => dataForm.supplierId = item.id"/>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                          <el-form-item label="品牌" prop="brandId">
-                              <el-select v-model="dataForm.brandId" filterable placeholder="请选择品牌" class="w-percent-100">
-                                  <el-option v-for="item in brandList" :key="item.id" :label="item.name" :value="item.id"/>
-                              </el-select>
-                          </el-form-item>
-                      </el-col>
-                  </el-row>
-                  <el-row>
-                      <el-col :span="12">
-                          <el-form-item label="分类" prop="categoryId">
-                              <el-cascader v-model="categorySelected" :options="spuCategoryList" clearable
-                                           :props="{ emitPath: false, checkStrictly: false, value: 'id', label: 'name'}"
-                                           @change="(value) => this.dataForm.categoryId = value" class="w-percent-100"/>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                          <el-form-item prop="sort" :label="$t('base.sort')">
-                              <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')"/>
-                          </el-form-item>
-                      </el-col>
-                  </el-row>
-                  <el-row>
-                      <el-col :span="12">
-                          <el-form-item label="名称" prop="name">
-                              <el-input v-model="dataForm.name" placeholder="输入名称"/>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                          <el-form-item label="编号" prop="sn">
-                              <el-input v-model="dataForm.sn" placeholder="编号"/>
-                          </el-form-item>
-                      </el-col>
-                  </el-row>
-                  <el-row>
-                      <el-col :span="12">
-                          <el-form-item label="市场价" prop="marketPrice">
-                              <el-input-number v-model="dataForm.marketPrice" placeholder="输入市场价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                          <el-form-item label="销售价" prop="salePrice">
-                              <el-input-number v-model="dataForm.salePrice" placeholder="输入销售价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
-                          </el-form-item>
-                      </el-col>
-                  </el-row>
-                  <el-row>
-                      <el-col :span="8">
-                          <el-form-item label="物流" prop="delivery">
-                              <el-radio-group v-model="dataForm.delivery" size="small">
-                                  <el-radio-button :label="1">需要</el-radio-button>
-                                  <el-radio-button :label="0">不需要</el-radio-button>
-                              </el-radio-group>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                          <el-form-item label="在架" prop="marketable">
-                              <el-radio-group v-model="dataForm.marketable" size="small">
-                                  <el-radio-button :label="1">上架</el-radio-button>
-                                  <el-radio-button :label="0">下架</el-radio-button>
-                              </el-radio-group>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                          <el-form-item label="置顶" prop="top">
-                              <el-radio-group v-model="dataForm.top" size="small">
-                                  <el-radio-button :label="1">置顶</el-radio-button>
-                                  <el-radio-button :label="0">不置顶</el-radio-button>
-                              </el-radio-group>
-                          </el-form-item>
-                      </el-col>
-                  </el-row>
-                  <el-form-item label="标题" prop="title">
-                      <el-input v-model="dataForm.title" placeholder="标题"></el-input>
-                  </el-form-item>
-                  <el-form-item label="标签,逗号分隔" prop="tags">
-                      <el-input v-model="dataForm.tags" placeholder="标签,逗号分隔"></el-input>
-                  </el-form-item>
-            </el-form>
-              <div style="text-align: center;">
-                  <el-button type="warning" @click="visible = false">{{ $t('reset') }}</el-button>
-                  <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-              </div>
-          </el-tab-pane>
-          <el-tab-pane name="2" label="图文详情">
-              <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-                  <el-form-item prop="content" label="图文详情">
-                      <!-- 富文本编辑器, 容器 -->
-                      <div id="J_quillEditor"></div>
-                      <!-- 自定义上传图片功能 (使用element upload组件) -->
-                      <el-upload
-                              :action="uploadUrl"
-                              :show-file-list="false"
-                              :before-upload="beforeImageUpload"
-                              :on-success="uploadEditorSuccessHandle"
-                              style="display: none;">
-                          <el-button ref="uploadBtn" type="primary" size="small">{{ $t('uploadButton') }}</el-button>
-                      </el-upload>
-                  </el-form-item>
-              </el-form>
-              <div style="text-align: center;">
-                  <el-button type="warning" @click="resetForm">{{ $t('reset') }}</el-button>
-                  <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-              </div>
-          </el-tab-pane>
-          <el-tab-pane name="3" label="参数管理">配置管理</el-tab-pane>
-          <el-tab-pane name="4" label="规格管理">角色管理</el-tab-pane>
-      </el-tabs>
-      <!-- 弹窗, 图片查看 -->
-      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
-  </el-card>
+    <el-card>
+        <el-tabs tab-position="left" v-model="step" @tab-click="tab => this.onStep(tab.name)" :before-leave="() => !!this.dataForm.id">
+            <el-tab-pane name="1" label="基本信息">
+                <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+                    <el-form-item label="类型" prop="type">
+                        <el-radio-group v-model="dataForm.type" disabled>
+                            <el-radio :label="1">商品</el-radio>
+                            <el-radio :label="2">积分兑换</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="供应商" prop="supplierId">
+                                <el-autocomplete
+                                        class="w-percent-100"
+                                        value-key="name"
+                                        v-model="dataForm.supplierName"
+                                        :fetch-suggestions="getSupplierList"
+                                        placeholder="请选择供应商"
+                                        @select="item => dataForm.supplierId = item.id"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="品牌" prop="brandId">
+                                <el-select v-model="dataForm.brandId" filterable placeholder="请选择品牌" class="w-percent-100">
+                                    <el-option v-for="item in brandList" :key="item.id" :label="item.name" :value="item.id"/>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="分类" prop="categoryId">
+                                <el-cascader v-model="categorySelected" :options="spuCategoryList" clearable
+                                             :props="{ emitPath: false, checkStrictly: false, value: 'id', label: 'name'}"
+                                             @change="(value) => this.dataForm.categoryId = value" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item prop="sort" :label="$t('base.sort')">
+                                <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')"/>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="名称" prop="name">
+                                <el-input v-model="dataForm.name" placeholder="输入名称"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="编号" prop="sn">
+                                <el-input v-model="dataForm.sn" placeholder="编号"/>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="市场价" prop="marketPrice">
+                                <el-input-number v-model="dataForm.marketPrice" placeholder="输入市场价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="销售价" prop="salePrice">
+                                <el-input-number v-model="dataForm.salePrice" placeholder="输入销售价" controls-position="right" :min="0" :max="99999" :precision="2" :step="1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="8">
+                            <el-form-item label="物流" prop="delivery">
+                                <el-radio-group v-model="dataForm.delivery" size="small">
+                                    <el-radio-button :label="1">需要</el-radio-button>
+                                    <el-radio-button :label="0">不需要</el-radio-button>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="在架" prop="marketable">
+                                <el-radio-group v-model="dataForm.marketable" size="small">
+                                    <el-radio-button :label="1">上架</el-radio-button>
+                                    <el-radio-button :label="0">下架</el-radio-button>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="置顶" prop="top">
+                                <el-radio-group v-model="dataForm.top" size="small">
+                                    <el-radio-button :label="1">置顶</el-radio-button>
+                                    <el-radio-button :label="0">不置顶</el-radio-button>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-form-item label="标题" prop="title">
+                        <el-input v-model="dataForm.title" placeholder="标题"></el-input>
+                    </el-form-item>
+                    <el-form-item label="标签" prop="tags">
+                        <el-tag class="multi-tags" :key="item" v-for="item in tags" closable :disable-transitions="false" @close="tags.splice(tags.indexOf(item), 1)">{{ item }}</el-tag>
+                        <el-input class="input-new-tag" v-if="tagInputVisible" v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
+                        <el-button v-else class="button-new-tag" size="small" @click="showTagInput">+ 添加</el-button>
+                    </el-form-item>
+                </el-form>
+                <div style="text-align: center;">
+                    <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="2" label="图文详情">
+                <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
+                    <el-form-item prop="content">
+                        <!-- 富文本编辑器, 容器 -->
+                        <div id="J_quillEditor"/>
+                        <!-- 自定义上传图片功能 (使用element upload组件) -->
+                        <el-upload
+                                :action="uploadUrl"
+                                :show-file-list="false"
+                                :before-upload="beforeImageUpload"
+                                :on-success="uploadEditorSuccessHandle"
+                                style="display: none;">
+                            <el-button ref="uploadBtn" type="primary" size="small">{{ $t('uploadButton') }}</el-button>
+                        </el-upload>
+                    </el-form-item>
+                </el-form>
+                <div style="text-align: center;">
+                    <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="3" label="参数管理">
+                <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="70px">
+                    <el-row v-for="(attrGroup, index) in dataForm.attrGroups" :key="index" :prop="'attrGroup.' + index + '.value'">
+                        <el-col :span="6">
+                            <el-form-item :label="'参数组' + (index + 1)">
+                                <el-input v-model="attrGroup.name" placeholder="参数组名称" maxlength="50"/>
+                                <el-button @click.prevent="addAttrGroup(index + 1)" style="margin-left: 10px;" type="text">添加参数组</el-button>
+                                <el-button @click.prevent="removeAttrGroup(attrGroup)" style="margin-left: 10px;color:#f56c6c;" type="text">删除参数组</el-button>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="18">
+                            <el-row v-for="(attr, attrIndex) in attrGroup.items" :key="attrIndex" :prop="'attr.' + attrIndex + '.value'">
+                                <el-col :span="9">
+                                    <el-form-item :label="'参数' + (attrIndex + 1)">
+                                        <el-input v-model="attr.name" placeholder="参数名" maxlength="50"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="9">
+                                    <el-form-item label="参数值">
+                                        <el-input v-model="attr.value" placeholder="参数值" maxlength="50"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-button @click.prevent="addAttr(attrGroup, attrIndex + 1)" style="margin-left: 10px;" type="text">添加参数</el-button>
+                                    <el-button @click.prevent="removeAttr(attrGroup, attr)" style="margin-left: 10px;color:#f56c6c;" type="text" v-if="attrGroup.items.length > 1">删除参数</el-button>
+                                </el-col>
+                            </el-row>
+                        </el-col>
+                    </el-row>
+                </el-form>
+                <div style="text-align: center;">
+                    <el-button type="success" @click="addAttrGroup(dataForm.attrGroups.length + 1)">添加参数组</el-button>
+                    <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="4" label="规格管理">角色管理</el-tab-pane>
+        </el-tabs>
+        <!-- 弹窗, 图片查看 -->
+        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
+    </el-card>
 </template>
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
+import mixinMultiTagsModule from '@/mixins/multi-tags-module'
 import mixinFormModule from '@/mixins/form-module'
 import mixinQuillModule from '@/mixins/quill-module'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
@@ -143,7 +178,7 @@ import { removeEmptyChildren } from '@/utils'
 
 export default {
   inject: ['refresh'],
-  mixins: [mixinBaseModule, mixinFormModule, mixinQuillModule],
+  mixins: [mixinBaseModule, mixinMultiTagsModule, mixinFormModule, mixinQuillModule],
   components: { ImageViewer },
   data () {
     return {
@@ -180,6 +215,7 @@ export default {
         marketPrice: 0,
         salePrice: 0,
         attrs: '',
+        attrGroups: [],
         specs: '',
         status: '',
         hits: '',
@@ -207,19 +243,17 @@ export default {
         tab.title = queryId ? '编辑商品' : '新增商品'
       }
       // 根据step刷新数据
-      if (this.step === '1') {
-        Promise.all([
-          this.getBrandList(''),
-          // this.getSupplierList(''),
-          this.getSpuCategoryList('')
-        ]).then(() => {
-          this.init()
-        })
-      }
+      this.init()
     }
   },
   computed: {
     dataRule () {
+      var validateContent = (rule, value, callback) => {
+        if (this.quillEditor.getLength() <= 1) {
+          return callback(new Error(this.$t('validate.required')))
+        }
+        callback()
+      }
       return {
         storeId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
@@ -283,61 +317,134 @@ export default {
         ],
         score: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        content: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' },
+          { validator: validateContent, trigger: 'blur' }
         ]
       }
     }
-  },
-  created () {
-    this.init()
   },
   methods: {
     init () {
       this.formLoading = true
       this.visible = true
       this.$nextTick(() => {
-        this.resetForm()
-        this.initFormData()
+        if (this.step === '1') {
+          this.tags = []
+          this.tagInputVisible = false
+          this.tagInputValue = ''
+          this.resetForm()
+          Promise.all([
+            this.getBrandList(''),
+            // this.getSupplierList(''),
+            this.getSpuCategoryList('')
+          ]).then(() => {
+            this.initFormData()
+          })
+        } else if (this.step === '2') {
+          this.resetForm()
+          this.quillEditorHandle()
+          this.initUpload()
+          this.initFormData()
+        } else if (this.step === '3') {
+          this.initFormData()
+        }
       })
     },
     // 跳转步骤
     onStep (result) {
-      if (!this.dataForm.id && result !== 1) {
-        this.$message.error('保存基本信息后才能跳转步骤')
+      if (!this.dataForm.id) {
+        this.$message.error('基本信息保存后才能切换')
         return false
       }
       if (result === 100) {
-        this.step = Number.parseInt(this.step) + 1
+        // 下一步
+        this.step = String(Number.parseInt(this.step) + 1)
       } else if (result === -100) {
-        this.step = Number.parseInt(this.step) - 1
+        // 上一步
+        this.step = String(Number.parseInt(this.step) - 1)
       } else {
-        this.step = result
+        this.step = String(result)
       }
       this.$router.replace({ name: this.$route.name, query: { id: this.dataForm.id, step: this.step } })
+      // 跳转后刷新一下，激活activated
       this.refresh()
     },
-    tabClickHandle (tab, event) {
-      console.log(tab, event)
-      this.onStep(Number.parseInt(tab.name))
-    },
-    beforeTabLeaveHandle (activeName) {
-      if (!this.dataForm.id && activeName !== '1') {
-        this.$message.error('请保存基本信息')
-        return false
-      } else {
-        return true
+    // form信息获取成功
+    onGetInfoSuccess (res) {
+      this.dataForm = {
+        ...this.dataForm,
+        ...res.data
       }
+      if (this.step === '1') {
+        // 分割关键词
+        if (this.dataForm.tags) {
+          this.tags = this.dataForm.tags.split(',').filter(item => item !== '')
+        }
+      } else if (this.step === '2') {
+        // set富文本编辑器
+        this.quillEditor.root.innerHTML = this.dataForm.content
+      } else if (this.step === '3') {
+        // 参数管理
+        if (this.dataForm.attrs) {
+          this.dataForm.attrGroups = JSON.parse(this.dataForm.attrs)
+        } else {
+          this.dataForm.attrGroups = []
+        }
+      }
+    },
+    // 表单提交之前的操作
+    beforeDateFormSubmit () {
+      if (this.step === '1') {
+        this.dataForm.tags = this.tags.join(',')
+      } else if (this.step === '2') {
+        // set富文本编辑器
+        this.dataForm.content = this.quillEditor.root.innerHTML
+      } else if (this.step === '3') {
+        // 参数管理
+        this.dataForm.attrs = JSON.stringify(this.dataForm.attrGroups)
+      }
+      this.dataFormSubmitParam = this.dataForm
+      return true
     },
     // 表单提交成功
     onFormSubmitSuccess (res) {
       // 跳到下一步
+      this.dataForm.id = res.data.id
       this.onStep(100)
       // 弹出提示框
       this.$message({
         message: '保存成功',
         type: 'success',
         duration: 500,
-        onClose: () => {}
+        onClose: () => {
+        }
       })
+    },
+    // 插入参数组
+    addAttrGroup (index) {
+      // 插入指定位置
+      this.dataForm.attrGroups.splice(index, 0, { 'name': '', 'items': [ { 'name': '', 'value': '' } ] })
+    },
+    // 删除参数组
+    removeAttrGroup (item) {
+      const index = this.dataForm.attrGroups.indexOf(item)
+      if (index !== -1) {
+        this.dataForm.attrGroups.splice(index, 1)
+      }
+    },
+    // 插入参数
+    addAttr (attrGroup, index) {
+      // 插入指定位置
+      attrGroup.items.splice(index, 0, { 'name': '', 'value': '' })
+    },
+    // 删除参数
+    removeAttr (attrGroup, item) {
+      const index = attrGroup.items.indexOf(item)
+      if (index !== -1) {
+        attrGroup.items.splice(index, 1)
+      }
     },
     // 品牌列表
     getBrandList (name) {
