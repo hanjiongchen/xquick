@@ -517,7 +517,7 @@ export default {
     },
     // 供应商列表
     getSpuCategoryList (name) {
-      return this.$http.get(`/shop/spuCategory/tree?name=` + name).then(({ data: res }) => {
+      return this.$http.get(`/shop/spuCategory/tree?filterEmptyChild=true&name=` + name).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }

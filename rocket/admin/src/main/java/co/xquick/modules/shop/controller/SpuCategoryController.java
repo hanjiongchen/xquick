@@ -2,6 +2,7 @@ package co.xquick.modules.shop.controller;
 
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
+import co.xquick.booster.util.ParamUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
@@ -15,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -48,6 +50,11 @@ public class SpuCategoryController {
     @RequiresPermissions("shop:spuCategory:list")
     public Result<?> tree(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SpuCategoryTreeDTO> tree = categoryService.tree(params);
+
+        // 使用迭代器的删除方法删除
+        if (ParamUtils.toBoolean(params.get("filterEmptyChild"), false)) {
+            tree.removeIf(spuCategoryTree -> ObjectUtils.isEmpty(spuCategoryTree.getChildren()));
+        }
 
         return new Result<>().ok(tree);
     }

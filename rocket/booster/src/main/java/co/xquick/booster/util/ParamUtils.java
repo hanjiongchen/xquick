@@ -42,6 +42,25 @@ public class ParamUtils {
      * @param defaultVal 默认值
      * @return
      */
+    public static boolean toBoolean(Object object, boolean defaultVal) {
+        if (isNotEmpty(object)) {
+            try {
+                String obj = object.toString();
+                defaultVal = "true".equalsIgnoreCase(obj) || "1".equalsIgnoreCase(obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return defaultVal;
+    }
+
+    /**
+     * 转换为long值
+     *
+     * @param object     参数
+     * @param defaultVal 默认值
+     * @return
+     */
     public static long toLong(Object object, long defaultVal) {
         if (isNotEmpty(object)) {
             try {
