@@ -84,7 +84,7 @@
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './receiver-add-or-update'
 import AmapLocView from '@/components/amap-loc-view'
-import UserPick from '@/components/user-pick'
+import UserPick from '../uc/user-pick'
 
 export default {
   mixins: [mixinListModule],

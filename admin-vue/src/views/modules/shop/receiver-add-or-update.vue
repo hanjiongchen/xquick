@@ -53,7 +53,7 @@
 <script>
 import mixinFormModule from '@/mixins/form-module'
 import AmapLocPick from '@/components/amap-loc-pick'
-import UserPick from '@/components/user-pick'
+import UserPick from '../uc/user-pick'
 
 export default {
   mixins: [mixinFormModule],
