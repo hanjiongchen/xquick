@@ -1,12 +1,12 @@
 package co.xquick.modules.shop.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import co.xquick.booster.service.impl.CrudServiceImpl;
+import co.xquick.booster.util.WrapperUtils;
 import co.xquick.modules.shop.dao.SkuDao;
 import co.xquick.modules.shop.dto.SkuDTO;
 import co.xquick.modules.shop.entity.SkuEntity;
 import co.xquick.modules.shop.service.SkuService;
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,12 +21,16 @@ public class SkuServiceImpl extends CrudServiceImpl<SkuDao, SkuEntity, SkuDTO> i
 
     @Override
     public QueryWrapper<SkuEntity> getWrapper(String method, Map<String, Object> params){
-        String id = (String)params.get("id");
-
-        QueryWrapper<SkuEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(id), "id", id);
-
-        return wrapper;
+        return new WrapperUtils<SkuEntity>(new QueryWrapper<>(), params)
+                .like("name", "name")
+                .eq("storeId", "store_id")
+                .eq("spuId", "spu_id")
+                .eq("sn", "sn")
+                .and("search", queryWrapper -> {
+                    String search = (String) params.get("search");
+                    queryWrapper.like("name", search).or().like("sn", search);
+                })
+                .getQueryWrapper();
     }
 
     @Override
