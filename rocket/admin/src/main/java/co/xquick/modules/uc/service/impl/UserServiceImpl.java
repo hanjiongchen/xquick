@@ -75,6 +75,10 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                 .like("deptId", "uc_user.deptId")
                 .like("mobile", "mobile")
                 .like("realName", "real_name")
+                .and("search", queryWrapper -> {
+                    String search = (String) params.get("search");
+                    queryWrapper.like("real_name", search).or().like("username", search).like("mobile", search);
+                })
                 // 数据过滤
                 .apply(Const.SQL_FILTER)
                 .getQueryWrapper()
