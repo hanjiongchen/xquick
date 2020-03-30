@@ -2,10 +2,10 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-log__error">
       <el-form :inline="true" :model="dataForm">
+        <el-form-item class="small-item">
+          <el-input v-model="dataForm.uri" placeholder="请求Uri" clearable/>
+        </el-form-item>
         <el-form-item>
-          <el-form-item class="small-item">
-            <el-input v-model="dataForm.uri" placeholder="请求Uri" clearable/>
-          </el-form-item>
           <el-date-picker
                   v-model="dateRange"
                   type="datetimerange"

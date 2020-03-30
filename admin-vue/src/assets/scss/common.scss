@@ -844,8 +844,16 @@ img {
   padding: 20px 0;
 }
 
+.tiny-item {
+  width: 100px;
+}
+
 .small-item {
   width: 120px;
+}
+
+.middle-item {
+  width: 150px;
 }
 
 /* table 组件文字自动缩略 不使用show-overflow-tooltip */

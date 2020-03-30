@@ -72,10 +72,6 @@
         <el-table-column prop="salePrice" label="售价" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('shop:spu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('shop:spu:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-          </template>
-          <template slot-scope="scope">
             <el-dropdown trigger="click" @command="editActionHandler" class="action-dropdown">
               <span class="el-dropdown-link">{{ $t('handle') }}<i class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu slot="dropdown">
