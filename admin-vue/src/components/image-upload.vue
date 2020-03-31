@@ -34,7 +34,12 @@ import { isURL } from '@/utils/validate'
 
 export default {
   name: 'ImageUpload',
+  components: { ImageViewer },
   props: {
+    // 绑定的v-model,必须用value
+    value: {
+      type: String
+    },
     // 提示文字
     tips: {
       type: String,
@@ -56,7 +61,6 @@ export default {
       default: `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
     }
   },
-  components: { ImageViewer },
   data () {
     return {
       uploadFileList: [],
@@ -66,11 +70,19 @@ export default {
       imageViewerVisible: false // 图片查看器,弹窗visible状态
     }
   },
+  watch: {
+    value () {
+      console.log(this.value)
+    }
+  },
   methods: {
     // 初始化
     init () {
       // 清空内容
       this.uploadFileList = []
+      console.log('init')
+      console.log(this.value)
+      this.setStringToUploadFileList(this.value)
     },
     // 设置图片
     setStringToUploadFileList (imgs) {

@@ -1,6 +1,6 @@
 <template>
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="'80px'">
+        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" :label-width="$i18n.locale === 'en-US' ? '120px' : '80px'">
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="类目" prop="articleCategoryId">
@@ -74,35 +74,12 @@
                 </el-col>
             </el-row>
             <el-form-item prop="imgs" :label="$t('base.cover')">
-                <el-upload
-                        :class="{hide:dataFormMode === 'view'}"
-                        :disabled="dataFormMode === 'view'"
-                        :before-upload="beforeImageUpload"
-                        :on-success="uploadSuccessHandle"
-                        list-type="picture-card"
-                        :limit="1"
-                        :accept="acceptImageFormat"
-                        :file-list="uploadFileList"
-                        :on-preview="uploadPreviewHandle"
-                        :multiple="false"
-                        :on-exceed="uploadExceedHandle"
-                        :on-remove="uploadRemoveHandle"
-                        :action="uploadUrl">
-                    <i class="el-icon-plus"></i>
-                </el-upload>
+                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`图片建议尺寸400*400,大小限制2MB内`"/>
             </el-form-item>
             <el-form-item prop="content" label="文章内容">
-                <!-- 富文本编辑器, 容器 -->
-                <div id="J_quillEditor"></div>
-                <!-- 自定义上传图片功能 (使用element upload组件) -->
-                <el-upload
-                        :action="uploadUrl"
-                        :show-file-list="false"
-                        :before-upload="beforeImageUpload"
-                        :on-success="uploadEditorSuccessHandle"
-                        style="display: none;">
-                    <el-button ref="uploadBtn" type="primary" size="small">{{ $t('uploadButton') }}</el-button>
-                </el-upload>
+                <el-form-item prop="content">
+                    <quill-editor ref="editorContent" containerHeight="200px" v-model="dataForm.content"/>
+                </el-form-item>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
                 <el-input v-model="dataForm.remark" placeholder="备注" type="textarea" maxlength="300"/>
@@ -112,8 +89,6 @@
             <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
             <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
         </template>
-        <!-- 弹窗, 图片查看 -->
-        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
     </el-dialog>
 </template>
 
@@ -121,11 +96,11 @@
 import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
 import QuillEditor from '@/components/quill-editor'
-import ImageViewer from 'element-ui/packages/image/src/image-viewer'
+import ImageUpload from '@/components/image-upload'
 
 export default {
   mixins: [mixinBaseModule, mixinFormModule],
-  components: { QuillEditor, ImageViewer },
+  components: { QuillEditor, ImageUpload },
   data () {
     return {
       // 表单模块参数
@@ -210,9 +185,9 @@ export default {
       this.formLoading = true
       this.visible = true
       this.$nextTick(() => {
-        this.quillEditorHandle()
-        this.initUpload()
-        this.$refs['dataForm'].resetFields()
+        this.$refs.imgsUpload.init()
+        this.$refs.editorContent.init()
+        this.resetForm()
         Promise.all([
           this.getArticleCategoryList()
         ]).then(() => {
@@ -242,12 +217,12 @@ export default {
       // set富文本编辑器
       this.$refs.editorContent.setInnerHTML(this.dataForm.content)
       // 赋值图片
-      this.setUploadFileList(this.dataForm.imgs)
+      this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.imgs)
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
       this.dataForm.content = this.$refs.editorContent.getInnerHTML()
-      this.dataForm.imgs = this.getUploadFileString()
+      this.dataForm.imgs = this.$refs.imgsUpload.getUploadFileString()
       this.dataFormSubmitParam = this.dataForm
       return true
     }

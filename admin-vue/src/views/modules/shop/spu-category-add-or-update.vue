@@ -31,7 +31,7 @@
             </el-col>
         </el-row>
       <el-form-item prop="logo" label="图标">
-          <image-upload ref="imgsUpload" :limit="1" :tips="`图片建议尺寸400*400,大小限制2MB内`"/>
+          <image-upload ref="imgsUpload" v-model="dataForm.logo" :limit="1" :tips="`图片建议尺寸400*400,大小限制2MB内`"/>
       </el-form-item>
       <el-form-item label="描述" prop="content">
           <el-input v-model="dataForm.content" placeholder="描述" type="textarea"></el-input>
@@ -123,7 +123,7 @@ export default {
         ...res.data
       }
       // 赋值图片
-      this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.logo)
+      // this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.logo)
       if (this.dataForm.pid === '0') {
         this.dataForm.depth = 1
       } else {

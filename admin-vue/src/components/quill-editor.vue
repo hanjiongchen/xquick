@@ -28,6 +28,10 @@ import Cookies from 'js-cookie'
 export default {
   name: 'QuillEditor',
   props: {
+    // 绑定的v-model,必须用value
+    value: {
+      type: String
+    },
     // 编辑器高度
     containerHeight: {
       type: String,
@@ -80,6 +84,9 @@ export default {
         // 监听内容变化,动态赋值,会有点卡
         // this.quillEditor.on('text-change', () => { this.quillHtml = this.quillEditor.root.innerHTML })
       }
+      // 设置为model的值
+      this.setInnerHTML(this.value)
+      // 设置高度
       this.quillEditor.container.style.height = this.containerHeight
     },
     // 设置内容
