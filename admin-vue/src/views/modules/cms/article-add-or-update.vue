@@ -221,7 +221,6 @@ export default {
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
-      this.dataForm.content = this.$refs.editorContent.getInnerHTML()
       this.dataForm.imgs = this.$refs.imgsUpload.getUploadFileString()
       this.dataFormSubmitParam = this.dataForm
       return true
