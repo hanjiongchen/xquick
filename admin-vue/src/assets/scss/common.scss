@@ -805,8 +805,9 @@ img {
     }
   }
 
+  // 富文本编辑器高度
   .ql-container {
-    height: 150px;
+    height: 350px;
 
     &.ql-snow {
       border-color: $--border-color-base;

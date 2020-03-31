@@ -120,12 +120,12 @@
 <script>
 import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
-import mixinQuillModule from '@/mixins/quill-module'
+import QuillEditor from '@/components/quill-editor'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
-  mixins: [mixinBaseModule, mixinFormModule, mixinQuillModule],
-  components: { ImageViewer },
+  mixins: [mixinBaseModule, mixinFormModule],
+  components: { QuillEditor, ImageViewer },
   data () {
     return {
       // 表单模块参数
@@ -177,7 +177,7 @@ export default {
   computed: {
     dataRule () {
       var validateContent = (rule, value, callback) => {
-        if (this.quillEditor.getLength() <= 1) {
+        if (this.$refs.editorContent.getContentLength() <= 1) {
           return callback(new Error(this.$t('validate.required')))
         }
         callback()
@@ -240,13 +240,13 @@ export default {
         ...res.data
       }
       // set富文本编辑器
-      this.quillEditor.root.innerHTML = this.dataForm.content
+      this.$refs.editorContent.setInnerHTML(this.dataForm.content)
       // 赋值图片
       this.setUploadFileList(this.dataForm.imgs)
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
-      this.dataForm.content = this.quillEditor.root.innerHTML
+      this.dataForm.content = this.$refs.editorContent.getInnerHTML()
       this.dataForm.imgs = this.getUploadFileString()
       this.dataFormSubmitParam = this.dataForm
       return true

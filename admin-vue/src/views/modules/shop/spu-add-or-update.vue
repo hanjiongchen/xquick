@@ -141,17 +141,7 @@
             <el-tab-pane name="3" label="详情介绍" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
                     <el-form-item prop="content">
-                        <!-- 富文本编辑器, 容器 -->
-                        <div id="J_quillEditor"/>
-                        <!-- 自定义上传图片功能 (使用element upload组件) -->
-                        <el-upload
-                                :action="uploadUrl"
-                                :show-file-list="false"
-                                :before-upload="beforeImageUpload"
-                                :on-success="uploadEditorSuccessHandle"
-                                style="display: none;">
-                            <el-button ref="uploadBtn" type="primary" size="small">{{ $t('uploadButton') }}</el-button>
-                        </el-upload>
+                        <quill-editor ref="editorContent"/>
                     </el-form-item>
                 </el-form>
                 <div style="text-align: center;">
@@ -204,14 +194,14 @@
 import mixinBaseModule from '@/mixins/base-module'
 import mixinMultiTagsModule from '@/mixins/multi-tags-module'
 import mixinFormModule from '@/mixins/form-module'
-import mixinQuillModule from '@/mixins/quill-module'
 import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 import { removeEmptyChildren } from '@/utils'
+import QuillEditor from '@/components/quill-editor'
 
 export default {
   inject: ['refresh'],
-  mixins: [mixinBaseModule, mixinMultiTagsModule, mixinFormModule, mixinQuillModule],
-  components: { ImageViewer },
+  mixins: [mixinBaseModule, mixinMultiTagsModule, mixinFormModule],
+  components: { QuillEditor, ImageViewer },
   data () {
     return {
       // 表单模块参数
@@ -282,7 +272,7 @@ export default {
   computed: {
     dataRule () {
       var validateContent = (rule, value, callback) => {
-        if (this.quillEditor.getLength() <= 1) {
+        if (this.$refs.editorContent.getContentLength() <= 1) {
           return callback(new Error(this.$t('validate.required')))
         }
         callback()
@@ -382,9 +372,7 @@ export default {
           this.initFormData()
         } else if (this.step === '3') {
           // 详情
-          this.resetForm()
-          this.quillEditorHandle()
-          this.initUpload()
+          this.$refs.editorContent.init()
           this.initFormData()
         } else if (this.step === '4') {
           // 参数
@@ -429,8 +417,7 @@ export default {
         this.setUploadFileList(this.dataForm.imgs)
       } else if (this.step === '3') {
         // 详情
-        // set富文本编辑器
-        this.quillEditor.root.innerHTML = this.dataForm.content
+        this.$refs.editorContent.setInnerHTML(this.dataForm.content)
       } else if (this.step === '4') {
         // 参数管理
         if (this.dataForm.attrs) {
@@ -449,7 +436,7 @@ export default {
         this.dataForm.imgs = this.getUploadFileString()
       } else if (this.step === '3') {
         // 图文详情
-        this.dataForm.content = this.quillEditor.root.innerHTML
+        this.dataForm.content = this.$refs.editorContent.getInnerHTML()
       } else if (this.step === '4') {
         // 参数管理
         this.dataForm.attrs = JSON.stringify(this.dataForm.attrGroups)

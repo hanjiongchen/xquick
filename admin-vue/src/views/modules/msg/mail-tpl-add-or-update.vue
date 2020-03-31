@@ -41,17 +41,7 @@
                 <el-input v-model="dataForm.title" placeholder="请输入邮件标题"/>
             </el-form-item>
             <el-form-item prop="content" label="邮件内容">
-                <!-- 富文本编辑器, 容器 -->
-                <div id="J_quillEditor"></div>
-                <!-- 自定义上传图片功能 (使用element upload组件) -->
-                <el-upload
-                        :action="uploadUrl"
-                        :show-file-list="false"
-                        :before-upload="beforeImageUpload"
-                        :on-success="uploadEditorSuccessHandle"
-                        style="display: none;">
-                    <el-button ref="uploadBtn" type="primary" size="small">{{ $t('upload.button') }}</el-button>
-                </el-upload>
+                <quill-editor ref="editorContent"/>
             </el-form-item>
         </el-form>
         <template slot="footer">
@@ -63,10 +53,11 @@
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
-import mixinQuillModule from '@/mixins/quill-module'
+import QuillEditor from '@/components/quill-editor'
 
 export default {
-  mixins: [mixinFormModule, mixinQuillModule],
+  mixins: [mixinFormModule],
+  components: { QuillEditor },
   data () {
     return {
       // 表单模块参数
@@ -91,7 +82,7 @@ export default {
   computed: {
     dataRule () {
       var validateContent = (rule, value, callback) => {
-        if (this.quillEditor.getLength() <= 1) {
+        if (this.$refs.editorContent.getContentLength() <= 1) {
           return callback(new Error(this.$t('validate.required')))
         }
         callback()
@@ -143,11 +134,11 @@ export default {
         ...res.data
       }
       // set富文本编辑器
-      this.quillEditor.root.innerHTML = this.dataForm.content
+      this.$refs.editorContent.setInnerHTML(this.dataForm.content)
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
-      this.dataForm.content = this.quillEditor.root.innerHTML
+      this.dataForm.content = this.$refs.editorContent.getInnerHTML()
       this.dataFormSubmitParam = this.dataForm
       return true
     }

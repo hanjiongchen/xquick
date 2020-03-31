@@ -157,6 +157,9 @@ export default {
     setUploadUrl () {
       this.uploadUrl = `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
     },
+    getUploadUrl () {
+      return `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
+    },
     // 图片上传前检查
     beforeImageUpload (file) {
       return beforeImageUpload(file)
