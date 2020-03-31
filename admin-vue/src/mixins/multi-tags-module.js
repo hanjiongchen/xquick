@@ -17,6 +17,12 @@ export default {
     }
   },
   methods: {
+    // 重置数据
+    resetTags () {
+      this.tags = []
+      this.tagInputVisible = false
+      this.tagInputValue = ''
+    },
     showTagInput () {
       this.tagInputVisible = true
       this.$nextTick(() => {

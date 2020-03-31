@@ -74,7 +74,7 @@
                 </el-col>
             </el-row>
             <el-form-item prop="imgs" :label="$t('base.cover')">
-                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`图片建议尺寸400*400,大小限制2MB内`"/>
+                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`建议尺寸400*400,且不超过2MB`"/>
             </el-form-item>
             <el-form-item prop="content" label="文章内容">
                 <el-form-item prop="content">
@@ -185,8 +185,7 @@ export default {
       this.formLoading = true
       this.visible = true
       this.$nextTick(() => {
-        this.$refs.imgsUpload.init()
-        this.$refs.editorContent.init()
+        this.$refs.editorContent.setInnerHTML(null)
         this.resetForm()
         Promise.all([
           this.getArticleCategoryList()
@@ -216,14 +215,6 @@ export default {
       }
       // set富文本编辑器
       this.$refs.editorContent.setInnerHTML(this.dataForm.content)
-      // 赋值图片
-      this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.imgs)
-    },
-    // 表单提交之前的操作
-    beforeDateFormSubmit () {
-      this.dataForm.imgs = this.$refs.imgsUpload.getUploadFileString()
-      this.dataFormSubmitParam = this.dataForm
-      return true
     }
   }
 }

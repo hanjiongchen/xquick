@@ -1,6 +1,5 @@
 <template>
     <div>
-        <span>{{tips}}</span>
         <el-upload
                 :class="{hide:uploadFileList.length >= limit}"
                 :before-upload="beforeImageUpload"
@@ -15,6 +14,7 @@
                 :on-remove="uploadRemoveHandle"
                 :action="uploadUrl">
             <i class="el-icon-plus"></i>
+            <div slot="tip" class="el-upload__tip">{{tips}}</div>
         </el-upload>
         <!-- 弹窗, 图片查看 -->
         <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
@@ -37,6 +37,7 @@ export default {
   components: { ImageViewer },
   props: {
     // 绑定的v-model,必须用value
+    // 参考https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
     value: {
       type: String
     },
@@ -71,27 +72,22 @@ export default {
     }
   },
   watch: {
-    value () {
-      console.log(this.value)
+    // 监听prop传的value
+    value (newVal, oldVal) {
+      console.log('newVal' + newVal)
+      console.log('oldVal' + oldVal)
+      this.uploadFileList = this.getUploadFileListFromString(newVal)
     }
   },
   methods: {
-    // 初始化
-    init () {
-      // 清空内容
-      this.uploadFileList = []
-      console.log('init')
-      console.log(this.value)
-      this.setStringToUploadFileList(this.value)
-    },
-    // 设置图片
-    setStringToUploadFileList (imgs) {
+    getUploadFileListFromString (imgs) {
+      let fileList = []
       if (imgs) {
-        const that = this
-        imgs.split(',').forEach(function (item) {
-          that.uploadFileList.push({ url: item, name: item })
+        imgs.split(',').forEach(item => {
+          fileList.push({ url: item, name: item })
         })
       }
+      return fileList
     },
     // 获得上传文件路径拼接
     getUploadFileString (fileList) {
@@ -99,7 +95,7 @@ export default {
         fileList = this.uploadFileList
       }
       let files = []
-      fileList.forEach(function (item) {
+      fileList.forEach(item => {
         if (item.status === 'success') {
           if (isURL(item.url)) {
             files.push(item.url)
@@ -119,7 +115,7 @@ export default {
       if (res.code !== 0) {
         return this.$message.error(res.toast)
       } else {
-        this.uploadFileList = fileList
+        this.$emit('input', this.getUploadFileString(fileList))
       }
     },
     // 图片上传失败
@@ -127,7 +123,7 @@ export default {
       console.log(err)
       console.log(file)
       console.log(fileList)
-      this.uploadFileList = fileList
+      this.$emit('input', this.getUploadFileString(fileList))
     },
     // 文件发生变化
     uploadChangeHandle (file, fileList) {
@@ -135,7 +131,7 @@ export default {
     },
     // 图片移除成功
     uploadRemoveHandle (file, fileList) {
-      this.uploadFileList = fileList
+      this.$emit('input', this.getUploadFileString(fileList))
     },
     // 预览上传文件
     uploadPreviewHandle () {

@@ -64,22 +64,15 @@ export default {
       }
     }
   },
-  model: {
-    prop: 'value',
-    event: 'changed'
-  },
   data () {
     return {
       // 富文本编辑器
       quillEditor: null
     }
   },
-  /* watch: {
-    // 监听prop传的value
-    value (newVal) {
-      this.setInnerHTML(newVal)
-    }
-  }, */
+  mounted () {
+    this.init()
+  },
   methods: {
     // 初始化编辑器
     init () {
@@ -92,9 +85,8 @@ export default {
         // 自定义上传图片功能 (使用element upload组件)
         this.quillEditor.getModule('toolbar').addHandler('image', () => { this.$refs.uploadBtn.$el.click() })
         // 监听内容变化,动态赋值,会有点卡
-        // this.quillEditor.on('text-change', () => { this.$emit('editorContentChanged', this.getInnerHTML()) })
         this.quillEditor.on('text-change', () => {
-          this.$emit('changed', this.getInnerHTML())
+          this.$emit('input', this.getInnerHTML())
         })
       }
       // 设置为model的值

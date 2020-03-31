@@ -51,6 +51,11 @@
                 <el-table-column prop="articleCategoryName" label="文章类目" header-align="center" align="center" width="200"/>
                 <el-table-column prop="author" label="作者" header-align="center" align="center" width="100"/>
                 <el-table-column prop="name" label="标题" header-align="center" align="center" width="200"/>
+                <el-table-column prop="imgs" label="封面" header-align="center" align="center" width="100">
+                    <template slot-scope="scope">
+                        <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" :preview-src-list="scope.row.imgs.split(',')" fit="cover"/>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="content" label="文章内容" header-align="center" align="center" min-width="200" class-name="nowrap">
                     <template slot-scope="scope">
                         <el-popover

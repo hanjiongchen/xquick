@@ -117,7 +117,7 @@
             <el-tab-pane name="2" label="商品图片" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
                     <el-form-item prop="imgs">
-                        <image-upload ref="imgsUpload" :limit="4" :tips="`图片建议尺寸800*400,大小限制2MB内`"/>
+                        <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="4" :tips="`建议尺寸800*400,且不超过2MB`"/>
                     </el-form-item>
                 </el-form>
                 <div style="text-align: center;">
@@ -339,9 +339,7 @@ export default {
       this.$nextTick(() => {
         if (this.step === '1') {
           // 详情
-          this.tags = []
-          this.tagInputVisible = false
-          this.tagInputValue = ''
+          this.resetTags()
           this.resetForm()
           Promise.all([
             this.getBrandList(''),
@@ -352,7 +350,6 @@ export default {
           })
         } else if (this.step === '2') {
           // 图片
-          this.$refs.imgsUpload.init()
           this.initFormData()
         } else if (this.step === '3') {
           // 详情
@@ -397,7 +394,6 @@ export default {
         }
       } else if (this.step === '2') {
         // 图片
-        this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.imgs)
       } else if (this.step === '3') {
         // 详情
         this.$refs.editorContent.setInnerHTML(this.dataForm.content)
@@ -416,10 +412,8 @@ export default {
         this.dataForm.tags = this.tags.join(',')
       } else if (this.step === '2') {
         // 图片
-        this.dataForm.imgs = this.$refs.imgsUpload.getUploadFileString()
       } else if (this.step === '3') {
         // 图文详情
-        this.dataForm.content = this.$refs.editorContent.getInnerHTML()
       } else if (this.step === '4') {
         // 参数管理
         this.dataForm.attrs = JSON.stringify(this.dataForm.attrGroups)
