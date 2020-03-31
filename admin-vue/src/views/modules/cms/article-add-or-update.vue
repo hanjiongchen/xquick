@@ -74,11 +74,11 @@
                 </el-col>
             </el-row>
             <el-form-item prop="imgs" :label="$t('base.cover')">
-                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`建议尺寸400*400,且不超过2MB`"/>
+                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="2" :tips="`建议尺寸400*400,且不超过2MB`"/>
             </el-form-item>
             <el-form-item prop="content" label="文章内容">
                 <el-form-item prop="content">
-                    <quill-editor ref="editorContent" containerHeight="200px" v-model="dataForm.content"/>
+                    <rich-text-editor ref="editorContent" containerHeight="200px" v-model="dataForm.content"/>
                 </el-form-item>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
@@ -95,12 +95,12 @@
 <script>
 import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
-import QuillEditor from '@/components/quill-editor'
+import RichTextEditor from '@/components/rich-text-editor'
 import ImageUpload from '@/components/image-upload'
 
 export default {
   mixins: [mixinBaseModule, mixinFormModule],
-  components: { QuillEditor, ImageUpload },
+  components: { RichTextEditor, ImageUpload },
   data () {
     return {
       // 表单模块参数
@@ -185,7 +185,6 @@ export default {
       this.formLoading = true
       this.visible = true
       this.$nextTick(() => {
-        this.$refs.editorContent.setInnerHTML(null)
         this.resetForm()
         Promise.all([
           this.getArticleCategoryList()
@@ -206,15 +205,6 @@ export default {
         this.formLoading = false
         this.$message.error(this.$t('prompt.apierror') + resp)
       })
-    },
-    // form信息获取成功
-    onGetInfoSuccess (res) {
-      this.dataForm = {
-        ...this.dataForm,
-        ...res.data
-      }
-      // set富文本编辑器
-      this.$refs.editorContent.setInnerHTML(this.dataForm.content)
     }
   }
 }

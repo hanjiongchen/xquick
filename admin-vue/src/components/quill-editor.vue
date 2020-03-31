@@ -73,6 +73,14 @@ export default {
   mounted () {
     this.init()
   },
+  watch: {
+    // 监听prop传的value
+    value (newVal, oldVal) {
+      if (!newVal || !oldVal || oldVal === '<p><br></p>') {
+        this.quillEditor.root.innerHTML = newVal
+      }
+    }
+  },
   methods: {
     // 初始化编辑器
     init () {

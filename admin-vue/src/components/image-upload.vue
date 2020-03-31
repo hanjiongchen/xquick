@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-upload
-                :class="{hide:uploadFileList.length >= limit}"
+                :class="{ hide:uploadFileList.length >= limit }"
                 :before-upload="beforeImageUpload"
                 :on-success="uploadSuccessHandle"
                 list-type="picture-card"
@@ -64,12 +64,15 @@ export default {
   },
   data () {
     return {
-      uploadFileList: [],
+      uploadFileList: this.getUploadFileListFromString(this.value),
       imageViewerZIndex: 2000, // 图片查看器zIndex
       imageViewerPreviewSrcList: [], // 图片查看文件列表
       prevOverflow: '', // 原先的overflow样式
       imageViewerVisible: false // 图片查看器,弹窗visible状态
     }
+  },
+  mounted () {
+    this.init()
   },
   watch: {
     // 监听prop传的value
@@ -80,6 +83,10 @@ export default {
     }
   },
   methods: {
+    // 初始化编辑器
+    init () {
+      this.uploadFileList = []
+    },
     getUploadFileListFromString (imgs) {
       let fileList = []
       if (imgs) {
@@ -127,7 +134,6 @@ export default {
     },
     // 文件发生变化
     uploadChangeHandle (file, fileList) {
-
     },
     // 图片移除成功
     uploadRemoveHandle (file, fileList) {
