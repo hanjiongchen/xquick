@@ -31,7 +31,7 @@ export default {
       uploadUrl: '', // 文件上传地址
       acceptImageFormat: '.jpg,.jpeg,.png,.bmp', // 支持的图片文件类型
       acceptExcelFormat: '.xls,.xlsx', // 支持的Excel文件类型
-      uploadFileList: [], // 已上传的图片
+      uploadFileList: [], // 已上传的文件
       // 隐藏upload最后的按钮
       hideUpload: false,
       // 图片查看器
@@ -157,9 +157,6 @@ export default {
     setUploadUrl () {
       this.uploadUrl = `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
     },
-    getUploadUrl () {
-      return `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
-    },
     // 图片上传前检查
     beforeImageUpload (file) {
       return beforeImageUpload(file)
@@ -236,17 +233,6 @@ export default {
     // 新链接中打开文件
     openFileHandle (file) {
       window.open(file.url)
-    },
-    // 获得字典内容
-    getDictList (type) {
-      return this.$http.get('/sys/dict/list?dictType=' + type).then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        return res.data
-      }).catch(() => {
-        this.$message.error('获取' + type + '字典值失败')
-      })
     },
     // 改变全屏
     setFullScreen () {

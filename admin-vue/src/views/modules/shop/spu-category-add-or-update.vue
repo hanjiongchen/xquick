@@ -31,22 +31,7 @@
             </el-col>
         </el-row>
       <el-form-item prop="logo" label="图标">
-          <el-upload
-                  :class="{hide:uploadFileList.length >= 1}"
-                  :before-upload="beforeImageUpload"
-                  :on-success="uploadSuccessHandle"
-                  :on-error="uploadErrorHandle"
-                  list-type="picture-card"
-                  :limit="1"
-                  :accept="acceptImageFormat"
-                  :file-list="uploadFileList"
-                  :on-preview="uploadPreviewHandle"
-                  :multiple="false"
-                  :on-exceed="uploadExceedHandle"
-                  :on-remove="uploadRemoveHandle"
-                  :action="uploadUrl">
-              <i class="el-icon-plus"/>
-          </el-upload>
+          <image-upload ref="imgsUpload" :limit="1" :tips="`图片建议尺寸400*400,大小限制2MB内`"/>
       </el-form-item>
       <el-form-item label="描述" prop="content">
           <el-input v-model="dataForm.content" placeholder="描述" type="textarea"></el-input>
@@ -56,19 +41,17 @@
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
       <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
     </template>
-      <!-- 弹窗, 图片查看 -->
-      <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
   </el-dialog>
 </template>
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
-import ImageViewer from 'element-ui/packages/image/src/image-viewer'
+import ImageUpload from '@/components/image-upload'
 
 export default {
   mixins: [mixinBaseModule, mixinFormModule],
-  components: { ImageViewer },
+  components: { ImageUpload },
   data () {
     return {
       // 表单模块参数
@@ -115,7 +98,7 @@ export default {
       this.$nextTick(() => {
         this.pidList = []
         this.resetForm()
-        this.initUpload()
+        this.$refs.imgsUpload.init()
         Promise.all([
           this.getPidList()
         ]).then(() => {
@@ -140,7 +123,7 @@ export default {
         ...res.data
       }
       // 赋值图片
-      this.setUploadFileList(this.dataForm.logo)
+      this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.logo)
       if (this.dataForm.pid === '0') {
         this.dataForm.depth = 1
       } else {
@@ -149,7 +132,7 @@ export default {
     },
     // 表单提交之前的操作
     beforeDateFormSubmit () {
-      this.dataForm.logo = this.getUploadFileString()
+      this.dataForm.logo = this.$refs.imgsUpload.getUploadFileString()
       if (this.dataForm.depth === 1) {
         this.dataForm.pid = '0'
       }

@@ -117,21 +117,7 @@
             <el-tab-pane name="2" label="商品图片" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
                     <el-form-item prop="imgs">
-                        <span>图片建议尺寸800*400,大小限制2MB内</span>
-                        <el-upload
-                                :before-upload="beforeImageUpload"
-                                :on-success="uploadSuccessHandle"
-                                list-type="picture-card"
-                                :limit="4"
-                                :accept="acceptImageFormat"
-                                :file-list="uploadFileList"
-                                :on-preview="uploadPreviewHandle"
-                                :multiple="false"
-                                :on-exceed="uploadExceedHandle"
-                                :on-remove="uploadRemoveHandle"
-                                :action="uploadUrl">
-                            <i class="el-icon-plus"></i>
-                        </el-upload>
+                        <image-upload ref="imgsUpload" :limit="4" :tips="`图片建议尺寸800*400,大小限制2MB内`"/>
                     </el-form-item>
                 </el-form>
                 <div style="text-align: center;">
@@ -185,8 +171,6 @@
             </el-tab-pane>
             <el-tab-pane name="5" label="规格管理" v-if="!!dataForm.id && dataForm.specType === 1">暂不支持多规格</el-tab-pane>
         </el-tabs>
-        <!-- 弹窗, 图片查看 -->
-        <image-viewer :z-index="imageViewerZIndex" :url-list="imageViewerPreviewSrcList" ref="imageViewer" v-show="imageViewerVisible" :on-close="closeImageViewerHandle"/>
     </el-card>
 </template>
 
@@ -194,14 +178,14 @@
 import mixinBaseModule from '@/mixins/base-module'
 import mixinMultiTagsModule from '@/mixins/multi-tags-module'
 import mixinFormModule from '@/mixins/form-module'
-import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 import { removeEmptyChildren } from '@/utils'
 import QuillEditor from '@/components/quill-editor'
+import ImageUpload from '@/components/image-upload'
 
 export default {
   inject: ['refresh'],
   mixins: [mixinBaseModule, mixinMultiTagsModule, mixinFormModule],
-  components: { QuillEditor, ImageViewer },
+  components: { ImageUpload, QuillEditor },
   data () {
     return {
       // 表单模块参数
@@ -368,7 +352,7 @@ export default {
           })
         } else if (this.step === '2') {
           // 图片
-          this.initUpload()
+          this.$refs.imgsUpload.init()
           this.initFormData()
         } else if (this.step === '3') {
           // 详情
@@ -413,8 +397,7 @@ export default {
         }
       } else if (this.step === '2') {
         // 图片
-        // 赋值图片
-        this.setUploadFileList(this.dataForm.imgs)
+        this.$refs.imgsUpload.setStringToUploadFileList(this.dataForm.imgs)
       } else if (this.step === '3') {
         // 详情
         this.$refs.editorContent.setInnerHTML(this.dataForm.content)
@@ -433,7 +416,7 @@ export default {
         this.dataForm.tags = this.tags.join(',')
       } else if (this.step === '2') {
         // 图片
-        this.dataForm.imgs = this.getUploadFileString()
+        this.dataForm.imgs = this.$refs.imgsUpload.getUploadFileString()
       } else if (this.step === '3') {
         // 图文详情
         this.dataForm.content = this.$refs.editorContent.getInnerHTML()
