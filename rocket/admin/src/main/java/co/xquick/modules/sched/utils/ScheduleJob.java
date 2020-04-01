@@ -31,7 +31,7 @@ public class ScheduleJob extends QuartzJobBean {
         TaskLogEntity log = new TaskLogEntity();
         log.setTaskId(task.getId());
         log.setTaskName(task.getName());
-        log.setParams(task.getParam());
+        log.setParams(task.getParams());
 
         //任务开始时间
         long startTime = System.currentTimeMillis();
@@ -40,7 +40,7 @@ public class ScheduleJob extends QuartzJobBean {
             logger.info("任务准备执行，任务ID：{}", task.getId());
             Object target = SpringContextUtils.getBean(task.getName());
             Method method = target.getClass().getDeclaredMethod("run", String.class);
-            method.invoke(target, task.getParam());
+            method.invoke(target, task.getParams());
 
             //任务执行总时长
             long times = System.currentTimeMillis() - startTime;

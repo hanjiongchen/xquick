@@ -23,7 +23,7 @@ public class TaskEntity extends BaseEntity {
 	/**
 	 * 参数
 	 */
-	private String param;
+	private String params;
 	/**
 	 * cron表达式
 	 */

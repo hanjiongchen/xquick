@@ -26,7 +26,7 @@ public class TaskDTO extends BaseDTO {
     private String name;
 
     @ApiModelProperty(value = "参数")
-    private String param;
+    private String params;
 
     @ApiModelProperty(value = "cron表达式")
     @NotBlank(message = "cron表达式不能为空", groups = DefaultGroup.class)
