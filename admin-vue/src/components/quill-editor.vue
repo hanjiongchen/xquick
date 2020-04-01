@@ -117,7 +117,7 @@ export default {
   watch: {
     // Watch content change
     content (newVal, oldVal) {
-      if (this.quill) {
+      if (this.quillEditor) {
         if (newVal && newVal !== this._content) {
           this._content = newVal
           this.quillEditor.pasteHTML(newVal)
