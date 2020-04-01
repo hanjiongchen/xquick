@@ -3,7 +3,7 @@
         <slot name="toolbar"/>
         <div ref="editor"/>
         <!-- 定义了一个上传对话框 -->
-        <el-dialog width="25%" :visible.sync="insertImageDialogVisible" append-to-body destroy-on-close style="padding: 0 10px 15px 10px;">
+        <el-dialog width="25%" :visible.sync="insertImageDialogVisible" append-to-body style="padding: 0 10px 15px 10px;">
             <el-tabs v-model="insertImageType" type="card">
                 <el-tab-pane label="上传图片" name="upload">
                     <el-upload ref="imageUpload" style="text-align: center;" :action="uploadUrl" drag :before-upload="beforeImageUpload" :on-success="imageUploadSuccessHandle">
@@ -97,6 +97,8 @@ export default {
       insertImageType: 'upload',
       // 图片插入url
       insertImageUrl: null,
+      // 图片插入位置
+      insertImageSelectIndex: 0,
       // 富文本编辑器
       quillEditor: null,
       // 配置参数
@@ -167,6 +169,7 @@ export default {
         // 自定义上传图片功能 (使用element upload组件)
         this.quillEditor.getModule('toolbar').addHandler('image', () => {
           if (this.quillEditor.getSelection()) {
+            this.insertImageSelectIndex = this.quillEditor.getSelection().index
             this.insertImageDialogVisible = true
           } else {
             this.$message.error('请将光标放在插入位置')
@@ -208,11 +211,7 @@ export default {
     insertImageSubmitHandle () {
       if (/^http[s]?:\/\/.*/.test(this.insertImageUrl)) {
         // 将图片插入指定位置
-        if (this.quillEditor.getSelection()) {
-          this.quillEditor.insertEmbed(this.quillEditor.getSelection().index, 'image', this.insertImageUrl)
-        } else {
-          this.quillEditor.insertEmbed(this.quillEditor.getLength(), 'image', this.insertImageUrl)
-        }
+        this.quillEditor.insertEmbed(this.insertImageSelectIndex, 'image', this.insertImageUrl)
         this.insertImageUrl = null
         this.insertImageDialogVisible = false
       } else {
@@ -225,11 +224,7 @@ export default {
         return this.$message.error(res.toast)
       }
       // 将图片插入指定位置
-      if (this.quillEditor.getSelection()) {
-        this.quillEditor.insertEmbed(this.quillEditor.getSelection().index, 'image', res.data.src)
-      } else {
-        this.quillEditor.insertEmbed(this.quillEditor.getLength(), 'image', res.data.src)
-      }
+      this.quillEditor.insertEmbed(this.insertImageSelectIndex, 'image', res.data.src)
       this.$refs.imageUpload.clearFiles()
       this.insertImageDialogVisible = false
     },
