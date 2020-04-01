@@ -74,11 +74,11 @@
                 </el-col>
             </el-row>
             <el-form-item prop="imgs" :label="$t('base.cover')">
-                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="2" :tips="`建议尺寸400*400,且不超过2MB`"/>
+                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`建议尺寸400*400,且不超过2MB`"/>
             </el-form-item>
             <el-form-item prop="content" label="文章内容">
                 <el-form-item prop="content">
-                    <rich-text-editor ref="editorContent" containerHeight="200px" v-model="dataForm.content"/>
+                    <quill-editor ref="editorContent" containerHeight="200px" v-model="dataForm.content"/>
                 </el-form-item>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
@@ -95,12 +95,12 @@
 <script>
 import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
-import RichTextEditor from '@/components/rich-text-editor'
+import QuillEditor from '@/components/quill-editor'
 import ImageUpload from '@/components/image-upload'
 
 export default {
   mixins: [mixinBaseModule, mixinFormModule],
-  components: { RichTextEditor, ImageUpload },
+  components: { QuillEditor, ImageUpload },
   data () {
     return {
       // 表单模块参数
@@ -151,12 +151,6 @@ export default {
   },
   computed: {
     dataRule () {
-      var validateContent = (rule, value, callback) => {
-        if (this.$refs.editorContent.getContentLength() <= 1) {
-          return callback(new Error(this.$t('validate.required')))
-        }
-        callback()
-      }
       return {
         sort: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
@@ -171,8 +165,7 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         content: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' },
-          { validator: validateContent, trigger: 'blur' }
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         articleCategoryId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
