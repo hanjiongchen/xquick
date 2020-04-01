@@ -29,22 +29,7 @@
             </el-col>
         </el-row>
         <el-form-item label="图标" prop="logo">
-          <el-upload
-                  :class="{hide:uploadFileList.length >= 1}"
-                  :before-upload="beforeImageUpload"
-                  :on-success="uploadSuccessHandle"
-                  :on-error="uploadErrorHandle"
-                  list-type="picture-card"
-                  :limit="1"
-                  :accept="acceptImageFormat"
-                  :file-list="uploadFileList"
-                  :on-preview="uploadPreviewHandle"
-                  :multiple="false"
-                  :on-exceed="uploadExceedHandle"
-                  :on-remove="uploadRemoveHandle"
-                  :action="uploadUrl">
-              <i class="el-icon-plus"/>
-          </el-upload>
+            <image-upload ref="imgsUpload" v-model="dataForm.logo" :limit="1" :tips="`建议尺寸400*400,且不超过2MB`"/>
       </el-form-item>
           <el-form-item label="介绍" prop="content">
           <el-input v-model="dataForm.content" placeholder="介绍" type="textarea"></el-input>
@@ -60,11 +45,11 @@
 <script>
 import mixinFormModule from '@/mixins/form-module'
 import mixinBaseModule from '@/mixins/base-module'
-import ImageViewer from 'element-ui/packages/image/src/image-viewer'
+import ImageUpload from '@/components/image-upload'
 
 export default {
   mixins: [mixinBaseModule, mixinFormModule],
-  components: { ImageViewer },
+  components: { ImageUpload },
   data () {
     return {
       // 表单模块参数
@@ -104,24 +89,8 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.resetForm()
-        this.initUpload()
         this.initFormData()
       })
-    },
-    // form信息获取成功
-    onGetInfoSuccess (res) {
-      this.dataForm = {
-        ...this.dataForm,
-        ...res.data
-      }
-      // 赋值图片
-      this.setUploadFileList(this.dataForm.logo)
-    },
-    // 表单提交之前的操作
-    beforeDateFormSubmit () {
-      this.dataForm.logo = this.getUploadFileString()
-      this.dataFormSubmitParam = this.dataForm
-      return true
     }
   }
 }

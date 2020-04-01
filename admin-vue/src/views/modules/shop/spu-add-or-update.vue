@@ -127,7 +127,7 @@
             <el-tab-pane name="3" label="详情介绍" v-if="!!dataForm.id">
                 <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm">
                     <el-form-item prop="content">
-                        <quill-editor ref="editorContent"/>
+                        <quill-editor ref="editorContent" containerHeight="350px" v-model="dataForm.content"/>
                     </el-form-item>
                 </el-form>
                 <div style="text-align: center;">
@@ -255,12 +255,6 @@ export default {
   },
   computed: {
     dataRule () {
-      var validateContent = (rule, value, callback) => {
-        if (this.$refs.editorContent.getContentLength() <= 1) {
-          return callback(new Error(this.$t('validate.required')))
-        }
-        callback()
-      }
       return {
         storeId: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
@@ -326,8 +320,7 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         content: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' },
-          { validator: validateContent, trigger: 'blur' }
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
     }
@@ -353,7 +346,6 @@ export default {
           this.initFormData()
         } else if (this.step === '3') {
           // 详情
-          this.$refs.editorContent.init()
           this.initFormData()
         } else if (this.step === '4') {
           // 参数
@@ -396,7 +388,6 @@ export default {
         // 图片
       } else if (this.step === '3') {
         // 详情
-        this.$refs.editorContent.setInnerHTML(this.dataForm.content)
       } else if (this.step === '4') {
         // 参数管理
         if (this.dataForm.attrs) {

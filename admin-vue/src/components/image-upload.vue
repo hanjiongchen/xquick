@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-upload
-                :class="{ hide:uploadFileList.length >= limit }"
+                :class="{ hide: uploadFileLength >= limit }"
                 :before-upload="beforeImageUpload"
                 :on-success="uploadSuccessHandle"
                 list-type="picture-card"
@@ -38,9 +38,9 @@ export default {
   props: {
     // 绑定的v-model,必须用value
     // 参考https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
-    value: {
-      type: String
-    },
+    // 绑定的v-model,必须用value
+    value: String,
+    content: String,
     // 提示文字
     tips: {
       type: String,
@@ -64,11 +64,15 @@ export default {
   },
   data () {
     return {
-      uploadFileList: this.getUploadFileListFromString(this.value),
+      uploadFileList: [],
       imageViewerZIndex: 2000, // 图片查看器zIndex
       imageViewerPreviewSrcList: [], // 图片查看文件列表
       prevOverflow: '', // 原先的overflow样式
-      imageViewerVisible: false // 图片查看器,弹窗visible状态
+      imageViewerVisible: false, // 图片查看器,弹窗visible状态
+      // eslint-disable-next-line vue/no-reserved-keys
+      _content: '',
+      // 已上传文件个数
+      uploadFileLength: 0
     }
   },
   mounted () {
@@ -77,15 +81,35 @@ export default {
   watch: {
     // 监听prop传的value
     value (newVal, oldVal) {
-      console.log('newVal' + newVal)
-      console.log('oldVal' + oldVal)
-      this.uploadFileList = this.getUploadFileListFromString(newVal)
+      if (newVal && newVal !== this._content) {
+        this.uploadFileList = this.getUploadFileListFromString(newVal)
+        this.uploadFileLength = this.uploadFileList.length
+      } else if (!newVal) {
+        this.uploadFileList = []
+        this.uploadFileLength = 0
+      }
+      this._content = newVal
+    },
+    content (newVal, oldVal) {
+      if (newVal && newVal !== this._content) {
+        this.uploadFileList = this.getUploadFileListFromString(newVal)
+        this.uploadFileLength = this.uploadFileList.length
+      } else if (!newVal) {
+        this.uploadFileList = []
+        this.uploadFileLength = 0
+      }
+      this._content = newVal
     }
   },
   methods: {
     // 初始化编辑器
     init () {
-      this.uploadFileList = []
+      if (this.$el) {
+        // 设置内容
+        if (this.value || this.content) {
+          this.uploadFileList = this.getUploadFileListFromString(this.value || this.content)
+        }
+      }
     },
     getUploadFileListFromString (imgs) {
       let fileList = []
@@ -122,7 +146,9 @@ export default {
       if (res.code !== 0) {
         return this.$message.error(res.toast)
       } else {
-        this.$emit('input', this.getUploadFileString(fileList))
+        this._content = this.getUploadFileString(fileList)
+        this.uploadFileLength = fileList.length
+        this.$emit('input', this._content)
       }
     },
     // 图片上传失败
@@ -130,14 +156,18 @@ export default {
       console.log(err)
       console.log(file)
       console.log(fileList)
-      this.$emit('input', this.getUploadFileString(fileList))
+      this._content = this.getUploadFileString(fileList)
+      this.uploadFileLength = fileList.length
+      this.$emit('input', this._content)
     },
     // 文件发生变化
     uploadChangeHandle (file, fileList) {
     },
     // 图片移除成功
     uploadRemoveHandle (file, fileList) {
-      this.$emit('input', this.getUploadFileString(fileList))
+      this._content = this.getUploadFileString(fileList)
+      this.uploadFileLength = fileList.length
+      this.$emit('input', this._content)
     },
     // 预览上传文件
     uploadPreviewHandle () {

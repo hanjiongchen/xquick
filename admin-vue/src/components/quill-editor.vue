@@ -3,7 +3,7 @@
         <slot name="toolbar"/>
         <div ref="editor"/>
         <!-- 定义了一个上传对话框 -->
-        <el-dialog width="25%" :visible.sync="insertImageDialogVisible" append-to-body style="padding: 0 10px 15px 10px;">
+        <el-dialog width="30%" :visible.sync="insertImageDialogVisible" append-to-body style="padding: 0 10px 15px 10px;">
             <el-tabs v-model="insertImageType" type="card">
                 <el-tab-pane label="上传图片" name="upload">
                     <el-upload ref="imageUpload" style="text-align: center;" :action="uploadUrl" drag :before-upload="beforeImageUpload" :on-success="imageUploadSuccessHandle">

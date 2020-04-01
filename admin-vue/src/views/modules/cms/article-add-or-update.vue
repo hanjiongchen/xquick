@@ -74,7 +74,7 @@
                 </el-col>
             </el-row>
             <el-form-item prop="imgs" :label="$t('base.cover')">
-                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`建议尺寸400*400,且不超过2MB`"/>
+                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="4" :tips="`建议尺寸400*400,且不超过2MB`"/>
             </el-form-item>
             <el-form-item prop="content" label="文章内容">
                 <el-form-item prop="content">
