@@ -14,7 +14,7 @@
                 </el-col>
             </el-row>
             <el-form-item prop="imgs" label="图片">
-                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`建议尺寸400*400,且不超过2MB`"/>
+                <image-upload ref="imgsUpload" v-model="dataForm.imgs" :limit="1" :tips="`不超过2MB`"/>
             </el-form-item>
             <el-row>
                 <el-col :span="12">
