@@ -34,8 +34,8 @@
         <el-form-item v-if="$hasPermission('shop:order:export')">
           <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('shop:order:save')">
-          <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
+        <el-form-item v-if="$hasPermission('shop:order:placeByAdmin')">
+          <el-button type="primary" @click="addOrUpdateHandle()">代下单</el-button>
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
@@ -116,6 +116,10 @@ export default {
     }
   },
   methods: {
+    // 新增/修改
+    addOrUpdateHandle (id) {
+      this.$router.push({ name: 'shop-order-add-or-update', query: { id: id }, meta: { isTab: true, isDynamic: true } })
+    },
     // 选中用户
     onUserPicked (result) {
       if (result && result.length > 0) {

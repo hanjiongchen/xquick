@@ -15,21 +15,21 @@
                      @change="(value) => this.dataForm.pid = value ? value : '0'" class="w-percent-100"/>
       </el-form-item>
       <el-row v-if="dataForm.type === 0">
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item prop="url" :label="$t('menu.url')">
             <el-input v-model="dataForm.url" :placeholder="$t('menu.url')"/>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item prop="urlNewBlank" label="打开方式">
+        <el-col :span="8">
+          <el-form-item prop="urlNewBlank" label="打开">
             <el-radio-group v-model="dataForm.urlNewBlank" size="mini">
               <el-radio-button :label="0">本窗口</el-radio-button>
               <el-radio-button :label="1">新窗口</el-radio-button>
             </el-radio-group>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item prop="showMenu" label="菜单显示">
+        <el-col :span="8">
+          <el-form-item prop="showMenu" label="菜单">
             <el-radio-group v-model="dataForm.showMenu" size="mini">
               <el-radio-button :label="0">不显示</el-radio-button>
               <el-radio-button :label="1">显示</el-radio-button>

@@ -1,22 +1,22 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-          <el-form-item label="状态" prop="status">
-          <el-input v-model="dataForm.status" placeholder="状态"></el-input>
-      </el-form-item>
-          <el-form-item label="订单号" prop="no">
-          <el-input v-model="dataForm.no" placeholder="订单号"></el-input>
-      </el-form-item>
-                </el-form>
-    <template slot="footer">
-      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-      <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-    </template>
-  </el-dialog>
+    <el-card>
+        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+            <el-form-item label="状态" prop="status">
+                <el-input v-model="dataForm.status" placeholder="状态"></el-input>
+            </el-form-item>
+            <el-form-item label="订单号" prop="no">
+                <el-input v-model="dataForm.no" placeholder="订单号"></el-input>
+            </el-form-item>
+        </el-form>
+        <div style="text-align: center;">
+            <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
+        </div>
+    </el-card>
 </template>
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
+
 export default {
   mixins: [mixinFormModule],
   data () {
@@ -30,37 +30,33 @@ export default {
       dataForm: {
         id: '',
         status: '',
-        no: '',
-        createId: '',
-        createTime: '',
-        updateId: '',
-        updateTime: '',
-        deleted: ''
+        no: ''
       }
+    }
+  },
+  activated () {
+    let queryId = this.$route.query.id
+    if (this.dataForm.id !== queryId) {
+      // 参数发生了变化
+      if (!queryId) {
+        this.$message.error(this.$t('addneedstep'))
+        return
+      } else {
+        this.dataForm.id = queryId
+      }
+      // 根据id刷新tab名称
+      let tab = this.$store.state.contentTabs.filter(item => item.name === this.$route.name)[0]
+      if (tab) {
+        tab.title = queryId ? '编辑订单' : '新增订单'
+      }
+      // 根据step刷新数据
+      this.init()
     }
   },
   computed: {
     dataRule () {
       return {
         status: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        no: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        deleted: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
