@@ -10,13 +10,13 @@
         <span>{{ $store.state.user.username }}</span>
       </el-form-item>
       <el-form-item prop="password" :label="$t('updatePassword.password')">
-        <el-input v-model="dataForm.password" type="password" :placeholder="$t('updatePassword.password')"/>
+        <el-input v-model="dataForm.password" show-password :placeholder="$t('updatePassword.password')"/>
       </el-form-item>
       <el-form-item prop="newPassword" :label="$t('updatePassword.newPassword')">
-        <el-input v-model="dataForm.newPassword" type="password" :placeholder="$t('updatePassword.newPassword')"/>
+        <el-input v-model="dataForm.newPassword" show-password :placeholder="$t('updatePassword.newPassword')"/>
       </el-form-item>
       <el-form-item prop="confirmPassword" :label="$t('updatePassword.confirmPassword')">
-        <el-input v-model="dataForm.confirmPassword" type="password" :placeholder="$t('updatePassword.confirmPassword')"/>
+        <el-input v-model="dataForm.confirmPassword" show-password :placeholder="$t('updatePassword.confirmPassword')"/>
       </el-form-item>
     </el-form>
     <template slot="footer">

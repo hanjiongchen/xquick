@@ -77,7 +77,6 @@ public class AuthController {
 
     @GetMapping("loginCfgAdmin")
     @ApiOperation(value = "获取登录配置")
-    @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
     public Result<?> loginCfgAdmin() {
         String content = paramService.getContent(UcConst.LOGIN_CFG_ADMIN);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);

@@ -21,7 +21,7 @@
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('login.username')"/>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input v-model="dataForm.password" show-password prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
+                <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')" show-password/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginConfig.captcha">
                 <el-row>

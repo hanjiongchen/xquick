@@ -23,10 +23,10 @@
                 </el-row>
               </el-form-item>
               <el-form-item prop="newPassword">
-                  <el-input v-model="dataForm.newPassword" type="password" prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.newPassword')"/>
+                  <el-input v-model="dataForm.newPassword" show-password prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.newPassword')"/>
               </el-form-item>
               <el-form-item prop="confirmPassword">
-                  <el-input v-model="dataForm.confirmPassword" type="password" prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.confirmPassword')"/>
+                  <el-input v-model="dataForm.confirmPassword" show-password prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.confirmPassword')"/>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">重置密码</el-button>
