@@ -21,11 +21,14 @@ _Spring Boot项目，推荐打成jar包的方式，部署到服务器上_ Spring
 `java -jar rest.jar --spring.profiles.active=prod`
 
 #### linux中部署
+建议使用shell执行
+`nohup java -Dspring.profiles.active=prod -jar xquick-rocket.jar --server.port=8080 --server.servlet.context-path=/xquick-rocket 2>&1 | cronolog xquick-rocket-log.%Y-%m-%d.out >> /dev/null &` 
 
-`nohup java -jar rest.jar --spring.profiles.active=prod > rest.log &` 建议使用shell执行
+使用了cronolog做日志分割，需要先安装cronolog
+`yum install -y cronolog httpd`
 
 ```text
-process=`ps -fe|grep "rest.jar" |grep -ivE "grep|cron" |awk '{print $2}'`
+process=`ps -fe|grep "xquick-rocket.jar" |grep -ivE "grep|cron" |awk '{print $2}'`
 if [ !$process ];
 then
 echo "stop erp process $process ....."
@@ -33,8 +36,8 @@ kill -9 $process
 sleep 1
 fi
 echo "start erp process....."
-nohup java -Dspring.profiles.active=prod -jar renren-admin.jar --server.port=8080 --server.se
-rvlet.context-path=/renren-admin 2>&1 | cronolog log.%Y-%m-%d.out >> /dev/null &
+nohup java -Dspring.profiles.active=prod -jar xquick-rocket.jar --server.port=8080 --server.se
+rvlet.context-path=/xquick-rocket 2>&1 | cronolog log.%Y-%m-%d.out >> /dev/null &
 echo "start erp success!"
 ```
 
