@@ -3,6 +3,7 @@ package co.xquick.modules.shop.controller;
 import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.modules.shop.service.OrderService;
+import co.xquick.modules.shop.service.SpuService;
 import co.xquick.modules.uc.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,8 @@ public class HomeController {
     private OrderService orderService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SpuService spuService;
 
     @GetMapping("count")
     @ApiOperation("统计数据")
@@ -31,10 +34,12 @@ public class HomeController {
     public Result<?> count() {
         int orderCount = orderService.count();
         int userCount = userService.query().ge("type", 100).count();
+        int spuCount = spuService.query().count();
 
         Kv data = Kv.init()
                 .set("userCount", userCount)
-                .set("orderCount", orderCount);
+                .set("orderCount", orderCount)
+                .set("spuCount", spuCount);
         return new Result<>().ok(data);
     }
 

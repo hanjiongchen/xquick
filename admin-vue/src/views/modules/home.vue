@@ -2,7 +2,7 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-home" v-loading="loading">
       <!-- 全局数量 -->
-      <data-rotate :option="option"></data-rotate>
+      <data-rotate :option="countData"/>
       <!-- 图表 -->
       <el-row :gutter="32">
         <el-col :xs="24" :sm="24" :lg="12">
@@ -25,58 +25,52 @@ export default {
   components: { DataRotate },
   data () {
     return {
-      option: {
+      countData: {
         span: 8,
         data: [
           {
-            click: function (item) {
-              alert(JSON.stringify(item))
-            },
-            count: '150',
-            title: '新订单',
-            icon: 'el-icon-warning',
-            color: 'rgb(49, 180, 141)'
+            count: '0',
+            title: '订单数',
+            icon: 'el-icon-news',
+            color: '#F56C6C'
           }, {
-            click: function (item) {
-              alert(JSON.stringify(item))
-            },
-            count: '53%',
-            title: '跳出率',
-            icon: 'el-icon-view',
-            color: '#00a65a'
+            count: '0',
+            title: '商品数',
+            icon: 'el-icon-goods',
+            color: '#E6A23C'
           }, {
-            click: function (item) {
-              alert(JSON.stringify(item))
-            },
-            count: '44',
-            title: '用户注册数',
-            icon: 'el-icon-setting',
-            color: '#f39c12'
+            count: '0',
+            title: '用户数',
+            icon: 'el-icon-user',
+            color: '#67C23A'
           }
         ]
       },
-      loading: true,
-      // 统计数据
-      dataForm: {
-        orderCount: '0',
-        userCount: '0'
-      }
+      loading: true
     }
   },
   created () {
     this.getHomeCount()
   },
   methods: {
-    goRouter (path) {
-      this.$router.push(path)
-    },
     // 获取首页统计数据
     getHomeCount () {
       this.$http.get('/shop/home/count').then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
-        this.dataForm = res.data
+        this.countData.data[0].count = res.data.orderCount
+        this.countData.data[0].click = () => {
+          this.$router.push({ name: 'shop-order' })
+        }
+        this.countData.data[1].count = res.data.spuCount
+        this.countData.data[1].click = () => {
+          this.$router.push({ name: 'shop-spu' })
+        }
+        this.countData.data[2].count = res.data.userCount
+        this.countData.data[2].click = () => {
+          this.$router.push({ name: 'uc-member' })
+        }
       }).catch(() => {
       }).finally(() => {
         this.loading = false
