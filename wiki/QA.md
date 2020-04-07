@@ -15,5 +15,14 @@ description: Question & Answer
 最简单的解决办法是配置文件中加上tomcat.basedir的路径
 [参考](https://blog.csdn.net/qq_21383435/article/details/91891664)
 
+3. 如何在vue中使用jQuery?
+虽然不推荐在vue中还是用jQuery,但是实际项目中往往有类似需求。解决思路参考[vue-cli 3.0+ ## 链式操作 (高级)]([https://cli.vuejs.org/zh/guide/webpack.html#%E9%93%BE%E5%BC%8F%E6%93%8D%E4%BD%9C-%E9%AB%98%E7%BA%A7](https://cli.vuejs.org/zh/guide/webpack.html#%E9%93%BE%E5%BC%8F%E6%93%8D%E4%BD%9C-%E9%AB%98%E7%BA%A7))
+3.1 index.html中添加jquery引用`<script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>`
+3.2 vue.config.js中添加添加externals定义
+`chainWebpack: config => {  
+  // 按需引入jquery  
+  config.externals({ jquery: 'jQuery' })  
+  // ...`
+3.3 需要使用jquery的页面中加入`import $ from 'jquery'`,就可以在方法中使用$了,注意时序
 
 

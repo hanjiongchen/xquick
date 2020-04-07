@@ -4,6 +4,9 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   chainWebpack: config => {
+    // 按需引入jquery
+    // config.externals({ jquery: 'jQuery' })
+    // 按需引入svg
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule
