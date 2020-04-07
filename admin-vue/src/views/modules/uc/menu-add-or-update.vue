@@ -20,11 +20,19 @@
             <el-input v-model="dataForm.url" :placeholder="$t('menu.url')"/>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="6">
           <el-form-item prop="urlNewBlank" label="打开方式">
             <el-radio-group v-model="dataForm.urlNewBlank" size="mini">
               <el-radio-button :label="0">本窗口</el-radio-button>
               <el-radio-button :label="1">新窗口</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="showMenu" label="菜单显示">
+            <el-radio-group v-model="dataForm.showMenu" size="mini">
+              <el-radio-button :label="0">不显示</el-radio-button>
+              <el-radio-button :label="1">显示</el-radio-button>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -87,7 +95,7 @@ export default {
         id: '',
         type: 0,
         urlNewBlank: 0,
-        show: 1,
+        showMenu: 1,
         name: '',
         pid: '0',
         parentName: '',
