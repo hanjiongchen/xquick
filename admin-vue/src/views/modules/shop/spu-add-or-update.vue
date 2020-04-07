@@ -76,6 +76,25 @@
                         </el-col>
                     </el-row>
                     <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="限购类型" prop="limitType">
+                                <el-select v-model="dataForm.limitType" filterable placeholder="请选择限购类型" class="w-percent-100">
+                                    <el-option label="不限购" :value="0"/>
+                                    <el-option label="永久限购" :value="1"/>
+                                    <el-option label="按日限购" :value="2"/>
+                                    <el-option label="按周限购" :value="3"/>
+                                    <el-option label="按月限购" :value="4"/>
+                                    <el-option label="按年限购" :value="5"/>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12" v-if="dataForm.limitType > 0">
+                            <el-form-item label="限购数量" prop="limitCount">
+                                <el-input-number v-model="dataForm.limitCount" placeholder="输入限购数量" controls-position="right" :min="0" :max="99999" :step="1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
                         <el-col :span="8">
                             <el-form-item label="物流" prop="delivery">
                                 <el-radio-group v-model="dataForm.delivery" size="small">
@@ -206,6 +225,9 @@ export default {
         id: '',
         storeId: '',
         brandId: '',
+        limitType: 0,
+        limitCount: 0,
+        memberDiscount: 0,
         categoryId: '',
         supplierId: '',
         supplierName: '',
@@ -257,6 +279,9 @@ export default {
     dataRule () {
       return {
         storeId: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        limitType: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         specType: [

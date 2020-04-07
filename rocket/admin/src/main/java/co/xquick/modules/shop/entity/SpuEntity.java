@@ -74,6 +74,18 @@ public class SpuEntity extends BaseEntity {
      * 标签,逗号分隔
      */
 	private String tags;
+	/**
+	 * 限购方式0不限购 1 永久限购 2 按天限购 3 按周限购 4 按月限购 5 按年限购
+	 */
+	private Integer limitType;
+	/**
+	 * 限购数量
+	 */
+	private Integer limitCount;
+	/**
+	 * 会员折扣
+	 */
+	private Integer memberDiscount;
     /**
      * 市场价
      */

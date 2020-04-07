@@ -55,8 +55,23 @@ public class SpuDTO extends BaseDTO {
 	private Integer top;
 
 	@ApiModelProperty(value = "类型", required = true)
-	@Range(min = 0, max = 1, message = "类型顶取值1-3", groups = DefaultGroup.class)
+	@Range(min = 0, max = 1, message = "类型取值1-3", groups = DefaultGroup.class)
 	private Integer type;
+
+	/**
+	 * 限购方式0不限购 1 永久限购 2 按天限购 3 按周限购 4 按月限购 5 按年限购
+	 */
+	@ApiModelProperty(value = "限购方式", required = true)
+	@Range(min = 0, max = 5, message = "限购方式取值1-3", groups = DefaultGroup.class)
+	private Integer limitType;
+
+	@ApiModelProperty(value = "限购数量")
+	@Range(min = 0, max = 10000, message = "限购方式取值0-10000", groups = DefaultGroup.class)
+	private Integer limitCount;
+
+	@ApiModelProperty(value = "会员折扣", required = true)
+	@Range(min = 0, max = 1, message = "会员折扣取值0-1", groups = DefaultGroup.class)
+	private Integer memberDiscount;
 
 	@ApiModelProperty(value = "名称")
 	private String name;
