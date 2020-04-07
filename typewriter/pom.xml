@@ -21,7 +21,7 @@
 
 		<mybatis.spring.boot.version>2.1.1</mybatis.spring.boot.version>
 		<pagehelper.spring.boot.version>1.2.12</pagehelper.spring.boot.version>
-		<druid.version>1.1.21</druid.version>
+		<druid.version>1.1.22</druid.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.io.version>2.5</commons.io.version>
 		<commons.configuration.version>1.10</commons.configuration.version>
