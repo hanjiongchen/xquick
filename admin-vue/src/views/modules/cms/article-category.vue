@@ -16,7 +16,7 @@
                 <el-table-column prop="name" label="名称" header-align="center" align="center"/>
                 <el-table-column prop="imgs" label="封面" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" @click="imageViewerHandle(scope.row.imgs.split(','))" fit="cover"/>
+                        <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" :preview-src-list="scope.row.imgs.split(',')" fit="cover"/>
                     </template>
                 </el-table-column>
                 <el-table-column prop="remark" label="备注" header-align="center" align="center"/>

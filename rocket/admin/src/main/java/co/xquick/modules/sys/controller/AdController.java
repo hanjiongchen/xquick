@@ -22,11 +22,11 @@ import java.util.Map;
 
 /**
  * 广告位
- *
+ * 配置axd是因为ad会被部分广告拦截的浏览器插件拦截掉
  * @author Charles zhangchaoxu@gmail.com
  */
 @RestController
-@RequestMapping("sys/ad")
+@RequestMapping(value = {"sys/ad", "sys/axd"})
 @Api(tags="广告位")
 public class AdController {
 

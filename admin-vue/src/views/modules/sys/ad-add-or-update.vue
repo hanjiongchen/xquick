@@ -56,9 +56,9 @@ export default {
     return {
       // 表单模块参数
       mixinFormModuleOptions: {
-        dataFormSaveURL: `/sys/ad/save`,
-        dataFormUpdateURL: `/sys/ad/update`,
-        dataFormInfoURL: `/sys/ad/info?id=`
+        dataFormSaveURL: `/sys/axd/save`,
+        dataFormUpdateURL: `/sys/axd/update`,
+        dataFormInfoURL: `/sys/axd/info?id=`
       },
       dataForm: {
         id: '',

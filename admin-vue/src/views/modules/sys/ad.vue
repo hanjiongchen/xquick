@@ -24,14 +24,14 @@
             <el-tag v-else-if="scope.row.needLogin === 1">需要</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="link" label="链接" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="remark" label="备注" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="link" label="链接" header-align="center" align="center"/>
+        <el-table-column prop="remark" label="备注" header-align="center" align="center"/>
         <el-table-column prop="imgs" label="封面图" header-align="center" align="center">
           <template slot-scope="scope">
-            <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" @click="imageViewerHandle(scope.row.imgs.split(','))" fit="cover"/>
+            <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" :preview-src-list="scope.row.imgs.split(',')" fit="cover"/>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" header-align="center" align="center" width="80"></el-table-column>
+        <el-table-column prop="sort" label="排序" header-align="center" align="center" width="80" sortable="custom"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('sys:ad:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
@@ -50,7 +50,7 @@
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </div>
   </el-card>
 </template>
@@ -61,25 +61,22 @@ import AddOrUpdate from './ad-add-or-update'
 
 export default {
   mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
       mixinListModuleOptions: {
-        getDataListURL: '/sys/ad/page',
+        getDataListURL: '/sys/axd/page',
         getDataListIsPage: true,
-        exportURL: '/sys/ad/export',
-        deleteURL: '/sys/ad/delete',
-        deleteIsBatch: false,
-        orderField: 'sort',
-        order: 'asc'
+        exportURL: '/sys/axd/export',
+        deleteURL: '/sys/axd/delete',
+        deleteBatchURL: '/sys/axd/deleteBatch',
+        deleteIsBatch: false
       },
       dataForm: {
         position: '',
         name: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>

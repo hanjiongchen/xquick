@@ -19,7 +19,7 @@
         <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
         <el-table-column prop="imgs" label="图标" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" @click="imageViewerHandle(scope.row.imgs.split(','))" fit="cover"/>
+            <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" :preview-src-list="scope.row.imgs.split(',')" fit="cover"/>
           </template>
         </el-table-column>
         <el-table-column prop="sort" sortable="custom" label="排序" header-align="center" align="center" width="100"></el-table-column>
