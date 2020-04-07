@@ -2,28 +2,7 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-home" v-loading="loading">
       <!-- 全局数量 -->
-      <el-row :gutter="40">
-        <el-col :xs="12" :sm="12" :lg="6">
-          <chart-card :loading="loading" title="总订单量" :total="dataForm.orderCount + '个'">
-            <el-tooltip class="item" effect="dark" content="最近一段时间销售额" placement="top" slot="action">
-              <i class="el-icon-info"/>
-            </el-tooltip>
-            <div>
-            </div>
-            <template slot="footer">今日订单量<span>100</span></template>
-          </chart-card>
-        </el-col>
-        <el-col :xs="12" :sm="12" :lg="6">
-          <chart-card :loading="loading" title="总会员数" :total="dataForm.userCount + '个'">
-            <el-tooltip class="item" effect="dark" content="最近一段时间销售额" placement="top" slot="action">
-              <i class="el-icon-info"/>
-            </el-tooltip>
-            <div>
-            </div>
-            <template slot="footer">7日新增会员<span>100</span></template>
-          </chart-card>
-        </el-col>
-      </el-row>
+      <data-rotate :option="option"></data-rotate>
       <!-- 图表 -->
       <el-row :gutter="32">
         <el-col :xs="24" :sm="24" :lg="12">
@@ -40,12 +19,42 @@
 </template>
 
 <script>
-import ChartCard from '@/components/ChartCard'
+import DataRotate from '@/components/data-rotate'
 
 export default {
-  components: { ChartCard },
+  components: { DataRotate },
   data () {
     return {
+      option: {
+        span: 8,
+        data: [
+          {
+            click: function (item) {
+              alert(JSON.stringify(item))
+            },
+            count: '150',
+            title: '新订单',
+            icon: 'el-icon-warning',
+            color: 'rgb(49, 180, 141)'
+          }, {
+            click: function (item) {
+              alert(JSON.stringify(item))
+            },
+            count: '53%',
+            title: '跳出率',
+            icon: 'el-icon-view',
+            color: '#00a65a'
+          }, {
+            click: function (item) {
+              alert(JSON.stringify(item))
+            },
+            count: '44',
+            title: '用户注册数',
+            icon: 'el-icon-setting',
+            color: '#f39c12'
+          }
+        ]
+      },
       loading: true,
       // 统计数据
       dataForm: {

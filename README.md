@@ -52,6 +52,7 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 * [renren.io](https://www.renren.io/)
 * [Jeecg-Boot](http://www.jeecg.com/)
 * [Bladex](https://bladex.vip/#/)
+* [Avue](https://avuejs.com/)
 * [litemall](https://github.com/linlinjava/litemall)
 * [shopxx](https://www.shopxx.net/products/shopxx-b2b2c)
 
