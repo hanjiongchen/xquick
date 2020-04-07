@@ -21,6 +21,11 @@ public interface UcConst {
     String LOGIN_CFG = "LOGIN_CFG";
 
     /**
+     * 管理平台登录配置
+     */
+    String LOGIN_CFG_ADMIN = "LOGIN_CFG_ADMIN";
+
+    /**
      * 登录配置前缀
      */
     String LOGIN_CFG_PREFIX = "LOGIN_CFG_";

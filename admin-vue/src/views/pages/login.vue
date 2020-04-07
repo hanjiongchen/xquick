@@ -10,7 +10,7 @@
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
-                <el-radio-button :label="10">帐号密码登录</el-radio-button>
+                <el-radio-button :label="10">帐号登录</el-radio-button>
                 <el-radio-button :label="30">手机号登录</el-radio-button>
                 <el-radio-button :label="40">微信登录</el-radio-button>
               </el-radio-group>
@@ -21,10 +21,10 @@
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('login.username')"/>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input v-model="dataForm.password" type="password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
+                <el-input v-model="dataForm.password" show-password prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginConfig.captcha">
-                <el-row :gutter="20">
+                <el-row>
                   <el-col :span="14">
                     <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
                     </el-input>
@@ -48,7 +48,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item prop="sms">
-                <el-row :gutter="20">
+                <el-row>
                   <el-col :span="14">
                     <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
                   </el-col>
@@ -58,13 +58,17 @@
                 </el-row>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginConfig.captcha">
-                <el-row :gutter="20">
+                <el-row>
                   <el-col :span="14">
                     <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
                     </el-input>
                   </el-col>
                   <el-col :span="10" class="login-captcha">
-                    <el-image :src="captcha.image" @click="getCaptcha()"><div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div></el-image>
+                    <el-image :src="captcha.image" @click="getCaptcha()">
+                      <div slot="placeholder" class="image-slot">
+                        <i class="el-icon-loading"/>
+                      </div>
+                    </el-image>
                   </el-col>
                 </el-row>
               </el-form-item>
