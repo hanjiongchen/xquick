@@ -5,7 +5,7 @@ import co.xquick.modules.sys.dao.ParamDao;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.*;
-import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
 import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.ShiroService;
@@ -123,10 +123,10 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public LoginCfg getLoginCfg(Integer type) {
+    public LoginChannelCfg getLoginCfg(Integer type) {
         String paramContent = paramMapper.getContentByCode(UcConst.LOGIN_CFG_PREFIX + type);
-        LoginCfg loginCfg = JacksonUtils.jsonToPojo(paramContent, LoginCfg.class);
-        return loginCfg == null ? LoginCfg.getDefaultCfg(type) : loginCfg;
+        LoginChannelCfg loginCfg = JacksonUtils.jsonToPojo(paramContent, LoginChannelCfg.class);
+        return loginCfg == null ? LoginChannelCfg.getDefaultCfg(type) : loginCfg;
     }
 
     @Override

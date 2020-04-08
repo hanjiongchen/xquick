@@ -2,7 +2,7 @@ package co.xquick.modules.uc.service.impl;
 
 import co.xquick.booster.service.impl.BaseServiceImpl;
 import co.xquick.modules.uc.dao.TokenDao;
-import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
 import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.service.TokenService;
 import co.xquick.modules.uc.shiro.TokenGenerator;
@@ -21,7 +21,7 @@ import java.util.Date;
 public class TokenServiceImpl extends BaseServiceImpl<TokenDao, TokenEntity> implements TokenService {
 
     @Override
-    public String createToken(Long userId, LoginCfg loginConfig) {
+    public String createToken(Long userId, LoginChannelCfg loginConfig) {
         // 当前时间
         Date now = new Date();
         // 过期时间

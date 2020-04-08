@@ -1,6 +1,6 @@
 package co.xquick.modules.uc.service;
 
-import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
 import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.user.UserDetail;
@@ -47,7 +47,7 @@ public interface ShiroService {
      * @param type
      * @return
      */
-    LoginCfg getLoginCfg(Integer type);
+    LoginChannelCfg getLoginCfg(Integer type);
 
     /**
      * 根据用户ID，查询用户

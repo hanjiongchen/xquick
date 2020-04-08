@@ -10,9 +10,7 @@
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
-                <el-radio-button :label="10">帐号登录</el-radio-button>
-                <el-radio-button :label="30">手机号登录</el-radio-button>
-                <el-radio-button :label="40">微信登录</el-radio-button>
+                <el-radio-button v-for="item in loginCfg.channels" :key="item.type" :label="item.type" :value="item.type" v-if="item.enable">{{ item.title }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
@@ -23,7 +21,7 @@
               <el-form-item prop="password">
                 <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')" show-password/>
               </el-form-item>
-              <el-form-item prop="captcha" v-if="loginConfig.captcha">
+              <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
                 <el-row>
                   <el-col :span="14">
                     <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
@@ -48,7 +46,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item prop="sms">
-                <el-row>
+                <el-row :gutter="20">
                   <el-col :span="14">
                     <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
                   </el-col>
@@ -57,7 +55,7 @@
                   </el-col>
                 </el-row>
               </el-form-item>
-              <el-form-item prop="captcha" v-if="loginConfig.captcha">
+              <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
                 <el-row>
                   <el-col :span="14">
                     <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
@@ -82,10 +80,10 @@
             </template>
           </el-form>
           <div>
-            <router-link :to="{ name: 'register' }">
+            <router-link :to="{ name: 'register' }" v-if="loginCfg.register">
               <el-link :underline="false" type="info" style="float: left;">注册</el-link>
             </router-link>
-            <router-link :to="{ name: 'forgetPassword' }">
+            <router-link :to="{ name: 'forgetPassword' }" v-if="loginCfg.forgetPassword">
               <el-link :underline="false" type="info" style="float: right;">忘记密码</el-link>
             </router-link>
           </div>
@@ -113,8 +111,13 @@ export default {
         dataFormSaveURL: '/auth/login'
       },
       dataFormMode: 'save',
-      // 登录配置,从接口获取配置
-      loginConfig: {
+      // 全局登录配置
+      loginCfg: {
+        forgetPassword: false,
+        register: false
+      },
+      // 当前登录渠道配置
+      loginChannelCfg: {
         captcha: false
       },
       // 短信发送倒计时
@@ -133,7 +136,7 @@ export default {
         uuid: '',
         captcha: '',
         // 登录类型
-        type: 10
+        type: 0
       }
     }
   },
@@ -147,7 +150,7 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         captcha: [
-          { required: this.loginConfig.captcha, message: this.$t('validate.required'), trigger: 'blur' }
+          { required: this.loginChannelCfg.captcha, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         mobile: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
@@ -165,20 +168,26 @@ export default {
   methods: {
     // 切换登录类型
     typeChangeHandle () {
-      // 重新获取登录配置信息
-      this.getLoginConfig()
+      // 赋值当前渠道配置
+      this.loginChannelCfg = this.loginCfg.channels.filter(item => item.type === this.dataForm.type)[0]
       // 清空校验
       this.$refs['dataForm'].clearValidate()
     },
     // 获取登录配置
     getLoginConfig () {
-      this.$http.get(`/auth/loginCfg?type=${this.dataForm.type}`).then(({ data: res }) => {
+      this.$http.get(`/auth/loginCfgAdmin`).then(({ data: res }) => {
         this.formLoading = false
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
-          this.loginConfig = JSON.parse(res.data)
-          if (this.loginConfig.captcha) {
+          // 赋值全局登录配置
+          this.loginCfg = res.data
+          // 找到第一个enable的登录渠道
+          this.loginChannelCfg = res.data.channels.filter(item => item.enable)[0]
+          // 赋值类型
+          this.dataForm.type = this.loginChannelCfg.type
+          // 获取验证码
+          if (this.loginChannelCfg.captcha) {
             this.getCaptcha()
           }
         }
@@ -231,7 +240,7 @@ export default {
     // 表单提交失败
     onFormSubmitError (res) {
       // 刷新验证码
-      if (this.loginConfig.captcha) {
+      if (this.loginChannelCfg.captcha) {
         this.getCaptcha()
       }
       this.$message.error(res.toast)

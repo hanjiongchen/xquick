@@ -18,10 +18,7 @@ import co.xquick.modules.msg.entity.SmsLogEntity;
 import co.xquick.modules.msg.service.SmsLogService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
-import co.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
-import co.xquick.modules.uc.dto.LoginCfg;
-import co.xquick.modules.uc.dto.LoginRequest;
-import co.xquick.modules.uc.dto.RegisterRequest;
+import co.xquick.modules.uc.dto.*;
 import co.xquick.modules.uc.service.CaptchaService;
 import co.xquick.modules.uc.service.UserService;
 import io.swagger.annotations.Api;
@@ -65,11 +62,11 @@ public class AuthController {
         return new Result<>().ok(Kv.init().set("uuid", uuid).set("image", image));
     }
 
-    @GetMapping("loginCfg")
+    @GetMapping("loginChannel")
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
-    public Result<?> loginCfg(@RequestParam String type) {
-        LoginCfg content = paramService.getContentObject(UcConst.LOGIN_CFG + "_" + type.toUpperCase(), LoginCfg.class);
+    public Result<?> loginChannel(@RequestParam String type) {
+        LoginChannelCfg content = paramService.getContentObject(UcConst.LOGIN_CFG + "_" + type.toUpperCase(), LoginChannelCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
 
         return new Result<>().ok(content);
@@ -78,10 +75,14 @@ public class AuthController {
     @GetMapping("loginCfgAdmin")
     @ApiOperation(value = "获取登录配置")
     public Result<?> loginCfgAdmin() {
-        String content = paramService.getContent(UcConst.LOGIN_CFG_ADMIN);
+        LoginCfg content = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
-
-        return new Result<>().ok(JacksonUtils.jsonToMap(content));
+        for (LoginChannel channel : content.getChannels()) {
+            if (channel.getEnable()) {
+                channel.setCfg(paramService.getContentObject(UcConst.LOGIN_CFG + "_" + channel.getType(), LoginChannelCfg.class));
+            }
+        }
+        return new Result<>().ok(content);
     }
 
     @PostMapping("sendSmsCode")

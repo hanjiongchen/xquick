@@ -1,7 +1,7 @@
 package co.xquick.modules.uc.service;
 
 import co.xquick.booster.service.BaseService;
-import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
 import co.xquick.modules.uc.entity.TokenEntity;
 
 /**
@@ -26,7 +26,7 @@ public interface TokenService extends BaseService<TokenEntity> {
 	 * @param userId  用户ID
 	 * @param loginConfig  登录配置
 	 */
-	String createToken(Long userId, LoginCfg loginConfig);
+	String createToken(Long userId, LoginChannelCfg loginConfig);
 
 	/**
 	 * token续期

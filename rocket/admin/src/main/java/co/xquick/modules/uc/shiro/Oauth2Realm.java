@@ -5,7 +5,7 @@ import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.MessageUtils;
 import co.xquick.modules.uc.UcConst;
-import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
 import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
 import co.xquick.modules.uc.service.ShiroService;
@@ -59,7 +59,7 @@ public class Oauth2Realm extends AuthorizingRealm {
             info.setStringPermissions(shiroService.getPermissionsByRoles(roleCodes));
         } else {
             // 根据登录配置中的roleBase和permissionBase设置SimpleAuthorizationInfo
-            LoginCfg loginCfg = user.getLoginCfg();
+            LoginChannelCfg loginCfg = user.getLoginCfg();
             if (loginCfg != null) {
                 if (loginCfg.isRoleBase()) {
                     // 塞入角色列表
@@ -108,7 +108,7 @@ public class Oauth2Realm extends AuthorizingRealm {
         UserDetail userDetail = ConvertUtils.sourceToTarget(userEntity, UserDetail.class);
 
         // 将登录配置塞入user
-        LoginCfg loginCfg = shiroService.getLoginCfg(token.getType());
+        LoginChannelCfg loginCfg = shiroService.getLoginCfg(token.getType());
         userDetail.setLoginCfg(loginCfg);
 
         // 将token塞入user
