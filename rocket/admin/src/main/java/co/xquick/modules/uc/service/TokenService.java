@@ -11,46 +11,53 @@ import co.xquick.modules.uc.entity.TokenEntity;
  */
 public interface TokenService extends BaseService<TokenEntity> {
 
-	/**
-	 * 通过token获取用户id
-	 */
-	Long getUserIdByToken(String token);
+    /**
+     * 通过token获取用户id和登录type
+     *
+     * @return result
+     */
+    TokenEntity getUserIdAndTypeByToken(String token);
 
-	/**
-	 * 获取token
-	 */
-	TokenEntity getByToken(String token);
+    /**
+     * 通过token获取用户id
+     *
+     * @return result
+     */
+    Long getUserIdByToken(String token);
 
-	/**
-	 * 生成token
-	 * @param userId  用户ID
-	 * @param loginConfig  登录配置
-	 */
-	String createToken(Long userId, LoginChannelCfg loginConfig);
+    /**
+     * 生成token
+     *
+     * @param userId      用户ID
+     * @param loginConfig 登录配置
+     * @return result
+     */
+    String createToken(Long userId, LoginChannelCfg loginConfig);
 
-	/**
-	 * token续期
-	 * @param token  token
-	 */
-	boolean renewalToken(String token);
+    /**
+     * token续期
+     *
+     * @param token  token
+     * @param expire 延长时间
+     * @return result
+     */
+    boolean renewalToken(String token, Long expire);
 
-	/**
-	 * 退出，修改token值
-	 * @param userId  用户ID
-	 */
-	boolean logout(Long userId);
+    /**
+     * 注销token
+     *
+     * @param token 用户token
+     * @return result
+     */
+    boolean deleteToken(String token);
 
-	/**
-	 * 注销token
-	 * @param token  用户token
-	 */
-	boolean deleteToken(String token);
-
-	/**
-	 * 删除用户下所有token
-	 * @param userId 用户id
-	 * @param type 登录类型
-	 */
-	boolean deleteTokenByUserId(Long userId, Integer type);
+    /**
+     * 删除用户下所有token
+     *
+     * @param userId 用户id
+     * @param type   登录类型
+     * @return result
+     */
+    boolean deleteTokenByUserId(Long userId, Integer type);
 
 }

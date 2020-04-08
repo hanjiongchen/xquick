@@ -148,6 +148,11 @@ public class AuthController {
     public Result<?> changePasswordBySmsCode(@RequestBody ChangePasswordBySmsCodeRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
+        LoginCfg loginCfg = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
+        AssertUtils.isEmpty(loginCfg, ErrorCode.UNKNOWN_LOGIN_TYPE);
+        if (!loginCfg.isForgetPassword()) {
+            throw new XquickException("未开放修改密码功能");
+        }
 
         return userService.changePasswordBySmsCode(request);
     }
@@ -160,6 +165,11 @@ public class AuthController {
     public Result<?> register(@RequestBody RegisterRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
+        LoginCfg loginCfg = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
+        AssertUtils.isEmpty(loginCfg, ErrorCode.UNKNOWN_LOGIN_TYPE);
+        if (!loginCfg.isRegister()) {
+            throw new XquickException("未开放注册");
+        }
 
         return userService.register(request);
     }

@@ -48,34 +48,25 @@ public class TokenServiceImpl extends BaseServiceImpl<TokenDao, TokenEntity> imp
     }
 
     @Override
+    public TokenEntity getUserIdAndTypeByToken(String token) {
+        return query().select("user_id", "type").eq("token", token).apply("expire_date > now()").last("LIMIT 1").one();
+    }
+
+    @Override
     public Long getUserIdByToken(String token) {
-        return baseMapper.getUserIdByToken(token);
+        return query().select("user_id").eq("token", token).apply("expire_date > now()").last("LIMIT 1").oneOpt().map(TokenEntity::getUserId).orElse(null);
     }
 
     @Override
-    public TokenEntity getByToken(String token) {
-        return baseMapper.getByToken(token);
-    }
-
-    @Override
-    public boolean renewalToken(String token) {
-        // todo token时间获取
-        return baseMapper.renewalToken(token, 100000L) > 0;
-    }
-
-    @Override
-    public boolean logout(Long userId) {
-        // 生成一个token
-        String token = TokenGenerator.generateValue();
-
-        // 修改token
-        return baseMapper.updateToken(userId, token) > 0;
+    public boolean renewalToken(String token, Long expire) {
+        // UPDATE uc_token SET expire_date = DATE_ADD(NOW(), interval #{expire} second) WHERE token = #{token} and deleted = 0
+        return update().setSql("expire_date = DATE_ADD(NOW(), interval " + expire + " second)").eq("token", token).update(new TokenEntity());
     }
 
     @Override
     public boolean deleteToken(String token) {
         // 修改token
-        baseMapper.deleteByWrapperWithFill(new TokenEntity(), new QueryWrapper<TokenEntity>().eq("token", token));
+        getBaseMapper().deleteByWrapperWithFill(new TokenEntity(), new QueryWrapper<TokenEntity>().eq("token", token));
         return true;
     }
 

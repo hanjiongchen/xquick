@@ -16,71 +16,43 @@ import java.util.List;
 @Mapper
 public interface MenuDao extends BaseDao<MenuEntity> {
 
-    @Select("select uc_menu.*, (select name from uc_menu parent where parent.deleted = 0 and parent.id = uc_menu.pid) as parent_name from uc_menu where uc_menu.deleted = 0 and uc_menu.id = #{id}")
-    MenuEntity getById(@Param("id") Long id);
-
     /**
-     * 查询所有菜单列表
-     *
-     * @param type 菜单类型
+     * 级联用户id
      */
-    @Select("<script>" +
-            "select t1.* from uc_menu t1" +
-            " <where> t1.deleted = 0" +
-            " <if test='type != null'>" +
-            "  and t1.type = #{type}" +
-            " </if>" +
-            " </where>" +
-            " order by t1.sort asc" +
-            "</script>")
-    List<MenuEntity> getMenuList(@Param("type") Integer type);
-
-    /**
-     * 查询用户Url列表
-     *
-     * @param userId 用户ID
-     */
-    @Select("<script>" +
-            "select uc_menu.* from uc_role_user" +
-            " left join uc_role_menu on uc_role_user.role_id = uc_role_menu.role_id" +
-            " left join uc_menu on uc_role_menu.menu_id = uc_menu.id" +
-            " where uc_role_user.user_id = #{userId} and uc_role_user.deleted = 0 and uc_role_menu.deleted = 0 and uc_menu.deleted = 0" +
-            " order by uc_menu.sort asc" +
-            "</script>")
-    List<MenuEntity> getListByUserId(@Param("userId") Long userId);
+    String JOIN_USER = " LEFT JOIN uc_role_menu ON uc_role_user.role_id = uc_role_menu.role_id" +
+            " LEFT JOIN uc_menu ON uc_role_menu.menu_id = uc_menu.id" +
+            " WHERE uc_role_user.user_id = #{userId} AND uc_role_user.deleted = 0 AND uc_role_menu.deleted = 0 AND uc_menu.deleted = 0 ";
 
     /**
      * 查询用户菜单列表
      *
      * @param userId 用户ID
      * @param type   菜单类型
+     * @return result
      */
     @Select("<script>" +
-            "select t3.* from uc_role_user t1" +
-            " left join uc_role_menu t2 on t1.role_id = t2.role_id" +
-            " left join uc_menu t3 on t2.menu_id = t3.id" +
-            " where t1.deleted = 0 and t2.deleted = 0 and t3.deleted = 0 and t1.user_id = #{userId}" +
+            "select uc_menu.* from uc_role_user" + JOIN_USER +
             " <if test='type != null'>" +
-            " and t3.type = #{type}" +
+            " and uc_menu.type = #{type}" +
             " </if>" +
-            " order by t3.sort asc" +
+            "order by uc_menu.sort asc" +
             "</script>")
-    List<MenuEntity> getUserMenuList(@Param("userId") Long userId, @Param("type") Integer type);
+    List<MenuEntity> getListByUserId(@Param("userId") Long userId, @Param("type") Integer type);
 
     /**
      * 查询用户权限列表
      *
      * @param userId 用户ID
+     * @return result
      */
-    @Select("select t3.permissions from uc_role_user t1" +
-            " left join uc_role_menu t2 on t1.role_id = t2.role_id" +
-            " left join uc_menu t3 on t2.menu_id = t3.id" +
-            " where t1.deleted = 0 and t2.deleted = 0 and t3.deleted = 0 and t3.permissions != '' and t1.user_id = #{userId} " +
-            " order by t3.sort asc")
-    List<String> getUserPermissionsList(@Param("userId") Long userId);
+    @Select("select uc_menu.permissions from uc_role_user" + JOIN_USER + "and uc_menu.permissions != '' order by uc_menu.sort asc")
+    List<String> getPermissionsListByUserId(@Param("userId") Long userId);
 
     /**
      * 查询角色权限列表
+     *
+     * @param roleCodes 角色列表
+     * @return result
      */
     @Select("<script>" +
             "SELECT uc_menu.permissions FROM uc_role_menu" +
@@ -93,20 +65,6 @@ public interface MenuDao extends BaseDao<MenuEntity> {
             " AND uc_menu.deleted = 0 AND uc_role_menu.deleted = 0" +
             " ORDER BY uc_menu.sort ASC" +
             "</script>")
-    List<String> getPermissionsByRoles(@Param("roleCodes") List<String> roleCodes);
-
-    /**
-     * 查询所有权限列表
-     */
-    @Select("select permissions from uc_menu where permissions != '' and deleted = 0")
-    List<String> getPermissionsList();
-
-    /**
-     * 根据父菜单，查询子菜单
-     *
-     * @param pid 父菜单ID
-     */
-    @Select("select * from uc_menu where deleted = 0 and pid = #{pid}")
-    List<MenuEntity> getListPid(@Param("pid") Long pid);
+    List<String> getPermissionsListByRoles(@Param("roleCodes") List<String> roleCodes);
 
 }

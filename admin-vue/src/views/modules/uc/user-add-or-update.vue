@@ -28,12 +28,12 @@
             <el-row v-if="mode !== 'view'">
                 <el-col :span="12">
                     <el-form-item prop="password" :label="$t('user.password')" :class="{ 'is-required': !dataForm.id }">
-                        <el-input v-model="dataForm.password" :placeholder="$t('user.password')"/>
+                        <el-input v-model="dataForm.password" :placeholder="$t('user.password')" show-password/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item prop="confirmPassword" :label="$t('user.confirmPassword')" :class="{ 'is-required': !dataForm.id }">
-                        <el-input v-model="dataForm.confirmPassword" :placeholder="$t('user.confirmPassword')"/>
+                        <el-input v-model="dataForm.confirmPassword" :placeholder="$t('user.confirmPassword')" show-password/>
                     </el-form-item>
                 </el-col>
             </el-row>

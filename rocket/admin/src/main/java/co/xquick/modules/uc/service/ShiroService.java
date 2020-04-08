@@ -60,6 +60,6 @@ public interface ShiroService {
      * @param userId  用户ID
      * @return        返回部门ID列表
      */
-    List<Long> getDataScopeList(Long userId);
+    List<Long> getDeptIdListByUserId(Long userId);
 
 }

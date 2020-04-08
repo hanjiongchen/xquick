@@ -1,6 +1,5 @@
 package co.xquick.modules.uc.service.impl;
 
-import co.xquick.booster.pojo.Const;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.service.impl.CrudServiceImpl;
@@ -8,6 +7,7 @@ import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.TreeUtils;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.dao.MenuDao;
+import co.xquick.modules.uc.dto.MenuDTO;
 import co.xquick.modules.uc.dto.MenuTreeDTO;
 import co.xquick.modules.uc.entity.MenuEntity;
 import co.xquick.modules.uc.service.MenuService;
@@ -27,7 +27,7 @@ import java.util.*;
  * @author Charles (zhanngchaoxu@gmail.com)
  */
 @Service
-public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuTreeDTO> implements MenuService {
+public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuDTO> implements MenuService {
 
     @Autowired
     private RoleMenuService sysRoleMenuService;
@@ -38,7 +38,7 @@ public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuTr
     }
 
     @Override
-    protected void beforeSaveOrUpdateDto(MenuTreeDTO dto, int type) {
+    protected void beforeSaveOrUpdateDto(MenuDTO dto, int type) {
         if (1 == type) {
             // 更新
             // 上级菜单不能为自身
@@ -49,53 +49,55 @@ public class MenuServiceImpl extends CrudServiceImpl<MenuDao, MenuEntity, MenuTr
     }
 
     @Override
-    public List<MenuTreeDTO> getAllMenuList(Integer type) {
-        List<MenuEntity> menuList = baseMapper.getMenuList(type);
-
+    public List<MenuTreeDTO> getTreeByType(Integer type) {
+        List<MenuEntity> menuList = getListByType(type);
         List<MenuTreeDTO> dtoList = ConvertUtils.sourceToTarget(menuList, MenuTreeDTO.class);
-
-        return TreeUtils.build(dtoList, Const.MENU_ROOT);
-    }
-
-    @Override
-    public List<MenuTreeDTO> getUserMenuList(UserDetail user, Integer type) {
-        List<MenuEntity> menuList;
-
-        // 系统管理员，拥有最高权限
-        if (user.getType() == UserTypeEnum.ADMIN.value()) {
-            menuList = baseMapper.getMenuList(type);
-        } else {
-            menuList = baseMapper.getUserMenuList(user.getId(), type);
-        }
-
-        List<MenuTreeDTO> dtoList = ConvertUtils.sourceToTarget(menuList, MenuTreeDTO.class);
-
         return TreeUtils.build(dtoList);
     }
 
     @Override
-    public List<MenuEntity> getListByUser(UserDetail user) {
+    public List<MenuTreeDTO> getTreeByUser(UserDetail user, Integer type) {
+        List<MenuEntity> entityList = getListByUser(user, type);
+        List<MenuTreeDTO> dtoList = ConvertUtils.sourceToTarget(entityList, MenuTreeDTO.class);
+        return TreeUtils.build(dtoList);
+    }
+
+    @Override
+    public List<MenuEntity> getListByType(Integer type) {
+        return query().eq(type != null, "type", type).orderByAsc("sort").list();
+    }
+
+    @Override
+    public List<MenuEntity> getListByUser(UserDetail user, Integer type) {
         // 系统管理员，拥有最高权限
         if (user.getType() == UserTypeEnum.ADMIN.value()) {
-            return query().orderByAsc("sort").list();
+            return getListByType(type);
         } else {
-            return baseMapper.getListByUserId(user.getId());
+            return getBaseMapper().getListByUserId(user.getId(), type);
         }
     }
 
-
     @Override
-    public List<MenuTreeDTO> getListPid(Long pid) {
-        List<MenuEntity> menuList = baseMapper.getListPid(pid);
-
-        return ConvertUtils.sourceToTarget(menuList, MenuTreeDTO.class);
+    public List<String> getPermissionsListByRoles(List<String> roleCodes) {
+        return getBaseMapper().getPermissionsListByRoles(roleCodes);
     }
 
     @Override
-    public List<MenuTreeDTO> getParentMenuList(Long id) {
-        List<MenuTreeDTO> menus = new ArrayList<>();
+    public List<String> getPermissionsList() {
+        // select permissions from uc_menu where permissions != '' and deleted = 0
+        return listObjs(new QueryWrapper<MenuEntity>().select("permissions").ne("permissions", ""), Object::toString);
+    }
+
+    @Override
+    public List<String> getPermissionsListByUserId(Long userId) {
+        return getBaseMapper().getPermissionsListByUserId(userId);
+    }
+
+    @Override
+    public List<MenuDTO> getParentList(Long id) {
+        List<MenuDTO> menus = new ArrayList<>();
         while (id != 0) {
-            MenuTreeDTO dto = getDtoById(id);
+            MenuDTO dto = getDtoById(id);
             if (dto != null) {
                 menus.add(dto);
                 id = dto.getPid();

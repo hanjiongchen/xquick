@@ -1,23 +1,19 @@
 package co.xquick.modules.uc.service.impl;
 
-import co.xquick.booster.util.JacksonUtils;
-import co.xquick.modules.sys.dao.ParamDao;
+import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.UcConst.UserTypeEnum;
-import co.xquick.modules.uc.dao.*;
 import co.xquick.modules.uc.dto.LoginChannelCfg;
 import co.xquick.modules.uc.entity.TokenEntity;
 import co.xquick.modules.uc.entity.UserEntity;
-import co.xquick.modules.uc.service.ShiroService;
+import co.xquick.modules.uc.service.*;
 import co.xquick.modules.uc.user.UserDetail;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.base.Splitter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,17 +27,17 @@ import java.util.Set;
 public class ShiroServiceImpl implements ShiroService {
 
     @Autowired
-    private MenuDao menuMapper;
+    private MenuService menuService;
     @Autowired
-    private UserDao userMapper;
+    private UserService userService;
     @Autowired
-    private RoleDao roleMapper;
+    private RoleService roleService;
     @Autowired
-    private TokenDao tokenMapper;
+    private TokenService tokenService;
     @Autowired
-    private ParamDao paramMapper;
+    private ParamService paramService;
     @Autowired
-    private RoleDataScopeDao roleDataScopeMapper;
+    private RoleDataScopeService roleDataScopeService;
 
     @Value("${redis.open: false}")
     private boolean open;
@@ -49,7 +45,7 @@ public class ShiroServiceImpl implements ShiroService {
     @Override
     public Set<String> getPermissionsByRoles(List<String> roleCodes) {
         List<String> permissionsList;
-        permissionsList = menuMapper.getPermissionsByRoles(roleCodes);
+        permissionsList = menuService.getPermissionsListByRoles(roleCodes);
         // 用户权限列表
         Set<String> set = new HashSet<>();
         for (String permissions : permissionsList) {
@@ -68,9 +64,9 @@ public class ShiroServiceImpl implements ShiroService {
         // 系统管理员，拥有最高权限
         List<String> permissionsList;
         if (user.getType() == UserTypeEnum.ADMIN.value()) {
-            permissionsList = menuMapper.getPermissionsList();
+            permissionsList = menuService.getPermissionsList();
         } else {
-            permissionsList = menuMapper.getUserPermissionsList(user.getId());
+            permissionsList = menuService.getPermissionsListByUserId(user.getId());
         }
 
         // 用户权限列表
@@ -90,9 +86,9 @@ public class ShiroServiceImpl implements ShiroService {
     public Set<String> getUserRoles(UserDetail user) {
         List<String> roleList;
         if (user.getType() == UserTypeEnum.ADMIN.value()) {
-            roleList = roleMapper.getRoleList();
+            roleList = roleService.getRoleList();
         } else {
-            roleList = roleMapper.getRoleList(user.getId());
+            roleList = roleService.getRoleListByUserId(user.getId());
         }
 
         // 用户角色列表
@@ -101,7 +97,7 @@ public class ShiroServiceImpl implements ShiroService {
             if (StringUtils.isBlank(role)) {
                 continue;
             }
-            set.addAll(Arrays.asList(role.trim().split(",")));
+            set.addAll(Splitter.on(',').trimResults().omitEmptyStrings().splitToList(role.trim()));
         }
 
         return set;
@@ -109,28 +105,27 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public TokenEntity getUserIdAndTypeByToken(String token) {
-        return tokenMapper.getUserIdAndTypeByToken(token);
+        return tokenService.getUserIdAndTypeByToken(token);
     }
 
     @Override
     public UserEntity getUser(Long userId) {
-        return userMapper.selectById(userId);
+        return userService.getById(userId);
     }
 
     @Override
-    public List<Long> getDataScopeList(Long userId) {
-        return roleDataScopeMapper.getDataScopeList(userId);
+    public List<Long> getDeptIdListByUserId(Long userId) {
+        return roleDataScopeService.getDeptIdListByUserId(userId);
     }
 
     @Override
     public LoginChannelCfg getLoginCfg(Integer type) {
-        String paramContent = paramMapper.getContentByCode(UcConst.LOGIN_CHANNEL_CFG_PREFIX + type);
-        LoginChannelCfg loginCfg = JacksonUtils.jsonToPojo(paramContent, LoginChannelCfg.class);
-        return loginCfg == null ? LoginChannelCfg.getDefaultCfg(type) : loginCfg;
+        return paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX + type, LoginChannelCfg.class);
     }
 
     @Override
     public boolean renewalToken(String token, Long expire) {
-        return SqlHelper.retBool(tokenMapper.renewalToken(token, expire));
+        return tokenService.renewalToken(token, expire);
     }
+
 }

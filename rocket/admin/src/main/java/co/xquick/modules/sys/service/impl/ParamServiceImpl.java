@@ -18,6 +18,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +44,20 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
                 .like("code", "code")
                 .getQueryWrapper()
                 .eq(user.getType() != UserTypeEnum.ADMIN.value(), "type", 1);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveDto(ParamDTO dto) {
+        localCache.put("param_" + dto.getCode(), dto.getContent());
+        return super.saveDto(dto);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateDto(ParamDTO dto) {
+        localCache.put("param_" + dto.getCode(), dto.getContent());
+        return super.updateDto(dto);
     }
 
     @Override

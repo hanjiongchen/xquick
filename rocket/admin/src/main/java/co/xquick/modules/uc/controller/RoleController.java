@@ -67,8 +67,9 @@ public class RoleController {
 		data.setMenuIdList(menuIdList);
 
 		// 查询角色对应的数据权限
-		List<Long> deptIdList = roleDataScopeService.getDeptIdList(id);
+		List<Long> deptIdList = roleDataScopeService.getDeptIdListByUserId(id);
 		data.setDeptIdList(deptIdList);
+
 		return new Result<>().ok(data);
 	}
 

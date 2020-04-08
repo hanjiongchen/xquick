@@ -20,10 +20,10 @@ public class LoginCfg implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "开放注册")
-    private Boolean register;
+    private boolean register;
 
     @ApiModelProperty(value = "开放忘记密码")
-    private Boolean forgetPassword;
+    private boolean forgetPassword;
 
     @ApiModelProperty(value = "开放忘记密码")
     private List<LoginChannel> channels;

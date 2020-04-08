@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 菜单
@@ -57,5 +58,8 @@ public class MenuDTO extends BaseDTO {
     @ApiModelProperty(value = "排序")
     @Min(value = 0, message = "{sort.number}", groups = DefaultGroup.class)
     private Integer sort;
+
+    @ApiModelProperty(value = "上级菜单列表")
+    private List<MenuDTO> parentMenuList;
 
 }

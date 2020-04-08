@@ -59,7 +59,7 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
         // request.setAttribute("user", userEntity, 1);
         if (annotation.renewalToken()) {
             // 是否token做延时
-            tokenService.renewalToken(token);
+            tokenService.renewalToken(token, 60000L);
         }
 
         return userEntity;

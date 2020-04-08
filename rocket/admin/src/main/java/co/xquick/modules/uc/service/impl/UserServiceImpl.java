@@ -381,7 +381,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
     }
 
     @Override
-    protected void beforeSaveOrUpdateDto(UserDTO dto, int type) {
+    protected void beforeSaveOrUpdateDto(UserDTO dto, UserEntity toSaveEntity, int type) {
         // 检查用户权限
         UserDetail user = SecurityUser.getUser();
         if (user.getType() > dto.getType()) {
@@ -402,13 +402,11 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         AssertUtils.isTrue(hasDuplicated(dto.getId(), "mobile", dto.getMobile()), ErrorCode.HAS_DUPLICATED_RECORD, "手机号");
         if (type == 1) {
             // 更新
-            UserEntity existEntity = getById(dto.getId());
-            AssertUtils.isNull(existEntity, ErrorCode.DB_RECORD_NOT_EXISTED);
             // 检查是否需要修改密码,对于null的不会更新字段
-            dto.setPassword(StringUtils.isEmpty(dto.getPassword()) ? null : PasswordUtils.encode(dto.getPassword()));
+            toSaveEntity.setPassword(StringUtils.isEmpty(dto.getPassword()) ? null : PasswordUtils.encode(dto.getPassword()));
         } else {
             // 新增
-            dto.setPassword(PasswordUtils.encode(dto.getPassword()));
+            toSaveEntity.setPassword(PasswordUtils.encode(dto.getPassword()));
         }
     }
 

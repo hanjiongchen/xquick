@@ -1,6 +1,7 @@
 package co.xquick.modules.uc.service;
 
 import co.xquick.booster.service.CrudService;
+import co.xquick.modules.uc.dto.MenuDTO;
 import co.xquick.modules.uc.dto.MenuTreeDTO;
 import co.xquick.modules.uc.entity.MenuEntity;
 import co.xquick.modules.uc.user.UserDetail;
@@ -12,20 +13,14 @@ import java.util.List;
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */
-public interface MenuService extends CrudService<MenuEntity, MenuTreeDTO> {
+public interface MenuService extends CrudService<MenuEntity, MenuDTO> {
 
-    /**
-     * 递归上级菜单列表
-     *
-     * @param id 菜单ID
-     */
-    List<MenuTreeDTO> getParentMenuList(Long id);
     /**
      * 菜单列表
      *
      * @param type 菜单类型
      */
-    List<MenuTreeDTO> getAllMenuList(Integer type);
+    List<MenuTreeDTO> getTreeByType(Integer type);
 
     /**
      * 用户菜单列表
@@ -33,19 +28,50 @@ public interface MenuService extends CrudService<MenuEntity, MenuTreeDTO> {
      * @param user 用户
      * @param type 菜单类型
      */
-    List<MenuTreeDTO> getUserMenuList(UserDetail user, Integer type);
+    List<MenuTreeDTO> getTreeByUser(UserDetail user, Integer type);
+
+    /**
+     * 递归上级菜单列表
+     *
+     * @param id 菜单ID
+     */
+    List<MenuDTO> getParentList(Long id);
+
+    /**
+     * 通过type获取菜单列表
+     *
+     * @param type 类型
+     * @return result
+     */
+    List<MenuEntity> getListByType(Integer type);
 
     /**
      * 用户Url列表
      *
      * @param user 用户
      */
-    List<MenuEntity> getListByUser(UserDetail user);
+    List<MenuEntity> getListByUser(UserDetail user, Integer type);
 
     /**
-     * 根据父菜单，查询子菜单
+     * 查询角色权限列表
      *
-     * @param pid 父菜单ID
+     * @param roleCodes 角色列表
+     * @return result
      */
-    List<MenuTreeDTO> getListPid(Long pid);
+    List<String> getPermissionsListByRoles(List<String> roleCodes);
+
+    /**
+     * 查询所有权限列表
+     *
+     * @return result
+     */
+    List<String> getPermissionsList();
+
+    /**
+     * 查询用户权限列表
+     *
+     * @param userId 用户ID
+     * @return result
+     */
+    List<String> getPermissionsListByUserId(Long userId);
 }

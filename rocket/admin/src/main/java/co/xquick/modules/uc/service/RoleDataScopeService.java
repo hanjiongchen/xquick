@@ -13,11 +13,6 @@ import java.util.List;
 public interface RoleDataScopeService extends BaseService<RoleDataScopeEntity> {
 
     /**
-     * 根据角色ID，获取部门ID列表
-     */
-    List<Long> getDeptIdList(Long roleId);
-
-    /**
      * 保存或修改
      * @param roleId      角色ID
      * @param deptIdList  部门ID列表
@@ -29,4 +24,14 @@ public interface RoleDataScopeService extends BaseService<RoleDataScopeEntity> {
      * @param roleIds 角色ids
      */
     boolean deleteByRoleIds(List<Long> roleIds);
+
+    /**
+     * 获取用户的部门数据权限列表
+     */
+    List<Long> getDeptIdListByUserId(Long userId);
+
+    /**
+     * 根据角色ID，获取部门ID列表
+     */
+    List<Long> getDeptIdListByRoleId(Long userId);
 }

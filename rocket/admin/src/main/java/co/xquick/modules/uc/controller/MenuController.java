@@ -51,7 +51,7 @@ public class MenuController {
     public Result<?> userMenu() {
         UserDetail user = SecurityUser.getUser();
         // 获取该用户所有menu
-        List<MenuEntity> allList = menuService.getListByUser(user);
+        List<MenuEntity> allList = menuService.getListByUser(user, null);
         // 过滤出其中显示菜单
         List<MenuTreeDTO> menuList = new ArrayList<>();
         // 过滤出其中路由菜单
@@ -80,7 +80,7 @@ public class MenuController {
     @ApiImplicitParam(name = "type", value = "菜单类型 0：菜单 1：按钮  null：全部", paramType = "query", dataType = "int")
     public Result<?> userTree(Integer type) {
         UserDetail user = SecurityUser.getUser();
-        List<MenuTreeDTO> list = menuService.getUserMenuList(user, type);
+        List<MenuTreeDTO> list = menuService.getTreeByUser(user, type);
 
         return new Result<>().ok(list);
     }
@@ -99,7 +99,7 @@ public class MenuController {
     @ApiImplicitParam(name = "type", value = "菜单类型 0：菜单 1：按钮  null：全部", paramType = "query", dataType = "int")
     @RequiresPermissions("uc:menu:list")
     public Result<?> tree(Integer type) {
-        List<MenuTreeDTO> list = menuService.getAllMenuList(type);
+        List<MenuTreeDTO> list = menuService.getTreeByType(type);
 
         return new Result<>().ok(list);
     }
@@ -108,9 +108,9 @@ public class MenuController {
     @ApiOperation("信息")
     @RequiresPermissions("uc:menu:info")
     public Result<?> info(@RequestParam Long id) {
-        MenuTreeDTO data = menuService.getDtoById(id);
+        MenuDTO data = menuService.getDtoById(id);
 
-        data.setParentMenuList(menuService.getParentMenuList(data.getPid()));
+        data.setParentMenuList(menuService.getParentList(data.getPid()));
 
         return new Result<>().ok(data);
     }
@@ -119,7 +119,7 @@ public class MenuController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("uc:menu:save")
-    public Result<?> save(@RequestBody MenuTreeDTO dto) {
+    public Result<?> save(@RequestBody MenuDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
@@ -132,7 +132,7 @@ public class MenuController {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("uc:menu:update")
-    public Result<?> update(@RequestBody MenuTreeDTO dto) {
+    public Result<?> update(@RequestBody MenuDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 

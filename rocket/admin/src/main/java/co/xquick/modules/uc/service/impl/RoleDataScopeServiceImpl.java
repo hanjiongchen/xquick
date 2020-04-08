@@ -21,11 +21,6 @@ import java.util.List;
 public class RoleDataScopeServiceImpl extends BaseServiceImpl<RoleDataScopeDao, RoleDataScopeEntity> implements RoleDataScopeService {
 
     @Override
-    public List<Long> getDeptIdList(Long roleId) {
-        return baseMapper.getDeptIdList(roleId);
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(Long roleId, List<Long> deptIdList) {
         // 先删除角色数据权限关系
@@ -50,5 +45,15 @@ public class RoleDataScopeServiceImpl extends BaseServiceImpl<RoleDataScopeDao, 
     @Override
     public boolean deleteByRoleIds(List<Long> roleIds) {
         return logicDeleteByWrapper(new QueryWrapper<RoleDataScopeEntity>().in("role_id", roleIds));
+    }
+
+    @Override
+    public List<Long> getDeptIdListByUserId(Long userId) {
+        return getBaseMapper().getDeptIdListByUserId(userId);
+    }
+
+    @Override
+    public List<Long> getDeptIdListByRoleId(Long roleId) {
+        return listObjs(new QueryWrapper<RoleDataScopeEntity>().select("dept_id").eq("role_id", roleId), o -> (Long) o);
     }
 }

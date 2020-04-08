@@ -56,6 +56,16 @@ public class RoleServiceImpl extends CrudServiceImpl<RoleDao, RoleEntity, RoleDT
     }
 
     @Override
+    public List<String> getRoleList() {
+        return listObjs(new QueryWrapper<RoleEntity>().select("code"), Object::toString);
+    }
+
+    @Override
+    public List<String> getRoleListByUserId(Long userId) {
+        return null;
+    }
+
+    @Override
     protected void beforeSaveOrUpdateDto(RoleDTO dto, int type) {
         AssertUtils.isTrue(hasDuplicated(dto.getId(), "code", dto.getCode()), ErrorCode.HAS_DUPLICATED_RECORD, "编码");
     }

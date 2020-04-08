@@ -8,7 +8,7 @@ server:
 spring:
   datasource:
     druid:
-      #MySQL
+      # MySQL
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://127.0.0.1:3306/xquick?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: xquick
@@ -21,16 +21,16 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
-      #Oracle需要打开注释
-      #validation-query: SELECT 1 FROM DUAL
+      # Oracle需要打开注释
+      # validation-query: SELECT 1 FROM DUAL
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
       stat-view-servlet:
         enabled: true
         url-pattern: /druid/*
-        #login-username: admin
-        #login-password: admin
+        # login-username: admin
+        # login-password: admin
       filter:
         stat:
           log-slow-sql: true
