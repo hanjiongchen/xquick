@@ -66,20 +66,20 @@ public class AuthController {
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
     public Result<?> loginChannel(@RequestParam String type) {
-        LoginChannelCfg content = paramService.getContentObject(UcConst.LOGIN_CFG + "_" + type.toUpperCase(), LoginChannelCfg.class);
+        LoginChannelCfg content = paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX + type.toUpperCase(), LoginChannelCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
 
         return new Result<>().ok(content);
     }
 
     @GetMapping("loginCfgAdmin")
-    @ApiOperation(value = "获取登录配置")
+    @ApiOperation(value = "获取管理平台登录配置")
     public Result<?> loginCfgAdmin() {
         LoginCfg content = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
         for (LoginChannel channel : content.getChannels()) {
             if (channel.getEnable()) {
-                channel.setCfg(paramService.getContentObject(UcConst.LOGIN_CFG + "_" + channel.getType(), LoginChannelCfg.class));
+                channel.setCfg(paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX +channel.getType(), LoginChannelCfg.class));
             }
         }
         return new Result<>().ok(content);

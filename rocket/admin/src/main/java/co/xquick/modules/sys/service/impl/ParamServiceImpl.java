@@ -14,11 +14,13 @@ import co.xquick.modules.uc.UcConst.UserTypeEnum;
 import co.xquick.modules.uc.user.SecurityUser;
 import co.xquick.modules.uc.user.UserDetail;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.commons.lang3.ObjectUtils;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 参数管理
@@ -27,6 +29,12 @@ import java.util.Map;
  */
 @Service
 public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, ParamDTO> implements ParamService {
+
+    /**
+     * 本地缓存
+     * 设置一个有效时间10分钟
+     */
+    Cache<String, String> localCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(10, TimeUnit.DAYS).build();
 
     @Override
     public QueryWrapper<ParamEntity> getWrapper(String method, Map<String, Object> params) {
@@ -52,8 +60,15 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
     @Override
     public String getContent(String code) {
         // 先从缓存中读取
-        ParamEntity param = query().select("content").eq("code", code).last("limit 1").one();
-        return ObjectUtils.isEmpty(param) ? null : param.getContent();
+        String content = localCache.getIfPresent("param_" + code);
+        if (StringUtils.isEmpty(content)) {
+            content = getBaseMapper().getContentByCode(code);
+            // 塞回缓存
+            if (StringUtils.isNotEmpty(content)) {
+                localCache.put("param_" + code, content);
+            }
+        }
+        return content;
     }
 
     @Override

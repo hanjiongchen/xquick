@@ -181,7 +181,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
         // 登录用户
         UserDTO user = null;
         // 获得登录配置
-        LoginChannelCfg loginConfig = paramService.getContentObject(UcConst.LOGIN_CFG + "_" + login.getType(), LoginChannelCfg.class, null);
+        LoginChannelCfg loginConfig = paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX + login.getType(), LoginChannelCfg.class, null);
         if (null == loginConfig) {
             // 未找到登录配置
             loginResult = ErrorCode.UNKNOWN_LOGIN_TYPE;

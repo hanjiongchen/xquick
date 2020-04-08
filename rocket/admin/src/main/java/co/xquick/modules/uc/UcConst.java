@@ -15,10 +15,6 @@ public interface UcConst {
      * 游客角色编码
      */
     String GUEST_ROLE_CODE = "GUEST";
-    /**
-     * 登录配置
-     */
-    String LOGIN_CFG = "LOGIN_CFG";
 
     /**
      * 管理平台登录配置
@@ -28,7 +24,7 @@ public interface UcConst {
     /**
      * 登录配置前缀
      */
-    String LOGIN_CFG_PREFIX = "LOGIN_CFG_";
+    String LOGIN_CHANNEL_CFG_PREFIX = "LOGIN_CHANNEL_CFG_";
 
     /**
      * token header

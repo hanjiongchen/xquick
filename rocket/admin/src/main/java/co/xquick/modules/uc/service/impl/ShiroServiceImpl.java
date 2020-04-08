@@ -124,7 +124,7 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public LoginChannelCfg getLoginCfg(Integer type) {
-        String paramContent = paramMapper.getContentByCode(UcConst.LOGIN_CFG_PREFIX + type);
+        String paramContent = paramMapper.getContentByCode(UcConst.LOGIN_CHANNEL_CFG_PREFIX + type);
         LoginChannelCfg loginCfg = JacksonUtils.jsonToPojo(paramContent, LoginChannelCfg.class);
         return loginCfg == null ? LoginChannelCfg.getDefaultCfg(type) : loginCfg;
     }
