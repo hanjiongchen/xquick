@@ -84,6 +84,7 @@ public class Oauth2Realm extends AuthorizingRealm {
             // 游客token
             UserDetail userDetail = new UserDetail();
             userDetail.setToken(UcConst.GUEST_TOKEN);
+            userDetail.setType(-100);
             return new SimpleAuthenticationInfo(userDetail, UcConst.GUEST_TOKEN, getName());
         }
         // 根据accessToken，查询用户信息
