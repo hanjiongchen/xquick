@@ -83,12 +83,12 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public Set<String> getUserRoles(UserDetail user) {
+    public Set<String> getUserRoleCodes(UserDetail user) {
         List<String> roleList;
         if (user.getType() == UserTypeEnum.ADMIN.value()) {
-            roleList = roleService.getRoleList();
+            roleList = roleService.getRoleCodeList();
         } else {
-            roleList = roleService.getRoleListByUserId(user.getId());
+            roleList = roleService.getRoleCodeListByUserId(user.getId());
         }
 
         // 用户角色列表

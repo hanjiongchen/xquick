@@ -53,7 +53,7 @@ public class RoleUserServiceImpl extends BaseServiceImpl<RoleUserDao, RoleUserEn
 
     @Override
     public List<Long> getRoleIdList(Long userId) {
-        return baseMapper.getRoleIdList(userId);
+        return listObjs(new QueryWrapper<RoleUserEntity>().select("role_id").eq("user_id", userId), o -> (Long) o);
     }
 
 }

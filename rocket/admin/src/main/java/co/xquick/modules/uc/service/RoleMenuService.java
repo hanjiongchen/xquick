@@ -16,7 +16,7 @@ public interface RoleMenuService extends BaseService<RoleMenuEntity> {
 	/**
 	 * 根据角色ID，获取菜单ID列表
 	 */
-	List<Long> getMenuIdList(Long roleId);
+	List<Long> getMenuIdListByRoleId(Long roleId);
 
 	/**
 	 * 保存或修改

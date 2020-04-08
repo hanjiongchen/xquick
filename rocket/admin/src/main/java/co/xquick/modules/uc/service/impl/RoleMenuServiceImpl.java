@@ -40,8 +40,8 @@ public class RoleMenuServiceImpl extends BaseServiceImpl<RoleMenuDao, RoleMenuEn
     }
 
     @Override
-    public List<Long> getMenuIdList(Long roleId) {
-        return baseMapper.getMenuIdList(roleId);
+    public List<Long> getMenuIdListByRoleId(Long roleId) {
+        return listObjs(new QueryWrapper<RoleMenuEntity>().select("menu_id").eq("role_id", roleId),  o -> (Long) o);
     }
 
     @Override

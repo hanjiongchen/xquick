@@ -28,7 +28,7 @@ public interface ShiroService {
     /**
      * 获取用户角色列表
      */
-    Set<String> getUserRoles(UserDetail user);
+    Set<String> getUserRoleCodes(UserDetail user);
 
     /**
      * 通过token获取用户id

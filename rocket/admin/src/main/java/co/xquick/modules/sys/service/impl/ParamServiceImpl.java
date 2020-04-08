@@ -77,10 +77,12 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
         // 先从缓存中读取
         String content = localCache.getIfPresent("param_" + code);
         if (StringUtils.isEmpty(content)) {
-            content = getBaseMapper().getContentByCode(code);
+            content = query().select("content").eq("code",code).last("LIMIT 1").oneOpt().map(ParamEntity::getContent).orElse(null);
             // 塞回缓存
             if (StringUtils.isNotEmpty(content)) {
                 localCache.put("param_" + code, content);
+            } else {
+                localCache.invalidate("param_" + code);
             }
         }
         return content;

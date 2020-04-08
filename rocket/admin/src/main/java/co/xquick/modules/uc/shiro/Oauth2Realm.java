@@ -63,7 +63,7 @@ public class Oauth2Realm extends AuthorizingRealm {
             if (loginCfg != null) {
                 if (loginCfg.isRoleBase()) {
                     // 塞入角色列表
-                    info.setRoles(shiroService.getUserRoles(user));
+                    info.setRoles(shiroService.getUserRoleCodes(user));
                 }
                 if (loginCfg.isPermissionsBase()) {
                     // 塞入权限列表

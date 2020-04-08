@@ -56,13 +56,13 @@ public class RoleServiceImpl extends CrudServiceImpl<RoleDao, RoleEntity, RoleDT
     }
 
     @Override
-    public List<String> getRoleList() {
+    public List<String> getRoleCodeList() {
         return listObjs(new QueryWrapper<RoleEntity>().select("code"), Object::toString);
     }
 
     @Override
-    public List<String> getRoleListByUserId(Long userId) {
-        return null;
+    public List<String> getRoleCodeListByUserId(Long userId) {
+        return getBaseMapper().getRoleCodeListByUserId(userId);
     }
 
     @Override

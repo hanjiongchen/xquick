@@ -32,14 +32,4 @@ public interface UserDao extends BaseDao<UserEntity> {
     @Select(WITH_ROLE_SQL)
     List<UserEntity> selectWithRoleList(@Param(Constants.WRAPPER) Wrapper<UserEntity> ew);
 
-    /*@Override
-    @Select("select uc_user.*, (select uc_dept.name from uc_dept where uc_dept.deleted = 0 and uc_dept.id = uc_user.dept_id) dept_name from uc_user where uc_user.deleted = 0 and uc_user.id = #{id}")
-    UserEntity selectById(@Param("id") Serializable id);*/
-
-    @Select("select * from uc_user where deleted = 0 and username = #{username}")
-    UserEntity getByUsername(@Param("username") String username);
-
-    @Select("select * from uc_user where deleted = 0 and mobile = #{mobile}")
-    UserEntity getByMobile(@Param("mobile") String mobile);
-
 }

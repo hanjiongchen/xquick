@@ -16,12 +16,4 @@ import java.util.List;
 @Mapper
 public interface RoleUserDao extends BaseDao<RoleUserEntity> {
 
-    /**
-     * 角色ID列表
-     *
-     * @param userId 用户ID
-     * @return
-     */
-    @Select("select role_id from uc_role_user where deleted = 0 and user_id = #{userId}")
-    List<Long> getRoleIdList(@Param("userId") Long userId);
 }

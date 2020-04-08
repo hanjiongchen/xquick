@@ -63,7 +63,7 @@ public class RoleController {
 		RoleDTO data = roleService.getDtoById(id);
 
 		// 查询角色对应的菜单
-		List<Long> menuIdList = roleMenuService.getMenuIdList(id);
+		List<Long> menuIdList = roleMenuService.getMenuIdListByRoleId(id);
 		data.setMenuIdList(menuIdList);
 
 		// 查询角色对应的数据权限
