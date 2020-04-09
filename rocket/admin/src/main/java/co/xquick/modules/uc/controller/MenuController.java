@@ -7,7 +7,6 @@ import co.xquick.booster.util.TreeUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.DefaultGroup;
-import co.xquick.common.annotation.GuestAccess;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.uc.dto.MenuDTO;

@@ -67,13 +67,9 @@ public class ShiroConfig {
         filterMap.put("/captcha", "anon");
         filterMap.put("/favicon.ico", "anon");
 
-        // tofix 无法区分接口method
+        // 注意,无法区分接口method
         // 登录相关接口
         filterMap.put("/auth/**", "anon");
-        // 开放微信接口
-        filterMap.put("/wx/**", "anon");
-        // 开放app接口
-        // filterMap.put("/app/**", "anon");
 
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

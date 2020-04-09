@@ -48,7 +48,7 @@ public class Oauth2Realm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         if (UcConst.GUEST_TOKEN.equalsIgnoreCase(user.getToken())) {
-            // 游客
+            // 游客token,不做验证
             // 塞入游客角色
             Set<String> roles = new HashSet<>();
             roles.add(UcConst.GUEST_ROLE_CODE);
