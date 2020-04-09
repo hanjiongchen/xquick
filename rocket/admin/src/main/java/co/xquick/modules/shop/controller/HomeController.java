@@ -30,7 +30,6 @@ public class HomeController {
 
     @GetMapping("count")
     @ApiOperation("统计数据")
-    // @RequiresRoles("shop-admin")
     public Result<?> count() {
         int orderCount = orderService.count();
         int userCount = userService.query().ge("type", 100).count();

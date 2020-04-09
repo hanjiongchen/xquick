@@ -4,7 +4,6 @@
 const util = require('../utils/util.js');
 const api = require('../config/api.js');
 
-
 /**
  * Promise封装wx.checkSession
  */
@@ -44,14 +43,19 @@ function login() {
 /**
  * 调用微信登录
  */
-function loginByWeixin(userInfo) {
+function loginByWx(userInfoDetail) {
 
   return new Promise(function(resolve, reject) {
     return login().then((res) => {
+      console.log(res)
       //登录远程服务器
       util.request(api.AuthLoginByWeixin, {
         code: res.code,
-        userInfo: userInfo
+        paramCode: "WX_CFG_XUDA_MA",
+        rawData: userInfoDetail.rawData,
+        signature: userInfoDetail.signature,
+        encryptedData: userInfoDetail.encryptedData,
+        iv: userInfoDetail.iv
       }, 'POST').then(res => {
         if (res.errno === 0) {
           //存储用户信息
@@ -89,6 +93,6 @@ function checkLogin() {
 }
 
 module.exports = {
-  loginByWeixin,
+  loginByWx,
   checkLogin,
 };

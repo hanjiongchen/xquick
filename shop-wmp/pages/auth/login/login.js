@@ -23,24 +23,29 @@ Page({
     // 页面关闭
 
   },
+  /**
+   * 登录并且获取到用户信息
+   */
   wxLogin: function(e) {
-    if (e.detail.userInfo == undefined) {
+    console.log(e)
+    if (!e.detail || 'getUserInfo:ok' !== e.detail.errMsg) {
       app.globalData.hasLogin = false;
       util.showErrorToast('微信登录失败');
       return;
     }
 
+    /* 调用接口登录 */
     user.checkLogin().catch(() => {
-
-      user.loginByWeixin(e.detail.userInfo).then(res => {
+      user.loginByWx(e.detail).then(res => {
         app.globalData.hasLogin = true;
 
+        // 返回上一页
         wx.navigateBack({
           delta: 1
         })
       }).catch((err) => {
         app.globalData.hasLogin = false;
-        util.showErrorToast('微信登录失败');
+        util.showErrorToast('调用微信登录接口失败');
       });
 
     });
