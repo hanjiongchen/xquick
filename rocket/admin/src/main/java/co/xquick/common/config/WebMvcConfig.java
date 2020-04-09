@@ -1,6 +1,7 @@
 package co.xquick.common.config;
 
 import co.xquick.booster.util.DateUtils;
+import co.xquick.common.interceptor.GuestAccessInterceptor;
 import co.xquick.common.resolver.LoginUserHandlerMethodArgumentResolver;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -33,8 +35,23 @@ import java.util.TimeZone;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
+    private GuestAccessInterceptor guestAccessInterceptor;
+    @Autowired
     private LoginUserHandlerMethodArgumentResolver loginUserHandlerMethodArgumentResolver;
 
+    /**
+     * 拦截器
+     * @param registry 拦截器
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(guestAccessInterceptor).addPathPatterns("/**");
+    }
+
+    /**
+     * 拦截参数
+     * @param argumentResolvers 参数解析器
+     */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         // 加入登录用户参数resolver

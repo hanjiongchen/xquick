@@ -69,6 +69,7 @@ public interface ErrorCode {
     int PARENT_EQ_SELF = 10049;
     int RECORD_NOT_EXISTED = 10050;
     int COMMON_ERROR = 10051;
+    int GUEST_FORBIDDEN = 10052;
 
     int WX_CONFIG_ERROR = 11000;
     int WX_API_ERROR = 11001;
