@@ -7,13 +7,19 @@ import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.pojo.Result;
+import co.xquick.booster.util.HttpContextUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.common.annotation.GuestAccess;
+import co.xquick.modules.log.entity.LoginEntity;
+import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.sys.service.ParamService;
+import co.xquick.modules.uc.UcConst;
 import co.xquick.modules.wx.config.WxProp;
 import co.xquick.modules.wx.dto.WxLoginRequest;
+import co.xquick.modules.wx.entity.UserWxEntity;
+import co.xquick.modules.wx.service.UserWxService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -23,7 +29,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * 微信小程序用户接口
@@ -40,26 +50,44 @@ public class MaUserController {
 
     @Autowired
     ParamService paramService;
+    @Autowired
+    UserWxService userWxService;
+    @Autowired
+    LoginService logLoginService;
 
     @PostMapping("/login")
     @ApiOperation("登录")
     @GuestAccess
-    public Result<?> login(@RequestBody WxLoginRequest request) {
+    public Result<?> login(HttpServletRequest httpServletRequest, @RequestBody WxLoginRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
+        // 登录日志
+        LoginEntity loginLog = new LoginEntity();
+        loginLog.setType(UcConst.LoginTypeEnum.APP_WECHAT.value());
+        loginLog.setCreateTime(new Date());
+        loginLog.setIp(HttpContextUtils.getIpAddr(httpServletRequest));
+        loginLog.setUserAgent(httpServletRequest.getHeader(HttpHeaders.USER_AGENT));
+
         // 初始化service
         WxMaService wxService = getWxService(request.getParamCode());
+        String sessionKey;
         try {
             WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(request.getCode());
-            if (StringUtils.isEmpty(session.getSessionKey())) {
-                return new Result<>().error(ErrorCode.WX_API_ERROR, "getSessionInfo失败");
-            }
+            sessionKey = session.getSessionKey();
+        } catch (WxErrorException e) {
+            loginLog.setResult(loginResult);
+            logLoginService.save(loginLog);
+            return new Result<>().error(ErrorCode.WX_API_ERROR);
+        }
+
+        try {
             // 用户信息校验
-            if (!wxService.getUserService().checkUserInfo(session.getSessionKey(), request.getRawData(), request.getSignature())) {
+            if (!wxService.getUserService().checkUserInfo(sessionKey, request.getRawData(), request.getSignature())) {
                 return new Result<>().error(ErrorCode.WX_API_ERROR, "checkUserInfo失败");
             }
-            // 解密用户信息
-            WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(session.getSessionKey(), request.getEncryptedData(), request.getIv());
+            // 解密获得用户信息
+            WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, request.getEncryptedData(), request.getIv());
+            // UserWxEntity userWx = userWxService.getByAppIdAndOpenId(wxService.get);
 
             //TODO 增加自己的逻辑，关联业务相关数据
             return new Result<>().ok(userInfo);
@@ -67,6 +95,7 @@ public class MaUserController {
             this.logger.error(e.getMessage(), e);
             return new Result<>().error(ErrorCode.WX_API_ERROR, e.toString());
         }
+
     }
 
     @ApiOperation("获取用户信息")
