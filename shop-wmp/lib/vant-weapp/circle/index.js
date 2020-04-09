@@ -26,7 +26,6 @@ VantComponent({
         size: {
             type: Number,
             value: 100,
-            observer: 'setStyle'
         },
         fill: String,
         layerColor: {
@@ -38,6 +37,10 @@ VantComponent({
             value: BLUE,
             observer: 'setHoverColor'
         },
+        type: {
+            type: String,
+            value: ''
+        },
         strokeWidth: {
             type: Number,
             value: 4
@@ -48,7 +51,6 @@ VantComponent({
         }
     },
     data: {
-        style: 'width: 100px; height: 100px;',
         hoverColor: BLUE
     },
     methods: {
@@ -59,8 +61,8 @@ VantComponent({
             return this.ctx;
         },
         setHoverColor() {
-            const context = this.getContext();
-            const { color, size } = this.data;
+            const { color, size, type } = this.data;
+            const context = type ? this.getContext(type) : this.getContext();
             let hoverColor = color;
             if (isObj(color)) {
                 const LinearColor = context.createLinearGradient(size, 0, 0, 0);
@@ -70,11 +72,6 @@ VantComponent({
                 hoverColor = LinearColor;
             }
             this.setData({ hoverColor });
-        },
-        setStyle() {
-            const { size } = this.data;
-            const style = `width: ${size}px; height: ${size}px;`;
-            this.setData({ style });
         },
         presetCanvas(context, strokeStyle, beginAngle, endAngle, fill) {
             const { strokeWidth, lineCap, clockwise, size } = this.data;
@@ -105,8 +102,8 @@ VantComponent({
             this.presetCanvas(context, hoverColor, BEGIN_ANGLE, endAngle);
         },
         drawCircle(currentValue) {
-            const context = this.getContext();
-            const { size } = this.data;
+            const { size, type } = this.data;
+            const context = type ? this.getContext(type) : this.getContext();
             context.clearRect(0, 0, size, size);
             this.renderLayerCircle(context);
             const formatValue = format(currentValue);
