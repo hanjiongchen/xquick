@@ -6,6 +6,9 @@
           <el-button type="primary" @click="uploadHandle()">{{ $t('upload') }}</el-button>
         </el-form-item>
         <el-form-item>
+          <el-button type="success" @click="uploadAliyunHandle()">直传阿里云OSS</el-button>
+        </el-form-item>
+        <el-form-item>
           <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
         </el-form-item>
       </el-form>
@@ -43,6 +46,7 @@
       </el-pagination>
       <!-- 弹窗, 上传文件 -->
       <upload v-if="uploadVisible" ref="upload" @refreshDataList="getDataList"/>
+      <upload-aliyun v-if="uploadAliyunVisible" ref="uploadAliyun" @refreshDataList="getDataList"/>
     </div>
   </el-card>
 </template>
@@ -51,9 +55,10 @@
 import mixinListModule from '@/mixins/list-module'
 import Config from './param-oss-config'
 import Upload from './oss-upload'
+import UploadAliyun from './oss-aliyun-upload'
 export default {
   mixins: [mixinListModule],
-  components: { Config, Upload },
+  components: { Config, Upload, UploadAliyun },
   data () {
     return {
       mixinListModuleOptions: {
@@ -65,7 +70,8 @@ export default {
       },
       dataForm: {},
       configVisible: false,
-      uploadVisible: false
+      uploadVisible: false,
+      uploadAliyunVisible: false
     }
   },
   methods: {
@@ -81,6 +87,13 @@ export default {
       this.uploadVisible = true
       this.$nextTick(() => {
         this.$refs.upload.init()
+      })
+    },
+    // 直传阿里云OSS文件
+    uploadAliyunHandle () {
+      this.uploadAliyunVisible = true
+      this.$nextTick(() => {
+        this.$refs.uploadAliyun.init()
       })
     },
     fileViewHandle () {

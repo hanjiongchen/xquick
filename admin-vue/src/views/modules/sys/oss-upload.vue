@@ -39,10 +39,10 @@ export default {
     },
     // 上传之前
     beforeUploadHandle (file) {
-      if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+      /* if (file.type !== 'image/jpg' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
         this.$message.error(this.$t('uploadTip', { 'format': 'jpg、png、gif' }))
         return false
-      }
+      } */
       this.num++
     },
     // 上传成功
