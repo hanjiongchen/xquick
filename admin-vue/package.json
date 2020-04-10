@@ -1,7 +1,7 @@
 {
   "name": "xquick-satellite",
   "version": "1.0.0",
-  "description": "xquick satellite desktop",
+  "description": "xquick admin desktop",
   "author": "Charles <zhangchaoxu@gmail.com>",
   "private": true,
   "scripts": {
@@ -16,8 +16,10 @@
     "et:list": "gulp themes"
   },
   "dependencies": {
-    "axios": "^0.19.1",
+    "ali-oss": "^6.6.0",
+    "axios": "^0.19.2",
     "babel-plugin-component": "^1.1.1",
+    "crypto-js": "^4.0.0",
     "element-theme": "^2.0.1",
     "element-theme-chalk": "^2.13.0",
     "element-ui": "^2.13.0",
@@ -27,26 +29,19 @@
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "js-cookie": "2.2.0",
-    "lodash": "^4.17.11",
-    "dayjs": "^1.8.19",
+    "lodash": "^4.17.15",
+    "dayjs": "^1.8.24",
     "node-sass": "^4.12.0",
-    "qs": "^6.7.0",
+    "qs": "^6.9.3",
     "quill": "^1.3.7",
     "sass-loader": "^7.1.0",
     "screenfull": "^3.3.3",
     "svg-sprite-loader": "^4.1.6",
-    "v-charts": "^1.19.0",
-    "echarts": "^4.6.0",
     "vue": "^2.6.10",
-    "vue-amap": "^0.5.10",
-    "vue-awesome-swiper": "^3.1.3",
-    "vue-count-to": "^1.0.13",
-    "vue-i18n": "^8.11.2",
-    "vue-json-viewer": "^2.1.4",
+    "vue-i18n": "^8.16.0",
+    "vue-json-viewer": "^2.2.11",
     "vue-router": "^3.0.6",
-    "vuex": "^3.1.1",
-    "ali-oss": "^6.4.0",
-    "crypto-js": "^4.0.0"
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
