@@ -62,7 +62,7 @@ public class AliyunSmsService extends AbstractSmsService {
         request.putQueryParameter("TemplateParam", params);
 
         // 最后发送结果
-        int status = Const.FAIL;
+        Const.ResultEnum status = Const.ResultEnum.FAIL;
         String result = "";
         CommonResponse response;
         try {
@@ -70,7 +70,7 @@ public class AliyunSmsService extends AbstractSmsService {
             if (response.getHttpStatus() == 200) {
                 result = response.getData();
                 Map<String, Object> json = JacksonUtils.jsonToMap(result);
-                status = "OK".equalsIgnoreCase(json.get("Code").toString()) ? Const.SUCCESS : Const.FAIL;
+                status = "OK".equalsIgnoreCase(json.get("Code").toString()) ? Const.ResultEnum.SUCCESS : Const.ResultEnum.FAIL;
             }
         } catch (ClientException ce) {
             ce.printStackTrace();
@@ -85,7 +85,7 @@ public class AliyunSmsService extends AbstractSmsService {
         SmsLogService smsLogService = SpringContextUtils.getBean(SmsLogService.class);
         SmsLogEntity smsLog = new SmsLogEntity();
         smsLog.setMobile(mobile);
-        smsLog.setStatus(status);
+        smsLog.setStatus(status.value());
         smsLog.setResult(result);
         smsLog.setContent(content);
         smsLog.setTplId(smsTpl.getId());
@@ -93,7 +93,7 @@ public class AliyunSmsService extends AbstractSmsService {
         smsLog.setParams(params);
         smsLog.setConsumed(0);
         smsLogService.save(smsLog);
-        if (status == Const.FAIL) {
+        if (status == Const.ResultEnum.FAIL) {
             throw new XquickException(ErrorCode.SEND_SMS_ERROR);
         }
     }

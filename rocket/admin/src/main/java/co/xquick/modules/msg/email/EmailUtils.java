@@ -99,12 +99,12 @@ public class EmailUtils {
             throw new XquickException("构建邮件发送器失败");
         }
 
-        int status = Const.SUCCESS;
+        Const.ResultEnum status = Const.ResultEnum.SUCCESS;
         //发送邮件
         try {
             mailSender.send(mimeMessage);
         } catch (Exception e) {
-            status = Const.FAIL;
+            status = Const.ResultEnum.FAIL;
             logger.error("send error", e);
         }
 
@@ -116,10 +116,10 @@ public class EmailUtils {
         log.setMailCc(mailSendRequest.getMailCc());
         log.setSubject(title);
         log.setContent(content);
-        log.setStatus(status);
+        log.setStatus(status.value());
         mailLogService.save(log);
 
-        return status == Const.SUCCESS;
+        return status == Const.ResultEnum.SUCCESS;
     }
 
 }

@@ -53,11 +53,11 @@ public class JPushService extends AbstractPushService {
         PushLogService logService = SpringContextUtils.getBean(PushLogService.class);
         PushLogEntity log = new PushLogEntity();
         // 最后发送结果
-        int status = Const.FAIL;
+        Const.ResultEnum status = Const.ResultEnum.FAIL;
         try {
             PushResult result = jpushClient.sendPush(payload);
             log.setResult(result.toString());
-            status = result.statusCode == 0 ? Const.SUCCESS : Const.FAIL;
+            status = result.statusCode == 0 ? Const.ResultEnum.SUCCESS : Const.ResultEnum.FAIL;
         } catch (APIConnectionException e) {
             logger.error(e.getMessage());
             log.setResult(e.toString());
@@ -74,11 +74,11 @@ public class JPushService extends AbstractPushService {
         log.setAlias(alias);
         log.setTags(tags);
         log.setParams(extras);
-        log.setStatus(status);
+        log.setStatus(status.value());
         log.setTitle(title);
         log.setContent(content);
         logService.save(log);
-        if (status == Const.FAIL) {
+        if (status == Const.ResultEnum.FAIL) {
             throw new XquickException(ErrorCode.SEND_PUSH_ERROR);
         }
     }

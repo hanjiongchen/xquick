@@ -2,6 +2,7 @@ package co.xquick.modules.log.entity;
 
 import co.xquick.booster.pojo.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +16,6 @@ import lombok.EqualsAndHashCode;
 @TableName("log_login")
 public class LoginEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
-
     /**
      * 登录类型
      */
@@ -24,6 +24,10 @@ public class LoginEntity extends BaseEntity {
      * 登录结果
      */
     private Integer result;
+    /**
+     * 登录消息
+     */
+    private String msg;
     /**
      * 用户代理
      */

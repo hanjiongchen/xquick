@@ -16,8 +16,10 @@ public class LoginExcel {
             "后台帐号密码登录_10", "后台手机密码登录_20", "后台手机短信登录_30", "后台微信登录_40",
             "APP帐号密码登录_50", "APP手机密码登录_60", "APP手机短信登录_70", "APP微信登录_80"})
     private String type;
-    @Excel(name = "结果", replace = {"成功_0"})
+    @Excel(name = "结果", replace = {"失败_0","成功_1"})
     private Integer result;
+    @Excel(name = "消息")
+    private Integer msg;
     @Excel(name = "User-Agent")
     private String userAgent;
     @Excel(name = "操作IP")

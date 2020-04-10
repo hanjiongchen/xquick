@@ -7,7 +7,8 @@
                 </el-form-item>
                 <el-form-item class="small-item">
                     <el-select v-model="dataForm.result" placeholder="结果" clearable>
-                        <el-option label="成功" :value="0"/>
+                        <el-option label="成功" :value="1"/>
+                        <el-option label="失败" :value="0"/>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -48,16 +49,8 @@
                 </el-table-column>
                 <el-table-column prop="result" label="结果" sortable="custom" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.result === 0" size="small" type="success">成功</el-tag>
-                        <el-tag v-else-if="scope.row.result === 400" size="small" type="danger">请求无效</el-tag>
-                        <el-tag v-else-if="scope.row.result === 10032" size="small" type="danger">未知的登录类型</el-tag>
-                        <el-tag v-else-if="scope.row.result === 10007" size="small" type="danger">验证码不正确</el-tag>
-                        <el-tag v-else-if="scope.row.result === 10010" size="small" type="danger">账号不存在</el-tag>
-                        <el-tag v-else-if="scope.row.result === 10005" size="small" type="danger">账号已被停用</el-tag>
-                        <el-tag v-else-if="scope.row.result === 10004" size="small" type="danger">账号或密码错误</el-tag>
-                        <el-tag v-else-if="scope.row.result === 10042" size="small" type="danger">验证码错误</el-tag>
-                        <el-tag v-else-if="scope.row.result === 100432" size="small" type="danger">验证码已过期</el-tag>
-                        <el-tag v-else size="small" type="danger">失败{{scope.row.result}}</el-tag>
+                        <el-tag v-if="scope.row.result === 1" size="small" type="success">成功</el-tag>
+                        <el-tag v-else-if="scope.row.result === 0" size="small" type="danger">失败</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column prop="ip" label="IP" header-align="center" align="center" width="200"/>

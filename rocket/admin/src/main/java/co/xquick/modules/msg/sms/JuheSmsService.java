@@ -62,9 +62,9 @@ public class JuheSmsService extends AbstractSmsService {
             throw new XquickException(ErrorCode.SEND_SMS_ERROR, ioe, "调用接口失败");
         }
         // 接口结果
-        int status = response.isSuccessful() ? Const.SUCCESS : Const.FAIL;
+        Const.ResultEnum status = response.isSuccessful() ? Const.ResultEnum.SUCCESS : Const.ResultEnum.FAIL;
         String result = "";
-        if (Const.SUCCESS == status) {
+        if (Const.ResultEnum.SUCCESS == status) {
             try {
                 assert response.body() != null;
                 result = response.body().string();
@@ -72,8 +72,8 @@ public class JuheSmsService extends AbstractSmsService {
                 throw new XquickException(ErrorCode.SEND_SMS_ERROR, "接口返回数据异常");
             }
             Map<String, Object> json = JacksonUtils.jsonToMap(result);
-            status = (int) json.get("error_code") == 0 ? Const.SUCCESS : Const.FAIL;
-            if (status == Const.FAIL) {
+            status = (int) json.get("error_code") == 0 ? Const.ResultEnum.SUCCESS : Const.ResultEnum.FAIL;
+            if (status == Const.ResultEnum.FAIL) {
                 throw new XquickException(ErrorCode.SEND_SMS_ERROR, json.get("reason").toString());
             }
         }
@@ -82,7 +82,7 @@ public class JuheSmsService extends AbstractSmsService {
         SmsLogService smsLogService = SpringContextUtils.getBean(SmsLogService.class);
         SmsLogEntity smsLog = new SmsLogEntity();
         smsLog.setMobile(mobile);
-        smsLog.setStatus(status);
+        smsLog.setStatus(status.value());
         smsLog.setResult(result);
         smsLog.setContent(content);
         smsLog.setTplId(smsTpl.getId());
@@ -90,7 +90,7 @@ public class JuheSmsService extends AbstractSmsService {
         smsLog.setParams(params);
         smsLog.setConsumed(0);
         smsLogService.save(smsLog);
-        if (status == Const.FAIL) {
+        if (status == Const.ResultEnum.FAIL) {
             throw new XquickException(ErrorCode.SEND_SMS_ERROR);
         }
     }

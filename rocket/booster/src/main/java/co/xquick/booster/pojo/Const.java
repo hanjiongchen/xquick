@@ -6,15 +6,6 @@ package co.xquick.booster.pojo;
  * @author Charles zhangchaoxu@gmail.com
  */
 public interface Const {
-
-    /**
-     * 成功
-     */
-    int SUCCESS = 1;
-    /**
-     * 失败
-     */
-    int FAIL = 0;
     /**
      * OK
      */
@@ -92,6 +83,39 @@ public interface Const {
      * 消息推送配置KEY
      */
     String PUSH_CONFIG_KEY = "PUSH_CONFIG_KEY";
+
+    /**
+     * 结果枚举
+     */
+    enum ResultEnum {
+
+        /**
+         * 详见name
+         */
+        SUCCESS(1, "成功"),
+        FAIL(0, "失败");
+
+        private int value;
+        private String name;
+
+        ResultEnum(int value) {
+            this.value = value;
+        }
+
+        ResultEnum(int value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public int value() {
+            return this.value;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+    }
 
     /**
      * 二元布尔枚举

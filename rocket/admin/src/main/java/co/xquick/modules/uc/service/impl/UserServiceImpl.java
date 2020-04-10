@@ -321,10 +321,10 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             loginLog.setCreateName(user.getUsername());
             loginLog.setCreateId(user.getId());
         }
-        loginLog.setResult(loginResult);
-        logLoginService.save(loginLog);
-
         if (loginResult == 0) {
+            loginLog.setResult(Const.ResultEnum.SUCCESS.value());
+            loginLog.setMsg("ok");
+            logLoginService.save(loginLog);
             // 登录成功
             Map<String, Object> map = new HashMap<>(3);
             map.put(UcConst.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
@@ -332,6 +332,9 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             map.put("user", user);
             return new Result<>().ok(map);
         } else {
+            loginLog.setResult(Const.ResultEnum.FAIL.value());
+            loginLog.setMsg(MessageUtils.getMessage(loginResult));
+            logLoginService.save(loginLog);
             // 登录失败
             return new Result<>().error(loginResult);
         }
