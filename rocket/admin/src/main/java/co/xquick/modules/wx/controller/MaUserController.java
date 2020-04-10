@@ -9,6 +9,8 @@ import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.pojo.Const;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.HttpContextUtils;
+import co.xquick.booster.util.MessageUtils;
+import co.xquick.booster.util.PasswordUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.DefaultGroup;
@@ -17,8 +19,14 @@ import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.sys.service.ParamService;
 import co.xquick.modules.uc.UcConst;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
+import co.xquick.modules.uc.dto.UserDTO;
+import co.xquick.modules.uc.service.TokenService;
+import co.xquick.modules.uc.service.UserService;
+import co.xquick.modules.wx.WxConst;
 import co.xquick.modules.wx.config.WxProp;
 import co.xquick.modules.wx.dto.WxLoginRequest;
+import co.xquick.modules.wx.entity.UserWxEntity;
 import co.xquick.modules.wx.service.UserWxService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -31,6 +39,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 微信小程序用户接口
@@ -49,6 +59,10 @@ public class MaUserController {
     UserWxService userWxService;
     @Autowired
     LoginService logLoginService;
+    @Autowired
+    TokenService tokenService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/login")
     @ApiOperation("登录")
@@ -63,31 +77,115 @@ public class MaUserController {
         loginLog.setIp(HttpContextUtils.getIpAddr(httpServletRequest));
         loginLog.setUserAgent(httpServletRequest.getHeader(HttpHeaders.USER_AGENT));
 
-        // 初始化service
-        WxMaService wxService = getWxService(request.getParamCode());
-        String sessionKey;
-        try {
-            WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(request.getCode());
-            sessionKey = session.getSessionKey();
-        } catch (WxErrorException e) {
-            loginLog.setResult(Const.ResultEnum.FAIL.value());
-            loginLog.setMsg(e.getError().getErrorCode() + ":" + e.getError().getErrorMsg());
-            logLoginService.save(loginLog);
-            return new Result<>().error(ErrorCode.WX_API_ERROR);
+        // 登录用户
+        UserDTO user = null;
+        // 登录结果
+        int loginResult = 0;
+        // 获得登录配置
+        LoginChannelCfg loginConfig = paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX + UcConst.LoginTypeEnum.APP_WECHAT.value(), LoginChannelCfg.class, null);
+        if (null == loginConfig) {
+            // 未找到登录配置
+            loginResult = ErrorCode.UNKNOWN_LOGIN_TYPE;
+        } else {
+            // 初始化service
+            WxMaService wxService = getWxService(request.getParamCode());
+            String sessionKey;
+            try {
+                WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(request.getCode());
+                sessionKey = session.getSessionKey();
+            } catch (WxErrorException e) {
+                loginResult = ErrorCode.WX_API_ERROR;
+                loginLog.setMsg(e.getError().getErrorCode() + ":" + e.getError().getErrorMsg());
+                return new Result<>().error(ErrorCode.WX_API_ERROR);
+            }
+
+            // 用户信息校验
+            if (!wxService.getUserService().checkUserInfo(sessionKey, request.getRawData(), request.getSignature())) {
+                // tofix 有时候会失败
+                loginLog.setResult(Const.ResultEnum.FAIL.value());
+                loginLog.setMsg("校验微信用户信息失败");
+                logLoginService.save(loginLog);
+                return new Result<>().error(ErrorCode.WX_API_ERROR, "校验微信用户信息失败");
+            }
+            // 解密获得用户信息
+            WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, request.getEncryptedData(), request.getIv());
+            // 找到数据库中对应记录
+            UserWxEntity userWx = userWxService.getByAppIdAndOpenId(userInfo.getWatermark().getAppid(), userInfo.getOpenId());
+            if (userWx == null) {
+                // 不存在,则新增数据
+                userWx = new UserWxEntity();
+                userWx.setAppId(userInfo.getWatermark().getAppid());
+                userWx.setAppType(WxConst.AppTypeEnum.MA.value());
+                userWx.setOpenId(userInfo.getOpenId());
+
+                userWx.setUnionId(userInfo.getUnionId());
+                userWx.setAvatarUrl(userInfo.getAvatarUrl());
+                userWx.setCity(userInfo.getCity());
+                userWx.setCountry(userInfo.getCountry());
+                userWx.setProvince(userInfo.getProvince());
+                userWx.setGender(Integer.valueOf(userInfo.getGender()));
+                userWx.setNickName(userInfo.getNickName());
+                userWxService.save(userWx);
+            } else {
+                // 已存在,则更新数据
+                userWx.setUnionId(userInfo.getUnionId());
+                userWx.setAvatarUrl(userInfo.getAvatarUrl());
+                userWx.setCity(userInfo.getCity());
+                userWx.setCountry(userInfo.getCountry());
+                userWx.setProvince(userInfo.getProvince());
+                userWx.setGender(Integer.valueOf(userInfo.getGender()));
+                userWx.setNickName(userInfo.getNickName());
+                userWxService.updateById(userWx);
+            }
+            // 判断是否有绑定user_id
+            if (null != userWx.getUserId()) {
+                // 关联用户id
+                user = userService.getDtoById(userWx.getUserId());
+            } else {
+                // 未关联用户id
+                // 没有该用户，并且需要自动创建用户
+                user = new UserDTO();
+                user.setStatus(UcConst.UserStatusEnum.ENABLED.value());
+                user.setMobile("");
+                user.setUsername(userInfo.getNickName());
+                user.setNickname(userInfo.getNickName());
+                user.setType(UcConst.UserTypeEnum.USER.value());
+                user.setGender(3);
+                // 密码加密
+                user.setPassword(PasswordUtils.encode(userInfo.getOpenId()));
+                userService.saveDto(user);
+                //保存角色用户关系
+                userWx.setUserId(user.getId());
+                userWxService.updateById(userWx);
+                // 保存成功
+                loginResult = 0;
+            }
+            if (user == null) {
+                // 帐号不存在
+                loginResult = ErrorCode.ACCOUNT_NOT_EXIST;
+            } else if (user.getStatus() != UcConst.UserStatusEnum.ENABLED.value()) {
+                // 帐号锁定
+                loginResult = ErrorCode.ACCOUNT_DISABLE;
+            }
         }
 
-        // 用户信息校验
-        if (!wxService.getUserService().checkUserInfo(sessionKey, request.getRawData(), request.getSignature())) {
-            loginLog.setResult(Const.ResultEnum.FAIL.value());
-            loginLog.setMsg("校验微信用户信息失败");
+        if (loginResult == 0) {
+            loginLog.setResult(Const.ResultEnum.SUCCESS.value());
+            loginLog.setMsg("ok");
             logLoginService.save(loginLog);
-            return new Result<>().error(ErrorCode.WX_API_ERROR, "校验微信用户信息失败");
+            // 登录成功
+            Map<String, Object> map = new HashMap<>(3);
+            map.put(UcConst.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
+            map.put("expire", loginConfig.getExpire());
+            map.put("user", user);
+            return new Result<>().ok(map);
+        } else {
+            loginLog.setResult(Const.ResultEnum.FAIL.value());
+            loginLog.setMsg(MessageUtils.getMessage(loginResult));
+            logLoginService.save(loginLog);
+            // 登录失败
+            return new Result<>().error(loginResult);
         }
-        // 解密获得用户信息
-        WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, request.getEncryptedData(), request.getIv());
-        // UserWxEntity userWx = userWxService.getByAppIdAndOpenId(wxService.get);
-        //TODO 增加自己的逻辑，关联业务相关数据
-        return new Result<>().ok(userInfo);
     }
 
     @ApiOperation("获取用户信息")

@@ -171,11 +171,11 @@ public interface UcConst {
         ADMIN_MOBILE_SMS(30, "后台手机短信登录"),
         ADMIN_WECHAT(40, "后台微信登录"),
         APP_USER_PWD(100, "APP帐号密码登录"),
-        APP_MOBILE_PWD(110, "APP手机密码登录"),
-        APP_MOBILE_SMS(120, "APP手机短信登录"),
-        APP_WECHAT(130, "APP微信登录"),
-        APP_APPLE(140, "APP苹果登录"),
-        APP_APPLE_MOBILE_SMS(150, "APP苹果登录验证手机号");
+        APP_MOBILE_PWD(101, "APP手机密码登录"),
+        APP_MOBILE_SMS(102, "APP手机短信登录"),
+        APP_WECHAT(103, "APP微信登录"),
+        APP_APPLE(104, "APP苹果登录"),
+        APP_APPLE_MOBILE_SMS(105, "APP苹果登录验证手机号");
 
         private int value;
         private String name;

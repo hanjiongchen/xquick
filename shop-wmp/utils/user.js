@@ -57,9 +57,9 @@ function loginByWx(userInfoDetail) {
         encryptedData: userInfoDetail.encryptedData,
         iv: userInfoDetail.iv
       }, 'POST').then(res => {
-        if (res.errno === 0) {
+        if (res.code === 0) {
           //存储用户信息
-          wx.setStorageSync('userInfo', res.data.userInfo);
+          wx.setStorageSync('userInfo', res.data.user);
           wx.setStorageSync('token', res.data.token);
 
           resolve(res);
