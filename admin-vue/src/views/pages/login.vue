@@ -22,15 +22,13 @@
                 <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')" show-password/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
-                <el-row>
-                  <el-col :span="14">
-                    <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
-                    </el-input>
-                  </el-col>
-                  <el-col :span="10" class="login-captcha">
-                    <el-image :src="captcha.image" @click="getCaptcha()" ><div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div></el-image>
-                  </el-col>
-                </el-row>
+                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
+                  <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
+                    <el-image :src="captcha.image" @click="getCaptcha()" style="width: 90px;">
+                      <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
+                    </el-image>
+                  </el-tooltip>
+                </el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
@@ -45,30 +43,19 @@
                   </el-select>
                 </el-input>
               </el-form-item>
-              <el-form-item prop="sms">
-                <el-row :gutter="20">
-                  <el-col :span="14">
-                    <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
-                  </el-col>
-                  <el-col :span="10" class="login-captcha">
-                    <el-button type="primary" @click="smsCodeSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
-                  </el-col>
-                </el-row>
+              <el-form-item prop="smsCode">
+                <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4">
+                  <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
+                </el-input>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
-                <el-row>
-                  <el-col :span="14">
-                    <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
-                    </el-input>
-                  </el-col>
-                  <el-col :span="10" class="login-captcha">
-                    <el-image :src="captcha.image" @click="getCaptcha()">
-                      <div slot="placeholder" class="image-slot">
-                        <i class="el-icon-loading"/>
-                      </div>
+                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
+                  <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
+                    <el-image :src="captcha.image" @click="getCaptcha()" style="width: 90px;">
+                      <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
                     </el-image>
-                  </el-col>
-                </el-row>
+                  </el-tooltip>
+                </el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
@@ -169,7 +156,7 @@ export default {
     // 切换登录类型
     typeChangeHandle () {
       // 赋值当前渠道配置
-      this.loginChannelCfg = this.loginCfg.channels.filter(item => item.type === this.dataForm.type)[0]
+      this.loginChannelCfg = this.loginCfg.channels.filter(item => item.type === this.dataForm.type)[0].cfg
       // 清空校验
       this.$refs['dataForm'].clearValidate()
     },
@@ -183,7 +170,7 @@ export default {
           // 赋值全局登录配置
           this.loginCfg = res.data
           // 找到第一个enable的登录渠道
-          this.loginChannelCfg = res.data.channels.filter(item => item.enable)[0]
+          this.loginChannelCfg = res.data.channels.filter(item => item.enable)[0].cfg
           // 赋值类型
           this.dataForm.type = this.loginChannelCfg.type
           // 获取验证码
