@@ -1,9 +1,13 @@
 <template>
     <el-button icon="el-icon-map-location vue-map" @click="visible = true">
-        <el-dialog title="位置选择" :visible.sync="visible" append-to-body modal-append-to-body
+        <el-dialog :title="title" :visible.sync="visible" append-to-body modal-append-to-body
                    :close-on-click-modal="false" :close-on-press-escape="false"
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
+            <div slot="title">
+                <span class="el-dialog__title">{{ title }}</span>
+                <button type="button" class="el-dialog__headerbtn" style="right: 50px;" @click="fullscreen = !fullscreen"><i class="el-dialog__close el-icon el-icon-full-screen"/></button>
+            </div>
             <div class="vue-map__content" v-if="visible">
                 <!-- 搜索框 -->
                 <el-input id="map__input" size="small" v-model="searchText" clearable placeholder="输入关键字选取地点"/>
@@ -15,7 +19,6 @@
                 </div>
             </div>
             <div slot="footer" class="dialog-footer">
-                <el-button type="info" icon="el-icon-full-screen" @click="fullscreen = !fullscreen">{{ fullscreen ? '缩小':'放大' }}</el-button>
                 <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
             </div>
         </el-dialog>
@@ -47,6 +50,7 @@ export default {
     return {
       // 是否可见
       visible: false,
+      title: '位置选择',
       // 全屏
       fullscreen: false,
       // 搜索关键词
