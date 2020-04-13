@@ -27,6 +27,21 @@ public class OssProp implements Serializable {
     @URL(message = "{aliyun.domain.url}")
     private String domain;
 
+    @ApiModelProperty("安全访问")
+    private Boolean secure;
+
+    @ApiModelProperty(value = "角色ARN")
+    private String roleArn;
+
+    @ApiModelProperty(value = "区域")
+    private String region;
+
+    @ApiModelProperty(value = "角色SessionName")
+    private String roleSessionName;
+
+    @ApiModelProperty(value = "STS有效秒数")
+    private Long stsDurationSeconds;
+
     @ApiModelProperty(value = "路径前缀")
     private String prefix;
 

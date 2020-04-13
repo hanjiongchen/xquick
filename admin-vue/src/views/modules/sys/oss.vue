@@ -53,7 +53,7 @@
 
 <script>
 import mixinListModule from '@/mixins/list-module'
-import Config from './param-oss-config'
+import Config from './param-oss-cfg'
 import Upload from './oss-upload'
 import UploadAliyun from './oss-aliyun-upload'
 export default {

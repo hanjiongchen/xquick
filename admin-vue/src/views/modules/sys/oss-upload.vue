@@ -5,7 +5,7 @@
       :file-list="fileList"
       drag
       multiple
-      :data="{paramCode : 'OSS_CFG_PRI'}"
+      :data="{paramCode : 'OSS_CFG_PUB'}"
       :headers="{token: token}"
       :before-upload="beforeUploadHandle"
       :on-success="successHandle"

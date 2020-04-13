@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 素材库
@@ -45,12 +47,17 @@ public class OssController {
 
     @GetMapping("presignedUrl")
     @ApiOperation(value = "获得授权访问地址")
-    public Result<?> presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CFG_PRI") String paramCode,
-                                  @RequestParam String objectName,
-                                  @RequestParam(required = false, defaultValue = "3600000")  long expiration) {
+    public Result<?> presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CFG_PRI") String paramCode, @RequestParam String objectName, @RequestParam(required = false, defaultValue = "3600000")  long expiration) {
         String url = OssFactory.build(paramCode).generatePresignedUrl(objectName, expiration);
 
         return new Result<>().ok(Kv.init().set("src",url));
+    }
+
+    @GetMapping("getSts")
+    @ApiOperation(value = "获得STS临时访问token")
+    public Result<?> getSts(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode) {
+        Kv kv = OssFactory.build(paramCode).getSts();
+        return new Result<>().ok(kv);
     }
 
     @PostMapping("upload")

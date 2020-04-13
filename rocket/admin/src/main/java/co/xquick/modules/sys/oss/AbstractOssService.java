@@ -1,5 +1,6 @@
 package co.xquick.modules.sys.oss;
 
+import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
  * @author Charles zhangchaoxu@gmail.com
  */
 public abstract class AbstractOssService {
+
     /**
      * 云存储配置信息
      */
@@ -74,7 +76,14 @@ public abstract class AbstractOssService {
      */
     public abstract String uploadSuffix(InputStream inputStream, String suffix);
 
-
+    /**
+     * 生成访问时间
+     */
     public abstract String generatePresignedUrl(String objectName, long expiration);
+
+    /**
+     * 获得sts
+     */
+    public abstract Kv getSts();
 
 }

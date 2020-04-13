@@ -43,7 +43,7 @@
             <!-- 弹窗, 新增 / 修改 -->
             <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
             <!-- 弹窗, oss配置 -->
-            <oss-config v-if="ossConfigVisible" ref="ossConfig" @refreshDataList="getDataList"/>
+            <oss-config v-if="ossCfgVisible" ref="ossCfg" @refreshDataList="getDataList"/>
             <!-- 弹窗, 登录配置 -->
             <login-config v-if="loginConfigVisible" ref="loginConfig" @refreshDataList="getDataList"/>
             <!-- 弹窗, App关于我们配置 -->
@@ -65,8 +65,8 @@ import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 
 import AddOrUpdate from './param-add-or-update'
-import OssConfig from './param-oss-config'
-import LoginConfig from './param-login-cfg'
+import OssConfig from './param-oss-cfg'
+import LoginCfg from './param-login-cfg'
 import AppAboutConfig from './params-app-about-config'
 import AppBannerConfig from './params-app-banner-config'
 import AppLoadingConfig from './params-app-loading-config'
@@ -75,7 +75,7 @@ import AppVersionConfig from './params-app-version-config'
 
 export default {
   mixins: [mixinBaseModule, mixinListModule],
-  components: { LoginConfig, OssConfig, AddOrUpdate, AppAboutConfig, AppBannerConfig, AppLoadingConfig, AppServiceConfig, AppVersionConfig },
+  components: { LoginCfg, OssConfig, AddOrUpdate, AppAboutConfig, AppBannerConfig, AppLoadingConfig, AppServiceConfig, AppVersionConfig },
   data () {
     return {
       mixinListModuleOptions: {
@@ -89,7 +89,7 @@ export default {
       // 登录配置
       loginConfigVisible: false,
       // 云存储配置
-      ossConfigVisible: false,
+      ossCfgVisible: false,
       // App关于我们配置
       appAboutConfigVisible: false,
       // App跑马灯配置
@@ -130,10 +130,10 @@ export default {
           this.$refs.smsConfig.init()
         })
       } else if (code.startsWith('OSS_CFG')) {
-        this.ossConfigVisible = true
+        this.ossCfgVisible = true
         this.$nextTick(() => {
-          this.$refs.ossConfig.dataForm.id = id
-          this.$refs.ossConfig.init()
+          this.$refs.ossCfg.dataForm.id = id
+          this.$refs.ossCfg.init()
         })
       } else if (code === 'APP_ABOUT_CONFIG_KEY') {
         this.appAboutConfigVisible = true

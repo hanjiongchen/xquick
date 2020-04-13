@@ -2,6 +2,7 @@ package co.xquick.modules.sys.oss;
 
 import co.xquick.booster.exception.ErrorCode;
 import co.xquick.booster.exception.XquickException;
+import co.xquick.booster.pojo.Kv;
 import org.apache.commons.io.FileUtils;
 
 import java.io.ByteArrayInputStream;
@@ -48,6 +49,11 @@ public class LocalOssService extends AbstractOssService {
 
     @Override
     public String generatePresignedUrl(String objectName, long expiration) {
+        return null;
+    }
+
+    @Override
+    public Kv getSts() {
         return null;
     }
 }

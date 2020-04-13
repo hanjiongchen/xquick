@@ -32,6 +32,21 @@
         <el-form-item prop="bucketName" label="BucketName">
           <el-input v-model="paramDataForm.bucketName" placeholder="BucketName"/>
         </el-form-item>
+        <el-form-item prop="region" label="区域">
+          <el-input v-model="paramDataForm.region" placeholder="区域 如cn-hangzhou"/>
+        </el-form-item>
+        <el-form-item prop="roleArn" label="角色ARN">
+          <el-input v-model="paramDataForm.roleArn" placeholder="角色ARN"/>
+        </el-form-item>
+        <el-form-item prop="roleSessionName" label="角色SessionName">
+          <el-input v-model="paramDataForm.roleSessionName" placeholder="角色SessionName"/>
+        </el-form-item>
+        <el-form-item prop="stsDurationSeconds" label="STS有效秒数">
+          <el-input-number v-model="paramDataForm.stsDurationSeconds" placeholder="STS有效秒数" controls-position="right" :min="900" :max="3600" class="w-percent-100"/>
+        </el-form-item>
+        <el-form-item prop="secure" label="STS安全访问">
+          <el-switch v-model="paramDataForm.secure"/>
+        </el-form-item>
       </template>
       <template v-else-if="paramDataForm.type === 'local'">
         <el-form-item prop="localPath" label="存储目录">
@@ -71,7 +86,12 @@ export default {
         accessKeyId: '',
         accessKeySecret: '',
         bucketName: '',
-        localPath: ''
+        localPath: '',
+        secure: false,
+        stsDurationSeconds: 3600,
+        roleSessionName: '',
+        roleArn: '',
+        region: ''
       }
     }
   },
