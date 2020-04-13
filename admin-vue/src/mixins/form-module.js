@@ -9,23 +9,24 @@ import { beforeImageUpload } from '@/utils/upload'
 
 export default {
   data () {
-    /* eslint-disable */
     return {
       // 属性
       mixinFormModuleOptions: {
-        dataFormInfoURL: '',         // 数据信息接口，API地址
-        dataFormSaveURL: '',         // 表单保存接口，API地址
-        dataFormUpdateURL: '',       // 表单修改接口，API地址
-        dataFormSubmitConfig: null,  // 表单提交配置
+        dataFormInfoURL: '', // 数据信息接口，API地址
+        dataFormSaveURL: '', // 表单保存接口，API地址
+        dataFormUpdateURL: '', // 表单修改接口，API地址
+        dataFormSubmitConfig: null, // 表单提交配置
         dataFormParamEncrypt: false, // 是否加密参数
-        idKey: 'id'                  // 默认表主键
+        idKey: 'id' // 默认表主键
       },
       // 接口提交参数
-      dataFormSubmitParam: { },
+      dataFormSubmitParam: {},
       // 默认属性
       dataFormMode: '', // 表单模式,save/update
       dataForm: {}, // 表单
       visible: false, // 表单visible状态
+      title: '', // 表单标题
+      fullscreen: false, // 对话框是否全屏
       formLoading: true, // 表单是否加载中
       // 文件上传
       uploadUrl: '', // 文件上传地址
@@ -33,27 +34,23 @@ export default {
       acceptExcelFormat: '.xls,.xlsx', // 支持的Excel文件类型
       uploadFileList: [], // 已上传的文件
       // 隐藏upload最后的按钮
-      hideUpload: false,
-      // 图片查看器
-      imageSwiperVisible: false,
-      // 地图选择器
-      mapLocationPickVisible: false,
-      // 对话框是否全屏
-      fullscreen: false,
+      hideUpload: false
     }
-    /* eslint-enable */
   },
-  activated () {},
+  activated () {
+  },
   methods: {
     // 初始化表单
     initFormData () {
-      if (this.dataForm.id) {
+      if (this.dataForm[this.mixinFormModuleOptions.idKey]) {
         // 修改
         this.dataFormMode = 'update'
+        this.title = this.$t('update')
         this.getInfo()
       } else {
         // 新增
         this.dataFormMode = 'save'
+        this.title = this.$t('add')
         this.formLoading = false
       }
     },
@@ -144,7 +141,9 @@ export default {
     },
     // 重置表单
     resetForm (formName) {
-      if (undefined === formName) { formName = 'dataForm' }
+      if (undefined === formName) {
+        formName = 'dataForm'
+      }
       this.$refs[formName].resetFields()
     },
     // [+] 图片相关
@@ -235,7 +234,7 @@ export default {
       window.open(file.url)
     },
     // 改变全屏
-    setFullScreen () {
+    fullscreenHandle () {
       this.fullscreen = !this.fullscreen
     }
   }

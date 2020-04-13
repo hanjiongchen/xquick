@@ -1,6 +1,10 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+  <el-dialog ref="dialog" :visible.sync="visible" :title="title" :fullscreen="fullscreen" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div slot="title">
+          <span class="el-dialog__title">{{ title }}</span>
+          <button type="button" class="el-dialog__headerbtn" style="right: 50px;" @click="fullscreenHandle"><i class="el-dialog__close el-icon el-icon-full-screen"/></button>
+      </div>
+      <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
         <el-row>
             <el-col :span="12">
                 <el-form-item label="名称" prop="name">
