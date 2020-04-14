@@ -31,6 +31,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         if ("spec".equalsIgnoreCase(type)) {
             // png
             captcha = new SpecCaptcha(width, height);
+            captcha.setLen(4);
         } else if ("gif".equalsIgnoreCase(type)) {
             // gif
             captcha = new GifCaptcha(width, height);

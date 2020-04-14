@@ -6,7 +6,6 @@
           <h2 class="login-brand">{{ sysTitleCfg.loginTitle }}</h2>
         </div>
         <div class="login-body">
-          <!--<h3 class="login-title">{{ $t('login.title') }}</h3>-->
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">

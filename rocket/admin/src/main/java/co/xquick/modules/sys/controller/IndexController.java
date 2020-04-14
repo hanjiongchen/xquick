@@ -75,7 +75,9 @@ public class IndexController {
     @AnonAccess
     public Result<?> captcha(@RequestParam(required = false, defaultValue = "150") int width, @RequestParam(required = false, defaultValue = "50") int height) {
         String uuid = UUID.randomUUID().toString();
-        String image = captchaService.createBase64(uuid, width, height, "arithmetic");
+        // 随机取出一种
+        String[] captchaTypes = {"arithmetic", "spec", "chinese"};
+        String image = captchaService.createBase64(uuid, width, height, captchaTypes[(int) (Math.random() * captchaTypes.length)]);
         // 将uuid和图片的base64返回给前端
         return new Result<>().ok(Kv.init().set("uuid", uuid).set("image", image));
     }
