@@ -66,10 +66,7 @@ public class ShiroConfig {
         filterMap.put("/modeler.html", "anon");
         filterMap.put("/captcha", "anon");
         filterMap.put("/favicon.ico", "anon");
-
-        // 注意,无法区分接口method
-        // 登录相关接口
-        filterMap.put("/auth/**", "anon");
+        // *注意* 无法区分接口请求方法是post/get/put
 
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

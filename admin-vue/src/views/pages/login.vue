@@ -22,7 +22,7 @@
                 <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')" show-password/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
-                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
+                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <el-image :src="captcha.image" @click="getCaptcha()" style="width: 90px;">
                       <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
@@ -38,9 +38,7 @@
             <template v-else-if="dataForm.type === 30">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
-                  <el-select v-model="dataForm.mobileArea" slot="prepend">
-                    <el-option value="86" label="86"/>
-                  </el-select>
+                  <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="smsCode">
@@ -242,12 +240,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .el-select .el-input {
-    width: 100px;
-  }
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-</style>

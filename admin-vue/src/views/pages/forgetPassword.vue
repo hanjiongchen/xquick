@@ -7,9 +7,7 @@
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon @keyup.enter.native="dataFormSubmitHandle()">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
-                  <el-select v-model="dataForm.mobileArea" slot="prepend">
-                    <el-option value="86" label="86"/>
-                  </el-select>
+                    <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="sms">
@@ -130,7 +128,7 @@ export default {
       })
     },
     // 表单提交成功
-    onFormSubmitSuccess (res) {
+    onFormSubmitSuccess () {
       this.$confirm('密码重置成功, 是否前往登录?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -146,12 +144,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .el-select .el-input {
-    width: 100px;
-  }
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-</style>

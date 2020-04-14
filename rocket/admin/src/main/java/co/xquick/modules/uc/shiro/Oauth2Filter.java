@@ -6,10 +6,10 @@ import co.xquick.booster.util.HttpContextUtils;
 import co.xquick.booster.util.JacksonUtils;
 import co.xquick.modules.uc.UcConst;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -27,16 +27,16 @@ public class Oauth2Filter extends AuthenticatingFilter {
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
         // 获取请求token
-        String token = HttpContextUtils.getRequestParameter((HttpServletRequest) request, UcConst.TOKEN_HEADER);
+        final String token = HttpContextUtils.getRequestParameter((HttpServletRequest) request, UcConst.TOKEN_HEADER);
         return new AuthenticationToken() {
             @Override
             public String getPrincipal() {
-                return StringUtils.isEmpty(token) ? UcConst.GUEST_TOKEN : token;
+                return StringUtils.isEmpty(token) ? UcConst.TOKEN_ANON : token;
             }
 
             @Override
             public String getCredentials() {
-                return StringUtils.isEmpty(token) ? UcConst.GUEST_TOKEN : token;
+                return StringUtils.isEmpty(token) ? UcConst.TOKEN_ANON : token;
             }
         };
     }

@@ -10,6 +10,7 @@ import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
+import co.xquick.common.annotation.AnonAccess;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.AESUtils;
 import co.xquick.modules.msg.MsgConst;
@@ -35,7 +36,6 @@ import java.util.UUID;
 
 /**
  * 授权接口
- * 注意: 本controller所有接口无需授权可直接访问
  *
  * @author Charles (zhanngchaoxu@gmail.com)
  */
@@ -55,6 +55,7 @@ public class AuthController {
 
     @GetMapping("captcha")
     @ApiOperation(value = "生成验证码图片")
+    @AnonAccess
     public Result<?> captcha() {
         String uuid = UUID.randomUUID().toString();
         String image = captchaService.createBase64(uuid);
@@ -65,6 +66,7 @@ public class AuthController {
     @GetMapping("loginChannel")
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)
+    @AnonAccess
     public Result<?> loginChannel(@RequestParam String type) {
         LoginChannelCfg content = paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX + type.toUpperCase(), LoginChannelCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
@@ -74,6 +76,8 @@ public class AuthController {
 
     @GetMapping("loginCfgAdmin")
     @ApiOperation(value = "获取管理平台登录配置")
+    @LogOperation("获取管理平台登录配置")
+    @AnonAccess
     public Result<?> loginCfgAdmin() {
         LoginCfg content = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
         AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
@@ -88,6 +92,7 @@ public class AuthController {
     @PostMapping("sendSmsCode")
     @ApiOperation("发送验证码短信")
     @LogOperation("发送验证码短信")
+    @AnonAccess
     public Result<?> sendSmsCode(@RequestBody SmsSendRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class);
@@ -114,6 +119,7 @@ public class AuthController {
      */
     @PostMapping("loginEncrypt")
     @ApiOperation(value = "加密登录")
+    @AnonAccess
     public Result<?> loginEncrypt(HttpServletRequest request, @RequestBody String loginEncrypted) throws UnsupportedEncodingException {
         // 密文转json明文
         String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
@@ -132,6 +138,7 @@ public class AuthController {
      */
     @PostMapping("login")
     @ApiOperation(value = "登录")
+    @AnonAccess
     public Result<?> login(HttpServletRequest httpServletRequest, @RequestBody LoginRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
@@ -145,6 +152,7 @@ public class AuthController {
      */
     @PostMapping("changePasswordBySmsCode")
     @ApiOperation(value = "通过短信验证码修改密码")
+    @AnonAccess
     public Result<?> changePasswordBySmsCode(@RequestBody ChangePasswordBySmsCodeRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
@@ -162,6 +170,7 @@ public class AuthController {
      */
     @PostMapping("register")
     @ApiOperation(value = "注册")
+    @AnonAccess
     public Result<?> register(@RequestBody RegisterRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);
