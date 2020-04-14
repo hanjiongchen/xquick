@@ -24,7 +24,7 @@
 <script>
 export default {
   // 参考https://gitee.com/smallweigit/avue-plugin-map
-  name: 'AmapLocView',
+  name: 'amap-loc-view',
   // 参数
   props: {
     poi: {

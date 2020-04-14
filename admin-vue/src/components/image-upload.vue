@@ -33,7 +33,7 @@ import ImageViewer from 'element-ui/packages/image/src/image-viewer'
 import { isURL } from '@/utils/validate'
 
 export default {
-  name: 'ImageUpload',
+  name: 'image-upload',
   components: { ImageViewer },
   props: {
     // 绑定的v-model,必须用value

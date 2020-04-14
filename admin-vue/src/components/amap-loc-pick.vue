@@ -28,7 +28,7 @@
 <script>
 export default {
   // 参考https://gitee.com/smallweigit/avue-plugin-map
-  name: 'AmapLocPick',
+  name: 'amap-loc-pick',
   // 参数
   props: {
     // 请求码

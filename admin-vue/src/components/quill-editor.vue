@@ -62,7 +62,7 @@ const defaultOptions = {
 }
 
 export default {
-  name: 'QuillEditor',
+  name: 'quill-editor',
   props: {
     // 绑定的v-model,必须用value
     value: String,
