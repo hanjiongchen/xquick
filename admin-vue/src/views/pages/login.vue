@@ -3,7 +3,7 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-header">
-          <h2 class="login-brand">{{ $t('brand.full') }}</h2>
+          <h2 class="login-brand">{{ sysTitleCfg.loginTitle }}</h2>
         </div>
         <div class="login-body">
           <!--<h3 class="login-title">{{ $t('login.title') }}</h3>-->
@@ -66,16 +66,14 @@
           </el-form>
           <div>
             <router-link :to="{ name: 'register' }" v-if="loginCfg.register">
-              <el-link :underline="false" type="info" style="float: left;">注册</el-link>
+              <el-link :underline="false" type="info" style="float: left;">{{ $t('register') }}</el-link>
             </router-link>
             <router-link :to="{ name: 'forgetPassword' }" v-if="loginCfg.forgetPassword">
-              <el-link :underline="false" type="info" style="float: right;">忘记密码</el-link>
+              <el-link :underline="false" type="info" style="float: right;">{{ $t('forgetPassword') }}</el-link>
             </router-link>
           </div>
         </div>
-        <div class="login-footer">
-          <p>{{ $t('login.copyright') }}<el-link href="#" :underline="false" target="_blank" type="info">{{ $t('brand.owner') }}</el-link></p>
-        </div>
+        <div class="login-footer" v-html="sysTitleCfg.copyright"/>
       </main>
     </div>
   </div>
@@ -96,6 +94,10 @@ export default {
         dataFormSaveURL: '/auth/login'
       },
       dataFormMode: 'save',
+      // 系统显示配置
+      sysTitleCfg: {
+        loginTitle: ''
+      },
       // 全局登录配置
       loginCfg: {
         forgetPassword: false,
@@ -147,8 +149,8 @@ export default {
     }
   },
   created () {
-    // 获取登录配置
-    this.getLoginConfig()
+    // 获取配置项
+    this.getParamCfg()
   },
   methods: {
     // 切换登录类型
@@ -158,17 +160,19 @@ export default {
       // 清空校验
       this.$refs['dataForm'].clearValidate()
     },
-    // 获取登录配置
-    getLoginConfig () {
-      this.$http.get(`/auth/loginCfgAdmin`).then(({ data: res }) => {
+    // 获取系统配置
+    getParamCfg () {
+      this.$http.get(`/sys/param/getContentByCodes?codes=SYS_TITLE_CFG,LOGIN_CFG_ADMIN`).then(({ data: res }) => {
         this.formLoading = false
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
+          // 复制显示配置
+          this.sysTitleCfg = res.data.SYS_TITLE_CFG
           // 赋值全局登录配置
-          this.loginCfg = res.data
+          this.loginCfg = res.data.LOGIN_CFG_ADMIN
           // 找到第一个enable的登录渠道
-          this.loginChannelCfg = res.data.channels.filter(item => item.enable)[0].cfg
+          this.loginChannelCfg = this.loginCfg.channels.filter(item => item.enable)[0].cfg
           // 赋值类型
           this.dataForm.type = this.loginChannelCfg.type
           // 获取验证码

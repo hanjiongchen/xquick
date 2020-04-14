@@ -3,22 +3,17 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-body">
-          <h3 class="login-title">忘记密码</h3>
+          <h3 class="login-title">{{ $t('forgetPassword') }}</h3>
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon @keyup.enter.native="dataFormSubmitHandle()">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                     <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
-              <el-form-item prop="sms">
-                <el-row :gutter="20">
-                  <el-col :span="14">
-                    <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
-                  </el-col>
-                  <el-col :span="10" class="login-captcha">
-                    <el-button type="primary" @click="smsCodeSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
-                  </el-col>
-                </el-row>
+              <el-form-item prop="smsCode">
+                  <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4">
+                      <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
+                  </el-input>
               </el-form-item>
               <el-form-item prop="newPassword">
                   <el-input v-model="dataForm.newPassword" show-password prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.newPassword')"/>
@@ -32,7 +27,7 @@
           </el-form>
           <div>
               <router-link :to="{ name: 'register' }">
-                  <el-link :underline="false" type="info" style="float: left;">注册</el-link>
+                  <el-link :underline="false" type="info" style="float: left;">{{ $t('register') }}</el-link>
               </router-link>
               <router-link :to="{ name: 'login' }">
                   <el-link :underline="false" type="info" style="float: right;">已有帐号登录</el-link>
