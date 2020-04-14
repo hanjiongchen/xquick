@@ -36,7 +36,7 @@
                 <el-input v-model="dataForm.forceUpdate" placeholder="强制更新"></el-input>
             </el-form-item>
             <el-form-item label="显示在下载页面" prop="show">
-                <el-input v-model="dataForm.show" placeholder="显示在下载页面"></el-input>
+                <el-input v-model="dataForm.showInPage" placeholder="显示在下载页面"></el-input>
             </el-form-item>
         </el-form>
         <template slot="footer">
@@ -69,7 +69,7 @@ export default {
         content: '',
         downloadLink: '',
         forceUpdate: '',
-        show: ''
+        showInPage: ''
       }
     }
   },

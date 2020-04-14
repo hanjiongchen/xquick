@@ -19,6 +19,7 @@ export default {
     i18nHandle (val, oldVal) {
       Cookies.set('language', val)
       document.querySelector('html').setAttribute('lang', val)
+      // 显示标题
       document.title = messages[val].brand.lg
       // 非登录页面，切换语言刷新页面
       if (this.$route.name !== 'login' && oldVal) {

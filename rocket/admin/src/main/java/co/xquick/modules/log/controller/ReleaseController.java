@@ -1,5 +1,6 @@
 package co.xquick.modules.log.controller;
 
+import co.xquick.common.annotation.AnonAccess;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("log/release")
-@Api(tags="更新日志")
+@Api(tags = "更新日志")
 public class ReleaseController {
     @Autowired
     private ReleaseService releaseService;
@@ -54,6 +55,18 @@ public class ReleaseController {
         PageData<ReleaseDTO> page = releaseService.pageDto(params);
 
         return new Result<>().ok(page);
+    }
+
+    @GetMapping("getLatestByCode")
+    @ApiOperation("通过code获取最新的release")
+    @AnonAccess
+    public Result<?> getLatestByCode(@RequestParam String code) {
+        // 效验参数
+        AssertUtils.isEmpty(code, "code");
+
+        ReleaseDTO data = releaseService.getLatestByCode(code);
+
+        return new Result<ReleaseDTO>().ok(data);
     }
 
     @GetMapping("info")
