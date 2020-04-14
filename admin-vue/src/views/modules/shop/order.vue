@@ -117,9 +117,9 @@ export default {
   },
   methods: {
     // 新增/修改
-    addOrUpdateHandle (id) {
+    /* addOrUpdateHandle (id) {
       this.$router.push({ name: 'shop-order-add-or-update', query: { id: id }, meta: { isTab: true, isDynamic: true } })
-    },
+    }, */
     // 选中用户
     onUserPicked (result) {
       if (result && result.length > 0) {
