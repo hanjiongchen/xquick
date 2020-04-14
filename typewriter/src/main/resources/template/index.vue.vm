@@ -2,8 +2,8 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-${moduleName}__${pathNameDash}}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-        <el-form-item>
-          <el-input v-model="dataForm.${pk.attrname}" placeholder="${pk.attrname}" clearable></el-input>
+        <el-form-item class="small-item">
+          <el-input v-model="dataForm.${pk.attrname}" placeholder="${pk.attrname}" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -41,7 +41,7 @@
         @current-change="pageCurrentChangeHandle">
       </el-pagination>
       <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
     </div>
   </el-card>
 </template>
@@ -50,23 +50,22 @@
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './${pathNameDash}-add-or-update'
 export default {
-  mixins: [mixinListModuleOptions],
+  mixins: [mixinListModule],
+  components: { AddOrUpdate },
   data () {
     return {
-      mixinViewModuleOptions: {
+      mixinListModuleOptions: {
         getDataListURL: '/${moduleName}/${pathName}/page',
         getDataListIsPage: true,
         exportURL: '/${moduleName}/${pathName}/export',
         deleteURL: '/${moduleName}/${pathName}/delete',
+        deleteBatchURL: '/${moduleName}/${pathName}/deleteBatch',
         deleteIsBatch: true
       },
       dataForm: {
         ${pk.attrname}: ''
       }
     }
-  },
-  components: {
-    AddOrUpdate
   }
 }
 </script>
