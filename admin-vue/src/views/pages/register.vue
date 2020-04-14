@@ -10,9 +10,7 @@
               </el-form-item>
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
-                  <el-select v-model="dataForm.mobileArea" slot="prepend">
-                    <el-option value="86" label="86"/>
-                  </el-select>
+                 <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="sms">
@@ -26,10 +24,10 @@
                 </el-row>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input v-model="dataForm.password" type="password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
+                <el-input v-model="dataForm.password" show-password prefix-icon="el-icon-lock" :placeholder="$t('login.password')"/>
               </el-form-item>
               <el-form-item prop="confirmPassword">
-                <el-input v-model="dataForm.confirmPassword" type="password" prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.confirmPassword')"/>
+                <el-input v-model="dataForm.confirmPassword" show-password prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.confirmPassword')"/>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">提交注册</el-button>
@@ -150,12 +148,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .el-select .el-input {
-    width: 100px;
-  }
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-</style>
