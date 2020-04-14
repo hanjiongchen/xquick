@@ -6,7 +6,7 @@ t.brand = {}
 t.brand.full = '极速开发管理平台'
 t.brand.lg = '极速开发'
 t.brand.mini = ''
-t.brand.owner = 'xquick.co'
+t.brand.owner = 'www.nb6868.com'
 
 /**
  * 常用操作
@@ -35,6 +35,8 @@ t.disable = '停用'
 t.pause = '暂停'
 t.resume = '恢复'
 t.run = '运行'
+t.register = '注册'
+t.forgetPassword = '忘记密码'
 
 /**
  * 基本表结构

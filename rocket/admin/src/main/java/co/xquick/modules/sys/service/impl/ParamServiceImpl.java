@@ -64,7 +64,7 @@ public class ParamServiceImpl extends CrudServiceImpl<ParamDao, ParamEntity, Par
     public ParamDTO getByCode(String code) {
         UserDetail user = SecurityUser.getUser();
         ParamEntity entity = query()
-                .eq(user.getType() != UserTypeEnum.ADMIN.value(), "type", 1)
+                // .eq(user.getType() != UserTypeEnum.ADMIN.value(), "type", 1)
                 .eq("code", code)
                 .last("limit 1")
                 .one();

@@ -50,7 +50,7 @@ http.interceptors.request.use(config => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-  if (response.data.code === 401 || response.data.code === 10001) {
+  if (response.data.code === 401) {
     // 清空登录信息，跳转登录页面
     redirectLogin()
     return Promise.reject(response.data.msg)

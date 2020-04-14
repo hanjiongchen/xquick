@@ -74,21 +74,6 @@ public class AuthController {
         return new Result<>().ok(content);
     }
 
-    @GetMapping("loginCfgAdmin")
-    @ApiOperation(value = "获取管理平台登录配置")
-    @LogOperation("获取管理平台登录配置")
-    @AnonAccess
-    public Result<?> loginCfgAdmin() {
-        LoginCfg content = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
-        AssertUtils.isEmpty(content, ErrorCode.UNKNOWN_LOGIN_TYPE);
-        for (LoginChannel channel : content.getChannels()) {
-            if (channel.getEnable()) {
-                channel.setCfg(paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX +channel.getType(), LoginChannelCfg.class));
-            }
-        }
-        return new Result<>().ok(content);
-    }
-
     @PostMapping("sendSmsCode")
     @ApiOperation("发送验证码短信")
     @LogOperation("发送验证码短信")

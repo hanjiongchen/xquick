@@ -1,17 +1,25 @@
 package co.xquick.modules.sys.controller;
 
+import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
+import co.xquick.booster.util.JacksonUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
+import co.xquick.common.annotation.AnonAccess;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.sys.dto.ParamDTO;
 import co.xquick.modules.sys.excel.ParamExcel;
 import co.xquick.modules.sys.service.ParamService;
+import co.xquick.modules.uc.UcConst;
+import co.xquick.modules.uc.dto.LoginCfg;
+import co.xquick.modules.uc.dto.LoginChannel;
+import co.xquick.modules.uc.dto.LoginChannelCfg;
+import com.google.common.base.Splitter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -56,12 +64,31 @@ public class ParamController {
         return new Result<>().ok(data);
     }
 
-    @GetMapping("getByCode")
-    @ApiOperation("通过code获取param")
-    public Result<?> getByCode(@Param("code") String code) {
-        ParamDTO dto = paramService.getByCode(code);
+    @GetMapping("getContentByCodes")
+    @ApiOperation("通过code获取对应参数的content")
+    @AnonAccess
+    public Result<?> getContentByCodes(@Param("codes") String codes) {
+        // 效验数据
+        AssertUtils.isEmpty(codes, "codes");
+        Iterable<String> codeList = Splitter.on(',').trimResults().omitEmptyStrings().split(codes.trim());
+        Kv kv = Kv.init();
+        for (String code : codeList) {
+            String content = paramService.getContent(code);
+            if (UcConst.LOGIN_CFG_ADMIN.equalsIgnoreCase(code)) {
+                // 用户登录信息
+                LoginCfg loginCfg = JacksonUtils.jsonToPojo(content, LoginCfg.class);
+                for (LoginChannel channel : loginCfg.getChannels()) {
+                    if (channel.getEnable()) {
+                        channel.setCfg(paramService.getContentObject(UcConst.LOGIN_CHANNEL_CFG_PREFIX + channel.getType(), LoginChannelCfg.class));
+                    }
+                }
+                kv.set(code, loginCfg);
+            } else {
+                kv.set(code, JacksonUtils.jsonToMap(content));
+            }
 
-        return new Result<>().ok(dto);
+        }
+        return new Result<>().ok(kv);
     }
 
     @PostMapping("save")
