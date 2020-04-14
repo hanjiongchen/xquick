@@ -1,7 +1,7 @@
 package co.xquick.common.config;
 
 import co.xquick.booster.util.DateUtils;
-import co.xquick.common.interceptor.GuestAccessInterceptor;
+import co.xquick.common.interceptor.AuthAccessInterceptor;
 import co.xquick.common.resolver.LoginUserHandlerMethodArgumentResolver;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +35,7 @@ import java.util.TimeZone;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    private GuestAccessInterceptor guestAccessInterceptor;
+    private AuthAccessInterceptor authAccessInterceptor;
     @Autowired
     private LoginUserHandlerMethodArgumentResolver loginUserHandlerMethodArgumentResolver;
 
@@ -45,7 +45,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(guestAccessInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(authAccessInterceptor).addPathPatterns("/**");
     }
 
     /**

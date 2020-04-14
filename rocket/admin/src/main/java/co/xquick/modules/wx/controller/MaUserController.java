@@ -14,7 +14,7 @@ import co.xquick.booster.util.PasswordUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.DefaultGroup;
-import co.xquick.common.annotation.GuestAccess;
+import co.xquick.common.annotation.AnonAccess;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
 import co.xquick.modules.sys.service.ParamService;
@@ -66,7 +66,7 @@ public class MaUserController {
 
     @PostMapping("/login")
     @ApiOperation("登录")
-    @GuestAccess
+    @AnonAccess
     public Result<?> login(HttpServletRequest httpServletRequest, @RequestBody WxLoginRequest request) {
         // 效验数据
         ValidatorUtils.validateEntity(request, DefaultGroup.class);

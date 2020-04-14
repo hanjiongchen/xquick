@@ -23,6 +23,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static co.xquick.modules.uc.UcConst.TOKEN_ANON;
+import static co.xquick.modules.uc.UcConst.TOKEN_GUEST;
+
 /**
  * 认证
  *
@@ -45,17 +48,21 @@ public class Oauth2Realm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         UserDetail user = (UserDetail) principals.getPrimaryPrincipal();
-
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        if (UcConst.GUEST_TOKEN.equalsIgnoreCase(user.getToken())) {
+        if (TOKEN_ANON.equalsIgnoreCase(user.getToken())) {
+            // 匿名用户
+            Set<String> roles = new HashSet<>();
+            roles.add(UcConst.ROLE_CODE_ANON);
+            info.setRoles(roles);
+        } else if (UcConst.TOKEN_GUEST.equalsIgnoreCase(user.getToken())) {
             // 游客token,不做验证
             // 塞入游客角色
             Set<String> roles = new HashSet<>();
-            roles.add(UcConst.GUEST_ROLE_CODE);
+            roles.add(UcConst.ROLE_CODE_GUEST);
             info.setRoles(roles);
             // 塞入游客具有的权限列表
             List<String> roleCodes = new ArrayList<>();
-            roleCodes.add(UcConst.GUEST_ROLE_CODE);
+            roleCodes.add(UcConst.ROLE_CODE_GUEST);
             info.setStringPermissions(shiroService.getPermissionsByRoles(roleCodes));
         } else {
             // 根据登录配置中的roleBase和permissionBase设置SimpleAuthorizationInfo
@@ -76,16 +83,23 @@ public class Oauth2Realm extends AuthorizingRealm {
 
     /**
      * 认证(登录时调用)
+     * 先doGetAuthenticationInfo,再doGetAuthorizationInfo
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
         String accessToken = (String) authToken.getPrincipal();
-        if (UcConst.GUEST_TOKEN.equalsIgnoreCase(accessToken)) {
-            // 游客token
+        if (TOKEN_ANON.equalsIgnoreCase(accessToken)) {
+            // 匿名访问
             UserDetail userDetail = new UserDetail();
-            userDetail.setToken(UcConst.GUEST_TOKEN);
+            userDetail.setToken(TOKEN_ANON);
             userDetail.setType(-100);
-            return new SimpleAuthenticationInfo(userDetail, UcConst.GUEST_TOKEN, getName());
+            return new SimpleAuthenticationInfo(userDetail, TOKEN_ANON, getName());
+        } else if (TOKEN_GUEST.equalsIgnoreCase(accessToken)) {
+            // 游客访问
+            UserDetail userDetail = new UserDetail();
+            userDetail.setToken(TOKEN_GUEST);
+            userDetail.setType(-100);
+            return new SimpleAuthenticationInfo(userDetail, TOKEN_GUEST, getName());
         }
         // 根据accessToken，查询用户信息
         TokenEntity token = shiroService.getUserIdAndTypeByToken(accessToken);

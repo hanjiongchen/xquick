@@ -10,11 +10,21 @@ public interface UcConst {
     /**
      * 游客token
      */
-    String GUEST_TOKEN = "00000000000000000000000000000000";
+    String TOKEN_GUEST = "00000000000000000000000000000001";
     /**
      * 游客角色编码
      */
-    String GUEST_ROLE_CODE = "GUEST";
+    String ROLE_CODE_GUEST = "GUEST";
+
+    /**
+     * 匿名角色编码
+     */
+    String ROLE_CODE_ANON = "ANNO";
+
+    /**
+     * 匿名用户token
+     */
+    String TOKEN_ANON = "00000000000000000000000000000000";
 
     /**
      * 管理平台登录配置
