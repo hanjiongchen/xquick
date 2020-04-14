@@ -55,7 +55,7 @@
                 </el-table-column>
                 <el-table-column prop="msg" label="结果消息" header-align="center" align="center"/>
                 <el-table-column prop="ip" label="IP" header-align="center" align="center" width="200"/>
-                <el-table-column prop="userAgent" label="UA" header-align="center" align="center" :show-overflow-tooltip="true"/>
+                <el-table-column prop="userAgent" label="UA" header-align="center" align="center" show-overflow-tooltip/>
                 <el-table-column prop="createTime" label="创建时间" sortable="custom" header-align="center" align="center" width="180"/>
             </el-table>
             <el-pagination

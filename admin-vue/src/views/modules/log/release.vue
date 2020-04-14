@@ -3,7 +3,13 @@
     <div class="mod-log__release}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item class="small-item">
-          <el-input v-model="dataForm.id" placeholder="id" clearable/>
+          <el-input v-model="dataForm.code" placeholder="编码" clearable/>
+        </el-form-item>
+        <el-form-item class="small-item">
+          <el-input v-model="dataForm.type" placeholder="类型" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="dataForm.content" placeholder="更新内容" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -16,16 +22,21 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="type" label="android/ios/api/vue" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="code" label="编码" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="versionNo" label="版本号" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="versionName" label="版本名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="content" label="更新记录" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="downloadLink" label="下载链接" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="forceUpdate" label="强制更新" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="show" label="显示在下载页面" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="name" label="名称" header-align="center" align="center" width="150"/>
+        <el-table-column prop="versionNo" label="版本号" header-align="center" align="center" width="100"/>
+        <el-table-column prop="versionName" label="版本名称" header-align="center" align="center" width="120"/>
+        <el-table-column prop="content" label="更新内容" header-align="center" align="center" min-width="150" show-overflow-tooltip/>
+        <el-table-column prop="downloadLink" label="下载链接" header-align="center" align="center" min-width="120" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-link v-if="scope.row.downloadLink" :underline="false">{{ scope.row.downloadLink }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="forceUpdate" label="强制更新" header-align="center" align="center" width="80">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.forceUpdate === 0" type="danger">否</el-tag>
+            <el-tag v-else-if="scope.row.forceUpdate === 1">是</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('log:release:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
@@ -62,11 +73,11 @@ export default {
         getDataListIsPage: true,
         exportURL: '/log/release/export',
         deleteURL: '/log/release/delete',
-        deleteBatchURL: '/log/release/deleteBatch',
-        deleteIsBatch: true
+        deleteIsBatch: false
       },
       dataForm: {
-        id: ''
+        code: '',
+        type: ''
       }
     }
   }
