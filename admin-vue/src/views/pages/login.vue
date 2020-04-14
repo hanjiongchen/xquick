@@ -24,7 +24,7 @@
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
                 <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
-                    <el-image :src="captcha.image" @click="getCaptcha()" style="width: 90px;">
+                    <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
                       <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
                     </el-image>
                   </el-tooltip>
@@ -49,7 +49,7 @@
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
                 <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
-                    <el-image :src="captcha.image" @click="getCaptcha()" style="width: 90px;">
+                    <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
                       <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
                     </el-image>
                   </el-tooltip>
@@ -109,11 +109,8 @@ export default {
       },
       // 短信发送倒计时
       smsSendTimeout: 60,
-      // 验证码信息
-      captcha: {
-        uuid: '',
-        image: ''
-      },
+      // 验证码图片
+      captchaImage: '',
       dataForm: {
         username: '',
         password: '',
@@ -186,11 +183,11 @@ export default {
     },
     // 获取验证码
     getCaptcha () {
-      this.$http.get(`/auth/captcha`).then(({ data: res }) => {
+      this.$http.get(`/captcha/base64?width=110&height=40`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
-          this.captcha = res.data
+          this.captchaImage = res.data.image
           this.dataForm.uuid = res.data.uuid
         }
       })

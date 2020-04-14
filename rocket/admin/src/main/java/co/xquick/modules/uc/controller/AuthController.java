@@ -53,16 +53,6 @@ public class AuthController {
     @Autowired
     private SmsLogService smsLogService;
 
-    @GetMapping("captcha")
-    @ApiOperation(value = "生成验证码图片")
-    @AnonAccess
-    public Result<?> captcha() {
-        String uuid = UUID.randomUUID().toString();
-        String image = captchaService.createBase64(uuid);
-        // 将uuid和图片的base64返回给前端
-        return new Result<>().ok(Kv.init().set("uuid", uuid).set("image", image));
-    }
-
     @GetMapping("loginChannel")
     @ApiOperation(value = "获取登录配置")
     @ApiImplicitParam(paramType = "query", dataType = "string", name = "type", required = true)

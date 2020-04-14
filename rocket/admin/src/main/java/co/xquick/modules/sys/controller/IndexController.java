@@ -3,15 +3,22 @@ package co.xquick.modules.sys.controller;
 import co.xquick.booster.pojo.Kv;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.DateUtils;
+import co.xquick.common.annotation.AnonAccess;
+import co.xquick.modules.uc.service.CaptchaService;
 import com.sun.management.OperatingSystemMXBean;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.UUID;
 
 /**
  * 系统接口
@@ -56,6 +63,21 @@ public class IndexController {
         data.set("userTimezone", System.getProperty("user.timezone"));
 
         return new Result<>().ok(data);
+    }
+
+    @Autowired
+    private CaptchaService captchaService;
+
+    @GetMapping("captcha/base64")
+    @ApiOperation(value = "获得base64格式验证码图片")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", dataType = "int", name = "width", value = "图片宽度"),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "height", value = "图片高度")})
+    @AnonAccess
+    public Result<?> captcha(@RequestParam(required = false, defaultValue = "150") int width, @RequestParam(required = false, defaultValue = "50") int height) {
+        String uuid = UUID.randomUUID().toString();
+        String image = captchaService.createBase64(uuid, width, height, "arithmetic");
+        // 将uuid和图片的base64返回给前端
+        return new Result<>().ok(Kv.init().set("uuid", uuid).set("image", image));
     }
 
 }
