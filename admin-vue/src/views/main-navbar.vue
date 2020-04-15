@@ -2,8 +2,8 @@
   <nav class="aui-navbar" :class="`aui-navbar--${$store.state.navbarLayoutType}`">
     <div class="aui-navbar__header">
       <h1 class="aui-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="aui-navbar__brand-lg" href="javascript:;"><img src="~@/assets/img/logo_white.png" style="width: 36px;height: 36px"/>{{ $t('brand.lg') }}</a>
-        <a class="aui-navbar__brand-mini" href="javascript:;"><img src="~@/assets/img/logo_white.png" style="width: 36px;height: 36px"/>{{ $t('brand.mini') }}</a>
+        <a class="aui-navbar__brand-lg" href="javascript:;"><img src="~@/assets/img/logo_white.png" style="width: 30px;height: 30px; margin-right: 10px;"/>{{ sysTitleAbbr }}</a>
+        <a class="aui-navbar__brand-mini" href="javascript:;"><img src="~@/assets/img/logo_white.png" style="width: 30px;height: 30px"/></a>
       </h1>
     </div>
     <div class="aui-navbar__body">
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import { messages } from '@/i18n'
 import screenfull from 'screenfull'
 import UpdatePassword from './main-navbar-update-password'
@@ -68,8 +69,12 @@ export default {
   data () {
     return {
       i18nMessages: messages,
-      updatePasswordVisible: false
+      updatePasswordVisible: false,
+      sysTitleAbbr: ''
     }
+  },
+  created () {
+    this.sysTitleAbbr = Cookies.get('titleAbbr')
   },
   methods: {
     // 全屏

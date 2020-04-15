@@ -3,7 +3,7 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-header">
-          <h2 class="login-brand">{{ sysTitleCfg.loginTitle }}</h2>
+          <h2 class="login-brand">{{ sysCfg.loginTitle }}</h2>
         </div>
         <div class="login-body">
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
@@ -72,7 +72,7 @@
             </router-link>
           </div>
         </div>
-        <div class="login-footer" v-html="sysTitleCfg.copyright"/>
+        <div class="login-footer" v-html="sysCfg.copyright"/>
       </main>
     </div>
   </div>
@@ -93,10 +93,8 @@ export default {
         dataFormSaveURL: '/auth/login'
       },
       dataFormMode: 'save',
-      // 系统显示配置
-      sysTitleCfg: {
-        loginTitle: ''
-      },
+      // 系统配置
+      sysCfg: {},
       // 全局登录配置
       loginCfg: {
         forgetPassword: false,
@@ -158,13 +156,16 @@ export default {
     },
     // 获取系统配置
     getParamCfg () {
-      this.$http.get(`/sys/param/getContentByCodes?codes=SYS_TITLE_CFG,LOGIN_CFG_ADMIN`).then(({ data: res }) => {
+      this.$http.get(`/sys/param/getContentByCodes?codes=SYS_CFG,LOGIN_CFG_ADMIN`).then(({ data: res }) => {
         this.formLoading = false
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
           // 复制显示配置
-          this.sysTitleCfg = res.data.SYS_TITLE_CFG
+          this.sysCfg = res.data.SYS_CFG
+          Cookies.set('title', this.sysCfg.title)
+          Cookies.set('titleAbbr', this.sysCfg.titleAbbr)
+          document.title = this.sysCfg.title
           // 赋值全局登录配置
           this.loginCfg = res.data.LOGIN_CFG_ADMIN
           // 找到第一个enable的登录渠道

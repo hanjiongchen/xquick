@@ -5,7 +5,9 @@
         <el-input v-model="dataForm.code" :placeholder="$t('base.code')"/>
       </el-form-item>
       <el-form-item prop="content" :label="$t('base.content')">
-        <el-input v-model="dataForm.content" :placeholder="$t('base.content')" type="textarea"/>
+        <el-input v-model="dataForm.content" :placeholder="$t('base.content')">
+          <el-link type="primary" href="https://www.bejson.com/jsoneditoronline/" target="_blank" :underline="false" slot="append">在线json编辑</el-link>
+        </el-input>
       </el-form-item>
       <el-form-item prop="remark" :label="$t('base.remark')">
         <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')"/>

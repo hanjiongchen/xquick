@@ -6,7 +6,6 @@
 
 <script>
 import Cookies from 'js-cookie'
-import { messages } from '@/i18n'
 
 export default {
   watch: {
@@ -20,7 +19,8 @@ export default {
       Cookies.set('language', val)
       document.querySelector('html').setAttribute('lang', val)
       // 显示标题
-      document.title = messages[val].brand.lg
+      // document.title = messages[val].brand.lg
+      document.title = Cookies.get('title')
       // 非登录页面，切换语言刷新页面
       if (this.$route.name !== 'login' && oldVal) {
         window.location.reload()

@@ -2,12 +2,6 @@ const t = {}
 
 t.loading = '加载中...'
 
-t.brand = {}
-t.brand.full = '极速开发管理平台'
-t.brand.lg = '极速开发'
-t.brand.mini = ''
-t.brand.owner = 'www.nb6868.com'
-
 /**
  * 常用操作
  */
