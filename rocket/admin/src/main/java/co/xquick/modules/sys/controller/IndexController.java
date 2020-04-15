@@ -31,6 +31,7 @@ public class IndexController {
 
     @GetMapping("/")
     @ApiOperation("系统信息")
+    @AnonAccess
     public Result<?> index() {
         return new Result<>().ok("api success");
     }
