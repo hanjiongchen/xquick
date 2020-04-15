@@ -9,7 +9,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="dataForm.name" placeholder="题目" clearable></el-input>
+          <el-input v-model="dataForm.question" placeholder="题目" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -35,7 +35,7 @@
         <el-table-column prop="sort" sortable="custom" label="排序" header-align="center" align="center" width="100"/>
         <el-table-column prop="question" label="题面" header-align="center" align="center" min-width="200" show-tooltip-when-overflow/>
         <el-table-column prop="options" label="选项" header-align="center" align="center" min-width="150"/>
-        <el-table-column prop="answer" label="答案" header-align="center" align="center" min-width="150"/>
+        <el-table-column prop="answer" label="答案" header-align="center" align="center" min-width="100"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('ba:subject:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
@@ -80,7 +80,7 @@ export default {
       orderField: 'sort', // 排序，字段
       dataForm: {
         type: '',
-        name: ''
+        question: ''
       }
     }
   }

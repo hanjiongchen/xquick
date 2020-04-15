@@ -23,7 +23,7 @@ public class SubjectServiceImpl extends CrudServiceImpl<SubjectDao, SubjectEntit
     public QueryWrapper<SubjectEntity> getWrapper(String method, Map<String, Object> params) {
         return new WrapperUtils<SubjectEntity>(new QueryWrapper<>(), params)
                 .eq("type", "type")
-                .like("name", "name")
+                .like("question", "question")
                 .getQueryWrapper();
     }
 
