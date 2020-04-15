@@ -9,18 +9,20 @@ import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
 import co.xquick.booster.util.ConvertUtils;
 import co.xquick.booster.util.HttpContextUtils;
+import co.xquick.booster.util.JacksonUtils;
 import co.xquick.booster.util.bcrypt.BCryptPasswordEncoder;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
+import co.xquick.common.annotation.AnonAccess;
 import co.xquick.common.annotation.LogOperation;
+import co.xquick.common.util.AESUtils;
 import co.xquick.common.util.ExcelUtils;
 import co.xquick.modules.log.entity.LoginEntity;
 import co.xquick.modules.log.service.LoginService;
-import co.xquick.modules.uc.dto.PasswordDTO;
-import co.xquick.modules.uc.dto.UserDTO;
+import co.xquick.modules.uc.dto.*;
 import co.xquick.modules.uc.entity.RoleUserEntity;
 import co.xquick.modules.uc.excel.UserExcel;
 import co.xquick.modules.uc.service.DeptService;
@@ -41,6 +43,8 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -184,6 +188,66 @@ public class UserController {
         userService.logicDeleteByIds(ids);
 
         return new Result<>();
+    }
+
+    /**
+     * 加密登录
+     * 逻辑同login接口
+     */
+    @PostMapping("loginEncrypt")
+    @ApiOperation(value = "加密登录")
+    @AnonAccess
+    public Result<?> loginEncrypt(HttpServletRequest request, @RequestBody String loginEncrypted) throws UnsupportedEncodingException {
+        // 密文转json明文
+        String loginRaw = AESUtils.decrypt(URLDecoder.decode(loginEncrypted, "utf-8"));
+        // json明文转实体
+        LoginRequest login = JacksonUtils.jsonToPojo(loginRaw, LoginRequest.class);
+
+        // 效验数据
+        ValidatorUtils.validateEntity(login, DefaultGroup.class);
+
+        return userService.login(request, login);
+    }
+
+    /**
+     * 登录
+     * 支持帐号登录、短信登录
+     */
+    @PostMapping("login")
+    @ApiOperation(value = "登录")
+    @AnonAccess
+    public Result<?> login(HttpServletRequest httpServletRequest, @RequestBody LoginRequest request) {
+        // 效验数据
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
+
+        return userService.login(httpServletRequest, request);
+    }
+
+    /**
+     * 注册
+     */
+    @PostMapping("register")
+    @ApiOperation(value = "注册")
+    @AnonAccess
+    public Result<?> register(@RequestBody RegisterRequest request) {
+        // 效验数据
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
+
+        return userService.register(request);
+    }
+
+    /**
+     * 通过短信验证码修改密码
+     * 忘记密码功能,通过短信验证码找回
+     */
+    @PostMapping("changePasswordBySmsCode")
+    @ApiOperation(value = "通过短信验证码修改密码")
+    @AnonAccess
+    public Result<?> changePasswordBySmsCode(@RequestBody ChangePasswordBySmsCodeRequest request) {
+        // 效验数据
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
+
+        return userService.changePasswordBySmsCode(request);
     }
 
     @PostMapping("logout")

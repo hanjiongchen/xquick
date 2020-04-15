@@ -31,6 +31,8 @@ t.resume = '恢复'
 t.run = '运行'
 t.register = '注册'
 t.forgetPassword = '忘记密码'
+t.smsCode = '短信验证码'
+t.mobile = '手机号'
 
 /**
  * 基本表结构
@@ -106,7 +108,6 @@ t.login.title = '登录'
 t.login.username = '用户名'
 t.login.password = '密码'
 t.login.captcha = '验证码'
-t.login.copyright = '版权所有 2019 © '
 
 /* 模块 */
 t.model = {}

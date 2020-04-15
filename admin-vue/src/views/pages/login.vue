@@ -36,12 +36,12 @@
             <!-- 手机号登录 -->
             <template v-else-if="dataForm.type === 30">
               <el-form-item prop="mobile">
-                <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
+                <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                   <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="smsCode">
-                <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4">
+                <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4">
                   <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
                 </el-input>
               </el-form-item>
@@ -90,7 +90,7 @@ export default {
       mixinFormModuleOptions: {
         // 登录接口
         dataFormParamEncrypt: false,
-        dataFormSaveURL: '/auth/login'
+        dataFormSaveURL: '/uc/user/login'
       },
       dataFormMode: 'save',
       // 系统配置
@@ -203,7 +203,7 @@ export default {
           this.formLoading = false
           return false
         }
-        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
+        this.$http.post(`/msg/smsLog/sendCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
           if (res.code !== 0) {
             this.$message.error(res.toast)
           } else {

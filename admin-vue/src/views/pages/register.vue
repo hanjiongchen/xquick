@@ -3,20 +3,20 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-body">
-          <h3 class="login-title">注册</h3>
+          <h3 class="login-title">{{ $t('register') }}</h3>
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon @keyup.enter.native="dataFormSubmitHandle()">
               <el-form-item prop="username">
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('login.username')"/>
               </el-form-item>
               <el-form-item prop="mobile">
-                <el-input v-model="dataForm.mobile" placeholder="手机号" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
+                <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                  <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="sms">
                 <el-row :gutter="20">
                   <el-col :span="14">
-                    <el-input v-model="dataForm.smsCode" placeholder="短信验证码" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
+                    <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
                   </el-col>
                   <el-col :span="10" class="login-captcha">
                     <el-button type="primary" @click="smsCodeSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
@@ -55,7 +55,7 @@ export default {
       mixinFormModuleOptions: {
         // 登录接口
         dataFormParamEncrypt: false,
-        dataFormSaveURL: '/auth/register'
+        dataFormSaveURL: '/uc/user/register'
       },
       formLoading: false, // 表单是否加载中
       dataFormMode: 'save',
@@ -111,7 +111,7 @@ export default {
           this.formLoading = false
           return false
         }
-        this.$http.post(`/auth/sendSmsCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_REGISTER' }).then(({ data: res }) => {
+        this.$http.post(`/msg/smsLog/sendCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_REGISTER' }).then(({ data: res }) => {
           if (res.code !== 0) {
             return this.$message.error(res.toast)
           } else {

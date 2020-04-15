@@ -1,20 +1,26 @@
 package co.xquick.modules.msg.controller;
 
+import co.xquick.booster.exception.XquickException;
 import co.xquick.booster.pojo.PageData;
 import co.xquick.booster.pojo.Result;
+import co.xquick.booster.util.DateUtils;
 import co.xquick.booster.validator.AssertUtils;
 import co.xquick.booster.validator.ValidatorUtils;
 import co.xquick.booster.validator.group.AddGroup;
 import co.xquick.booster.validator.group.DefaultGroup;
 import co.xquick.booster.validator.group.UpdateGroup;
+import co.xquick.common.annotation.AnonAccess;
 import co.xquick.common.annotation.LogOperation;
 import co.xquick.common.util.ExcelUtils;
+import co.xquick.modules.msg.MsgConst;
 import co.xquick.modules.msg.dto.SmsLogDTO;
 import co.xquick.modules.msg.dto.SmsSendRequest;
+import co.xquick.modules.msg.entity.SmsLogEntity;
 import co.xquick.modules.msg.excel.SmsLogExcel;
 import co.xquick.modules.msg.service.SmsLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -133,6 +139,30 @@ public class SmsLogController {
         // 效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
+        smsLogService.send(dto);
+
+        return new Result<>();
+    }
+
+    @PostMapping("sendCode")
+    @ApiOperation("发送验证码短信")
+    @LogOperation("发送验证码短信")
+    @AnonAccess
+    public Result<?> sendCode(@RequestBody SmsSendRequest dto) {
+        // 效验数据
+        ValidatorUtils.validateEntity(dto, AddGroup.class);
+        // 只允许发送CODE_开头的模板
+        if (!dto.getTplCode().startsWith(MsgConst.SMS_CODE_TPL_PREFIX)) {
+            throw new XquickException("不支持的模板");
+        }
+        // 先校验手机号是否1分钟内发送过
+        SmsLogEntity lastSmsLog = smsLogService.findLastLogByTplCode(dto.getTplCode(), dto.getMobile());
+        if (null != lastSmsLog && DateUtils.timeDiff(lastSmsLog.getCreateTime()) < 60 * 1000) {
+            // 1分钟内已经发送过了
+            return new Result<>().error("短信发送请求过于频繁");
+        }
+
+        dto.setParam("{\"code\":\"" + RandomStringUtils.randomNumeric(4) + "\"}");
         smsLogService.send(dto);
 
         return new Result<>();

@@ -101,6 +101,12 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
 
     @Override
     public Result<?> register(RegisterRequest request) {
+        LoginCfg loginCfg = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
+        AssertUtils.isEmpty(loginCfg, ErrorCode.UNKNOWN_LOGIN_TYPE);
+        if (!loginCfg.isRegister()) {
+            throw new XquickException("未开放注册");
+        }
+
         // 操作结果
         int resultCode = 0;
         // 登录用户
@@ -136,6 +142,12 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
 
     @Override
     public Result<?> changePasswordBySmsCode(ChangePasswordBySmsCodeRequest request) {
+        LoginCfg loginCfg = paramService.getContentObject(UcConst.LOGIN_CFG_ADMIN, LoginCfg.class);
+        AssertUtils.isEmpty(loginCfg, ErrorCode.UNKNOWN_LOGIN_TYPE);
+        if (!loginCfg.isForgetPassword()) {
+            throw new XquickException("未开放修改密码功能");
+        }
+
         // 操作结果
         int resultCode = 0;
         // 登录用户
