@@ -19,9 +19,12 @@ t.download = '下载'
 t.handle = '操作'
 t.reset = '重置'
 t.close = '关闭'
+t.submit = '提交'
 t.confirm = '确定'
 t.cancel = '取消'
 t.logout = '退出'
+t.login = '登录'
+t.captcha = '验证码'
 t.success = '成功'
 t.error = '失败'
 t.enable = '启用'
@@ -32,7 +35,11 @@ t.run = '运行'
 t.register = '注册'
 t.forgetPassword = '忘记密码'
 t.smsCode = '短信验证码'
+t.sendSmsCode = '发送验证码'
+t.resendSmsCode = '{sec}秒后重发'
 t.mobile = '手机号'
+t.username = '用户名'
+t.password = '密码'
 
 /**
  * 基本表结构
@@ -102,12 +109,6 @@ t.notFound = {}
 t.notFound.desc = '抱歉！您访问的页面<em>失联</em>啦...'
 t.notFound.back = '上一页'
 t.notFound.home = '首页'
-
-t.login = {}
-t.login.title = '登录'
-t.login.username = '用户名'
-t.login.password = '密码'
-t.login.captcha = '验证码'
 
 /* 模块 */
 t.model = {}

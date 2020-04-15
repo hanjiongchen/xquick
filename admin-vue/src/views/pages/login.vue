@@ -15,13 +15,13 @@
             <!-- 帐号密码登录 -->
             <template v-if="dataForm.type === 10">
               <el-form-item prop="username">
-                <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('login.username')"/>
+                <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('username')"/>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('login.password')" show-password/>
+                <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('password')" show-password/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
-                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')" maxlength="8">
+                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
                       <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
@@ -30,7 +30,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
+                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login') }}</el-button>
               </el-form-item>
             </template>
             <!-- 手机号登录 -->
@@ -42,11 +42,12 @@
               </el-form-item>
               <el-form-item prop="smsCode">
                 <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4">
-                  <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
+                  <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? $t('resendSmsCode', { 'sec': smsSendTimeout }) : $t('sendSmsCode')
+                    }}</el-button>
                 </el-input>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
-                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('login.captcha')">
+                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
                       <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
@@ -55,7 +56,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
+                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login') }}</el-button>
               </el-form-item>
             </template>
             <!-- 微信登录 -->

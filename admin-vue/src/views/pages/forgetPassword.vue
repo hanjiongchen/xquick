@@ -12,7 +12,7 @@
               </el-form-item>
               <el-form-item prop="smsCode">
                   <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4">
-                      <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
+                      <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ?  $t('resendSmsCode', { 'sec': smsSendTimeout }) : '发送验证码' }}</el-button>
                   </el-input>
               </el-form-item>
               <el-form-item prop="newPassword">
@@ -22,7 +22,7 @@
                   <el-input v-model="dataForm.confirmPassword" show-password prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.confirmPassword')"/>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">重置密码</el-button>
+                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('reset') }}</el-button>
               </el-form-item>
           </el-form>
           <div>

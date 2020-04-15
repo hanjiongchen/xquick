@@ -19,7 +19,7 @@
                     <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4"/>
                   </el-col>
                   <el-col :span="10" class="login-captcha">
-                    <el-button type="primary" @click="smsCodeSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? smsSendTimeout + '秒后重发' : '发送验证码' }}</el-button>
+                    <el-button type="primary" @click="smsCodeSendHandle()" class="w-percent-100" :disabled="smsSendTimeout < 60">{{ smsSendTimeout !== 60 ? $t('resendSmsCode', { 'sec': smsSendTimeout }) : $t('sendSmsCode') }}</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -30,7 +30,7 @@
                 <el-input v-model="dataForm.confirmPassword" show-password prefix-icon="el-icon-lock" :placeholder="$t('updatePassword.confirmPassword')"/>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">提交注册</el-button>
+                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('confirm') }}</el-button>
               </el-form-item>
           </el-form>
           <div>
