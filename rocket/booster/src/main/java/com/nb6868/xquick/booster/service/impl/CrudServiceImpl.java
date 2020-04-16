@@ -80,6 +80,7 @@ public class CrudServiceImpl<M extends BaseDao<T>, T, D> extends BaseServiceImpl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <E> E getSelectColumnById(Serializable id, String column) {
         if (ObjectUtils.isEmpty(id) || ObjectUtils.isEmpty(column)) {
             return null;
