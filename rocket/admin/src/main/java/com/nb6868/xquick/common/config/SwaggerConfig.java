@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 // 加了ApiOperation注解的类，生成接口文档
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 // 包下的类，生成接口文档
-                // .apis(RequestHandlerSelectors.basePackage("co.xquick.modules.*.controller"))
+                // .apis(RequestHandlerSelectors.basePackage("com.nb6868.xquick.modules.*.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .directModelSubstitute(java.util.Date.class, String.class)

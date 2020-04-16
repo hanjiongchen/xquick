@@ -1,13 +1,12 @@
 package com.nb6868.xquick.modules.shop.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.booster.exception.ErrorCode;
 import com.nb6868.xquick.booster.service.impl.CrudServiceImpl;
 import com.nb6868.xquick.booster.validator.AssertUtils;
 import com.nb6868.xquick.modules.shop.dao.CouponDao;
 import com.nb6868.xquick.modules.shop.dto.CouponDTO;
 import com.nb6868.xquick.modules.shop.entity.CouponEntity;
-import co.xquick.modules.shop.service.*;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.modules.shop.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

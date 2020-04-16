@@ -2,7 +2,7 @@ package com.nb6868.xquick.modules.uc.service;
 
 import com.nb6868.xquick.booster.pojo.Result;
 import com.nb6868.xquick.booster.service.CrudService;
-import co.xquick.modules.uc.dto.*;
+import com.nb6868.xquick.modules.uc.dto.*;
 import com.nb6868.xquick.modules.uc.dto.ChangePasswordBySmsCodeRequest;
 import com.nb6868.xquick.modules.uc.dto.LoginRequest;
 import com.nb6868.xquick.modules.uc.dto.RegisterRequest;

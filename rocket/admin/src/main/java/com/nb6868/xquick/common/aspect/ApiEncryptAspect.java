@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiEncryptAspect {
 
-    @Pointcut("@annotation(co.xquick.common.annotation.ApiEncrypt)")
+    @Pointcut("@annotation(com.nb6868.xquick.common.annotation.ApiEncrypt)")
     public void pointcut() { }
 
     @Around("pointcut()")

@@ -46,9 +46,9 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   # 实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: co.xquick.modules.*.entity
+  typeAliasesPackage: com.nb6868.xquick.modules.*.entity
   # 枚举扫描
-  typeEnumsPackage: co.xquick.modules.*.enums
+  typeEnumsPackage: com.nb6868.xquick.modules.*.enums
   global-config:
     # 数据库相关配置
     db-config:

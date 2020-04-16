@@ -22,7 +22,7 @@ import com.nb6868.xquick.common.util.AESUtils;
 import com.nb6868.xquick.common.util.ExcelUtils;
 import com.nb6868.xquick.modules.log.entity.LoginEntity;
 import com.nb6868.xquick.modules.log.service.LoginService;
-import co.xquick.modules.uc.dto.*;
+import com.nb6868.xquick.modules.uc.dto.*;
 import com.nb6868.xquick.modules.uc.dto.*;
 import com.nb6868.xquick.modules.uc.entity.RoleUserEntity;
 import com.nb6868.xquick.modules.uc.excel.UserExcel;

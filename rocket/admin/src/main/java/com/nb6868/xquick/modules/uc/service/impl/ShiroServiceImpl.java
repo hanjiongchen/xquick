@@ -6,7 +6,7 @@ import com.nb6868.xquick.modules.uc.UcConst.UserTypeEnum;
 import com.nb6868.xquick.modules.uc.dto.LoginChannelCfg;
 import com.nb6868.xquick.modules.uc.entity.TokenEntity;
 import com.nb6868.xquick.modules.uc.entity.UserEntity;
-import co.xquick.modules.uc.service.*;
+import com.nb6868.xquick.modules.uc.service.*;
 import com.nb6868.xquick.modules.uc.service.*;
 import com.nb6868.xquick.modules.uc.user.UserDetail;
 import com.google.common.base.Splitter;

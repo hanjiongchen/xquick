@@ -8,7 +8,7 @@ import com.nb6868.xquick.modules.uc.UcConst.UserTypeEnum;
 import com.nb6868.xquick.modules.uc.dao.RoleDao;
 import com.nb6868.xquick.modules.uc.dto.RoleDTO;
 import com.nb6868.xquick.modules.uc.entity.RoleEntity;
-import co.xquick.modules.uc.service.*;
+import com.nb6868.xquick.modules.uc.service.*;
 import com.nb6868.xquick.modules.uc.service.*;
 import com.nb6868.xquick.modules.uc.user.SecurityUser;
 import com.nb6868.xquick.modules.uc.user.UserDetail;

@@ -36,7 +36,7 @@ public class LogOperationAspect {
     @Autowired
     private OperationService logOperationService;
 
-    @Pointcut("@annotation(co.xquick.common.annotation.LogOperation)")
+    @Pointcut("@annotation(com.nb6868.xquick.common.annotation.LogOperation)")
     public void pointcut() { }
 
     @Around("pointcut()")

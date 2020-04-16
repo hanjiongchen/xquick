@@ -1,5 +1,6 @@
 package com.nb6868.xquick.modules.shop.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.booster.exception.ErrorCode;
 import com.nb6868.xquick.booster.exception.XquickException;
 import com.nb6868.xquick.booster.pojo.Const;
@@ -8,9 +9,6 @@ import com.nb6868.xquick.booster.util.WrapperUtils;
 import com.nb6868.xquick.booster.validator.AssertUtils;
 import com.nb6868.xquick.modules.shop.dao.SpuDao;
 import com.nb6868.xquick.modules.shop.dto.SpuDTO;
-import co.xquick.modules.shop.entity.*;
-import co.xquick.modules.shop.service.*;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.modules.shop.entity.*;
 import com.nb6868.xquick.modules.shop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
