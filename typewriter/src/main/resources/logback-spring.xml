@@ -6,6 +6,6 @@
 
     <logger name="org.springframework.web" level="INFO"/>
     <logger name="org.springboot.sample" level="INFO" />
-    <logger name="co.xquick" level="DEBUG" />
+    <logger name="com.nb6868.xquick" level="DEBUG" />
 
 </configuration>

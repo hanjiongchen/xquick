@@ -1,0 +1,39 @@
+package com.nb6868.xquick.modules.msg.excel;
+
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.Date;
+
+/**
+ * 短信发送记录
+ *
+ * @author Charles zhangchaoxu@gmail.com
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class SmsLogExcel {
+
+    @Excel(name = "短信内容")
+    private String content;
+    @Excel(name = "参数")
+    private String params;
+    @Excel(name = "手机号")
+    private String mobile;
+    @Excel(name = "发送结果")
+    private String result;
+    @Excel(name = "发送状态  0：失败  1：成功")
+    private Integer status;
+    @Excel(name = "创建者")
+    private Long creator;
+    @Excel(name = "创建时间")
+    private Date createDate;
+    @Excel(name = "更新者")
+    private Long updater;
+    @Excel(name = "更新时间")
+    private Date updateDate;
+    @Excel(name = "软删标记")
+    private Integer delFlag;
+
+}

@@ -1,13 +1,13 @@
 package ${package}.modules.${moduleName}.controller;
 
 import ${package}.common.annotation.LogOperation;
-import co.xquick.booster.pojo.PageData;
-import co.xquick.booster.pojo.Result;
-import co.xquick.booster.validator.AssertUtils;
-import co.xquick.booster.validator.ValidatorUtils;
-import co.xquick.booster.validator.group.AddGroup;
-import co.xquick.booster.validator.group.DefaultGroup;
-import co.xquick.booster.validator.group.UpdateGroup;
+import PageData;
+import Result;
+import AssertUtils;
+import ValidatorUtils;
+import AddGroup;
+import DefaultGroup;
+import UpdateGroup;
 import ${package}.common.util.ExcelUtils;
 import ${package}.modules.${moduleName}.dto.${className}DTO;
 import ${package}.modules.${moduleName}.excel.${className}Excel;
