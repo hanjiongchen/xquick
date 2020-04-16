@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="visible" title="云存储配置" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form v-loading="formLoading" :model="paramDataForm" :rules="dataRule" ref="dataForm"  label-width="150px">
+    <el-form v-loading="formLoading" :model="paramDataForm" :rules="dataRule" ref="dataForm"  label-width="120px">
       <el-form-item :label="$t('base.type')" size="mini">
         <el-radio-group v-model="paramDataForm.type">
           <el-radio label="aliyun">阿里云</el-radio>
@@ -23,30 +23,54 @@
         <el-form-item prop="endPoint" label="EndPoint">
           <el-input v-model="paramDataForm.endPoint" placeholder="EndPoint"/>
         </el-form-item>
-        <el-form-item prop="accessKeyId" label="AccessKeyId">
-          <el-input v-model="paramDataForm.accessKeyId" placeholder="AccessKeyId"/>
-        </el-form-item>
-        <el-form-item prop="accessKeySecret" label="AccessKeySecret">
-          <el-input v-model="paramDataForm.accessKeySecret" placeholder="AccessKeySecret"/>
-        </el-form-item>
-        <el-form-item prop="bucketName" label="BucketName">
-          <el-input v-model="paramDataForm.bucketName" placeholder="BucketName"/>
-        </el-form-item>
-        <el-form-item prop="region" label="区域">
-          <el-input v-model="paramDataForm.region" placeholder="区域 如cn-hangzhou"/>
-        </el-form-item>
-        <el-form-item prop="roleArn" label="角色ARN">
-          <el-input v-model="paramDataForm.roleArn" placeholder="角色ARN"/>
-        </el-form-item>
-        <el-form-item prop="roleSessionName" label="角色SessionName">
-          <el-input v-model="paramDataForm.roleSessionName" placeholder="角色SessionName"/>
-        </el-form-item>
-        <el-form-item prop="stsDurationSeconds" label="STS有效秒数">
-          <el-input-number v-model="paramDataForm.stsDurationSeconds" placeholder="STS有效秒数" controls-position="right" :min="900" :max="3600" class="w-percent-100"/>
-        </el-form-item>
-        <el-form-item prop="secure" label="STS安全访问">
-          <el-switch v-model="paramDataForm.secure"/>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="accessKeyId" label="KeyId">
+              <el-input v-model="paramDataForm.accessKeyId" placeholder="AccessKeyId"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="accessKeySecret" label="KeySecret">
+              <el-input v-model="paramDataForm.accessKeySecret" placeholder="AccessKeySecret"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="bucketName" label="Bucke">
+              <el-input v-model="paramDataForm.bucketName" placeholder="BucketName"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="region" label="区域">
+              <el-input v-model="paramDataForm.region" placeholder="区域 如cn-hangzhou"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="roleArn" label="角色ARN">
+              <el-input v-model="paramDataForm.roleArn" placeholder="角色ARN"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="roleSessionName" label="角色SN">
+              <el-input v-model="paramDataForm.roleSessionName" placeholder="角色SessionName"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="stsDurationSeconds" label="STS有效秒数">
+              <el-input-number v-model="paramDataForm.stsDurationSeconds" placeholder="STS有效秒数" controls-position="right" :min="900" :max="3600" class="w-percent-100"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="secure" label="STS安全访问">
+              <el-switch v-model="paramDataForm.secure"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </template>
       <template v-else-if="paramDataForm.type === 'local'">
         <el-form-item prop="localPath" label="存储目录">

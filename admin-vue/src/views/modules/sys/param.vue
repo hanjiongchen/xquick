@@ -26,7 +26,8 @@
                 </el-table-column>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
-                        <el-button v-if="$hasPermission('sys:param:update')" type="text" size="small" @click="editHandle(scope.row.id, scope.row.code)">{{ $t('update') }}</el-button>
+                        <el-button v-if="$hasPermission('sys:param:update')" type="text" size="small" @click="editHandle(scope.row.id, scope.row.code)">编辑内容</el-button>
+                        <el-button v-if="$hasPermission('sys:param:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
                         <el-button v-if="$hasPermission('sys:param:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
                     </template>
                 </el-table-column>
@@ -42,20 +43,21 @@
             </el-pagination>
             <!-- 弹窗, 新增 / 修改 -->
             <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
+            <!-- 弹窗, 系统配置 -->
+            <sys-cfg v-if="sysCfgVisible" ref="sysCfg" @refreshDataList="getDataList"/>
             <!-- 弹窗, oss配置 -->
             <oss-cfg v-if="ossCfgVisible" ref="ossCfg" @refreshDataList="getDataList"/>
-            <!-- 弹窗, 登录配置 -->
-            <login-cfg v-if="loginCfgVisible" ref="loginCfg" @refreshDataList="getDataList"/>
+            <!-- 弹窗, 后台登录配置 -->
+            <login-admin-cfg v-if="loginAdminCfgVisible" ref="loginAdminCfg" @refreshDataList="getDataList"/>
+            <!-- 弹窗, 登录渠道配置 -->
+            <login-channel-cfg v-if="loginChannelCfgVisible" ref="loginChannelCfg" @refreshDataList="getDataList"/>
+
             <!-- 弹窗, App关于我们配置 -->
             <app-about-config v-if="appAboutConfigVisible" ref="appAboutConfig" @refreshDataList="getDataList"/>
-            <!-- 弹窗, App跑马灯配置 -->
-            <app-banner-config v-if="appBannerConfigVisible" ref="appBannerConfig" @refreshDataList="getDataList"/>
             <!-- 弹窗, App启动页配置 -->
             <app-loading-config v-if="appLoadingConfigVisible" ref="appLoadingConfig" @refreshDataList="getDataList"/>
             <!-- 弹窗, App客服配置-->
             <app-service-config v-if="appServiceConfigVisible" ref="appServiceConfig" @refreshDataList="getDataList"/>
-            <!-- 弹窗, App版本号配置-->
-            <app-version-config v-if="appVersionConfigVisible" ref="appVersionConfig" @refreshDataList="getDataList"/>
         </div>
     </el-card>
 </template>
@@ -66,17 +68,17 @@ import mixinListModule from '@/mixins/list-module'
 
 import AddOrUpdate from './param-add-or-update'
 import OssCfg from './param-oss-cfg'
-import LoginCfg from './param-login-cfg'
+import LoginAdminCfg from './param-login-admin-cfg'
+import LoginChannelCfg from './param-login-channel-cfg'
+import SysCfg from './param-sys-cfg'
 
 import AppAboutConfig from './params-app-about-config'
-import AppBannerConfig from './params-app-banner-config'
 import AppLoadingConfig from './params-app-loading-config'
 import AppServiceConfig from './params-app-service-config'
-import AppVersionConfig from './params-app-version-config'
 
 export default {
   mixins: [mixinBaseModule, mixinListModule],
-  components: { AddOrUpdate, LoginCfg, OssCfg, AppAboutConfig, AppBannerConfig, AppLoadingConfig, AppServiceConfig, AppVersionConfig },
+  components: { AddOrUpdate, SysCfg, LoginAdminCfg, LoginChannelCfg, OssCfg, AppAboutConfig, AppLoadingConfig, AppServiceConfig },
   data () {
     return {
       mixinListModuleOptions: {
@@ -87,21 +89,21 @@ export default {
         deleteBatchURL: '/sys/param/deleteBatch',
         deleteIsBatch: true
       },
-      // 登录配置
-      loginCfgVisible: false,
+      // 系统配置
+      sysCfgVisible: false,
+      // 后台登录配置
+      loginAdminCfgVisible: false,
+      // 登录渠道配置
+      loginChannelCfgVisible: false,
       // 云存储配置
       ossCfgVisible: false,
 
       // App关于我们配置
       appAboutConfigVisible: false,
-      // App跑马灯配置
-      appBannerConfigVisible: false,
       // App启动页配置
       appLoadingConfigVisible: false,
       // App客服配置
       appServiceConfigVisible: false,
-      // App版本号配置
-      appVersionConfigVisible: false,
       dataForm: {
         code: ''
       }
@@ -119,11 +121,23 @@ export default {
   methods: {
     // 修改
     editHandle (id, code) {
-      if (code.startsWith('LOGIN_CFG')) {
-        this.loginCfgVisible = true
+      if (code === 'SYS_CFG') {
+        this.sysCfgVisible = true
         this.$nextTick(() => {
-          this.$refs.loginCfg.dataForm.id = id
-          this.$refs.loginCfg.init()
+          this.$refs.sysCfg.dataForm.id = id
+          this.$refs.sysCfg.init()
+        })
+      } else if (code === 'LOGIN_CFG_ADMIN') {
+        this.loginAdminCfgVisible = true
+        this.$nextTick(() => {
+          this.$refs.loginAdminCfg.dataForm.id = id
+          this.$refs.loginAdminCfg.init()
+        })
+      } else if (code.startsWith('LOGIN_CHANNEL_CFG')) {
+        this.loginChannelCfgVisible = true
+        this.$nextTick(() => {
+          this.$refs.loginChannelCfg.dataForm.id = id
+          this.$refs.loginChannelCfg.init()
         })
       } else if (code.startsWith('OSS_CFG')) {
         this.ossCfgVisible = true
@@ -131,23 +145,11 @@ export default {
           this.$refs.ossCfg.dataForm.id = id
           this.$refs.ossCfg.init()
         })
-      } else if (code === 'SMS_CONFIG_KEY') {
-        this.smsConfigVisible = true
-        this.$nextTick(() => {
-          this.$refs.smsConfig.dataForm.id = id
-          this.$refs.smsConfig.init()
-        })
       } else if (code === 'APP_ABOUT_CONFIG_KEY') {
         this.appAboutConfigVisible = true
         this.$nextTick(() => {
           this.$refs.appAboutConfig.dataForm.id = id
           this.$refs.appAboutConfig.init()
-        })
-      } else if (code === 'APP_BANNER_CONFIG_KEY') {
-        this.appBannerConfigVisible = true
-        this.$nextTick(() => {
-          this.$refs.appBannerConfig.dataForm.id = id
-          this.$refs.appBannerConfig.init()
         })
       } else if (code === 'APP_LOADING_CONFIG_KEY') {
         this.appLoadingConfigVisible = true
@@ -160,12 +162,6 @@ export default {
         this.$nextTick(() => {
           this.$refs.appServiceConfig.dataForm.id = id
           this.$refs.appServiceConfig.init()
-        })
-      } else if (code === 'APP_VERSION_CONFIG_KEY') {
-        this.appVersionConfigVisible = true
-        this.$nextTick(() => {
-          this.$refs.appVersionConfig.dataForm.id = id
-          this.$refs.appVersionConfig.init()
         })
       } else {
         this.addOrUpdateHandle(id)
