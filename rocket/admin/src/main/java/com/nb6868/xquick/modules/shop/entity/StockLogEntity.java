@@ -23,9 +23,9 @@ public class StockLogEntity extends BaseEntity {
 	 */
 	@TableField(fill = FieldFill.INSERT)
 	private String createName;
-    /**
-     * spu id
-     */
+	/**
+	 * spu id
+	 */
 	private Long spuId;
 	/**
 	 * spu name
@@ -35,24 +35,28 @@ public class StockLogEntity extends BaseEntity {
 	 * sku name
 	 */
 	private String skuName;
-    /**
-     * sku id
-     */
+	/**
+	 * remark
+	 */
+	private String remark;
+	/**
+	 * sku id
+	 */
 	private Long skuId;
-    /**
-     * 类型 0 入库 1 出库
-     */
+	/**
+	 * 类型 0 入库 1 出库
+	 */
 	private Integer type;
-    /**
-     * 入库数量
-     */
+	/**
+	 * 入库数量
+	 */
 	private Integer inQty;
-    /**
-     * 出库数量
-     */
+	/**
+	 * 出库数量
+	 */
 	private Integer outQty;
-    /**
-     * 出入库后库存
-     */
+	/**
+	 * 出入库后库存
+	 */
 	private Integer stock;
 }

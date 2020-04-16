@@ -10,6 +10,7 @@ import com.nb6868.xquick.booster.validator.group.UpdateGroup;
 import com.nb6868.xquick.common.annotation.LogOperation;
 import com.nb6868.xquick.common.util.ExcelUtils;
 import com.nb6868.xquick.modules.shop.dto.OrderDTO;
+import com.nb6868.xquick.modules.shop.dto.OrderPlaceRequest;
 import com.nb6868.xquick.modules.shop.excel.OrderExcel;
 import com.nb6868.xquick.modules.shop.service.OrderService;
 import io.swagger.annotations.Api;
@@ -125,6 +126,17 @@ public class OrderController {
         List<OrderDTO> list = orderService.listDto(params);
 
         ExcelUtils.exportExcelToTarget(response, "订单", list, OrderExcel.class);
+    }
+
+    @PostMapping("place")
+    @ApiOperation("下单")
+    @LogOperation("下单")
+    @RequiresPermissions("shop:order:place")
+    public Result<?> place(@RequestBody OrderPlaceRequest dto) {
+        // 效验数据
+        ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
+
+        return new Result<>().ok(dto);
     }
 
 }

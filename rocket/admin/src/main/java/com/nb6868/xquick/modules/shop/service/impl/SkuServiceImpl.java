@@ -20,7 +20,7 @@ import java.util.Map;
 public class SkuServiceImpl extends CrudServiceImpl<SkuDao, SkuEntity, SkuDTO> implements SkuService {
 
     @Override
-    public QueryWrapper<SkuEntity> getWrapper(String method, Map<String, Object> params){
+    public QueryWrapper<SkuEntity> getWrapper(String method, Map<String, Object> params) {
         return new WrapperUtils<SkuEntity>(new QueryWrapper<>(), params)
                 .like("name", "name")
                 .eq("storeId", "store_id")

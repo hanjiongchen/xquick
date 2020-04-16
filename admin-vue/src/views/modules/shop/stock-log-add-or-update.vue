@@ -7,27 +7,20 @@
                     <el-radio :label="1">出库</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="商品" prop="spuId">
-                <el-select v-model="dataForm.spuId" filterable placeholder="请选择商品" class="w-percent-100" @change="getSkuList('')">
-                    <el-option v-for="item in spuList" :key="item.id" :label="item.name" :value="item.id">
-                        <span style="float: left">{{ item.name }}</span>
-                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.sn }}</span>
-                    </el-option>
-                </el-select>
+            <el-form-item label="商品规格" prop="skuId">
+                <el-input v-model="dataForm.showName" placeholder="选择商品规格" readonly>
+                    <sku-pick class="small-button" slot="append" :spuId="dataForm.spuId" v-on:onSkuPicked="onSkuPicked"/>
+                </el-input>
             </el-form-item>
-            <el-form-item label="规格" prop="skuId">
-                <el-select v-model="dataForm.skuId" filterable placeholder="请选择商品规格" class="w-percent-100">
-                    <el-option v-for="item in skuList" :key="item.id" :label="item.name" :value="item.id">
-                        <span style="float: left">{{ item.name }}</span>
-                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.sn }}</span>
-                    </el-option>
-                </el-select>
-            </el-form-item>
+            <el-divider v-if="dataForm.skuId">当前库存{{ currentStock }}</el-divider>
             <el-form-item label="入库数量" prop="inQty" v-if="dataForm.type === 0">
                 <el-input-number v-model="dataForm.inQty" placeholder="输入入库数量" controls-position="right" :min="1" :max="99999999" class="w-percent-100"/>
             </el-form-item>
             <el-form-item label="出库数量" prop="outQty" v-if="dataForm.type === 1">
-                <el-input-number v-model="dataForm.outQty" placeholder="输入出库数量" controls-position="right" :min="1" :max="99999999" class="w-percent-100"/>
+                <el-input-number v-model="dataForm.outQty" placeholder="输入出库数量" controls-position="right" :min="1" :max="currentStock" class="w-percent-100"/>
+            </el-form-item>
+            <el-form-item label="备注" prop="remark">
+                <el-input v-model="dataForm.remark" placeholder="输入备注" type="textarea"/>
             </el-form-item>
         </el-form>
         <template slot="footer">
@@ -39,9 +32,11 @@
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
+import SkuPick from './sku-pick'
 
 export default {
   mixins: [mixinFormModule],
+  components: { SkuPick },
   data () {
     return {
       // 表单模块参数
@@ -50,15 +45,19 @@ export default {
         dataFormUpdateURL: `/shop/stockLog/update`,
         dataFormInfoURL: `/shop/stockLog/info?id=`
       },
-      spuList: [],
-      skuList: [],
+      // 当前库存
+      currentStock: 0,
       dataForm: {
         id: '',
         spuId: '',
+        spuName: '',
         skuId: '',
+        skuName: '',
         type: 0,
         inQty: '',
-        outQty: ''
+        outQty: '',
+        remark: '',
+        showName: ''
       }
     }
   },
@@ -86,32 +85,19 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.resetForm()
-        Promise.all([
-          this.getSpuList('')
-        ]).then(() => {
-          this.initFormData()
-        })
+        this.initFormData()
       })
     },
-    // 商品列表
-    getSpuList (search) {
-      return this.$http.get(`/shop/spu/list?limit=20&search=` + search).then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        this.spuList = res.data
-      }).catch(() => {
-      })
-    },
-    // 规格列表
-    getSkuList (search) {
-      return this.$http.get(`/shop/sku/list?limit=20&search=` + search + `&spuId=` + this.dataForm.spuId).then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        this.skuList = res.data
-      }).catch(() => {
-      })
+    // 选中sku
+    onSkuPicked (result) {
+      if (result) {
+        this.dataForm.skuId = result.sku.id
+        this.dataForm.skuName = result.sku.name
+        this.dataForm.spuName = result.spu.name
+        this.dataForm.spuId = result.spu.id
+        this.dataForm.showName = result.spu.name + ` ` + result.sku.name
+        this.currentStock = result.sku.stock
+      }
     }
   }
 }

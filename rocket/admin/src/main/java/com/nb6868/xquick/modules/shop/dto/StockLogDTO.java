@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "出入库记录")
 public class StockLogDTO extends BaseDTO {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "创建人姓名")
 	private String createName;
@@ -52,5 +52,8 @@ public class StockLogDTO extends BaseDTO {
 
 	@ApiModelProperty(value = "出入库后库存")
 	private Integer stock;
+
+	@ApiModelProperty(value = "备注")
+	private String remark;
 
 }

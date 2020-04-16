@@ -80,7 +80,7 @@
 import mixinListModule from '@/mixins/list-module'
 
 export default {
-  name: 'UserPick',
+  name: 'user-pick',
   // 参数
   props: {
     // 请求码

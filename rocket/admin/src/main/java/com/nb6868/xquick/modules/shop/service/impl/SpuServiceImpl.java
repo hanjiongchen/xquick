@@ -48,7 +48,7 @@ public class SpuServiceImpl extends CrudServiceImpl<SpuDao, SpuEntity, SpuDTO> i
                 .eq("marketable", "marketable")
                 .and("search", queryWrapper -> {
                     String search = (String) params.get("search");
-                    queryWrapper.like("name", search).or().like("sn", search).like("title", search);
+                    queryWrapper.like("name", search).or().like("sn", search).or().like("title", search);
                 })
                 .getQueryWrapper();
     }
