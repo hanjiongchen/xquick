@@ -80,6 +80,11 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
+                    <el-form-item label="商品总费用" prop="goodsPrice">
+                        <el-input v-model="dataForm.goodsPrice" placeholder="订单费用"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
                     <el-form-item label="订单费用" prop="orderPrice">
                         <el-input v-model="dataForm.orderPrice" placeholder="订单费用"></el-input>
                     </el-form-item>
@@ -207,11 +212,6 @@ export default {
         id: '',
         status: '',
         no: '',
-        createId: '',
-        createTime: '',
-        updateId: '',
-        updateTime: '',
-        deleted: '',
         userId: '',
         message: '',
         productIds: '',
@@ -254,21 +254,6 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         no: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        createTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateId: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        updateTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        deleted: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         userId: [

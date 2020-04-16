@@ -72,7 +72,7 @@ public class OrderController {
     public Result<?> save(@RequestBody OrderDTO dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
-
+        dto.setNo(orderService.generateOrderSn());
         orderService.saveDto(dto);
 
         return new Result<>().ok(dto);
