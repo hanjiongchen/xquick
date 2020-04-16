@@ -1,6 +1,5 @@
 package com.nb6868.xquick.config;
 
-import co.xquick.dao.*;
 import com.nb6868.xquick.dao.*;
 import com.nb6868.xquick.utils.XquickException;
 import org.springframework.beans.factory.annotation.Autowired;
