@@ -17,10 +17,6 @@ public class ReleaseEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
     /**
-     * android/ios/api/vue
-     */
-	private String type;
-    /**
      * 编码
      */
 	private String code;
@@ -51,5 +47,5 @@ public class ReleaseEntity extends BaseEntity {
     /**
      * 显示在下载页面
      */
-	private Integer show;
+	private Integer showInPage;
 }

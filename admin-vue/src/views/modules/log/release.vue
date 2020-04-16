@@ -5,9 +5,6 @@
         <el-form-item class="small-item">
           <el-input v-model="dataForm.code" placeholder="编码" clearable/>
         </el-form-item>
-        <el-form-item class="small-item">
-          <el-input v-model="dataForm.type" placeholder="类型" clearable/>
-        </el-form-item>
         <el-form-item>
           <el-input v-model="dataForm.content" placeholder="更新内容" clearable/>
         </el-form-item>
@@ -22,13 +19,15 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column prop="name" label="名称" header-align="center" align="center" width="150"/>
-        <el-table-column prop="versionNo" label="版本号" header-align="center" align="center" width="100"/>
+        <el-table-column type="selection" header-align="center" align="center" width="50"/>
+        <el-table-column prop="code" sortable="custom" label="编码" header-align="center" align="center" width="100"/>
+        <el-table-column prop="name" label="名称" header-align="center" align="center" width="120"/>
+        <el-table-column prop="versionNo" sortable="custom" label="版本号" header-align="center" align="center" width="100"/>
         <el-table-column prop="versionName" label="版本名称" header-align="center" align="center" width="120"/>
         <el-table-column prop="content" label="更新内容" header-align="center" align="center" min-width="150" show-overflow-tooltip/>
         <el-table-column prop="downloadLink" label="下载链接" header-align="center" align="center" min-width="120" show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-link v-if="scope.row.downloadLink" :underline="false">{{ scope.row.downloadLink }}</el-link>
+            <el-link type="primary" v-if="scope.row.downloadLink" :underline="false" :href="scope.row.downloadLink">{{ scope.row.downloadLink }}</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="forceUpdate" label="强制更新" header-align="center" align="center" width="80">
