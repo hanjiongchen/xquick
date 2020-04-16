@@ -9,9 +9,9 @@ import com.nb6868.xquick.booster.validator.group.DefaultGroup;
 import com.nb6868.xquick.booster.validator.group.UpdateGroup;
 import com.nb6868.xquick.common.annotation.LogOperation;
 import com.nb6868.xquick.common.util.ExcelUtils;
-import com.nb6868.xquick.modules.shop.dto.OrderDTO;
-import com.nb6868.xquick.modules.shop.excel.OrderExcel;
-import com.nb6868.xquick.modules.shop.service.OrderService;
+import com.nb6868.xquick.modules.shop.dto.OrderItemDTO;
+import com.nb6868.xquick.modules.shop.excel.OrderItemExcel;
+import com.nb6868.xquick.modules.shop.service.OrderItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,56 +24,56 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 订单
+ * 订单明细
  *
  * @author Charles zhangchaoxu@gmail.com
  */
 @RestController
-@RequestMapping("shop/order")
-@Api(tags="订单")
-public class OrderController {
+@RequestMapping("shop/orderItem")
+@Api(tags="订单明细")
+public class OrderItemController {
     @Autowired
-    private OrderService orderService;
+    private OrderItemService orderItemService;
 
     @GetMapping("list")
     @ApiOperation("列表")
-    @RequiresPermissions("shop:order:list")
+    @RequiresPermissions("shop:orderItem:list")
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
-        List<OrderDTO> list = orderService.listDto(params);
+        List<OrderItemDTO> list = orderItemService.listDto(params);
 
         return new Result<>().ok(list);
     }
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @RequiresPermissions("shop:order:page")
+    @RequiresPermissions("shop:orderItem:page")
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
-        PageData<OrderDTO> page = orderService.pageDto(params);
+        PageData<OrderItemDTO> page = orderItemService.pageDto(params);
 
         return new Result<>().ok(page);
     }
 
     @GetMapping("info")
     @ApiOperation("信息")
-    @RequiresPermissions("shop:order:info")
+    @RequiresPermissions("shop:orderItem:info")
     public Result<?> info(@RequestParam Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
-        OrderDTO data = orderService.getDtoById(id);
+        OrderItemDTO data = orderItemService.getDtoById(id);
 
-        return new Result<OrderDTO>().ok(data);
+        return new Result<OrderItemDTO>().ok(data);
     }
 
     @PostMapping("save")
     @ApiOperation("保存")
     @LogOperation("保存")
-    @RequiresPermissions("shop:order:save")
-    public Result<?> save(@RequestBody OrderDTO dto) {
+    @RequiresPermissions("shop:orderItem:save")
+    public Result<?> save(@RequestBody OrderItemDTO dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        orderService.saveDto(dto);
+        orderItemService.saveDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -81,12 +81,12 @@ public class OrderController {
     @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
-    @RequiresPermissions("shop:order:update")
-    public Result<?> update(@RequestBody OrderDTO dto) {
+    @RequiresPermissions("shop:orderItem:update")
+    public Result<?> update(@RequestBody OrderItemDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        orderService.updateDto(dto);
+        orderItemService.updateDto(dto);
 
         return new Result<>().ok(dto);
     }
@@ -94,12 +94,12 @@ public class OrderController {
     @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
-    @RequiresPermissions("shop:order:delete")
+    @RequiresPermissions("shop:orderItem:delete")
     public Result<?> delete(@RequestBody Long id) {
         // 效验参数
         AssertUtils.isEmpty(id, "id");
 
-        orderService.logicDeleteById(id);
+        orderItemService.logicDeleteById(id);
 
         return new Result<>();
     }
@@ -107,12 +107,12 @@ public class OrderController {
     @DeleteMapping("deleteBatch")
     @ApiOperation("批量删除")
     @LogOperation("批量删除")
-    @RequiresPermissions("shop:order:deleteBatch")
+    @RequiresPermissions("shop:orderItem:deleteBatch")
     public Result<?> deleteBatch(@RequestBody List<Long> ids) {
         // 效验参数
         AssertUtils.isListEmpty(ids, "id");
 
-        orderService.logicDeleteByIds(ids);
+        orderItemService.logicDeleteByIds(ids);
 
         return new Result<>();
     }
@@ -120,11 +120,11 @@ public class OrderController {
     @GetMapping("export")
     @ApiOperation("导出")
     @LogOperation("导出")
-    @RequiresPermissions("shop:order:export")
+    @RequiresPermissions("shop:orderItem:export")
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
-        List<OrderDTO> list = orderService.listDto(params);
+        List<OrderItemDTO> list = orderItemService.listDto(params);
 
-        ExcelUtils.exportExcelToTarget(response, "订单", list, OrderExcel.class);
+        ExcelUtils.exportExcelToTarget(response, "订单明细", list, OrderItemExcel.class);
     }
 
 }

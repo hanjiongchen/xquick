@@ -1,12 +1,12 @@
 package com.nb6868.xquick.modules.shop.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.booster.service.impl.CrudServiceImpl;
 import com.nb6868.xquick.booster.util.WrapperUtils;
 import com.nb6868.xquick.modules.shop.dao.OrderDao;
 import com.nb6868.xquick.modules.shop.dto.OrderDTO;
 import com.nb6868.xquick.modules.shop.entity.OrderEntity;
 import com.nb6868.xquick.modules.shop.service.OrderService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,7 +21,6 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
 
     @Override
     public QueryWrapper<OrderEntity> getWrapper(String method, Map<String, Object> params){
-
         return new WrapperUtils<OrderEntity>(new QueryWrapper<>(), params)
                 .like("no", "no")
                 .eq("userId", "user_id")

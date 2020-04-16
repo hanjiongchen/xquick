@@ -18,119 +18,63 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(value = "订单")
 public class OrderDTO extends BaseDTO {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "状态")
+	@ApiModelProperty(value = "状态 0：待付款  1：待发货  2:待收货  3：待评价  -1：退款   -2：售后")
 	private Integer status;
 
 	@ApiModelProperty(value = "订单号")
 	private String no;
 
-	@ApiModelProperty(value = "创建者")
-	private Long createId;
+	@ApiModelProperty(value = "用户id")
+	private Long userId;
 
-	@ApiModelProperty(value = "创建时间")
-	private Date createTime;
+	@ApiModelProperty(value = "用户备注")
+	private String userRemark;
 
-	@ApiModelProperty(value = "更新者")
-	private Long updateId;
+	@ApiModelProperty(value = "商品费用")
+	private BigDecimal spuPrice;
 
-	@ApiModelProperty(value = "更新时间")
-	private Date updateTime;
+	@ApiModelProperty(value = "订单费用")
+	private BigDecimal price;
 
-	@ApiModelProperty(value = "删除标记")
-	private Integer deleted;
-
-	@ApiModelProperty(value = "用户表的用户ID")
-	private Integer userId;
-
-	@ApiModelProperty(value = "用户订单留言")
-	private String message;
-
-	@ApiModelProperty(value = "商品ids,用逗号隔开")
-	private String productIds;
-
-	@ApiModelProperty(value = "")
-	private String productCategory;
-
-	@ApiModelProperty(value = "")
-	private String productSkus;
-
-	@ApiModelProperty(value = "商品名称")
-	private String productNames;
-
-	@ApiModelProperty(value = "下单数量，逗号隔开")
-	private String productAmount;
-
-	@ApiModelProperty(value = "产品备注，[=====]隔开")
-	private String productRemarks;
-
-	@ApiModelProperty(value = "产品封面")
-	private String productCovers;
-
-	@ApiModelProperty(value = "单价")
-	private String productPrices;
-
-	@ApiModelProperty(value = "商品总费用")
-	private BigDecimal goodsPrice;
-
-	@ApiModelProperty(value = "配送费用")
-	private BigDecimal freightPrice;
-
-	@ApiModelProperty(value = "优惠券减免")
-	private BigDecimal couponPrice;
-
-	@ApiModelProperty(value = "用户积分减免")
-	private BigDecimal integralPrice;
-
-	@ApiModelProperty(value = "团购优惠价减免")
-	private BigDecimal grouponPrice;
-
-	@ApiModelProperty(value = "订单费用， = goods_price + freight_price - coupon_price")
-	private BigDecimal orderPrice;
-
-	@ApiModelProperty(value = "实付费用， = order_price - integral_price")
-	private BigDecimal actualPrice;
+	@ApiModelProperty(value = "实付费用")
+	private BigDecimal payPrice;
 
 	@ApiModelProperty(value = "支付ID")
 	private String prepayId;
 
-	@ApiModelProperty(value = "微信付款时间")
+	@ApiModelProperty(value = "支付类型 0 无须支付 1 现金交易 2 银行转账 3 支付宝支付 4 微信支付")
+	private Integer payType;
+
+	@ApiModelProperty(value = "付款时间")
 	private Date payTime;
 
-	@ApiModelProperty(value = "快递单号")
-	private String expressno;
+	@ApiModelProperty(value = "物流单号")
+	private String expressNo;
 
-	@ApiModelProperty(value = "快递寄出日期")
-	private Date expressdelivedate;
+	@ApiModelProperty(value = "物流类型")
+	private String expressType;
 
-	@ApiModelProperty(value = "快递名称")
-	private String expressname;
-
-	@ApiModelProperty(value = "订单内部备注")
-	private String remarkmgr;
-
-	@ApiModelProperty(value = "确认出库时间")
-	private String checkdate;
-
-	@ApiModelProperty(value = "是否确认出库")
-	private Integer ischeckout;
-
-	@ApiModelProperty(value = "优惠券ID")
-	private String preferentialid;
+	@ApiModelProperty(value = "物流费用")
+	private BigDecimal expressPrice;
 
 	@ApiModelProperty(value = "收货地址id")
-	private Integer receiverId;
+	private Long receiverId;
 
 	@ApiModelProperty(value = "收件人")
 	private String receiverConsignee;
 
-	@ApiModelProperty(value = "收件人手机号")
+	@ApiModelProperty(value = "收件人电话")
 	private String receiverMobile;
 
-	@ApiModelProperty(value = "收件人地址")
+	@ApiModelProperty(value = "收件详细地址")
 	private String receiverAddress;
 
-	@ApiModelProperty(value = "订单关闭时间")
-	private Date endTime;
+	@ApiModelProperty(value = "收件地址区域编码")
+	private String receiverRegionCode;
+
+	@ApiModelProperty(value = "收件地址区域")
+	private String receiverRegionName;
+
 }

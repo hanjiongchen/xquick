@@ -6,22 +6,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * 购物车
+ * 订单明细
  *
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-@TableName("shop_cart")
-public class CartEntity extends BaseEntity {
+@TableName("shop_order_item")
+public class OrderItemEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
     /**
-     * 会员id
+     * 订单id
      */
-	private Long userId;
+	private Long orderId;
     /**
      * spu id
      */
@@ -31,15 +32,31 @@ public class CartEntity extends BaseEntity {
      */
 	private Long skuId;
     /**
-     * 商铺id
-     */
-	private Long storeId;
-    /**
      * 数量
      */
 	private BigDecimal qty;
     /**
-     * 状态0 未下单 1 已下单
+     * 单价
      */
-	private Integer status;
+	private BigDecimal price;
+    /**
+     * 实付费用
+     */
+	private BigDecimal payPrice;
+    /**
+     * spu名称
+     */
+	private String spuName;
+    /**
+     * sku名称
+     */
+	private String skuName;
+    /**
+     * spu封面
+     */
+	private String spuCover;
+    /**
+     * sku封面
+     */
+	private String skuCover;
 }

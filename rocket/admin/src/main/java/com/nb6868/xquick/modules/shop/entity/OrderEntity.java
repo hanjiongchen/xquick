@@ -19,156 +19,80 @@ import java.util.Date;
 public class OrderEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 状态
-	 */
+    /**
+     * 状态 0：待付款  1：待发货  2:待收货  3：待评价  -1：退款   -2：售后
+     */
 	private Integer status;
-	/**
-	 * 订单号
-	 */
+    /**
+     * 订单号
+     */
 	private String no;
-	/**
-	 * 创建者
-	 */
-	private Long createId;
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
-	/**
-	 * 更新者
-	 */
-	private Long updateId;
-	/**
-	 * 更新时间
-	 */
-	private Date updateTime;
-	/**
-	 * 删除标记
-	 */
-	private Integer deleted;
-	/**
-	 * 用户表的用户ID
-	 */
-	private Integer userId;
-	/**
-	 * 用户订单留言
-	 */
-	private String message;
-	/**
-	 * 商品ids,用逗号隔开
-	 */
-	private String productIds;
-	/**
-	 *
-	 */
-	private String productCategory;
-	/**
-	 *
-	 */
-	private String productSkus;
-	/**
-	 * 商品名称
-	 */
-	private String productNames;
-	/**
-	 * 下单数量，逗号隔开
-	 */
-	private String productAmount;
-	/**
-	 * 产品备注，[=====]隔开
-	 */
-	private String productRemarks;
-	/**
-	 * 产品封面
-	 */
-	private String productCovers;
-	/**
-	 * 单价
-	 */
-	private String productPrices;
-	/**
-	 * 商品总费用
-	 */
-	private BigDecimal goodsPrice;
-	/**
-	 * 配送费用
-	 */
-	private BigDecimal freightPrice;
-	/**
-	 * 优惠券减免
-	 */
-	private BigDecimal couponPrice;
-	/**
-	 * 用户积分减免
-	 */
-	private BigDecimal integralPrice;
-	/**
-	 * 团购优惠价减免
-	 */
-	private BigDecimal grouponPrice;
-	/**
-	 * 订单费用， = goods_price + freight_price - coupon_price
-	 */
-	private BigDecimal orderPrice;
-	/**
-	 * 实付费用， = order_price - integral_price
-	 */
-	private BigDecimal actualPrice;
-	/**
-	 * 支付ID
-	 */
+    /**
+     * 用户id
+     */
+	private Long userId;
+    /**
+     * 用户备注
+     */
+	private String userRemark;
+    /**
+     * 商品费用
+     */
+	private BigDecimal spuPrice;
+    /**
+     * 订单费用
+     */
+	private BigDecimal price;
+    /**
+     * 实付费用
+     */
+	private BigDecimal payPrice;
+    /**
+     * 支付ID
+     */
 	private String prepayId;
-	/**
-	 * 微信付款时间
-	 */
+    /**
+     * 支付类型 0 无须支付 1 现金交易 2 银行转账 3 支付宝支付 4 微信支付
+     */
+	private Integer payType;
+    /**
+     * 付款时间
+     */
 	private Date payTime;
-	/**
-	 * 快递单号
-	 */
-	private String expressno;
-	/**
-	 * 快递寄出日期
-	 */
-	private Date expressdelivedate;
-	/**
-	 * 快递名称
-	 */
-	private String expressname;
-	/**
-	 * 订单内部备注
-	 */
-	private String remarkmgr;
-	/**
-	 * 确认出库时间
-	 */
-	private String checkdate;
-	/**
-	 * 是否确认出库
-	 */
-	private Integer ischeckout;
-	/**
-	 * 优惠券ID
-	 */
-	private String preferentialid;
-	/**
-	 * 收货地址id
-	 */
-	private Integer receiverId;
-	/**
-	 * 收件人
-	 */
+    /**
+     * 物流单号
+     */
+	private String expressNo;
+    /**
+     * 物流类型
+     */
+	private String expressType;
+    /**
+     * 物流费用
+     */
+	private BigDecimal expressPrice;
+    /**
+     * 收货地址id
+     */
+	private Long receiverId;
+    /**
+     * 收件人
+     */
 	private String receiverConsignee;
-	/**
-	 * 收件人手机号
-	 */
+    /**
+     * 收件人电话
+     */
 	private String receiverMobile;
-	/**
-	 * 收件人地址
-	 */
+    /**
+     * 收件详细地址
+     */
 	private String receiverAddress;
-	/**
-	 * 订单关闭时间
-	 */
-	private Date endTime;
+    /**
+     * 收件地址区域编码
+     */
+	private String receiverRegionCode;
+    /**
+     * 收件地址区域
+     */
+	private String receiverRegionName;
 }
