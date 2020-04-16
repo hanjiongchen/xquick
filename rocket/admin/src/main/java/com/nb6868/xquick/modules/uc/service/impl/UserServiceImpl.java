@@ -1,8 +1,12 @@
 package com.nb6868.xquick.modules.uc.service.impl;
 
-import com.nb6868.xquick.booster.pojo.Const;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.nb6868.xquick.booster.exception.ErrorCode;
 import com.nb6868.xquick.booster.exception.XquickException;
+import com.nb6868.xquick.booster.pojo.Const;
 import com.nb6868.xquick.booster.pojo.Result;
 import com.nb6868.xquick.booster.service.impl.CrudServiceImpl;
 import com.nb6868.xquick.booster.util.*;
@@ -22,13 +26,6 @@ import com.nb6868.xquick.modules.uc.entity.UserEntity;
 import com.nb6868.xquick.modules.uc.service.*;
 import com.nb6868.xquick.modules.uc.user.SecurityUser;
 import com.nb6868.xquick.modules.uc.user.UserDetail;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.nb6868.xquick.booster.util.*;
-import com.nb6868.xquick.modules.uc.dto.*;
-import com.nb6868.xquick.modules.uc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -279,8 +276,8 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
                     // 用户id
                     String userIdentifier = jwt.getSubject();
                     // 有效期
-                    Date expireDate = jwt.getExpiresAt();
-                    if (expireDate.after(new Date())) {
+                    Date expireTime = jwt.getExpiresAt();
+                    if (expireTime.after(new Date())) {
                         loginResult = ErrorCode.APPLE_LOGIN_ERROR;
                     } else {
                         // todo 使用apple keys做验证
