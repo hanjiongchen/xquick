@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="visible" title="直传阿里云OSS" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form  label-width="120px">
+  <el-dialog :visible.sync="visible" title="直传阿里云OSS" :close-on-click-modal="false" :close-on-press-escape="false" width="30%">
+    <el-form label-width="120px">
       <el-form-item prop="paramCode" label="OSS参数编码">
         <el-input v-model="paramCode" placeholder="请输入OSS参数编码"/>
       </el-form-item>

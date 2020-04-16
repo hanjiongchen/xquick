@@ -1,19 +1,25 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="$t('upload')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-upload
-      :action="url"
-      :file-list="fileList"
-      drag
-      multiple
-      :data="{paramCode : 'OSS_CFG_PUB'}"
-      :headers="{token: token}"
-      :before-upload="beforeUploadHandle"
-      :on-success="successHandle"
-      class="text-center">
-      <i class="el-icon-upload"/>
-      <div class="el-upload__text" v-html="$t('uploadText')"></div>
-      <div class="el-upload__tip" slot="tip">{{ $t('uploadTip', { 'format': 'jpg、png、gif' }) }}</div>
-    </el-upload>
+  <el-dialog :visible.sync="visible" :title="$t('upload')" :close-on-click-modal="false" :close-on-press-escape="false" width="30%">
+    <el-form label-width="120px">
+      <el-form-item prop="paramCode" label="OSS参数编码">
+        <el-input v-model="paramCode" placeholder="请输入OSS参数编码"/>
+      </el-form-item>
+      <el-form-item prop="file" label="上传文件">
+        <el-upload
+                :action="url"
+                :file-list="fileList"
+                drag
+                multiple
+                :data="{paramCode : paramCode}"
+                :headers="{token: token}"
+                :before-upload="beforeUploadHandle"
+                :on-success="successHandle">
+          <i class="el-icon-upload"/>
+          <div class="el-upload__text" v-html="$t('uploadText')"></div>
+          <div class="el-upload__tip" slot="tip">{{ $t('uploadTip', { 'format': 'jpg、png、gif' }) }}</div>
+        </el-upload>
+      </el-form-item>
+    </el-form>
   </el-dialog>
 </template>
 
@@ -24,6 +30,7 @@ export default {
     return {
       visible: false,
       url: '',
+      paramCode: 'OSS_CFG_PUB',
       num: 0,
       token: '',
       fileList: []
