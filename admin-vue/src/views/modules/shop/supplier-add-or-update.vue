@@ -14,7 +14,7 @@
                 </el-col>
             </el-row>
             <el-form-item label="状态" prop="status">
-                <el-radio-group v-model="dataForm.status">
+                <el-radio-group v-model="dataForm.status" size="mini">
                     <el-radio-button :label="1">已审核</el-radio-button>
                     <el-radio-button :label="0">未审核</el-radio-button>
                 </el-radio-group>
@@ -24,9 +24,6 @@
             </el-form-item>
             <el-form-item label="简介" prop="content">
                 <el-input v-model="dataForm.content" placeholder="简介" type="textarea"></el-input>
-            </el-form-item>
-            <el-form-item label="备注" prop="remark">
-                <el-input v-model="dataForm.remark" placeholder="备注" type="textarea"></el-input>
             </el-form-item>
         </el-form>
         <template slot="footer">

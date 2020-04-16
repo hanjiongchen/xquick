@@ -21,7 +21,7 @@
             </el-col>
             <el-col :span="12">
                 <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="dataForm.status">
+                    <el-radio-group v-model="dataForm.status" size="mini">
                         <el-radio-button :label="1">已审核</el-radio-button>
                         <el-radio-button :label="0">未审核</el-radio-button>
                     </el-radio-group>

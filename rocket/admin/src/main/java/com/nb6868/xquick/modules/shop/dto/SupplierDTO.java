@@ -23,9 +23,6 @@ public class SupplierDTO extends BaseDTO {
 	@ApiModelProperty(value = "名称")
 	private String name;
 
-	@ApiModelProperty(value = "备注")
-	private String remark;
-
 	@ApiModelProperty(value = "图片")
 	private String imgs;
 

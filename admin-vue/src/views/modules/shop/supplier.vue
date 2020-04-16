@@ -30,7 +30,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="content" label="简介" header-align="center" align="center" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="remark" label="备注" header-align="center" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:supplier:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

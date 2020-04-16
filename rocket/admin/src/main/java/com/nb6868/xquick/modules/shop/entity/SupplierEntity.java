@@ -25,10 +25,6 @@ public class SupplierEntity extends BaseEntity {
      */
 	private String name;
     /**
-     * 备注
-     */
-	private String remark;
-    /**
      * 图片
      */
 	private String imgs;
