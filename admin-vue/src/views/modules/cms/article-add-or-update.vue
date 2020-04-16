@@ -138,8 +138,6 @@ export default {
         lat: '',
         lng: '',
         address: '',
-        regionCd: '',
-        regionNm: '',
         pubDate: '',
         validFromDate: '',
         validToDate: '',
