@@ -47,7 +47,7 @@ public class AliyunOssService extends AbstractOssService {
             ossClient.shutdown();
         }
 
-        return config.getDomain() + "/" + path;
+        return config.getDomain() + (config.getDomain().endsWith("/") ? "" : "/") + path;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class AliyunOssService extends AbstractOssService {
     public Kv getSts() {
         try {
             // 添加endpoint（直接使用STS endpoint，无需添加region ID）
-            DefaultProfile.addEndpoint("", "Sts", "sts." + config.getRegion() +".aliyuncs.com");
+            DefaultProfile.addEndpoint("", "Sts", "sts." + config.getRegion() + ".aliyuncs.com");
             // 构造default profile（参数留空，无需添加region ID）
             IClientProfile profile = DefaultProfile.getProfile("", config.getAccessKeyId(), config.getAccessKeySecret());
             // 用profile构造client
