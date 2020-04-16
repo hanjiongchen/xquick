@@ -10,7 +10,10 @@ import com.nb6868.xquick.modules.shop.entity.OrderEntity;
 import com.nb6868.xquick.modules.shop.service.OrderService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 订单
@@ -39,5 +42,28 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
     @Override
     public boolean changeReceiver(OrderChangeReceiverRequest request) {
         return false;
+    }
+
+
+    @Override
+    // TODO 这里应该产生一个唯一的订单，但是实际上这里仍然存在两个订单相同的可能性
+    public String generateOrderSn() {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String now = df.format(LocalDate.now());
+        String orderSn = now + getRandomNum(6);
+
+        //此处需要一个逻辑去判断订单编号是否重复
+        return orderSn;
+    }
+
+    private String getRandomNum(Integer num) {
+        String base = "0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < num; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
     }
 }

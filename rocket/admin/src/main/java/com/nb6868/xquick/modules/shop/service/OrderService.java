@@ -17,4 +17,5 @@ public interface OrderService extends CrudService<OrderEntity, OrderDTO> {
      */
     boolean changeReceiver(OrderChangeReceiverRequest request);
 
+    public String generateOrderSn();
 }
