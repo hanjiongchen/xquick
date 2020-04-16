@@ -2,6 +2,7 @@ package com.nb6868.xquick.modules.shop.controller;
 
 import com.nb6868.xquick.booster.pojo.PageData;
 import com.nb6868.xquick.booster.pojo.Result;
+import com.nb6868.xquick.booster.util.ConvertUtils;
 import com.nb6868.xquick.booster.validator.AssertUtils;
 import com.nb6868.xquick.booster.validator.ValidatorUtils;
 import com.nb6868.xquick.booster.validator.group.AddGroup;
@@ -9,8 +10,10 @@ import com.nb6868.xquick.booster.validator.group.DefaultGroup;
 import com.nb6868.xquick.booster.validator.group.UpdateGroup;
 import com.nb6868.xquick.common.annotation.LogOperation;
 import com.nb6868.xquick.common.util.ExcelUtils;
+import com.nb6868.xquick.modules.shop.ShopConst;
 import com.nb6868.xquick.modules.shop.dto.OrderDTO;
 import com.nb6868.xquick.modules.shop.dto.OrderPlaceRequest;
+import com.nb6868.xquick.modules.shop.entity.OrderEntity;
 import com.nb6868.xquick.modules.shop.excel.OrderExcel;
 import com.nb6868.xquick.modules.shop.service.OrderService;
 import io.swagger.annotations.Api;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -131,10 +135,22 @@ public class OrderController {
     @PostMapping("place")
     @ApiOperation("下单")
     @LogOperation("下单")
-    @RequiresPermissions("shop:order:place")
+    @RequiresPermissions("shop:order:save")
     public Result<?> place(@RequestBody OrderPlaceRequest dto) {
         // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
+
+        OrderEntity orderEntity = ConvertUtils.sourceToTarget(dto, OrderEntity.class);
+        orderEntity.setNo(orderService.generateOrderSn());
+        orderEntity.setStatus(ShopConst.OrderStatusEnum.PLACED.value());
+        orderEntity.setSpuPrice(new BigDecimal(0));
+        orderEntity.setPrice(new BigDecimal(0));
+        orderEntity.setPayPrice(new BigDecimal(0));
+        orderEntity.setExpressPrice(new BigDecimal(0));
+        orderEntity.setPayType(0);
+        orderService.save(orderEntity);
+
+        // todo 启动一个DelayQueue延迟关闭订单
 
         return new Result<>().ok(dto);
     }

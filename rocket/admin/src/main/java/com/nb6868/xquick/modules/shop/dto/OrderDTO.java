@@ -77,4 +77,7 @@ public class OrderDTO extends BaseDTO {
 	@ApiModelProperty(value = "收件地址区域")
 	private String receiverRegionName;
 
+	@ApiModelProperty(value = "下单时间")
+	private Date placeTime;
+
 }

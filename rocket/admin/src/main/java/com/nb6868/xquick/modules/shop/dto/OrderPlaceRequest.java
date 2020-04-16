@@ -1,11 +1,14 @@
 package com.nb6868.xquick.modules.shop.dto;
 
 import com.nb6868.xquick.booster.pojo.BaseDTO;
+import com.nb6868.xquick.booster.validator.group.DefaultGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -19,7 +22,8 @@ import java.util.List;
 public class OrderPlaceRequest extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "用户id")
+	@ApiModelProperty(value = "用户id", required = true)
+	@NotNull(message = "用户不能为空", groups = DefaultGroup.class)
 	private Long userId;
 
 	@ApiModelProperty(value = "用户备注")
@@ -31,19 +35,23 @@ public class OrderPlaceRequest extends BaseDTO {
 	@ApiModelProperty(value = "收货地址id")
 	private Long receiverId;
 
-	@ApiModelProperty(value = "收件人")
+	@ApiModelProperty(value = "收件人", required = true)
+	@NotBlank(message = "收件人不能为空", groups = DefaultGroup.class)
 	private String receiverConsignee;
 
-	@ApiModelProperty(value = "收件人电话")
+	@ApiModelProperty(value = "收件人电话", required = true)
+	@NotBlank(message = "收件人电话不能为空", groups = DefaultGroup.class)
 	private String receiverMobile;
 
-	@ApiModelProperty(value = "收件详细地址")
+	@ApiModelProperty(value = "收件详细地址", required = true)
+	@NotBlank(message = "收件详细地址不能为空", groups = DefaultGroup.class)
 	private String receiverAddress;
 
 	@ApiModelProperty(value = "收件地址区域编码")
 	private String receiverRegionCode;
 
-	@ApiModelProperty(value = "收件地址区域")
+	@ApiModelProperty(value = "收件地址区域", required = true)
+	@NotBlank(message = "收件地址区域不能为空", groups = DefaultGroup.class)
 	private String receiverRegionName;
 
 	@ApiModelProperty(value = "商品明细")

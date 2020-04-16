@@ -17,5 +17,15 @@ public interface OrderService extends CrudService<OrderEntity, OrderDTO> {
      */
     boolean changeReceiver(OrderChangeReceiverRequest request);
 
-    public String generateOrderSn();
+    /**
+     * 生成订单号
+     */
+    String generateOrderSn();
+
+    /**
+     * 取消超时未支付订单
+     *
+     * @param second 超时秒数
+     */
+    boolean cancelUnPaidOrder(long second);
 }

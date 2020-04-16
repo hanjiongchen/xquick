@@ -31,6 +31,10 @@ public class OrderEntity extends BaseEntity {
      * 用户id
      */
 	private Long userId;
+	/**
+	 * 下单时间
+	 */
+	private Date placeTime;
     /**
      * 用户备注
      */
