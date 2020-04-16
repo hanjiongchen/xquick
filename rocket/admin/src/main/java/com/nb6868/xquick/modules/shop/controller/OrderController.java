@@ -151,7 +151,8 @@ public class OrderController {
         orderService.save(orderEntity);
 
         // todo 启动一个DelayQueue延迟关闭订单
-
+        // https://www.cnblogs.com/darendu/p/10074650.html
+        // https://blog.csdn.net/qq_22075041/article/details/80399668
         return new Result<>().ok(dto);
     }
 
