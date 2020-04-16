@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.booster.service.impl.CrudServiceImpl;
 import com.nb6868.xquick.booster.util.WrapperUtils;
 import com.nb6868.xquick.modules.shop.dao.OrderDao;
+import com.nb6868.xquick.modules.shop.dto.OrderChangeReceiverRequest;
 import com.nb6868.xquick.modules.shop.dto.OrderDTO;
 import com.nb6868.xquick.modules.shop.entity.OrderEntity;
 import com.nb6868.xquick.modules.shop.service.OrderService;
@@ -35,4 +36,8 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
                 .getQueryWrapper();
     }
 
+    @Override
+    public boolean changeReceiver(OrderChangeReceiverRequest request) {
+        return false;
+    }
 }
