@@ -339,7 +339,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             map.put(UcConst.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
             map.put("expire", loginConfig.getExpire());
             map.put("user", user);
-            return new Result<>().ok(map);
+            return new Result<>().success(map);
         } else {
             loginLog.setResult(Const.ResultEnum.FAIL.value());
             loginLog.setMsg(MessageUtils.getMessage(loginResult));
