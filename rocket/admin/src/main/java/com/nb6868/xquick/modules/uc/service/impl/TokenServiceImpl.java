@@ -38,7 +38,7 @@ public class TokenServiceImpl extends BaseServiceImpl<TokenDao, TokenEntity> imp
         tokenEntity.setUserId(userId);
         tokenEntity.setToken(TokenGenerator.generateValue());
         tokenEntity.setUpdateTime(now);
-        tokenEntity.setExpireDate(expireTime);
+        tokenEntity.setExpireTime(expireTime);
         tokenEntity.setType(loginConfig.getType());
 
         //保存token
@@ -49,18 +49,18 @@ public class TokenServiceImpl extends BaseServiceImpl<TokenDao, TokenEntity> imp
 
     @Override
     public TokenEntity getUserIdAndTypeByToken(String token) {
-        return query().select("user_id", "type").eq("token", token).apply("expire_date > now()").last("LIMIT 1").one();
+        return query().select("user_id", "type").eq("token", token).apply("expire_time > now()").last("LIMIT 1").one();
     }
 
     @Override
     public Long getUserIdByToken(String token) {
-        return query().select("user_id").eq("token", token).apply("expire_date > now()").last("LIMIT 1").oneOpt().map(TokenEntity::getUserId).orElse(null);
+        return query().select("user_id").eq("token", token).apply("expire_time > now()").last("LIMIT 1").oneOpt().map(TokenEntity::getUserId).orElse(null);
     }
 
     @Override
     public boolean renewalToken(String token, Long expire) {
-        // UPDATE uc_token SET expire_date = DATE_ADD(NOW(), interval #{expire} second) WHERE token = #{token} and deleted = 0
-        return update().setSql("expire_date = DATE_ADD(NOW(), interval " + expire + " second)").eq("token", token).update(new TokenEntity());
+        // UPDATE uc_token SET expire_time = DATE_ADD(NOW(), interval #{expire} second) WHERE token = #{token} and deleted = 0
+        return update().setSql("expire_time = DATE_ADD(NOW(), interval " + expire + " second)").eq("token", token).update(new TokenEntity());
     }
 
     @Override

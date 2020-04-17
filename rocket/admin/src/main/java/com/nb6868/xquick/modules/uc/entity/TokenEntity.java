@@ -29,7 +29,7 @@ public class TokenEntity extends BaseEntity {
     /**
      * 过期时间
      */
-    private Date expireDate;
+    private Date expireTime;
     /**
      * 类型
      */
