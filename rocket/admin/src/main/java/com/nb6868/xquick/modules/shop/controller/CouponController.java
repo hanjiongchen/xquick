@@ -41,7 +41,7 @@ public class CouponController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<CouponDTO> list = couponService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class CouponController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<CouponDTO> page = couponService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class CouponController {
 
         CouponDTO data = couponService.getDtoById(id);
 
-        return new Result<CouponDTO>().ok(data);
+        return new Result<CouponDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class CouponController {
 
         couponService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class CouponController {
 
         couponService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

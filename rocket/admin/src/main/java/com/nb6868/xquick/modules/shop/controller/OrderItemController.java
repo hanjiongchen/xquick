@@ -41,7 +41,7 @@ public class OrderItemController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<OrderItemDTO> list = orderItemService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class OrderItemController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<OrderItemDTO> page = orderItemService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class OrderItemController {
 
         OrderItemDTO data = orderItemService.getDtoById(id);
 
-        return new Result<OrderItemDTO>().ok(data);
+        return new Result<OrderItemDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class OrderItemController {
 
         orderItemService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class OrderItemController {
 
         orderItemService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

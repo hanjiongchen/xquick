@@ -38,7 +38,7 @@ public class UserRankController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<UserRankDTO> list = userrankService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -47,7 +47,7 @@ public class UserRankController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<UserRankDTO> page = userrankService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -59,7 +59,7 @@ public class UserRankController {
 
         UserRankDTO data = userrankService.getDtoById(id);
 
-        return new Result<UserRankDTO>().ok(data);
+        return new Result<UserRankDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -72,7 +72,7 @@ public class UserRankController {
 
         userrankService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -85,7 +85,7 @@ public class UserRankController {
 
         userrankService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

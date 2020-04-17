@@ -25,7 +25,7 @@ public class AppUserController {
     @RequiresGuest
     public Result<?> appUserInfo() {
         // Long userId = (Long) request.getAttribute("userId");
-        return new Result<>().ok(1);
+        return new Result<>().success(1);
     }
 
 }

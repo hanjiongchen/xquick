@@ -42,7 +42,7 @@ public class SpuCategoryController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SpuCategoryDTO> list = categoryService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("tree")
@@ -56,7 +56,7 @@ public class SpuCategoryController {
             tree.removeIf(spuCategoryTree -> ObjectUtils.isEmpty(spuCategoryTree.getChildren()));
         }
 
-        return new Result<>().ok(tree);
+        return new Result<>().success(tree);
     }
 
     @GetMapping("page")
@@ -65,7 +65,7 @@ public class SpuCategoryController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SpuCategoryDTO> page = categoryService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -79,7 +79,7 @@ public class SpuCategoryController {
 
         data.setParentMenuList(categoryService.getParentMenuList(data.getPid()));
 
-        return new Result<SpuCategoryDTO>().ok(data);
+        return new Result<SpuCategoryDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -92,7 +92,7 @@ public class SpuCategoryController {
 
         categoryService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -105,7 +105,7 @@ public class SpuCategoryController {
 
         categoryService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

@@ -41,7 +41,7 @@ public class StockLogController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<StockLogDTO> list = stockLogService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class StockLogController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<StockLogDTO> page = stockLogService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class StockLogController {
 
         StockLogDTO data = stockLogService.getDtoById(id);
 
-        return new Result<StockLogDTO>().ok(data);
+        return new Result<StockLogDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class StockLogController {
 
         stockLogService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class StockLogController {
 
         stockLogService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

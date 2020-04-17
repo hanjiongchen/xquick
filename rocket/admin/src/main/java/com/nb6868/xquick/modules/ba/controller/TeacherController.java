@@ -41,7 +41,7 @@ public class TeacherController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<TeacherDTO> list = teacherService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class TeacherController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<TeacherDTO> page = teacherService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class TeacherController {
 
         TeacherDTO data = teacherService.getDtoById(id);
 
-        return new Result<TeacherDTO>().ok(data);
+        return new Result<TeacherDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class TeacherController {
 
         teacherService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class TeacherController {
 
         teacherService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

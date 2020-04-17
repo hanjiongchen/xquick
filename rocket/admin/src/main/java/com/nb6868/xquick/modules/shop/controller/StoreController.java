@@ -41,7 +41,7 @@ public class StoreController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<StoreDTO> list = storeService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class StoreController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<StoreDTO> page = storeService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class StoreController {
 
         StoreDTO data = storeService.getDtoById(id);
 
-        return new Result<StoreDTO>().ok(data);
+        return new Result<StoreDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class StoreController {
 
         storeService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class StoreController {
 
         storeService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

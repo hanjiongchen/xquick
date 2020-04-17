@@ -52,7 +52,7 @@ public class ParamController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ParamDTO> page = paramService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -61,7 +61,7 @@ public class ParamController {
     public Result<?> info(@RequestParam Long id) {
         ParamDTO data = paramService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @GetMapping("getContentByCodes")
@@ -88,7 +88,7 @@ public class ParamController {
             }
 
         }
-        return new Result<>().ok(kv);
+        return new Result<>().success(kv);
     }
 
     @PostMapping("save")
@@ -101,7 +101,7 @@ public class ParamController {
 
         paramService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -114,7 +114,7 @@ public class ParamController {
 
         paramService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

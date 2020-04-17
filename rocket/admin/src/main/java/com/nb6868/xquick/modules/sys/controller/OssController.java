@@ -42,7 +42,7 @@ public class OssController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<OssDTO> page = ossService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("presignedUrl")
@@ -50,14 +50,14 @@ public class OssController {
     public Result<?> presignedUrl(@RequestParam(required = false, defaultValue = "OSS_CFG_PRI") String paramCode, @RequestParam String objectName, @RequestParam(required = false, defaultValue = "3600000")  long expiration) {
         String url = OssFactory.build(paramCode).generatePresignedUrl(objectName, expiration);
 
-        return new Result<>().ok(Kv.init().set("src",url));
+        return new Result<>().success(Kv.init().set("src",url));
     }
 
     @GetMapping("getSts")
     @ApiOperation(value = "获得STS临时访问token")
     public Result<?> getSts(@RequestParam(required = false, defaultValue = "OSS_CFG_PUB") String paramCode) {
         Kv kv = OssFactory.build(paramCode).getSts();
-        return new Result<>().ok(kv);
+        return new Result<>().success(kv);
     }
 
     @PostMapping("upload")
@@ -79,7 +79,7 @@ public class OssController {
         oss.setContentType(file.getContentType());
         ossService.save(oss);
 
-        return new Result<>().ok(Kv.init().set("src",url));
+        return new Result<>().success(Kv.init().set("src",url));
     }
 
     @PostMapping("uploadMulti")
@@ -105,7 +105,7 @@ public class OssController {
             srcList.add(url);
         }
 
-        return new Result<>().ok(Kv.init().set("src", StringUtils.join(srcList, ",")));
+        return new Result<>().success(Kv.init().set("src", StringUtils.join(srcList, ",")));
     }
 
     @DeleteMapping("delete")

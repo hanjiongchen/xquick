@@ -46,7 +46,7 @@ public class OrderController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<OrderDTO> list = orderService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -55,7 +55,7 @@ public class OrderController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<OrderDTO> page = orderService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -67,7 +67,7 @@ public class OrderController {
 
         OrderDTO data = orderService.getDtoById(id);
 
-        return new Result<OrderDTO>().ok(data);
+        return new Result<OrderDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -80,7 +80,7 @@ public class OrderController {
         dto.setNo(orderService.generateOrderSn());
         orderService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -93,7 +93,7 @@ public class OrderController {
 
         orderService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")
@@ -153,7 +153,7 @@ public class OrderController {
         // todo 启动一个DelayQueue延迟关闭订单
         // https://www.cnblogs.com/darendu/p/10074650.html
         // https://blog.csdn.net/qq_22075041/article/details/80399668
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
 }

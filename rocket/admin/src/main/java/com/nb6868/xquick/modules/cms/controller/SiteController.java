@@ -39,7 +39,7 @@ public class SiteController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SiteDTO> list = siteService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -48,7 +48,7 @@ public class SiteController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SiteDTO> page = siteService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -61,7 +61,7 @@ public class SiteController {
 
         SiteDTO data = siteService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -74,7 +74,7 @@ public class SiteController {
 
         siteService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -87,7 +87,7 @@ public class SiteController {
 
         siteService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

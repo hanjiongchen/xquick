@@ -39,7 +39,7 @@ public class HomeController {
                 .set("userCount", userCount)
                 .set("orderCount", orderCount)
                 .set("spuCount", spuCount);
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
 }

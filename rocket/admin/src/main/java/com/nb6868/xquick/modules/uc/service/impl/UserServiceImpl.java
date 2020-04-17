@@ -26,9 +26,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.nb6868.xquick.booster.util.*;
-import com.nb6868.xquick.modules.uc.dto.*;
-import com.nb6868.xquick.modules.uc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -342,7 +339,7 @@ public class UserServiceImpl extends CrudServiceImpl<UserDao, UserEntity, UserDT
             map.put(UcConst.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
             map.put("expire", loginConfig.getExpire());
             map.put("user", user);
-            return new Result<>().ok(map);
+            return new Result<>().success(map);
         } else {
             loginLog.setResult(Const.ResultEnum.FAIL.value());
             loginLog.setMsg(MessageUtils.getMessage(loginResult));

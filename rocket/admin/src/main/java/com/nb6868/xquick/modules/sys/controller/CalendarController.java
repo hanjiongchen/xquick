@@ -42,7 +42,7 @@ public class CalendarController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<CalendarDTO> list = calendarService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -51,7 +51,7 @@ public class CalendarController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<CalendarDTO> page = calendarService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -60,7 +60,7 @@ public class CalendarController {
     public Result<?> info(@RequestParam Long id) {
         CalendarDTO data = calendarService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     /**
@@ -160,7 +160,7 @@ public class CalendarController {
 
         calendarService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -173,7 +173,7 @@ public class CalendarController {
 
         calendarService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

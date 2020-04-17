@@ -41,7 +41,7 @@ public class SpuController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SpuDTO> list = spuService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class SpuController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SpuDTO> page = spuService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class SpuController {
 
         SpuDTO data = spuService.getDtoById(id);
 
-        return new Result<SpuDTO>().ok(data);
+        return new Result<SpuDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class SpuController {
 
         spuService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class SpuController {
 
         spuService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

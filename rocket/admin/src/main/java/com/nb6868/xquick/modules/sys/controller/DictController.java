@@ -35,7 +35,7 @@ public class DictController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<DictDTO> page = dictService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("list")
@@ -44,7 +44,7 @@ public class DictController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<DictDTO> list = dictService.listDto(params);
 
-        return new Result<List<DictDTO>>().ok(list);
+        return new Result<List<DictDTO>>().success(list);
     }
 
     @GetMapping("info")
@@ -53,7 +53,7 @@ public class DictController {
     public Result<DictDTO> info(@RequestParam Long id){
         DictDTO data = dictService.getDtoById(id);
 
-        return new Result<DictDTO>().ok(data);
+        return new Result<DictDTO>().success(data);
     }
 
     @PostMapping("save")

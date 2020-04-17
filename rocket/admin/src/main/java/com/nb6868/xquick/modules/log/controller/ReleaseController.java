@@ -42,7 +42,7 @@ public class ReleaseController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<ReleaseDTO> list = releaseService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -51,7 +51,7 @@ public class ReleaseController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ReleaseDTO> page = releaseService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("getLatestByCode")
@@ -63,7 +63,7 @@ public class ReleaseController {
 
         ReleaseDTO data = releaseService.getLatestByCode(code);
 
-        return new Result<ReleaseDTO>().ok(data);
+        return new Result<ReleaseDTO>().success(data);
     }
 
     @GetMapping("info")
@@ -75,7 +75,7 @@ public class ReleaseController {
 
         ReleaseDTO data = releaseService.getDtoById(id);
 
-        return new Result<ReleaseDTO>().ok(data);
+        return new Result<ReleaseDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -88,7 +88,7 @@ public class ReleaseController {
 
         releaseService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -101,7 +101,7 @@ public class ReleaseController {
 
         releaseService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

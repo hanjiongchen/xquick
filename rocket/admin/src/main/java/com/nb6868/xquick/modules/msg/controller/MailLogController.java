@@ -46,7 +46,7 @@ public class MailLogController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<MailLogDTO> page = mailLogService.pageDto(params);
         //测试
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @DeleteMapping("delete")

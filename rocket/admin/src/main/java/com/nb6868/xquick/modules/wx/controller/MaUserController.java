@@ -178,7 +178,7 @@ public class MaUserController {
             map.put(UcConst.TOKEN_HEADER, tokenService.createToken(user.getId(), loginConfig));
             map.put("expire", loginConfig.getExpire());
             map.put("user", user);
-            return new Result<>().ok(map);
+            return new Result<>().success(map);
         } else {
             loginLog.setResult(Const.ResultEnum.FAIL.value());
             loginLog.setMsg(MessageUtils.getMessage(loginResult));
@@ -202,7 +202,7 @@ public class MaUserController {
         }
         // 解密用户信息
         WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
-        return new Result<>().ok(userInfo);
+        return new Result<>().success(userInfo);
     }
 
     @GetMapping("/phone")
@@ -219,7 +219,7 @@ public class MaUserController {
         }
         // 解密
         WxMaPhoneNumberInfo phoneNoInfo = wxService.getUserService().getPhoneNoInfo(sessionKey, encryptedData, iv);
-        return new Result<>().ok(phoneNoInfo);
+        return new Result<>().success(phoneNoInfo);
     }
 
     /**

@@ -39,7 +39,7 @@ public class TaskController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<TaskDTO> page = taskService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -48,7 +48,7 @@ public class TaskController {
     public Result<?> info(@RequestParam Long id) {
         TaskDTO data = taskService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -60,7 +60,7 @@ public class TaskController {
 
         taskService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -72,7 +72,7 @@ public class TaskController {
 
         taskService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

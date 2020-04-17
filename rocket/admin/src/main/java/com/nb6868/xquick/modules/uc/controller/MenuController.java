@@ -72,7 +72,7 @@ public class MenuController {
         });
         // 将菜单列表转成菜单树
         List<MenuTreeDTO> menuTree = TreeUtils.build(menuList);
-        return new Result<>().ok(Kv.init().set("menuTree", menuTree).set("urlList", urlList).set("permissions", permissions));
+        return new Result<>().success(Kv.init().set("menuTree", menuTree).set("urlList", urlList).set("permissions", permissions));
     }
 
     @GetMapping("userTree")
@@ -82,7 +82,7 @@ public class MenuController {
         UserDetail user = SecurityUser.getUser();
         List<MenuTreeDTO> list = menuService.getTreeByUser(user, type);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("permissions")
@@ -91,7 +91,7 @@ public class MenuController {
         UserDetail user = SecurityUser.getUser();
         Set<String> set = shiroService.getUserPermissions(user);
 
-        return new Result<Set<String>>().ok(set);
+        return new Result<Set<String>>().success(set);
     }
 
     @GetMapping("tree")
@@ -101,7 +101,7 @@ public class MenuController {
     public Result<?> tree(Integer type) {
         List<MenuTreeDTO> list = menuService.getTreeByType(type);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("info")
@@ -112,7 +112,7 @@ public class MenuController {
 
         data.setParentMenuList(menuService.getParentList(data.getPid()));
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -125,7 +125,7 @@ public class MenuController {
 
         menuService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -138,7 +138,7 @@ public class MenuController {
 
         menuService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

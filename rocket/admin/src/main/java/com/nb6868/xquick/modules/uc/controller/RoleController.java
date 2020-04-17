@@ -44,7 +44,7 @@ public class RoleController {
 	public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
 		PageData<RoleDTO> page = roleService.pageDto(params);
 
-		return new Result<>().ok(page);
+		return new Result<>().success(page);
 	}
 
 	@GetMapping("list")
@@ -53,7 +53,7 @@ public class RoleController {
 	public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
 		List<RoleDTO> data = roleService.listDto(params);
 
-		return new Result<>().ok(data);
+		return new Result<>().success(data);
 	}
 
 	@GetMapping("info")
@@ -70,7 +70,7 @@ public class RoleController {
 		List<Long> deptIdList = roleDataScopeService.getDeptIdListByUserId(id);
 		data.setDeptIdList(deptIdList);
 
-		return new Result<>().ok(data);
+		return new Result<>().success(data);
 	}
 
 	@PostMapping("save")
@@ -83,7 +83,7 @@ public class RoleController {
 
 		roleService.saveDto(dto);
 
-		return new Result<>().ok(dto);
+		return new Result<>().success(dto);
 	}
 
 	@PutMapping("update")
@@ -96,7 +96,7 @@ public class RoleController {
 
 		roleService.updateDto(dto);
 
-		return new Result<>().ok(dto);
+		return new Result<>().success(dto);
 	}
 
 	@DeleteMapping("delete")

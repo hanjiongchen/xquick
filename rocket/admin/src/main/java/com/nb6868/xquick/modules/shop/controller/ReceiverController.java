@@ -41,7 +41,7 @@ public class ReceiverController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<ReceiverDTO> list = receiverService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class ReceiverController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ReceiverDTO> page = receiverService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class ReceiverController {
 
         ReceiverDTO data = receiverService.getDtoById(id);
 
-        return new Result<ReceiverDTO>().ok(data);
+        return new Result<ReceiverDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class ReceiverController {
 
         receiverService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class ReceiverController {
 
         receiverService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("setDefaultItem")

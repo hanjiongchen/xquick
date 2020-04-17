@@ -41,7 +41,7 @@ public class ExamItemController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<ExamItemDTO> list = examItemService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class ExamItemController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ExamItemDTO> page = examItemService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class ExamItemController {
 
         ExamItemDTO data = examItemService.getDtoById(id);
 
-        return new Result<ExamItemDTO>().ok(data);
+        return new Result<ExamItemDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class ExamItemController {
 
         examItemService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class ExamItemController {
 
         examItemService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

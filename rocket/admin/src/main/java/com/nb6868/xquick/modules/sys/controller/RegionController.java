@@ -39,7 +39,7 @@ public class RegionController {
     public Result<?> tree(@ApiIgnore @RequestParam Map<String, Object> params){
         List<RegionTreeDTO> list = regionService.treeList(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("list")
@@ -48,7 +48,7 @@ public class RegionController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<RegionDTO> list = regionService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -57,7 +57,7 @@ public class RegionController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<RegionDTO> page = regionService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -66,7 +66,7 @@ public class RegionController {
     public Result<?> info(@RequestParam Long id){
         RegionDTO data = regionService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -79,7 +79,7 @@ public class RegionController {
 
         regionService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -92,7 +92,7 @@ public class RegionController {
 
         regionService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

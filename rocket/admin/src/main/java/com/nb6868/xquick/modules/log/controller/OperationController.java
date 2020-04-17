@@ -48,7 +48,7 @@ public class OperationController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<OperationDTO> page = logOperationService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("export")

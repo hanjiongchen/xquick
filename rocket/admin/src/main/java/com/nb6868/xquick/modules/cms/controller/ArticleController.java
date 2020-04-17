@@ -39,7 +39,7 @@ public class ArticleController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<ArticleDTO> list = articleService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -48,7 +48,7 @@ public class ArticleController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ArticleDTO> page = articleService.pageDto(params);
 
-        return new Result<PageData<ArticleDTO>>().ok(page);
+        return new Result<PageData<ArticleDTO>>().success(page);
     }
 
 
@@ -58,7 +58,7 @@ public class ArticleController {
     public Result<?> info(@RequestParam Long id) {
         ArticleDTO data = articleService.getDtoById(id);
 
-        return new Result<ArticleDTO>().ok(data);
+        return new Result<ArticleDTO>().success(data);
     }
 
     @PostMapping("save")

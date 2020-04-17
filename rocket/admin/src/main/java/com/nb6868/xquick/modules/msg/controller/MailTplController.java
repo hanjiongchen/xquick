@@ -45,7 +45,7 @@ public class MailTplController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<?> page = mailTplService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -54,7 +54,7 @@ public class MailTplController {
     public Result<?> info(@RequestParam Long id) {
         MailTplDTO dto = mailTplService.getDtoById(id);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PostMapping("save")
@@ -67,7 +67,7 @@ public class MailTplController {
 
         mailTplService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -80,7 +80,7 @@ public class MailTplController {
 
         mailTplService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")
