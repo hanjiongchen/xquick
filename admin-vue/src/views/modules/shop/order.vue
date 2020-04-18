@@ -43,7 +43,8 @@
         <el-table-column prop="no" label="订单号" header-align="center" align="center" min-width="120"/>
         <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" type="danger">待支付</el-tag>
+            <el-tag v-if="scope.row.status === -10" type="danger">已取消</el-tag>
+            <el-tag v-if="scope.row.status === 0" type="warning">待支付</el-tag>
             <el-tag v-else-if="scope.row.status === 1" type="success">待处理</el-tag>
           </template>
         </el-table-column>

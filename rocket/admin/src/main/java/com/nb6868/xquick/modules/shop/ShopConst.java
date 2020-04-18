@@ -15,8 +15,7 @@ public interface ShopConst {
         /**
          * 详见name
          */
-        CANCELED_SYS(-10, "系统取消"),
-        CANCELED_USER(-20, "会员取消"),
+        CANCELED(-10, "已取消"),
         PLACED(0, "已下单"),
         COMPLETED(100, "已完成");
 
