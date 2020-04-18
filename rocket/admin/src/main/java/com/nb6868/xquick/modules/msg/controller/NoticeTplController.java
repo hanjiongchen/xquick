@@ -41,7 +41,7 @@ public class NoticeTplController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<NoticeTplDTO> list = noticeTplService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class NoticeTplController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<NoticeTplDTO> page = noticeTplService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -59,7 +59,7 @@ public class NoticeTplController {
     public Result<?> info(@RequestParam Long id){
         NoticeTplDTO data = noticeTplService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -72,7 +72,7 @@ public class NoticeTplController {
 
         noticeTplService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -85,7 +85,7 @@ public class NoticeTplController {
 
         noticeTplService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

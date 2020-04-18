@@ -48,7 +48,7 @@ public class SmsLogController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SmsLogDTO> list = smsLogService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -57,7 +57,7 @@ public class SmsLogController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SmsLogDTO> page = smsLogService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -66,7 +66,7 @@ public class SmsLogController {
     public Result<?> info(@RequestParam Long id) {
         SmsLogDTO data = smsLogService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -79,7 +79,7 @@ public class SmsLogController {
 
         smsLogService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -92,7 +92,7 @@ public class SmsLogController {
 
         smsLogService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

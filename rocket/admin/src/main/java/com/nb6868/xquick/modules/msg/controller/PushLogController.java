@@ -67,7 +67,7 @@ public class PushLogController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<?> list = pushLogService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -76,7 +76,7 @@ public class PushLogController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<PushLogDTO> page = pushLogService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -85,7 +85,7 @@ public class PushLogController {
     public Result<?> info(@PathVariable("id") Long id){
         PushLogDTO data = pushLogService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -98,7 +98,7 @@ public class PushLogController {
 
         pushLogService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -111,7 +111,7 @@ public class PushLogController {
 
         pushLogService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

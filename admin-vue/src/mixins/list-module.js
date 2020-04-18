@@ -30,12 +30,11 @@ export default {
       total: 0, // 总条数
       dataListLoading: false, // 数据列表，loading状态
       dataListSelections: [], // 数据列表，多选项
-      addOrUpdateVisible: false, // 新增／更新，弹窗visible状态
+      addOrUpdateVisible: false, // 新增/更新，弹窗visible状态
       uploadUrl: '', // 文件上传地址
-      formLoading: true, // 表单是否加载中
       changeStatusVisible: false, // 修改状态,弹窗visible状态
       cancelVisible: false, // 取消操作,弹窗visible状态
-      mapLocationViewVisible: false// 地图查看器,弹窗visible状态
+      importVisible: false // 导入操作,弹窗visible状态
     }
   },
   activated () {
@@ -209,20 +208,11 @@ export default {
     },
     // 导出
     exportHandle () {
-      var params = qs.stringify({
+      const params = qs.stringify({
         'token': Cookies.get('token'),
         ...this.dataForm
       })
       window.location.href = `${window.SITE_CONFIG['apiURL']}${this.mixinListModuleOptions.exportURL}?${params}`
-    },
-    // 地图查看
-    mapViewHandle (address, lat, lng) {
-      this.mapLocationViewVisible = true
-      this.$nextTick(() => {
-        this.$refs.mapView.marker.address = address
-        this.$refs.mapView.marker.position = [lng, lat]
-        this.$refs.mapView.init()
-      })
     },
     // 日期格式化
     dateFmt (row, column, cellValue) {

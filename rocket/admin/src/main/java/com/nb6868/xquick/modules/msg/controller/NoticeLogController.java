@@ -41,7 +41,7 @@ public class NoticeLogController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<NoticeLogDTO> list = noticeLogService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class NoticeLogController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<NoticeLogDTO> page = noticeLogService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -59,7 +59,7 @@ public class NoticeLogController {
     public Result<?> info(@RequestParam Long id){
         NoticeLogDTO data = noticeLogService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -72,7 +72,7 @@ public class NoticeLogController {
 
         noticeLogService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -85,7 +85,7 @@ public class NoticeLogController {
 
         noticeLogService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("read")

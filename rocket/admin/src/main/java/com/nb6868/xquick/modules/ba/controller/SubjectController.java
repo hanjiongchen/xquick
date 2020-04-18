@@ -42,7 +42,7 @@ public class SubjectController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SubjectDTO> list = subjectService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -51,7 +51,7 @@ public class SubjectController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SubjectDTO> page = subjectService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -63,7 +63,7 @@ public class SubjectController {
 
         SubjectDTO data = subjectService.getDtoById(id);
 
-        return new Result<SubjectDTO>().ok(data);
+        return new Result<SubjectDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -76,7 +76,7 @@ public class SubjectController {
 
         subjectService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -89,7 +89,7 @@ public class SubjectController {
 
         subjectService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

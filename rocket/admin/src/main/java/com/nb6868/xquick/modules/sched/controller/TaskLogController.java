@@ -32,7 +32,7 @@ public class TaskLogController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<TaskLogDTO> page = scheduleJobLogService.page(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -41,6 +41,6 @@ public class TaskLogController {
     public Result<?> info(@RequestParam Long id) {
         TaskLogDTO log = scheduleJobLogService.get(id);
 
-        return new Result<>().ok(log);
+        return new Result<>().success(log);
     }
 }

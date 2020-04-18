@@ -45,7 +45,7 @@ public class ErrorController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<ErrorDTO> page = logErrorService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("export")

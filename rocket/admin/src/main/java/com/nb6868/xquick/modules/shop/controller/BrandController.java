@@ -41,7 +41,7 @@ public class BrandController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<BrandDTO> list = brandService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class BrandController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<BrandDTO> page = brandService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class BrandController {
 
         BrandDTO data = brandService.getDtoById(id);
 
-        return new Result<BrandDTO>().ok(data);
+        return new Result<BrandDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class BrandController {
 
         brandService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class BrandController {
 
         brandService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

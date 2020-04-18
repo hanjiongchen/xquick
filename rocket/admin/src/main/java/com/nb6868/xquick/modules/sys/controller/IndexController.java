@@ -33,7 +33,7 @@ public class IndexController {
     @ApiOperation("系统信息")
     @AnonAccess
     public Result<?> index() {
-        return new Result<>().ok("api success");
+        return new Result<>().success("api success");
     }
 
     @GetMapping("sys/info")
@@ -63,7 +63,7 @@ public class IndexController {
         data.set("systemCpuLoad", BigDecimal.valueOf(osmx.getSystemCpuLoad() * 100).setScale(2, RoundingMode.HALF_UP));
         data.set("userTimezone", System.getProperty("user.timezone"));
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @Autowired
@@ -80,7 +80,7 @@ public class IndexController {
         String[] captchaTypes = {"arithmetic", "spec"};
         String image = captchaService.createBase64(uuid, width, height, captchaTypes[(int) (Math.random() * captchaTypes.length)]);
         // 将uuid和图片的base64返回给前端
-        return new Result<>().ok(Kv.init().set("uuid", uuid).set("image", image));
+        return new Result<>().success(Kv.init().set("uuid", uuid).set("image", image));
     }
 
 }

@@ -40,7 +40,7 @@ public class LoginController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<LoginDTO> page = logLoginService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("export")

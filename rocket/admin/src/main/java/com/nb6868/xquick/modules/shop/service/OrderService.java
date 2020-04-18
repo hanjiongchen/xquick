@@ -28,4 +28,8 @@ public interface OrderService extends CrudService<OrderEntity, OrderDTO> {
      * @param second 超时秒数
      */
     boolean cancelUnPaidOrder(long second);
+
+
+    boolean checkOrder(Long orderId);
+
 }

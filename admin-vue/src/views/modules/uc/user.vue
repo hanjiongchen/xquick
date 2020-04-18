@@ -64,8 +64,8 @@
                 </el-table-column>
                 <el-table-column prop="status" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-button v-if="scope.row.status === 0" size="mini" type="danger" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{ $t('user.status0') }}</el-button>
-                        <el-button v-else size="mini" type="success" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{ $t('user.status1') }}</el-button>
+                        <el-tag v-if="scope.row.status === 0" type="danger">{{ $t('user.status0') }}</el-tag>
+                        <el-tag v-else-if="scope.row.status === 1" type="success">{{ $t('user.status1') }}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
@@ -123,9 +123,7 @@ export default {
         realName: '',
         roleIds: '',
         type: ''
-      },
-      // 导入对话框
-      importVisible: false
+      }
     }
   },
   activated () {

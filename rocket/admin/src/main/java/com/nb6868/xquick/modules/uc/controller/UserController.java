@@ -4,7 +4,7 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.nb6868.xquick.booster.exception.ErrorCode;
 import com.nb6868.xquick.booster.exception.XquickException;
-import com.nb6868.xquick.booster.pojo.ImportResult;
+import com.nb6868.xquick.booster.pojo.MsgResult;
 import com.nb6868.xquick.booster.pojo.PageData;
 import com.nb6868.xquick.booster.pojo.Result;
 import com.nb6868.xquick.booster.util.ConvertUtils;
@@ -22,7 +22,6 @@ import com.nb6868.xquick.common.util.AESUtils;
 import com.nb6868.xquick.common.util.ExcelUtils;
 import com.nb6868.xquick.modules.log.entity.LoginEntity;
 import com.nb6868.xquick.modules.log.service.LoginService;
-import com.nb6868.xquick.modules.uc.dto.*;
 import com.nb6868.xquick.modules.uc.dto.*;
 import com.nb6868.xquick.modules.uc.entity.RoleUserEntity;
 import com.nb6868.xquick.modules.uc.excel.UserExcel;
@@ -78,7 +77,7 @@ public class UserController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<UserDTO> list = userService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -87,7 +86,7 @@ public class UserController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<UserDTO> page = userService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -100,14 +99,14 @@ public class UserController {
         data.setRoleIdList(roleUserService.getRoleIdList(id));
         // 部门树
         data.setDeptChain(deptService.getParentChain(data.getDeptId()));
-        return new Result<UserDTO>().ok(data);
+        return new Result<UserDTO>().success(data);
     }
 
     @GetMapping("userInfo")
     @ApiOperation("登录用户信息")
     public Result<?> userInfo() {
         UserDTO data = ConvertUtils.sourceToTarget(SecurityUser.getUser(), UserDTO.class);
-        return new Result<UserDTO>().ok(data);
+        return new Result<UserDTO>().success(data);
     }
 
     @PutMapping("password")
@@ -297,7 +296,7 @@ public class UserController {
         if (list.size() > 1000) {
             throw new XquickException("单次导入不要超过1000条");
         }
-        List<ImportResult> result = new ArrayList<>();
+        List<MsgResult> result = new ArrayList<>();
         for (UserExcel item : list) {
             String userName = StringUtils.deleteWhitespace(item.getUsername());
             String realName = StringUtils.deleteWhitespace(item.getRealName());
@@ -307,17 +306,13 @@ public class UserController {
             user.setDeptId(deptId);
 
             if (StringUtils.isBlank(userName)) {
-                //logger.info("用户名不能为空:" + item.toString());
-                result.add(new ImportResult(false, "用户名不能为空"));
+                result.add(new MsgResult().error("用户名不能为空"));
             } else if (StringUtils.isBlank(mobile)) {
-                //logger.info("手机号不能为空:" + item.toString());
-                result.add(new ImportResult(false, userName + "手机号不能为空"));
+                result.add(new MsgResult().error("手机号不能为空"));
             } else if (userService.isMobileExisted(mobile, null)) {
-                //logger.info("手机号已存在:" + item.toString());
-                result.add(new ImportResult(false, mobile + "手机号已存在"));
+                result.add(new MsgResult().error("手机号已存在"));
             } else if (userService.isUsernameExisted(userName, null)) {
-                //logger.info("用户名已存在:" + item.toString());
-                result.add(new ImportResult(false, userName + "用户名已存在"));
+                result.add(new MsgResult().error(userName + "用户名已存在"));
             } else {
                 user.setRemark(remark);
                 user.setRealName(realName);
@@ -336,10 +331,11 @@ public class UserController {
                 RoleUserEntity roleUser = new RoleUserEntity();
                 roleUser.setUserId(user.getId());
                 roleUserService.save(roleUser);
-                result.add(new ImportResult(true, userName + "导入成功"));
+                result.add(new MsgResult().success("导入成功"));
+                new Result<String>().success("sss");
             }
         }
-        return new Result<>().ok(result);
+        return new Result<>().success(result);
     }
 
 }

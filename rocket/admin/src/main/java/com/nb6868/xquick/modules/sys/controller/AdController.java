@@ -39,7 +39,7 @@ public class AdController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<AdDTO> list = adService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -48,7 +48,7 @@ public class AdController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<AdDTO> page = adService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -60,7 +60,7 @@ public class AdController {
 
         AdDTO data = adService.getDtoById(id);
 
-        return new Result<AdDTO>().ok(data);
+        return new Result<AdDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -73,7 +73,7 @@ public class AdController {
 
         adService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -86,7 +86,7 @@ public class AdController {
 
         adService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

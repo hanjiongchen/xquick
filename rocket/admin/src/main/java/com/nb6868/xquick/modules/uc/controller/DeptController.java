@@ -40,7 +40,7 @@ public class DeptController {
     public Result<?> tree(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<DeptTreeDTO> list = deptService.treeList(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("list")
@@ -49,7 +49,7 @@ public class DeptController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<DeptDTO> list = deptService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -58,7 +58,7 @@ public class DeptController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<DeptDTO> page = deptService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -67,7 +67,7 @@ public class DeptController {
     public Result<?> info(@RequestParam Long id) {
         DeptDTO data = deptService.getDtoById(id);
 
-        return new Result<DeptDTO>().ok(data);
+        return new Result<DeptDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -80,7 +80,7 @@ public class DeptController {
 
         deptService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -93,7 +93,7 @@ public class DeptController {
 
         deptService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

@@ -41,7 +41,7 @@ public class SmsTplController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params){
         List<SmsTplDTO> list = smsTplService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class SmsTplController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params){
         PageData<SmsTplDTO> page = smsTplService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -59,7 +59,7 @@ public class SmsTplController {
     public Result<?> get(@RequestParam Long id){
         SmsTplDTO data = smsTplService.getDtoById(id);
 
-        return new Result<>().ok(data);
+        return new Result<>().success(data);
     }
 
     @PostMapping("save")
@@ -72,7 +72,7 @@ public class SmsTplController {
 
         smsTplService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -85,7 +85,7 @@ public class SmsTplController {
 
         smsTplService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

@@ -41,7 +41,7 @@ public class SkuController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SkuDTO> list = skuService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class SkuController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SkuDTO> page = skuService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class SkuController {
 
         SkuDTO data = skuService.getDtoById(id);
 
-        return new Result<SkuDTO>().ok(data);
+        return new Result<SkuDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class SkuController {
 
         skuService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class SkuController {
 
         skuService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

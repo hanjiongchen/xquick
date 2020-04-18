@@ -41,7 +41,7 @@ public class SupplierController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<SupplierDTO> list = supplierService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class SupplierController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SupplierDTO> page = supplierService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class SupplierController {
 
         SupplierDTO data = supplierService.getDtoById(id);
 
-        return new Result<SupplierDTO>().ok(data);
+        return new Result<SupplierDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class SupplierController {
 
         supplierService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class SupplierController {
 
         supplierService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

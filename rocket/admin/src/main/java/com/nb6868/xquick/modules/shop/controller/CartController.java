@@ -41,7 +41,7 @@ public class CartController {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<CartDTO> list = cartService.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -50,7 +50,7 @@ public class CartController {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<CartDTO> page = cartService.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -62,7 +62,7 @@ public class CartController {
 
         CartDTO data = cartService.getDtoById(id);
 
-        return new Result<CartDTO>().ok(data);
+        return new Result<CartDTO>().success(data);
     }
 
     @PostMapping("save")
@@ -75,7 +75,7 @@ public class CartController {
 
         cartService.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -88,7 +88,7 @@ public class CartController {
 
         cartService.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")

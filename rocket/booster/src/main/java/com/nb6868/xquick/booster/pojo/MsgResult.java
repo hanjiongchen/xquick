@@ -4,24 +4,22 @@ import com.nb6868.xquick.booster.exception.ErrorCode;
 import com.nb6868.xquick.booster.util.MessageUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 /**
- * API 返回结果
- * 参考 {https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/api/R.java}
+ * 消息结果,简化的Result
  *
  * @author Charles zhangchaoxu@gmail.com
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value="接口返回对象", description="接口返回对象")
-public class Result<T> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel(value = "导入结果", description = "数据导入结果")
+public class MsgResult implements Serializable {
 
     @ApiModelProperty(value = "编码: 0表示成功,其他值表示失败")
     private int code = ErrorCode.SUCCESS;
@@ -29,53 +27,40 @@ public class Result<T> implements Serializable {
     @ApiModelProperty(value = "消息内容")
     private String msg = "success";
 
-    @ApiModelProperty(value = "响应数据")
-    private T data;
-
-    @ApiModelProperty(value = "消息时间")
-    private Long time = Instant.now().toEpochMilli();
-
-    public boolean isSuccess(){
+    public boolean success() {
         return code == ErrorCode.SUCCESS;
     }
 
-    public Result<T> success() {
-        return this;
-    }
-
-    public Result<T> success(T data) {
-        this.setData(data);
-        return this;
-    }
-
-    public Result<T> success(String msg, T data) {
+    public MsgResult success(String msg) {
+        this.code = ErrorCode.SUCCESS;
         this.msg = msg;
-        this.setData(data);
         return this;
     }
 
-    public Result<T> error() {
+    public MsgResult error() {
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
         this.msg = MessageUtils.getMessage(this.code);
         return this;
     }
 
-    public Result<T> error(int code) {
+    public MsgResult error(int code) {
         this.code = code;
         this.msg = MessageUtils.getMessage(this.code);
         return this;
     }
 
-    public Result<T> error(int code, String msg) {
+    public MsgResult error(int code, String msg) {
         this.code = code;
         this.msg = msg;
         return this;
     }
 
-    public Result<T> error(String msg) {
+    public MsgResult error(String msg) {
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
         this.msg = msg;
         return this;
     }
+
+
 
 }
