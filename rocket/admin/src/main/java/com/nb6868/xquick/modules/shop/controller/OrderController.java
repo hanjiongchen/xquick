@@ -1,5 +1,6 @@
 package com.nb6868.xquick.modules.shop.controller;
 
+import com.nb6868.xquick.booster.pojo.ChangeStatusRequest;
 import com.nb6868.xquick.booster.pojo.PageData;
 import com.nb6868.xquick.booster.pojo.Result;
 import com.nb6868.xquick.booster.util.ConvertUtils;
@@ -157,8 +158,23 @@ public class OrderController {
         orderService.save(orderEntity);
 
         // 启动一个DelayQueue延迟关闭订单
-        orderDelayService.orderDelay(orderEntity, 60 * 1000);
+        orderDelayService.orderDelay(orderEntity.getId(), 60 * 1000);
         return new Result<>().success(dto);
+    }
+
+    @PostMapping("cancel")
+    @ApiOperation("取消")
+    @LogOperation("取消")
+    @RequiresPermissions("shop:order:cancel")
+    public Result<?> place(@RequestBody ChangeStatusRequest request) {
+        // 效验数据
+        ValidatorUtils.validateEntity(request, DefaultGroup.class);
+
+        orderService.cancel(request.getId());
+
+        // 启动一个DelayQueue延迟关闭订单
+        orderDelayService.orderDelay(request.getId(), 60 * 1000);
+        return new Result<>();
     }
 
 }

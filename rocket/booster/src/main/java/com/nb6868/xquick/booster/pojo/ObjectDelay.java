@@ -6,7 +6,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 实现Delay的Item
+ * 实现Delay的Object
  *
  * @author Charles zhangchaoxu@gmail.com
  */

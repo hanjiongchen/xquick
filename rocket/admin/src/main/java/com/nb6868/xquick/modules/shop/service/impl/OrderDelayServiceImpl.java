@@ -31,11 +31,11 @@ public class OrderDelayServiceImpl implements OrderDelayService {
      */
     private Thread takeOrder;
 
-    private static DelayQueue<ObjectDelay<OrderEntity>> delayQueue = new DelayQueue<>();
+    private static DelayQueue<ObjectDelay<Long>> delayQueue = new DelayQueue<>();
 
     @Override
-    public void orderDelay(OrderEntity order, long expireTime) {
-        ObjectDelay<OrderEntity> objectDelay = new ObjectDelay<>(order, expireTime);
+    public void orderDelay(Long orderId, long expireTime) {
+        ObjectDelay<Long> objectDelay = new ObjectDelay<>(orderId, expireTime);
         delayQueue.put(objectDelay);
         log.info("push order");
     }
@@ -53,9 +53,9 @@ public class OrderDelayServiceImpl implements OrderDelayService {
             log.info("OrderDelayServiceImpl run");
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    ObjectDelay<OrderEntity> objectDelay = delayQueue.take();
+                    ObjectDelay<Long> objectDelay = delayQueue.take();
                     if (objectDelay.getData() != null) {
-                        orderService.checkOrder(objectDelay.getData().getId());
+                        orderService.checkOrder(objectDelay.getData());
                     }
                 } catch (InterruptedException e) {
                     log.info("OrderDelayServiceImpl exception" + e.getMessage());

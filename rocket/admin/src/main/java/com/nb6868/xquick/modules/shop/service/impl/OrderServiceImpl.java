@@ -83,11 +83,11 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
                 .list();
         for (OrderEntity order : orders) {
             // 更新状态
-            update().set("status", ShopConst.OrderStatusEnum.CANCELED_SYS.value()).eq("id", order.getId()).update(new OrderEntity());
+            update().set("status", ShopConst.OrderStatusEnum.CANCELED.value()).eq("id", order.getId()).update(new OrderEntity());
             // 插入日志
             OrderLogEntity orderLog = new OrderLogEntity();
             orderLog.setOrderId(order.getId());
-            orderLog.setType(ShopConst.OrderStatusEnum.CANCELED_SYS.value());
+            orderLog.setType(ShopConst.OrderStatusEnum.CANCELED.value());
             orderLog.setContent("定时任务取消超时未支付订单");
             orderLogService.save(orderLog);
         }
@@ -96,12 +96,18 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
 
     @Override
     public boolean checkOrder(Long orderId) {
-        update().eq("id", orderId).set("status", ShopConst.OrderStatusEnum.CANCELED_SYS.value()).update(new OrderEntity());
+        update().eq("id", orderId).set("status", ShopConst.OrderStatusEnum.CANCELED.value()).update(new OrderEntity());
        /* OrderEntity orderEntity =query().eq("status", ShopConst.OrderStatusEnum.PLACED.value())
                 .eq("id", orderId)
                 .apply("place_time < DATE_SUB(NOW(), interval " + second + " second)")
                 .one();*/
 
+        return false;
+    }
+
+    @Override
+    public boolean cancel(Long id) {
+        update().eq("id", id).set("status", ShopConst.OrderStatusEnum.CANCELED.value()).update(new OrderEntity());
         return false;
     }
 }

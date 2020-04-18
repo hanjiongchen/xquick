@@ -23,6 +23,11 @@ public interface OrderService extends CrudService<OrderEntity, OrderDTO> {
     String generateOrderSn();
 
     /**
+     * 取消订单
+     */
+    boolean cancel(Long id);
+
+    /**
      * 取消超时未支付订单
      *
      * @param second 超时秒数

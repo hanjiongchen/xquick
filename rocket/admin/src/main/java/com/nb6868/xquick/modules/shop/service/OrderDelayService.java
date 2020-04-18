@@ -1,7 +1,5 @@
 package com.nb6868.xquick.modules.shop.service;
 
-import com.nb6868.xquick.modules.shop.entity.OrderEntity;
-
 /**
  * 延迟订单处理
  *
@@ -11,9 +9,9 @@ public interface OrderDelayService {
 
     /**
      * 延迟订单
-     * @param order 订单
+     * @param orderId 订单Id
      * @param expireTime 延时时间
      */
-    void orderDelay(OrderEntity order, long expireTime);
+    void orderDelay(Long orderId, long expireTime);
 
 }
