@@ -93,4 +93,15 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
         }
         return false;
     }
+
+    @Override
+    public boolean checkOrder(Long orderId) {
+        update().eq("id", orderId).set("status", ShopConst.OrderStatusEnum.CANCELED_SYS.value()).update(new OrderEntity());
+       /* OrderEntity orderEntity =query().eq("status", ShopConst.OrderStatusEnum.PLACED.value())
+                .eq("id", orderId)
+                .apply("place_time < DATE_SUB(NOW(), interval " + second + " second)")
+                .one();*/
+
+        return false;
+    }
 }

@@ -15,7 +15,9 @@ import com.nb6868.xquick.modules.shop.dto.OrderDTO;
 import com.nb6868.xquick.modules.shop.dto.OrderPlaceRequest;
 import com.nb6868.xquick.modules.shop.entity.OrderEntity;
 import com.nb6868.xquick.modules.shop.excel.OrderExcel;
+import com.nb6868.xquick.modules.shop.service.OrderDelayService;
 import com.nb6868.xquick.modules.shop.service.OrderService;
+import com.nb6868.xquick.modules.shop.service.impl.OrderDelayServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -25,6 +27,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +42,8 @@ import java.util.Map;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    OrderDelayService orderDelayService;
 
     @GetMapping("list")
     @ApiOperation("列表")
@@ -148,11 +153,11 @@ public class OrderController {
         orderEntity.setPayPrice(new BigDecimal(0));
         orderEntity.setExpressPrice(new BigDecimal(0));
         orderEntity.setPayType(0);
+        orderEntity.setPlaceTime(new Date());
         orderService.save(orderEntity);
 
-        // todo 启动一个DelayQueue延迟关闭订单
-        // https://www.cnblogs.com/darendu/p/10074650.html
-        // https://blog.csdn.net/qq_22075041/article/details/80399668
+        // 启动一个DelayQueue延迟关闭订单
+        orderDelayService.orderDelay(orderEntity, 60 * 1000);
         return new Result<>().success(dto);
     }
 
