@@ -14,8 +14,11 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 ## 项目组成
 项目前后端分离
 
-* 管理后台由接口程序[火箭rocket🚀](https://github.com/zhangchaoxu/xquick/tree/master/rocket)和多套前端程序[admin-vue](https://github.com/zhangchaoxu/xquick/tree/master/admin-vue)组成。
-* 另外提供了一套可以独立运行的[写字机✍](https://github.com/zhangchaoxu/xquick/tree/master/typewriter)用于基础代码的生成,减少工作量。
+* [火箭rocket🚀](https://github.com/zhangchaoxu/xquick/tree/master/rocket) 接口代码
+* [admin-vue](https://github.com/zhangchaoxu/xquick/tree/master/admin-vue) 后台前端
+* [shop-wmp](https://github.com/zhangchaoxu/xquick/tree/master/shop-wmp) 商城小程序
+* [shop-h5](https://github.com/zhangchaoxu/xquick/tree/master/shop-h5) 商城H5
+* [写字机✍](https://github.com/zhangchaoxu/xquick/tree/master/typewriter)，可独立运行用于基础代码的生成,减少工作量。
 
 ## 已实现功能模块
 ### 用户权限管理模块
