@@ -132,9 +132,7 @@
                         </el-col>
                     </el-row>
                     <el-form-item label="标签" prop="tags">
-                        <el-tag class="multi-tags" :key="item" v-for="item in tags" closable :disable-transitions="false" @close="tags.splice(tags.indexOf(item), 1)">{{ item }}</el-tag>
-                        <el-input class="input-new-tag" v-if="tagInputVisible" v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
-                        <el-button v-else class="button-new-tag" size="small" @click="showTagInput">+ 添加</el-button>
+                        <multi-tags-input ref="multiTagsInput" v-model="dataForm.tags"/>
                     </el-form-item>
                 </el-form>
                 <div style="text-align: center;">
@@ -242,16 +240,16 @@
 
 <script>
 import mixinBaseModule from '@/mixins/base-module'
-import mixinMultiTagsModule from '@/mixins/multi-tags-module'
 import mixinFormModule from '@/mixins/form-module'
 import { removeEmptyChildren } from '@/utils'
 import QuillEditor from '@/components/quill-editor'
 import ImageUpload from '@/components/image-upload'
+import MultiTagsInput from '@/components/multi-tags-input'
 
 export default {
   inject: ['refresh'],
-  mixins: [mixinBaseModule, mixinMultiTagsModule, mixinFormModule],
-  components: { ImageUpload, QuillEditor },
+  mixins: [mixinBaseModule, mixinFormModule],
+  components: { ImageUpload, QuillEditor, MultiTagsInput },
   data () {
     return {
       // 表单模块参数
@@ -415,7 +413,7 @@ export default {
       this.$nextTick(() => {
         if (this.step === '1') {
           // 详情
-          this.resetTags()
+          this.$refs.multiTagsInput.resetTags()
           this.resetForm()
           Promise.all([
             this.getBrandList(''),
@@ -465,11 +463,7 @@ export default {
         ...res.data
       }
       if (this.step === '1') {
-        // 详情
-        // 分割关键词
-        if (this.dataForm.tags) {
-          this.tags = this.dataForm.tags.split(',').filter(item => item !== '')
-        }
+        // 基本信息
       } else if (this.step === '2') {
         // 图片
       } else if (this.step === '3') {
@@ -488,7 +482,7 @@ export default {
     // 表单提交之前的操作
     beforeDateFormSubmit () {
       if (this.step === '1') {
-        this.dataForm.tags = this.tags.join(',')
+        // 基本信息
       } else if (this.step === '2') {
         // 图片
       } else if (this.step === '3') {
