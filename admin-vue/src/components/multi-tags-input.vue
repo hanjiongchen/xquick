@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-tag class="multi-tags" :key="item" v-for="item in tags" closable :disable-transitions="false" @close="tags.splice(tags.indexOf(item), 1)">{{ item }}</el-tag>
+        <el-tag class="multi-tags" :key="item" v-for="item in tags" closable :disable-transitions="false" @close="closeTagHandle(item)">{{ item }}</el-tag>
         <el-input class="input-new-tag" v-if="tagInputVisible" v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
         <el-button v-else class="button-new-tag" size="small" @click="showTagInput">+ 添加</el-button>
     </div>
@@ -62,6 +62,11 @@ export default {
         this.$refs.tagInput.$refs.input.focus()
       })
     },
+    closeTagHandle (item) {
+      this.tags.splice(this.tags.indexOf(item), 1)
+      this._content = this.tags.join(this.split)
+      this.$emit('input', this._content)
+    },
     saveTagInputHandle () {
       let inputValue = this.tagInputValue
       if (inputValue) {
@@ -87,5 +92,26 @@ export default {
 </script>
 
 <style scoped>
+
+    /**
+    带添加按钮的tag添加
+     */
+    .multi-tags + .el-tag {
+        margin-left: 10px;
+    }
+
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
 
 </style>

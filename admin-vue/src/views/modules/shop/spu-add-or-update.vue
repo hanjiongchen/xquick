@@ -413,7 +413,6 @@ export default {
       this.$nextTick(() => {
         if (this.step === '1') {
           // 详情
-          this.$refs.multiTagsInput.resetTags()
           this.resetForm()
           Promise.all([
             this.getBrandList(''),
