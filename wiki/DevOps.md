@@ -2,7 +2,7 @@
 
 # 前端部署
 ## 编译
-在admin-vue目录中执行build.cmd`cnpm run build:prod`即可
+在admin-vue目录中执行build.cmd(`npm run build:prod`)即可
 
 ## 部署
 将编译所得的dist目录中所有的文件复制到前端服务器(比如Nginx、Apache、Tomcat),甚至是阿里云的oss都可以。
@@ -10,17 +10,17 @@
 ## Vue Router Mode
 vue router mode如果为hash,访问路径会出现`#`,比如`http://127.0.0.1/#/home`,为了避免这个情况vue router mode可以采用history。    
 但是history模式在nginx中会出现访问404的问题，需要在配置文件中加入以下配置。
-```
+`
 # 解决404
 location / {
 	try_files /$uri /$uri/ /index.html$args;
 }
-```
+`
 
 # 接口部署
 
 ## 编译
-直接使用mvn clean build即可
+直接使用`mvn clean package -Dmaven.test.skip=true -P prod`即可得到所需的jar或者war包
 
 
 ## jar运行
@@ -55,12 +55,12 @@ echo "start erp success!"
 ## tomcat部署
 
 1. 将Application对应的pom文件中的packaging改为war
-```text
+`
 <packaging>jar</packaging>
-```
+`
 
 2. 排除tomcat的依赖
-```text
+`
 <dependency>
 <groupId>org.springframework.boot</groupId>
 <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -71,7 +71,7 @@ echo "start erp success!"
 <artifactId>tomcat-embed-jasper</artifactId>
 <scope>provided</scope>
 </dependency>
-```
+`
 
 3. 编译打包
 `mvn clean package -Dmaven.test.skip=true -P prod`
@@ -89,17 +89,17 @@ echo "start erp success!"
 1. 申请证书: 适用于Tomcat的Https证书
 2. 证书放到classpath: 将证书文件，比如xquick.idogfooding.com.pfx放到resources文件夹中，最后会打包到classpath中
 3. 配置端口：在application.yml文件中配置http和https的端口
-```text
+`
 #https port
 port: 8089 
 #http port
 http:
 port: 8088
-```
+`
 
 4. 配置application: 在启动Application,比如AdminApplication中加入以下配置
 
-```text
+`
 @Value("${server.port}") private Integer httpsPort;   @Value("${server.http.port}") private Integer httpPort;   @Bean public TomcatServletWebServerFactory servletContainer() {
 TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {    @Override
 protected void postProcessContext(Context context) {
@@ -120,7 +120,7 @@ connector.setScheme("http");
 connector.setSecure(true);
 // 访问http跳转到https
 // connector.setRedirectPort(httpsPort);  return connector; }
-```
+`
 
 5. 检查防火墙: 注意检查两个端口是否都在防火墙和云服务器安全策略中
 
