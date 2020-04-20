@@ -35,8 +35,7 @@ Spring Boot内置了Tomcat，可配置Tomcat的端口号、初始化线程数、
 建议使用shell执行
 `nohup java -Dspring.profiles.active=prod -jar xquick-rocket.jar --server.port=8080 --server.servlet.context-path=/xquick-rocket 2>&1 | cronolog xquick-rocket-log.%Y-%m-%d.out >> /dev/null &` 
 
-使用了cronolog做日志分割，需要先安装cronolog
-`yum install -y cronolog httpd`
+使用了cronolog做日志分割，需要先安装cronolog`yum install -y cronolog httpd`
 
 优化脚本如下
 ```text
@@ -56,12 +55,10 @@ echo "start erp success!"
 ## tomcat部署
 
 1. 将Application对应的pom文件中的packaging改为war
-`
-<packaging>jar</packaging>
-`
+`<packaging>jar</packaging>`
 
 2. 排除tomcat的依赖
-`
+```
 <dependency>
 <groupId>org.springframework.boot</groupId>
 <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -72,7 +69,7 @@ echo "start erp success!"
 <artifactId>tomcat-embed-jasper</artifactId>
 <scope>provided</scope>
 </dependency>
-`
+```
 
 3. 编译打包
 `mvn clean package -Dmaven.test.skip=true -P prod`
@@ -90,13 +87,13 @@ echo "start erp success!"
 1. 申请证书: 适用于Tomcat的Https证书
 2. 证书放到classpath: 将证书文件，比如xquick.idogfooding.com.pfx放到resources文件夹中，最后会打包到classpath中
 3. 配置端口：在application.yml文件中配置http和https的端口
-`
+```
 #https port
 port: 8089 
 #http port
 http:
 port: 8088
-`
+```
 
 4. 配置application: 在启动Application,比如AdminApplication中加入以下配置
 
