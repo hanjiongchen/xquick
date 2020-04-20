@@ -8,7 +8,7 @@
 将编译所得的dist目录中所有的文件复制到前端服务器(比如Nginx、Apache、Tomcat),甚至是阿里云的oss都可以。
 
 ## Vue Router Mode
-修改router/index.js中的的mode
+修改router/index.js中的的mode      
 如果为hash,访问路径会出现`#`,比如`http://127.0.0.1/#/home`      
 如果为history,可以避免出现#,但是在nginx中会出现访问404的问题,需要在配置文件中加入以下配置。
 ```
