@@ -113,4 +113,20 @@ public class SpuDTO extends BaseDTO {
 	@ApiModelProperty(value = "评分")
 	private Float score;
 
+	@ApiModelProperty(value = "分销提成比例")
+	private BigDecimal distScale;
+
+	@ApiModelProperty(value = "分销提成最大值")
+	private BigDecimal distMaxVal;
+
+	@ApiModelProperty(value = "分销提成最小值")
+	private BigDecimal distMinVal;
+
+	@ApiModelProperty(value = "分销提成值")
+	private BigDecimal distVal;
+
+	@ApiModelProperty(value = "是否可以加入购物车", required = true)
+	@Range(min = 0, max = 1, message = "是否可以加入购物车取值0-1", groups = DefaultGroup.class)
+	private Integer cartable;
+
 }

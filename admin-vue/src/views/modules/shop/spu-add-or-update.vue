@@ -39,7 +39,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item prop="sort" :label="$t('base.sort')">
-                                <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')"/>
+                                <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="9999" :label="$t('base.sort')" class="w-percent-100"/>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -55,6 +55,9 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
+                    <el-form-item label="标题" prop="title">
+                        <el-input v-model="dataForm.title" placeholder="标题"/>
+                    </el-form-item>
                     <el-form-item label="规格类型" prop="specType">
                         <el-radio-group v-model="dataForm.specType" size="small" disabled>
                             <el-radio-button :label="0">单规格</el-radio-button>
@@ -95,15 +98,7 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="8">
-                            <el-form-item label="物流" prop="delivery">
-                                <el-radio-group v-model="dataForm.delivery" size="small">
-                                    <el-radio-button :label="1">需要</el-radio-button>
-                                    <el-radio-button :label="0">不需要</el-radio-button>
-                                </el-radio-group>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
+                        <el-col :span="6">
                             <el-form-item label="在架" prop="marketable">
                                 <el-radio-group v-model="dataForm.marketable" size="small">
                                     <el-radio-button :label="1">上架</el-radio-button>
@@ -111,7 +106,23 @@
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="8">
+                        <el-col :span="6">
+                            <el-form-item label="购物车" prop="cartable">
+                                <el-radio-group v-model="dataForm.cartable" size="small">
+                                    <el-radio-button :label="1">支持</el-radio-button>
+                                    <el-radio-button :label="0">不支持</el-radio-button>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item label="物流" prop="delivery">
+                                <el-radio-group v-model="dataForm.delivery" size="small">
+                                    <el-radio-button :label="1">需要</el-radio-button>
+                                    <el-radio-button :label="0">不需要</el-radio-button>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
                             <el-form-item label="置顶" prop="top">
                                 <el-radio-group v-model="dataForm.top" size="small">
                                     <el-radio-button :label="1">置顶</el-radio-button>
@@ -120,9 +131,6 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-form-item label="标题" prop="title">
-                        <el-input v-model="dataForm.title" placeholder="标题"></el-input>
-                    </el-form-item>
                     <el-form-item label="标签" prop="tags">
                         <el-tag class="multi-tags" :key="item" v-for="item in tags" closable :disable-transitions="false" @close="tags.splice(tags.indexOf(item), 1)">{{ item }}</el-tag>
                         <el-input class="input-new-tag" v-if="tagInputVisible" v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
@@ -189,6 +197,45 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane name="5" label="规格管理" v-if="!!dataForm.id && dataForm.specType === 1">暂不支持多规格</el-tab-pane>
+            <el-tab-pane name="6" label="分销管理" v-if="!!dataForm.id">
+                <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="分销类型" prop="distType">
+                                <el-select v-model="dataForm.distType" filterable placeholder="请选择分销类型" class="w-percent-100">
+                                    <el-option label="不参与" :value="0"/>
+                                    <el-option label="按比例" :value="1"/>
+                                    <el-option label="固定金额" :value="2"/>
+                                    <el-option label="随机金额" :value="3"/>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12" v-if="dataForm.distType === 1">
+                            <el-form-item label="提成比例" prop="distScale">
+                                <el-input-number v-model="dataForm.distScale" placeholder="输入提成比例" controls-position="right" :min="0" :max="1" :step="0.1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12" v-if="dataForm.distType === 2">
+                            <el-form-item label="提成金额" prop="distMinVal">
+                                <el-input-number v-model="dataForm.distMinVal" placeholder="输入提成金额" controls-position="right" :min="0" :max="99999" :step="1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" v-if="dataForm.distType === 3">
+                            <el-form-item label="提成最小金额" prop="distMinVal">
+                                <el-input-number v-model="dataForm.distMinVal" placeholder="输入提成最小金额" controls-position="right" :min="0" :max="99999" :step="1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" v-if="dataForm.distType === 3">
+                            <el-form-item label="提成最大金额" prop="distMaxVal">
+                                <el-input-number v-model="dataForm.distMaxVal" placeholder="输入提成最大金额" controls-position="right" :min="0" :max="99999" :step="1" class="w-percent-100"/>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+                <div style="text-align: center;">
+                    <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('save') }}</el-button>
+                </div>
+            </el-tab-pane>
         </el-tabs>
     </el-card>
 </template>
@@ -226,6 +273,10 @@ export default {
         storeId: '',
         brandId: '',
         limitType: 0,
+        distMaxVal: 0,
+        distMinVal: 0,
+        distScale: 0,
+        distType: 0,
         limitCount: 0,
         memberDiscount: 0,
         categoryId: '',
@@ -246,6 +297,7 @@ export default {
         attrGroups: [],
         specs: '',
         specType: 0,
+        cartable: 1,
         status: '',
         hits: '',
         imgs: '',
@@ -346,6 +398,12 @@ export default {
         ],
         content: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        distType: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        cartable: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
     }
@@ -374,6 +432,9 @@ export default {
           this.initFormData()
         } else if (this.step === '4') {
           // 参数
+          this.initFormData()
+        } else if (this.step === '6') {
+          // 分销管理
           this.initFormData()
         }
       })
@@ -420,6 +481,8 @@ export default {
         } else {
           this.dataForm.attrGroups = []
         }
+      } else if (this.step === '6') {
+        // 分销
       }
     },
     // 表单提交之前的操作
@@ -433,6 +496,8 @@ export default {
       } else if (this.step === '4') {
         // 参数管理
         this.dataForm.attrs = JSON.stringify(this.dataForm.attrGroups)
+      } else if (this.step === '6') {
+        // 分销
       }
       this.dataFormSubmitParam = this.dataForm
       return true

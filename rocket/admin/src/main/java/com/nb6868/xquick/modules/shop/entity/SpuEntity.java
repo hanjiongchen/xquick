@@ -122,4 +122,35 @@ public class SpuEntity extends BaseEntity {
      * 评分
      */
 	private Float score;
+
+	/**
+	 * 分销类型
+	 */
+	private Integer distType;
+
+	/**
+	 * 分销提成比例
+	 */
+	private BigDecimal distScale;
+
+	/**
+	 * 分销提成最大值
+	 */
+	private BigDecimal distMaxVal;
+
+	/**
+	 * 分销提成最小值
+	 */
+	private BigDecimal distMinVal;
+
+	/**
+	 * 分销提成值
+	 */
+	private BigDecimal distVal;
+
+	/**
+	 * 是否可以加入购物车
+	 */
+	private Integer cartable;
+
 }
