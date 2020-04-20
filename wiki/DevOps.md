@@ -10,12 +10,12 @@
 ## Vue Router Mode
 vue router mode如果为hash,访问路径会出现`#`,比如`http://127.0.0.1/#/home`,为了避免这个情况vue router mode可以采用history。    
 但是history模式在nginx中会出现访问404的问题，需要在配置文件中加入以下配置。
-`
+```
 # 解决404
 location / {
 	try_files /$uri /$uri/ /index.html$args;
 }
-`
+```
 
 # 接口部署
 
