@@ -3,17 +3,17 @@
         <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="名称" prop="name">
-                        <el-input v-model="dataForm.name" placeholder="名称"></el-input>
+                    <el-form-item :label="$t('base.name')" prop="name">
+                        <el-input v-model="dataForm.name" :placeholder="$t('base.name')"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item prop="sort" :label="$t('base.sort')">
+                    <el-form-item :label="$t('base.sort')" prop="sort">
                         <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('base.sort')"/>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="$t('base.status')" prop="status">
                 <el-radio-group v-model="dataForm.status" size="mini">
                     <el-radio-button :label="1">已审核</el-radio-button>
                     <el-radio-button :label="0">未审核</el-radio-button>
@@ -68,13 +68,7 @@ export default {
         sort: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        imgs: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         status: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        content: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

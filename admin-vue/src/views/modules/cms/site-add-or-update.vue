@@ -23,9 +23,7 @@
                 <el-input v-model="dataForm.copyright" placeholder="版权信息"></el-input>
             </el-form-item>
             <el-form-item label="关键词" prop="keywords">
-                <el-tag class="multi-tags" :key="item" v-for="item in keywords" closable :disable-transitions="false" @close="keywords.splice(keywords.indexOf(item), 1)">{{ item }}</el-tag>
-                <el-input class="input-new-tag" v-if="tagInputVisible" v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
-                <el-button v-else class="button-new-tag" size="small" @click="showTagInput">+ 添加</el-button>
+                <multi-tags-input ref="multiTagsInput" v-model="dataForm.keywords"/>
             </el-form-item>
             <el-form-item label="图片" prop="imgs">
                 <el-input v-model="dataForm.imgs" placeholder="图片"></el-input>
@@ -50,9 +48,11 @@
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
+import MultiTagsInput from '@/components/multi-tags-input'
 
 export default {
   mixins: [mixinFormModule],
+  components: { MultiTagsInput },
   data () {
     return {
       // 表单模块参数
@@ -68,9 +68,6 @@ export default {
         value: 1,
         label: '上线'
       }],
-      tagInputVisible: false,
-      tagInputValue: '',
-      keywords: [],
       dataForm: {
         code: '',
         name: '',
@@ -108,56 +105,9 @@ export default {
       this.formLoading = true
       this.visible = true
       this.$nextTick(() => {
-        this.keywords = []
-        this.tagInputVisible = false
-        this.tagInputValue = ''
         this.resetForm()
         this.initFormData()
       })
-    },
-
-    // 表单提交之前的操作
-    beforeDateFormSubmit () {
-      this.dataForm.keywords = this.keywords.join(',')
-      this.dataFormSubmitParam = this.dataForm
-      return true
-    },
-
-    // form信息获取成功
-    onGetInfoSuccess (res) {
-      this.dataForm = {
-        ...this.dataForm,
-        ...res.data
-      }
-      // 分割关键词
-      if (this.dataForm.keywords) {
-        this.keywords = this.dataForm.keywords.split(',').filter(item => item !== '')
-      }
-    },
-
-    showTagInput () {
-      this.tagInputVisible = true
-      this.$nextTick(() => {
-        this.$refs.tagInput.$refs.input.focus()
-      })
-    },
-
-    saveTagInputHandle () {
-      let inputValue = this.tagInputValue
-      if (inputValue) {
-        inputValue = inputValue.trim()
-        if (!inputValue) {
-          this.$message.error('不允许为空')
-        } else if (inputValue.indexOf(',') > -1) {
-          this.$message.error('不允许出现逗号')
-        } else if (this.keywords.indexOf(inputValue) > -1) {
-          this.$message.error('不允许重复添加')
-        } else {
-          this.keywords.push(inputValue)
-        }
-      }
-      this.tagInputVisible = false
-      this.tagInputValue = ''
     }
   }
 }

@@ -955,27 +955,6 @@ body .el-table th.gutter {
 }
 
 /**
-带添加按钮的tag添加
- */
-.multi-tags + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-
-/**
 输入框右侧append时候缩小左右边距
  */
 .el-input-group__append, .el-input-group__prepend .small-button {

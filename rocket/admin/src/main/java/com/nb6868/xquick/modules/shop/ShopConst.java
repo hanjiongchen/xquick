@@ -41,6 +41,40 @@ public interface ShopConst {
     }
 
     /**
+     * 分销类型
+     */
+    enum DistTypeEnum {
+
+        /**
+         * 详见name
+         */
+        NONE(0, "不参与"),
+        SCALE(1, "按比例"),
+        FIX_VALUE(2, "固定值"),
+        RANDOM(3, "随机");
+
+        private int value;
+        private String name;
+
+        DistTypeEnum(int value) {
+            this.value = value;
+        }
+
+        DistTypeEnum(int value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public int value() {
+            return this.value;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    /**
      * 进出库记录类型
      */
     enum StockLogTypeEnum {
