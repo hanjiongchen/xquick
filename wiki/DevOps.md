@@ -80,6 +80,50 @@ echo "start erp success!"
 
 对于tomcat，按照上述方式直接部署可能出现错误`java.lang.NoClassDefFoundError: javax/el/ELManager`,这是由于tomcat7内置的el包版本太低。 解决办法是手动下载[el3.0](https://mvnrepository.com/artifact/javax.el/javax.el-api/3.0.0),放到tomcat的lib包中
 
+# 其它
+
+## 内置tomcat加入证书
+
+一般建议通过nginx作为前置服务器做代理，但有时候遇到直接将tomcat作为前置应用的情况，同时又要求支持ssl协议，就需要将证书加入到SpringBoot内置Tomcat。
+
+1. 申请证书: 适用于Tomcat的Https证书
+2. 证书放到classpath: 将证书文件，比如xquick.idogfooding.com.pfx放到resources文件夹中，最后会打包到classpath中
+3. 配置端口：在application.yml文件中配置http和https的端口
+```text
+#https port
+port: 8089 
+#http port
+http:
+port: 8088
+```
+
+4. 配置application: 在启动Application,比如AdminApplication中加入以下配置
+
+```text
+@Value("${server.port}") private Integer httpsPort;   @Value("${server.http.port}") private Integer httpPort;   @Bean public TomcatServletWebServerFactory servletContainer() {
+TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {    @Override
+protected void postProcessContext(Context context) {
+SecurityConstraint securityConstraint = new SecurityConstraint();
+securityConstraint.setUserConstraint("CONFIDENTIAL");
+SecurityCollection collection = new SecurityCollection();
+collection.addPattern("/*");
+securityConstraint.addCollection(collection);
+context.addConstraint(securityConstraint);
+}
+};
+tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
+return tomcat; }   private Connector initiateHttpConnector() {
+Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+connector.setPort(httpPort);
+connector.setScheme("http");
+// 不强制跳转为https
+connector.setSecure(true);
+// 访问http跳转到https
+// connector.setRedirectPort(httpsPort);  return connector; }
+```
+
+5. 检查防火墙: 注意检查两个端口是否都在防火墙和云服务器安全策略中
+
 ## 跨域配置
 
 跨域一般通过CORS解决，通过Nginx配置即可，CORS需要浏览器和服务器同时支持。目前，主流浏览器都支持该功能，Nginx配置如下所示：
@@ -87,9 +131,9 @@ echo "start erp success!"
 ```text
 server {
    listen 80;
-   server_name xquick.idogfooding.com;
+   server_name xquick.nb6868.com;
    location /xquick {
-       alias /data/xquick-rest;
+       alias /data/xquick-admin;
            index index.html;
        }
        location / {
@@ -118,47 +162,4 @@ server {
    }
 }
 ```
-
-## 内置tomcat加入证书
-
-一般建议通过nginx作为前置服务器做代理，但有时候遇到直接将tomcat作为前置应用的情况，同时又要求支持ssl协议，就需要将证书加入到SpringBoot内置Tomcat。
-
-1. 申请证书: 适用于Tomcat的Https证书
-2. 证书放到classpath: 将证书文件，比如xquick.idogfooding.com.pfx放到resources文件夹中，最后会打包到classpath中
-3. 配置端口：在application.yml文件中配置http和https的端口
-
-   ```text
-   #https port
-   port: 8089 
-   #http port
-   http:
-   port: 8088
-   ```
-
-4. 配置application: 在启动Application,比如AdminApplication中加入以下配置
-
-   ```text
-   @Value("${server.port}") private Integer httpsPort;   @Value("${server.http.port}") private Integer httpPort;   @Bean public TomcatServletWebServerFactory servletContainer() {
-   TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {    @Override
-   protected void postProcessContext(Context context) {
-   SecurityConstraint securityConstraint = new SecurityConstraint();
-   securityConstraint.setUserConstraint("CONFIDENTIAL");
-   SecurityCollection collection = new SecurityCollection();
-   collection.addPattern("/*");
-   securityConstraint.addCollection(collection);
-   context.addConstraint(securityConstraint);
-   }
-   };
-   tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
-   return tomcat; }   private Connector initiateHttpConnector() {
-   Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-   connector.setPort(httpPort);
-   connector.setScheme("http");
-   // 不强制跳转为https
-   connector.setSecure(true);
-   // 访问http跳转到https
-   // connector.setRedirectPort(httpsPort);  return connector; }
-   ```
-
-5. 检查防火墙: 注意检查两个端口是否都在防火墙和云服务器安全策略中
 
