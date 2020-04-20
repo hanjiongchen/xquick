@@ -99,7 +99,7 @@ port: 8088
 
 4. 配置application: 在启动Application,比如AdminApplication中加入以下配置
 
-`
+```text
 @Value("${server.port}") private Integer httpsPort;   @Value("${server.http.port}") private Integer httpPort;   @Bean public TomcatServletWebServerFactory servletContainer() {
 TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {    @Override
 protected void postProcessContext(Context context) {
@@ -120,7 +120,7 @@ connector.setScheme("http");
 connector.setSecure(true);
 // 访问http跳转到https
 // connector.setRedirectPort(httpsPort);  return connector; }
-`
+```
 
 5. 检查防火墙: 注意检查两个端口是否都在防火墙和云服务器安全策略中
 
