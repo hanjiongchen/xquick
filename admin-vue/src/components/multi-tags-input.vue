@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-tag class="multi-tags" :key="item" v-for="item in tags" closable :disable-transitions="false" @close="closeTagHandle(item)">{{ item }}</el-tag>
-        <el-input class="input-new-tag" v-if="tagInputVisible" v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
-        <el-button v-else class="button-new-tag" size="small" @click="showTagInput">+ 添加</el-button>
+        <el-input v-if="tagInputVisible" class="input-new-tag"  v-model="tagInputValue" ref="tagInput" size="small" @keyup.enter.native="saveTagInputHandle" @blur="saveTagInputHandle"/>
+        <el-button v-else-if="tags.length < max" class="button-new-tag" size="small" @click="showTagInput">+ 添加</el-button>
     </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
     split: {
       type: String,
       default: ','
+    },
+    // 最大个数
+    max: {
+      type: Number,
+      default: 9
     }
   },
   data () {

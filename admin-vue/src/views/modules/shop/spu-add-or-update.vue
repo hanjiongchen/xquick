@@ -132,7 +132,7 @@
                         </el-col>
                     </el-row>
                     <el-form-item label="标签" prop="tags">
-                        <multi-tags-input ref="multiTagsInput" v-model="dataForm.tags"/>
+                        <multi-tags-input ref="multiTagsInput" v-model="dataForm.tags" :max="3"/>
                     </el-form-item>
                 </el-form>
                 <div style="text-align: center;">
