@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigInteger;
-
 /**
  * 文章分类
  *
@@ -48,7 +46,7 @@ public class ArticleCategoryEntity extends BaseEntity {
      */
     private String imgs;
 
-    private BigInteger siteId;
+    private Long siteId;
 
     private String siteCode;
 
