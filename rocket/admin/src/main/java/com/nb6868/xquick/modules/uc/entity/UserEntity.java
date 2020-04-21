@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -82,6 +83,26 @@ public class UserEntity extends BaseEntity {
      * 状态  0：停用   1：正常
      */
     private Integer status;
+    /**
+     * 积分
+     */
+    private BigDecimal points;
+    /**
+     * 账户余额
+     */
+    private BigDecimal balance;
+    /**
+     * 收入余额
+     */
+    private BigDecimal income;
+    /**
+     * 上级用户id
+     */
+    private Long supUserId;
+    /**
+     * 上级用户id
+     */
+    private Long sup2UserId;
     /**
      * 角色ids
      */

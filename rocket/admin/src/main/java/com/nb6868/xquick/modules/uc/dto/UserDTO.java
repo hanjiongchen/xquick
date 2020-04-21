@@ -1,9 +1,9 @@
 package com.nb6868.xquick.modules.uc.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nb6868.xquick.booster.pojo.BaseDTO;
 import com.nb6868.xquick.booster.validator.group.AddGroup;
 import com.nb6868.xquick.booster.validator.group.DefaultGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -97,5 +98,20 @@ public class UserDTO extends BaseDTO {
 
     @ApiModelProperty(value = "部门链")
     private List<DeptDTO> deptChain;
+
+    @ApiModelProperty(value = "积分")
+    private BigDecimal points;
+
+    @ApiModelProperty(value = "账户余额")
+    private BigDecimal balance;
+
+    @ApiModelProperty(value = "收入余额")
+    private BigDecimal income;
+
+    @ApiModelProperty(value = "上级用户id")
+    private Long supUserId;
+
+    @ApiModelProperty(value = "上上级用户id")
+    private Long sup2UserId;
 
 }
