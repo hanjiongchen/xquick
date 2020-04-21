@@ -43,11 +43,12 @@
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinFormModule from '@/mixins/form-module'
 import UserPick from './user-pick'
 
 export default {
-  mixins: [mixinFormModule],
+  mixins: [mixinBaseModule, mixinFormModule],
   components: { UserPick },
   data () {
     return {
@@ -97,13 +98,6 @@ export default {
         this.resetForm()
         this.initFormData()
       })
-    },
-    // 选中用户
-    onUserPicked (result) {
-      if (result && result.length > 0) {
-        this.dataForm.userId = result[0].id
-        this.dataForm.userName = result[0].username
-      }
     }
   }
 }

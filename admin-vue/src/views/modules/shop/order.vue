@@ -105,7 +105,6 @@ export default {
         deleteBatchURL: '/shop/order/deleteBatch',
         deleteIsBatch: false
       },
-      dateRange: null,
       dataForm: {
         no: '',
         userName: '',
@@ -121,23 +120,6 @@ export default {
     /* addOrUpdateHandle (id) {
       this.$router.push({ name: 'shop-order-add-or-update', query: { id: id }, meta: { isTab: true, isDynamic: true } })
     }, */
-    // 选中用户
-    onUserPicked (result) {
-      if (result && result.length > 0) {
-        this.dataForm.userId = result[0].id
-        this.dataForm.userName = result[0].username
-      }
-    },
-    // 时间区间选择器变化
-    dateRangeChangeHandle (value) {
-      if (value !== null && value.length === 2) {
-        this.dataForm.startCreateTime = value[0]
-        this.dataForm.endCreateTime = value[1]
-      } else {
-        this.dataForm.startCreateTime = ''
-        this.dataForm.endCreateTime = ''
-      }
-    }
   }
 }
 </script>

@@ -94,6 +94,13 @@ export default {
         confirmButtonText: '关闭',
         customClass: customClass || 'el-message-w-60'
       })
+    },
+    // 选中用户
+    onUserPicked (result) {
+      if (result && result.length > 0) {
+        this.dataForm.userId = result[0].id
+        this.dataForm.userName = result[0].username
+      }
     }
   }
 }

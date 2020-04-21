@@ -75,11 +75,12 @@
 
 <script>
 import mixinListModule from '@/mixins/list-module'
+import mixinBaseModule from '@/mixins/base-module'
 import AddOrUpdate from './bill-add-or-update'
 import UserPick from './user-pick'
 
 export default {
-  mixins: [mixinListModule],
+  mixins: [mixinBaseModule, mixinListModule],
   components: { UserPick, AddOrUpdate },
   data () {
     return {
@@ -91,32 +92,12 @@ export default {
         deleteBatchURL: '/uc/bill/deleteBatch',
         deleteIsBatch: true
       },
-      dateRange: null,
       dataForm: {
         userId: '',
         type: '',
         optType: '',
         startCreateTime: '',
         endCreateTime: ''
-      }
-    }
-  },
-  methods: {
-    // 选中用户
-    onUserPicked (result) {
-      if (result && result.length > 0) {
-        this.dataForm.userId = result[0].id
-        this.dataForm.userName = result[0].username
-      }
-    },
-    // 时间区间选择器变化
-    dateRangeChangeHandle (value) {
-      if (value !== null && value.length === 2) {
-        this.dataForm.startCreateTime = value[0]
-        this.dataForm.endCreateTime = value[1]
-      } else {
-        this.dataForm.startCreateTime = ''
-        this.dataForm.endCreateTime = ''
       }
     }
   }

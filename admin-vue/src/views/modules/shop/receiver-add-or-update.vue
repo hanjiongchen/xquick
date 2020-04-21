@@ -52,11 +52,12 @@
 
 <script>
 import mixinFormModule from '@/mixins/form-module'
+import mixinBaseModule from '@/mixins/base-module'
 import AmapLocPick from '@/components/amap-loc-pick'
 import UserPick from '../uc/user-pick'
 
 export default {
-  mixins: [mixinFormModule],
+  mixins: [mixinBaseModule, mixinFormModule],
   components: { AmapLocPick, UserPick },
   data () {
     return {
@@ -118,21 +119,12 @@ export default {
     },
     // 接受位置选择返回结果
     onLocPicked (result, key) {
-      console.log(key)
-      console.log(result)
       if (result) {
         this.dataForm.regionCode = result.regionCode
         this.dataForm.regionName = result.regionName
         this.dataForm.address = result.address
         this.dataForm.lat = result.lat
         this.dataForm.lng = result.lng
-      }
-    },
-    // 选中用户
-    onUserPicked (result) {
-      if (result && result.length > 0) {
-        this.dataForm.userId = result[0].id
-        this.dataForm.userName = result[0].username
       }
     }
   }

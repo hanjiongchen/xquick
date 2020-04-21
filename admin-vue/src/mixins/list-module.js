@@ -34,7 +34,8 @@ export default {
       uploadUrl: '', // 文件上传地址
       changeStatusVisible: false, // 修改状态,弹窗visible状态
       cancelVisible: false, // 取消操作,弹窗visible状态
-      importVisible: false // 导入操作,弹窗visible状态
+      importVisible: false, // 导入操作,弹窗visible状态
+      dateRange: null // 时间范围
     }
   },
   activated () {
@@ -213,6 +214,16 @@ export default {
         ...this.dataForm
       })
       window.location.href = `${window.SITE_CONFIG['apiURL']}${this.mixinListModuleOptions.exportURL}?${params}`
+    },
+    // 时间区间选择器变化
+    dateRangeChangeHandle (value) {
+      if (value !== null && value.length === 2) {
+        this.dataForm.startCreateTime = value[0]
+        this.dataForm.endCreateTime = value[1]
+      } else {
+        this.dataForm.startCreateTime = ''
+        this.dataForm.endCreateTime = ''
+      }
     },
     // 日期格式化
     dateFmt (row, column, cellValue) {

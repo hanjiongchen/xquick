@@ -82,12 +82,13 @@
 
 <script>
 import mixinListModule from '@/mixins/list-module'
+import mixinBaseModule from '@/mixins/base-module'
 import AddOrUpdate from './receiver-add-or-update'
 import AmapLocView from '@/components/amap-loc-view'
 import UserPick from '../uc/user-pick'
 
 export default {
-  mixins: [mixinListModule],
+  mixins: [mixinBaseModule, mixinListModule],
   components: { AddOrUpdate, AmapLocView, UserPick },
   data () {
     return {
@@ -108,15 +109,6 @@ export default {
         address: '',
         consignee: '',
         mobile: ''
-      }
-    }
-  },
-  methods: {
-    // 选中用户
-    onUserPicked (result) {
-      if (result && result.length > 0) {
-        this.dataForm.userId = result[0].id
-        this.dataForm.userName = result[0].username
       }
     }
   }
