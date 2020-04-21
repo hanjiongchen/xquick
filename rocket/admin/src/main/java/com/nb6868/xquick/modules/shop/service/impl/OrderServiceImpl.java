@@ -44,6 +44,13 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
                     String search = (String) params.get("search");
                     queryWrapper.like("no", search);
                 })
+                .and("receiverSearch", queryWrapper -> {
+                    String search = (String) params.get("receiverSearch");
+                    queryWrapper.like("receiver_consignee", search)
+                            .or().like("receiver_mobile", search)
+                            .or().like("receiver_address", search)
+                            .or().like("receiver_region_name", search);
+                })
                 .getQueryWrapper();
     }
 

@@ -15,7 +15,7 @@
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" header-align="center" align="center" width="150"></el-table-column>
-        <el-table-column prop="imgs" label="头像" header-align="center" align="center">
+        <el-table-column prop="imgs" label="头像" header-align="center" align="center" width="120">
           <template slot-scope="scope">
             <el-image v-if="scope.row.imgs" lazy class="table-img" :src="scope.row.imgs.split(',')[0]" :preview-src-list="scope.row.imgs.split(',')" fit="cover"/>
           </template>

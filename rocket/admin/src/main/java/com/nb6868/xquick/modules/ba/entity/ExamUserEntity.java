@@ -2,6 +2,7 @@ package com.nb6868.xquick.modules.ba.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.nb6868.xquick.booster.pojo.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,6 +21,11 @@ public class ExamUserEntity extends BaseEntity {
      * 用户id
      */
 	private Long userId;
+
+	/**
+	 * 用户姓名
+	 */
+	private String userName;
     /**
      * 检测类型 1 成人检测 2 孩子检测
      */

@@ -1,6 +1,7 @@
 package com.nb6868.xquick.modules.shop.dto;
 
 import com.nb6868.xquick.booster.pojo.BaseDTO;
+import com.nb6868.xquick.modules.shop.ShopConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -79,5 +80,21 @@ public class OrderDTO extends BaseDTO {
 
 	@ApiModelProperty(value = "下单时间")
 	private Date placeTime;
+
+	/**
+	 * 系统
+	 * 订单是否可取消
+	 */
+	public boolean isSysCancelable() {
+		return status == ShopConst.OrderStatusEnum.PLACED.value();
+	}
+
+	/**
+	 * 用户
+	 * 订单是否可取消
+	 */
+	public boolean isUserCancelable() {
+		return status == ShopConst.OrderStatusEnum.PLACED.value();
+	}
 
 }

@@ -2,11 +2,11 @@ package com.nb6868.xquick.modules.ba.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb6868.xquick.booster.service.impl.CrudServiceImpl;
+import com.nb6868.xquick.booster.util.WrapperUtils;
 import com.nb6868.xquick.modules.ba.dao.ExamUserDao;
 import com.nb6868.xquick.modules.ba.dto.ExamUserDTO;
 import com.nb6868.xquick.modules.ba.entity.ExamUserEntity;
 import com.nb6868.xquick.modules.ba.service.ExamUserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,12 +21,13 @@ public class ExamUserServiceImpl extends CrudServiceImpl<ExamUserDao, ExamUserEn
 
     @Override
     public QueryWrapper<ExamUserEntity> getWrapper(String method, Map<String, Object> params){
-        String id = (String)params.get("id");
-
-        QueryWrapper<ExamUserEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(id), "id", id);
-
-        return wrapper;
+        return new WrapperUtils<ExamUserEntity>(new QueryWrapper<>(), params)
+                .eq("type", "type")
+                .eq("userId", "user_id")
+                // 创建时间区间
+                .ge("startCreateTime", "create_time")
+                .le("endCreateTime", "create_time")
+                .getQueryWrapper();
     }
 
 }

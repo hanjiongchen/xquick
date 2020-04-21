@@ -2,13 +2,16 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-shop__order}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-        <el-form-item class="small-item">
-          <el-input v-model="dataForm.no" placeholder="订单号" clearable></el-input>
-        </el-form-item>
         <el-form-item style="width: 150px;">
           <el-input v-model="dataForm.userName" placeholder="用户" clearable readonly>
             <user-pick class="small-button" slot="append" :userId="dataForm.userId" v-on:onUserPicked="onUserPicked"/>
           </el-input>
+        </el-form-item>
+        <el-form-item class="small-item">
+          <el-input v-model="dataForm.no" placeholder="订单号" clearable/>
+        </el-form-item>
+        <el-form-item class="small-item">
+          <el-input v-model="dataForm.receiverSearch" placeholder="收件人" clearable/>
         </el-form-item>
         <el-form-item class="tiny-item">
           <el-select v-model="dataForm.status" placeholder="状态" clearable>
@@ -48,22 +51,41 @@
             <el-tag v-else-if="scope.row.status === 1" type="success">待处理</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="下单时间" header-align="center" align="center" width="150"/>
-        <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center" width="150"/>
+        <el-table-column prop="payPrice" label="支付价格" header-align="center" align="center" width="150"/>
+        <el-table-column prop="receiverConsignee" label="收件人" header-align="center" align="center" width="150">
+          <template slot-scope="scope">
+            <el-popover trigger="click" placement="top">
+              <p>收件人: {{ scope.row.receiverConsignee }}</p>
+              <p>电话: {{ scope.row.receiverMobile }}</p>
+              <p>区域: {{ scope.row.receiverRegionName }}</p>
+              <p>地址: {{ scope.row.receiverAddress }}</p>
+              <div slot="reference" class="name-wrapper nowrap">
+                {{ scope.row.receiverConsignee }}
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="expressNo" label="物流" header-align="center" align="center" width="150">
+          <template slot-scope="scope">
+            <el-popover trigger="click" placement="top">
+              <p>物流: {{ scope.row.expressType }}</p>
+              <p>物流单: {{ scope.row.expressNo }}</p>
+              <div slot="reference" class="name-wrapper nowrap">
+                {{ scope.row.expressNo }}
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="下单时间" header-align="center" align="center" width="160"/>
+        <el-table-column prop="updateTime" label="更新时间" header-align="center" align="center" width="160"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-dropdown trigger="click" @command="editActionHandler" class="action-dropdown">
               <span class="el-dropdown-link">{{ $t('handle') }}<i class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.sysCancelable" :command="composeEditCommandValue('cancel', scope.row)" icon="el-icon-sell">取消
+                </el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:update')" :command="composeEditCommandValue('addOrUpdate', scope.row)" icon="el-icon-edit">{{ $t('update') }}</el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.marketable === 0" :command="composeEditCommandValue('marketable', scope.row)" icon="el-icon-sell">上架
-                </el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.marketable === 1" :command="composeEditCommandValue('marketable', scope.row)" icon="el-icon-sold-out">下架
-                </el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.top === 0" :command="composeEditCommandValue('top', scope.row)" icon="el-icon-arrow-up">置顶
-                </el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.top === 1" :command="composeEditCommandValue('top', scope.row)" icon="el-icon-arrow-down">取消置顶
-                </el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:delete')" :command="composeEditCommandValue('delete', scope.row)" icon="el-icon-delete">{{ $t('delete') }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -110,6 +132,7 @@ export default {
         userName: '',
         userId: '',
         status: '',
+        receiverSearch: '',
         startCreateTime: '',
         endCreateTime: ''
       }
@@ -117,9 +140,10 @@ export default {
   },
   methods: {
     // 新增/修改
-    /* addOrUpdateHandle (id) {
-      this.$router.push({ name: 'shop-order-add-or-update', query: { id: id }, meta: { isTab: true, isDynamic: true } })
-    }, */
+    // 其它更多按钮操作
+    moreEditActionHandler (command) {
+      console.log(command)
+    }
   }
 }
 </script>
