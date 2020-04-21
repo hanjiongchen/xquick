@@ -84,24 +84,11 @@ export default {
         getDataListIsPage: true,
         exportURL: '/log/login/export'
       },
-      dateRange: null,
       dataForm: {
         createName: '',
         status: '',
         startCreateTime: '',
         endCreateTime: ''
-      }
-    }
-  },
-  methods: {
-    // 时间区间选择器变化
-    dateRangeChangeHandle (value) {
-      if (value !== null && value.length === 2) {
-        this.dataForm.startCreateTime = value[0]
-        this.dataForm.endCreateTime = value[1]
-      } else {
-        this.dataForm.startCreateTime = ''
-        this.dataForm.endCreateTime = ''
       }
     }
   }

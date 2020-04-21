@@ -107,7 +107,6 @@ export default {
         dataFormUpdateURL: `/shop/coupon/update`,
         dataFormInfoURL: `/shop/coupon/info?id=`
       },
-      dateRange: null,
       dataForm: {
         id: '',
         storeId: '',
@@ -197,16 +196,6 @@ export default {
         callback(res.data)
       }).catch(() => {
       })
-    },
-    // 时间区间选择器变化
-    dateRangeChangeHandle (value) {
-      if (value !== null && value.length === 2) {
-        this.dataForm.validStartTime = value[0]
-        this.dataForm.validEndTime = value[1]
-      } else {
-        this.dataForm.validStartTime = ''
-        this.dataForm.validEndTime = ''
-      }
     }
   }
 }
