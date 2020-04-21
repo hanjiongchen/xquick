@@ -83,7 +83,8 @@
             <el-dropdown trigger="click" @command="editActionHandler" class="action-dropdown">
               <span class="el-dropdown-link">{{ $t('handle') }}<i class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.sysCancelable" :command="composeEditCommandValue('cancel', scope.row)" icon="el-icon-sell">取消
+                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.sysCancelable" :command="composeEditCommandValue('cancel', scope.row)" icon="el-icon-sell">取消</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.confirmable" :command="composeEditCommandValue('confirm', scope.row)" icon="el-icon-sell">确认
                 </el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:update')" :command="composeEditCommandValue('addOrUpdate', scope.row)" icon="el-icon-edit">{{ $t('update') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:delete')" :command="composeEditCommandValue('delete', scope.row)" icon="el-icon-delete">{{ $t('delete') }}</el-dropdown-item>

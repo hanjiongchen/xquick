@@ -1,5 +1,7 @@
 package com.nb6868.xquick.modules.shop.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.nb6868.xquick.booster.pojo.BaseEntity;
 import lombok.Data;
@@ -20,6 +22,15 @@ public class OrderLogEntity extends BaseEntity {
      * 订单id
      */
 	private Long orderId;
+	/**
+	 * 订单号
+	 */
+	private String orderNo;
+	/**
+	 * 创建人
+	 */
+	@TableField(fill = FieldFill.INSERT)
+	private String createName;
     /**
      * 类型
      */

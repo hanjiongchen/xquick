@@ -20,10 +20,16 @@ public class OrderLogDTO extends BaseDTO {
 	@ApiModelProperty(value = "订单id")
 	private Long orderId;
 
+	@ApiModelProperty(value = "订单号")
+	private String orderNo;
+
 	@ApiModelProperty(value = "类型")
 	private Integer type;
 
 	@ApiModelProperty(value = "内容")
 	private String content;
+
+	@ApiModelProperty(value = "创建人")
+	private String createName;
 
 }
