@@ -3,7 +3,7 @@
     <div class="mod-shop__order-log}">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model="dataForm.id" placeholder="id" clearable></el-input>
+          <el-input v-model="dataForm.orderNo" placeholder="订单号" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -18,10 +18,10 @@
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="orderNo" label="订单号" header-align="center" align="center" min-width="120"/>
-        <el-table-column prop="type" label="类型" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="content" label="内容" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createId" label="创建者" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="type" label="类型" header-align="center" align="center" width="100"/>
+        <el-table-column prop="content" label="内容" header-align="center" align="center" show-tooltip-when-overflow/>
+        <el-table-column prop="createId" label="操作人" header-align="center" align="center" width="120"></el-table-column>
+        <el-table-column prop="createTime" label="操作时间" header-align="center" align="center" width="160"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
             <el-button v-if="$hasPermission('shop:orderLog:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>

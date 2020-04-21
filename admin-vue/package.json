@@ -1,8 +1,9 @@
 {
   "name": "xquick-admin-vue",
   "version": "1.0.0",
-  "description": "xquick admin desktop",
+  "description": "xquick admin desktop based on elementui",
   "author": "Charles <zhangchaoxu@gmail.com>",
+  "license": "Apache License",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
