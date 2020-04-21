@@ -44,7 +44,7 @@ public class ${className}Controller {
     public Result<?> list(@ApiIgnore @RequestParam Map<String, Object> params) {
         List<${className}DTO> list = ${classname}Service.listDto(params);
 
-        return new Result<>().ok(list);
+        return new Result<>().success(list);
     }
 
     @GetMapping("page")
@@ -53,7 +53,7 @@ public class ${className}Controller {
     public Result<?> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<${className}DTO> page = ${classname}Service.pageDto(params);
 
-        return new Result<>().ok(page);
+        return new Result<>().success(page);
     }
 
     @GetMapping("info")
@@ -65,7 +65,7 @@ public class ${className}Controller {
 
         ${className}DTO data = ${classname}Service.getDtoById(id);
 
-        return new Result<${className}DTO>().ok(data);
+        return new Result<${className}DTO>().success(data);
     }
 
     @PostMapping("save")
@@ -78,7 +78,7 @@ public class ${className}Controller {
 
         ${classname}Service.saveDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @PutMapping("update")
@@ -91,7 +91,7 @@ public class ${className}Controller {
 
         ${classname}Service.updateDto(dto);
 
-        return new Result<>().ok(dto);
+        return new Result<>().success(dto);
     }
 
     @DeleteMapping("delete")
