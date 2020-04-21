@@ -17,6 +17,7 @@ public interface ShopConst {
          */
         CANCELED(-10, "已取消"),
         PLACED(0, "已下单"),
+        PAID(5, "已支付"),
         COMPLETED(100, "已完成");
 
         private int value;
@@ -27,6 +28,42 @@ public interface ShopConst {
         }
 
         OrderStatusEnum(int value, String name) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public int value() {
+            return this.value;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    /**
+     * 支付类型枚举
+     * 0 无须支付 1 现金交易 2 银行转账 3 支付宝支付 4 微信支付
+     */
+    enum PayTypeEnum {
+
+        /**
+         * 详见name
+         */
+        NO_PAY(0, "无须支付"),
+        CASH(1, "现金"),
+        BANK(2, "银行"),
+        ALIPAY(3, "支付宝"),
+        WECHAT(4, "微信");
+
+        private int value;
+        private String name;
+
+        PayTypeEnum(int value) {
+            this.value = value;
+        }
+
+        PayTypeEnum(int value, String name) {
             this.value = value;
             this.name = name;
         }

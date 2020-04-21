@@ -1,5 +1,9 @@
 package com.nb6868.xquick.modules.wx.controller;
 
+import com.nb6868.xquick.booster.util.DateUtils;
+import com.nb6868.xquick.common.annotation.AnonAccess;
+import com.nb6868.xquick.modules.shop.ShopConst;
+import com.nb6868.xquick.modules.shop.service.OrderService;
 import com.nb6868.xquick.modules.sys.service.ParamService;
 import com.github.binarywang.wxpay.bean.coupon.*;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
@@ -17,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 
@@ -33,6 +39,8 @@ public class PayController {
 
     @Autowired
     ParamService paramService;
+    @Autowired
+    OrderService orderService;
 
     WxPayService wxService;
 
@@ -152,10 +160,7 @@ public class PayController {
      */
     @ApiOperation(value = "退款查询")
     @GetMapping("/refundQuery")
-    public WxPayRefundQueryResult refundQuery(@RequestParam(required = false) String transactionId,
-                                              @RequestParam(required = false) String outTradeNo,
-                                              @RequestParam(required = false) String outRefundNo,
-                                              @RequestParam(required = false) String refundId) throws WxPayException {
+    public WxPayRefundQueryResult refundQuery(@RequestParam(required = false) String transactionId, @RequestParam(required = false) String outTradeNo, @RequestParam(required = false) String outRefundNo, @RequestParam(required = false) String refundId) throws WxPayException {
         return this.wxService.refundQuery(transactionId, outTradeNo, outRefundNo, refundId);
     }
 
@@ -167,22 +172,41 @@ public class PayController {
 
     @ApiOperation(value = "支付回调通知处理")
     @PostMapping("/notify/order")
-    public String parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
-        final WxPayOrderNotifyResult notifyResult = this.wxService.parseOrderNotifyResult(xmlData);
-        // TODO 根据自己业务场景需要构造返回对象
-        return WxPayNotifyResponse.success("成功");
+    @AnonAccess
+    public String parseOrderNotifyResult(@RequestBody String xmlData) {
+        try {
+            WxPayOrderNotifyResult notifyResult = wxService.parseOrderNotifyResult(xmlData);
+            // TODO 根据自己业务场景需要构造返回对象
+            if ("SUCCESS".equalsIgnoreCase(notifyResult.getResultCode())) {
+                orderService.payNotify(ShopConst.PayTypeEnum.WECHAT.value(), notifyResult.getOutTradeNo(), new BigDecimal(notifyResult.getTotalFee()).divide(new BigDecimal(100), RoundingMode.HALF_UP), DateUtils.parse(notifyResult.getTimeEnd(), "yyyyMMddHHmmss"));
+            } else {
+
+            }
+            // 成功表示的是消息收到并且处理成功,而不是支付成功
+            return WxPayNotifyResponse.fail("成功");
+        } catch (WxPayException e) {
+            e.printStackTrace();
+            return WxPayNotifyResponse.success("失败");
+        }
     }
 
     @ApiOperation(value = "退款回调通知处理")
     @PostMapping("/notify/refund")
-    public String parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
-        final WxPayRefundNotifyResult result = this.wxService.parseRefundNotifyResult(xmlData);
-        // TODO 根据自己业务场景需要构造返回对象
-        return WxPayNotifyResponse.success("成功");
+    @AnonAccess
+    public String parseRefundNotifyResult(@RequestBody String xmlData) {
+        try {
+            WxPayRefundNotifyResult result = wxService.parseRefundNotifyResult(xmlData);
+            // TODO 根据自己业务场景需要构造返回对象
+            return WxPayNotifyResponse.success("成功");
+        } catch (WxPayException e) {
+            e.printStackTrace();
+            return WxPayNotifyResponse.fail("失败");
+        }
     }
 
     @ApiOperation(value = "扫码支付回调通知处理")
     @PostMapping("/notify/scanpay")
+    @AnonAccess
     public String parseScanPayNotifyResult(String xmlData) throws WxPayException {
         final WxScanPayNotifyResult result = this.wxService.parseScanPayNotifyResult(xmlData);
         // TODO 根据自己业务场景需要构造返回对象
