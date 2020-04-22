@@ -14,8 +14,10 @@ import com.nb6868.xquick.modules.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -52,6 +54,11 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
                             .or().like("receiver_region_name", search);
                 })
                 .getQueryWrapper();
+    }
+
+    @Override
+    public OrderEntity getByNo(String no) {
+        return query().eq("no", no).last("LIMIT 1").one();
     }
 
     @Override
@@ -116,5 +123,20 @@ public class OrderServiceImpl extends CrudServiceImpl<OrderDao, OrderEntity, Ord
     public boolean cancel(Long id) {
         update().eq("id", id).set("status", ShopConst.OrderStatusEnum.CANCELED.value()).update(new OrderEntity());
         return false;
+    }
+
+    @Override
+    public boolean payNotify(Integer payType, String orderNo, BigDecimal payFee, Date payTime) {
+        OrderEntity orderEntity = getByNo(orderNo);
+        if (orderEntity == null) {
+            return false;
+        } else {
+            return update().set("status", ShopConst.OrderStatusEnum.PAID.value())
+                    .set("pay_price", payFee)
+                    .set("pay_time", payTime)
+                    .set("pay_type", payType)
+                    .eq("id", orderEntity.getId())
+                    .update(new OrderEntity());
+        }
     }
 }

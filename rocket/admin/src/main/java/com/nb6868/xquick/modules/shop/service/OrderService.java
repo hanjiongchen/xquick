@@ -5,12 +5,20 @@ import com.nb6868.xquick.modules.shop.dto.OrderChangeReceiverRequest;
 import com.nb6868.xquick.modules.shop.dto.OrderDTO;
 import com.nb6868.xquick.modules.shop.entity.OrderEntity;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
  * 订单
  *
  * @author Charles zhangchaoxu@gmail.com
  */
 public interface OrderService extends CrudService<OrderEntity, OrderDTO> {
+
+    /**
+     * 通过订单号获取订单
+     */
+    OrderEntity getByNo(String no);
 
     /**
      * 修改订单收件信息
@@ -36,5 +44,10 @@ public interface OrderService extends CrudService<OrderEntity, OrderDTO> {
 
 
     boolean checkOrder(Long orderId);
+
+    /**
+     * 支付回调
+     */
+    boolean payNotify(Integer payType, String orderNo, BigDecimal payFee, Date payTime);
 
 }

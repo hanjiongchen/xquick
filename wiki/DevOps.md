@@ -23,19 +23,19 @@ location / {
 ## 编译
 直接使用`mvn clean package -Dmaven.test.skip=true -P prod`即可得到所需的jar或者war包
 
-
 ## jar运行
 _Spring Boot项目，推荐打成jar包的方式，部署到服务器上_ 
+
 Spring Boot内置了Tomcat，可配置Tomcat的端口号、初始化线程数、最大线程数、连接超时时长、https等等，配置文件是application.yml
 
 #### windows部署
 `java -jar rest.jar --spring.profiles.active=prod`
 
 #### linux部署
-建议使用shell执行
+建议使用shell执行,可以指定运行环境、端口、context等
 `nohup java -Dspring.profiles.active=prod -jar xquick-rocket.jar --server.port=8080 --server.servlet.context-path=/xquick-rocket 2>&1 | cronolog xquick-rocket-log.%Y-%m-%d.out >> /dev/null &` 
 
-使用了cronolog做日志分割，需要先安装cronolog`yum install -y cronolog httpd`
+如果使用cronolog做日志分割，可能需要先安装cronolog`yum install -y cronolog httpd`
 
 优化脚本如下
 ```text
