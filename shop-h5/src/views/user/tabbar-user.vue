@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import userHeader from './tabbar-user-header';
 import orderGroup from './tabbar-user-order';
 import couponGroup from './tabbar-user-coupon';
@@ -26,8 +27,7 @@ export default {
 
   methods: {
     getLoginStatus() {
-      this.isLogin =
-        !!localStorage.getItem('Authorization');
+      this.isLogin = !!Cookies.get('token')
     }
   },
 

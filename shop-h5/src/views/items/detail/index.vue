@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 
 import { goodsDetail, cartGoodsCount, collectAddOrDelete, cartAdd, cartFastAdd } from '@/api/api';
 
@@ -76,7 +77,7 @@ export default {
   },
 
   data() {
-    const isLogin = !!localStorage.getItem('Authorization');
+    const isLogin = !!Cookies.get('token')
 
     return {
       isLogin,

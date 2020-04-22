@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { getLocalStorage } from '@/utils/local-storage';
+import Cookies from 'js-cookie'
 
 import home from './home';
 import items from './items';
@@ -15,8 +15,7 @@ const RouterModel = new Router({
 });
 
 RouterModel.beforeEach((to, from, next) => {
-  const { Authorization } = getLocalStorage('Authorization');
-  if (!Authorization) {
+  if (!Cookies.get('token')) {
     if (to.meta.login) {
       next({ name: 'login', query: { redirect: to.name } });
       return;

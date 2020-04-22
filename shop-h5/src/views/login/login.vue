@@ -38,10 +38,9 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 import field from '@/components/field/';
 import fieldGroup from '@/components/field-group/';
-
-import {authLoginByAccount} from '@/api/api';
 import {setLocalStorage} from '@/utils/local-storage';
 import {emailReg, mobileReg} from '@/utils/validate';
 
@@ -76,18 +75,17 @@ export default {
         login() {
             let param = { type: 10, username: this.account, password: this.password }
             this.$http.post(`/uc/user/login`, param).then(({ data: res }) => {
-                Toast.fail('成功')
-                console.log(res)
-                this.userInfo = res.data.data.user;
+                Toast.success('登录成功')
+                // 将token保存到cookie
+                Cookies.set('token', res.token)
+                this.userInfo = res.user;
                 setLocalStorage({
-                    Authorization: res.data.data.token,
-                    avatar: this.userInfo.avatarUrl,
+                    avatar: this.userInfo.avatar,
                     nickName: this.userInfo.nickName
                 });
                 this.routerRedirect();
             }).catch(resp => {
-                console.log(resp)
-                Toast.fail(resp.data.errmsg)
+                Toast.fail(resp.msg)
             })
         },
 

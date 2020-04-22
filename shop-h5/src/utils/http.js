@@ -34,21 +34,18 @@ http.interceptors.request.use(config => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-    const res = response.data
-
-    if (res.code === 401) {
+    if (response.data.code === 401) {
         Toast.fail('请登录');
         setTimeout(() => {
             window.location = '#/login/'
         }, 1500)
-        return Promise.reject('error')
-    } else if (res.code !== 0) {
+        return Promise.reject(response.data)
+    } else if (response.data.code !== 0) {
         // 非5xx的错误属于业务错误，留给具体页面处理
-        Toast.fail(res.msg);
-        return Promise.reject(res)
+        return Promise.reject(response.data)
     } else {
         // 正常返回,只要数据
-        return res
+        return response.data
     }
 }, error => {
     Dialog.alert({
