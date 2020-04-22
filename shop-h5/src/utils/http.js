@@ -5,7 +5,7 @@ import {Dialog, Toast} from 'vant';
 /**
  * axios实例
  */
-const request = axios.create({
+const http = axios.create({
     baseURL: window.SITE_CONFIG['apiURL'],
     timeout: 1000 * 180,
     withCredentials: true
@@ -14,7 +14,7 @@ const request = axios.create({
 /**
  * 请求拦截
  */
-request.interceptors.request.use(config => {
+http.interceptors.request.use(config => {
         config.headers['token'] = Cookies.get('token') || ''
         // 默认参数
         const defaults = {}
@@ -33,7 +33,7 @@ request.interceptors.request.use(config => {
 /**
  * 响应拦截
  */
-request.interceptors.response.use(response => {
+http.interceptors.response.use(response => {
     const res = response.data
 
     if (res.code === 401) {
@@ -58,4 +58,4 @@ request.interceptors.response.use(response => {
     return Promise.reject(error)
 })
 
-export default request
+export default http

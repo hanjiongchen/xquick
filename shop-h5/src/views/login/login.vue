@@ -74,18 +74,21 @@ export default {
         },
 
         login() {
-            authLoginByAccount({ type: 10, username: this.account, password: this.password }).then(res => {
+            let param = { type: 10, username: this.account, password: this.password }
+            this.$http.post(`/uc/user/login`, param).then(({ data: res }) => {
+                Toast.fail('成功')
+                console.log(res)
                 this.userInfo = res.data.data.user;
                 setLocalStorage({
                     Authorization: res.data.data.token,
                     avatar: this.userInfo.avatarUrl,
                     nickName: this.userInfo.nickName
                 });
-
                 this.routerRedirect();
-            }).catch(error => {
-                Toast.fail(error.data.errmsg);
-            });
+            }).catch(resp => {
+                console.log(resp)
+                Toast.fail(resp.data.errmsg)
+            })
         },
 
         loginSubmit() {

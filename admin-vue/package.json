@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "xquick admin desktop based on elementui",
   "author": "Charles <zhangchaoxu@gmail.com>",
-  "license": "Apache License",
+  "license": "Apache License V2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

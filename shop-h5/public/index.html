@@ -7,6 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="shortcut icon" href="./favicon.ico">
     <title>shop-h5</title>
+    <!-- 站点配置 -->
+    <script>
+        window.SITE_CONFIG = {};
+        window.SITE_CONFIG['apiURL'] = '';   // api请求地址
+    </script>
+
+    <!-- 生产环境 -->
+    <% if (process.env.VUE_APP_NODE_ENV === 'prod') { %>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://xquick.nb6868.com:8181/rocket-admin';</script>
+    <% } else {%>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://127.0.0.1:8181/rocket-admin';</script>
+    <% } %>
 </head>
 
 <body>
@@ -18,6 +30,5 @@
         <div></div>
     </div>
 </div>
-<!-- built files will be auto injected -->
 </body>
 </html>
