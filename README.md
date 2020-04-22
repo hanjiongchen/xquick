@@ -61,6 +61,7 @@ xquick致力于搭建一套软件项目中经常遇到的一些常见需求,比�
 * [Avue](https://avuejs.com/)
 * [litemall](https://github.com/linlinjava/litemall)
 * [shopxx](https://www.shopxx.net/products/shopxx-b2b2c)
+* [vant](https://youzan.github.io/vant/)
 
 ## 文档 
 更多详细内容见[gitbook文档](https://zhangchaoxu.gitbook.io/xquick/)

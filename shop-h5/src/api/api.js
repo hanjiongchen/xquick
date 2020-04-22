@@ -27,11 +27,10 @@ export function catalogCurrent(query) {
 
 const AuthLoginByWeixin='wx/auth/login_by_weixin'; //微信登录
 
-
-const AuthLoginByAccount='wx/auth/login'; //账号登录
+//账号登录
 export function authLoginByAccount(data) {
   return request({
-    url: AuthLoginByAccount,
+    url: 'uc/user/login',
     method: 'post',
     data
   })

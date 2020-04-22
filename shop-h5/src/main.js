@@ -12,7 +12,6 @@ import filters from '@/filter';
 Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(filters);
 
-
 import { Lazyload, Icon, Cell, CellGroup, loading, Button, Toast } from 'vant';
 Vue.use(Icon);
 Vue.use(Cell);

@@ -10,8 +10,7 @@ module.exports = {
   assetsDir: 'static',
   productionSourceMap: false,
   devServer: {
-    //九键输入法的 「mall」= 「6255」
-    port: 6255,
+    port: 8008,
   },
   chainWebpack: config => {
     config.plugins.delete('prefetch');
