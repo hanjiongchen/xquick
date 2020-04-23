@@ -6,10 +6,10 @@ const UserServer = () => import('@/views/user/module-server');
 const UserHelp = () => import('@/views/user/module-help');
 const UserFeedback = () => import('@/views/user/module-feedback');
 
-const UserInformation = () => import('@/views/user/user-information-set');
-const UserInfo_SetMobile = () => import('@/views/user/user-information-set/set-mobile');
-const UserInfo_SetNickname = () => import('@/views/user/user-information-set/set-nickname');
-const UserInfo_SetPassword = () => import('@/views/user/user-information-set/set-password');
+const UserInfo = () => import('@/views/user/info');
+const UserInfo_SetMobile = () => import('@/views/user/info/set-mobile');
+const UserInfo_SetNickname = () => import('@/views/user/info/set-nickname');
+const UserInfo_SetPassword = () => import('@/views/user/info/set-password');
 
 const UserOrderList = () => import('@/views/user/order-list');
 const UserCouponList = () => import('@/views/user/coupon-list');
@@ -67,25 +67,25 @@ export default [
     component: UserFeedback
   },  
   {
-    path: '/user/information',
-    name: 'user-information',
+    path: '/user/info',
+    name: 'user-info',
     meta: {
       login: true
     },
-    component: UserInformation
+    component: UserInfo
   },
   {
-    path: '/user/information/setMobile',
+    path: '/user/info/setMobile',
     name: 'user-info-setMobile',
     component: UserInfo_SetMobile
   },
   {
-    path: '/user/information/setNickname',
+    path: '/user/info/setNickname',
     name: 'user-info-setNickname',
     component: UserInfo_SetNickname
   },
   {
-    path: '/user/information/setPassword',
+    path: '/user/info/setPassword',
     name: 'user-info-setPassword',
     component: UserInfo_SetPassword
   },
