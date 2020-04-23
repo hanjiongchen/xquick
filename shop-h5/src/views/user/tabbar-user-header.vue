@@ -45,7 +45,7 @@ export default {
       this.nickName = infoData.nickName || '昵称';
     },
     toSetting() {
-      this.$router.push({ name: 'user-information' });
+      this.$router.push({ name: 'user-info' });
     }
   }
 };

@@ -50,7 +50,7 @@ http.interceptors.response.use(response => {
 }, error => {
     Dialog.alert({
         title: '警告',
-        message: '网络请求异常'
+        message: '接口访问异常'
     });
     return Promise.reject(error)
 })
